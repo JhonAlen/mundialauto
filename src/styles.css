@@ -1,0 +1,13 @@
+
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "ag-grid-community/styles/ag-grid.css";
+@import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+@import url(./styles_Club/vendor/bootstrap/css/bootstrap.min.css);
+@import url(./styles_Club/vendor/bootstrap-icons/bootstrap-icons.css);
+@import url(./styles_Club/vendor/fontawesome-free/css/all.min.css);
+@import url(./styles_Club/vendor/aos/aos.css);
+@import url(./styles_Club/vendor/glightbox/css/glightbox.min.css);
+@import url(./styles_Club/vendor/swiper/swiper-bundle.min.css);
+@import url(./styles_Club/css/main.css);
+

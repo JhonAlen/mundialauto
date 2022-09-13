@@ -1,0 +1,672 @@
+<title>PLanes</title>
+<link href="./../../../assets/imagenes/arys/logo.png" rel="icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+<header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="inicio" class="image d-flex align-items-center">
+        <img src="./assets/imagenes/arys/image.png" style="max-height: 40px" />
+      </a>
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="inicio" >Inicio</a></li>
+          <li><a href="qsomos">Quienes Somos</a></li>
+          <li><a href="service">Servicios</a></li>
+          <li><a href="planes" class="active">Planes</a></li>
+          <li><a href="contact" >Contáctanos</a></li>
+          <li><a href="sign-in">Ingresar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main" style="background-color: white">
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('./assets/imagenes/arys/planex.jpg');">
+      <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+        <h2>Planes</h2>
+        <ol>
+          <li><a href="inicio">Inicio</a></li>
+          <li>Planes</li>
+        </ol>
+      </div>
+    </div>
+   <section id="projects" class="projects">
+      <div class="container" data-aos="fade-up">
+        <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order">
+          <ul class="portfolio-flters" data-aos="fade-up" data-aos-delay="100">
+            <h3 style="text-align: -webkit-center;">Selecione el plan de su preferencia </h3>
+            <li data-filter="*" class="filter-active">Todos</li>
+            <li data-filter=".filter-general">General</li>
+            <li data-filter=".filter-liviano">Liviano</li>
+            <li data-filter=".filter-pesado">Pesado</li>
+            <li data-filter=".filter-moto">Motocicletas</li>
+          </ul>
+          <div class="row gy-4 portfolio-container" data-aos="fade-up" data-aos-delay="200">
+            <div class="col-lg-4 col-md-6 portfolio-item filter-general">
+              <div class="portfolio-content h-100">
+                <img src="./assets/imagenes/arys/sedan.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>Plan General</h4>
+                  <p>Planes Generales</p>
+				  <a href="#prueba" title="More Details" class="details-link" data-bs-toggle="modal"><i class="bi bi-zoom-in"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-liviano">
+              <div class="portfolio-content h-100">
+                <img src="./assets/imagenes/arys/jeep.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+				  <p>Automóviles y Camionetas</p>
+                  <h4>Club Liviano</h4>
+                  <a href="#liviano" title="More Details" class="details-link" data-bs-toggle="modal"><i class="bi bi-zoom-in"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-moto">
+              <div class="portfolio-content h-100">
+                <img src="./assets/imagenes/arys/moto.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+				  <p>Motocicletas</p>
+                  <h4>Club Motocicletas</h4>
+                  <a href="#moto1" title="More Details" class="details-link" data-bs-toggle="modal"><i class="bi bi-zoom-in"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-moto">
+              <div class="portfolio-content h-100">
+                <img src="./assets/imagenes/arys/moto1.png" class="img-fluid" alt="">
+                <div class="portfolio-info">
+				  <p>Motocicletas</p>
+                  <h4>Club Motocicletas</h4>
+                  <a href="#moto2" title="More Details" class="details-link" data-bs-toggle="modal"><i class="bi bi-zoom-in"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-pesado">
+              <div class="portfolio-content h-100">
+                <img src="./assets/imagenes/arys/mack.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+				  <p>Camiones Tractomulas</p>
+                  <h4>Club Pesado</h4>
+                  <a href="#pesado" title="More Details" class="details-link" data-bs-toggle="modal"><i class="bi bi-zoom-in"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+<div> <!--MODALES DE LOS PLANES-->
+<div class="modal fade" id="prueba" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  <!--MODAL DE PLANES GENERALES-->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Plan General</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="./assets/imagenes/arys/coche.png" style="max-width: 91px;margin-left: -12px;">
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="width: 18%;font-weight: bold">
+              Siniestros
+              </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Vidrios rotos / Reparación<br>
+                  Vidrios rotos / Sustitución<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="width: 25% ;font-weight: bold">
+                  Mantenimiento
+              </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mantenimiento correctivo<br>
+                  Mantenimiento preventivo<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFor">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFor" aria-expanded="false" aria-controls="collapseFor" style="width: 37%;font-weight: bold">
+                  Asistencia de personas
+              </button>
+              </h2>
+              <div id="collapseFor" class="accordion-collapse collapse" aria-labelledby="headingFor" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Póliza de accidentes personales<br>
+                  Descuentos en tratamientos odontológicos especializados<br>
+                  Teleorientación odontológica<br>
+                  Teleorientación psicológica<br>
+                  Teleorientación médica<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width: 40%;font-weight: bold; margin-left: 3px;">
+                  Asistencias de Vehículos
+              </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Acceso al call center 24/7<br>
+                  Manejo y administración de siniestros<br>
+                  Acceso a proveedores certificados Arys<br>
+                  Asistencia vial telefónica caso de siniestro<br>
+                  Cristalería y vidrios<br>
+                  Centro de Servicios ArysAuto<br>
+                  Expediente electrónico<br>
+                  Apoyo estadístico<br>
+                  Servicio promocional<br>
+                  Búsqueda o ubicación de repuestos<br>
+                  Autolavado<br>
+                  Asistencia en siniestros<br>      
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button  routerLink="/register" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Registrarme</button>
+        </div>
+      </div>
+    </div>
+  </div><!--fIN DE MODAL DE PLANES GENERALES-->
+
+<div class="modal fade" id="liviano" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  <!--MODAL DE PLAN LIVIANO-->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Club Liviano</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="./assets/imagenes/arys/liviano.png" style="max-width: 91px;margin-left: -12px;">
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width: 11%;font-weight: bold">
+                  Grúa
+              </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Servicio de grúa Liviano<br>
+				          Grúa<br>
+                  ArysVial<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width: 15%;font-weight: bold">
+                  Servicios<br>
+              </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Acceso al call center 24/7<br>
+                  Manejo y administración de siniestros<br>
+                  Acceso a proveedores certificados Arys<br>
+                  Asistencia vial telefónica en caso de siniestro<br>
+                  Centro de servicios Arysauto<br>
+                  Expediente electrónico<br>
+                  Apoyo estadístico<br>
+                  Servicio promocional<br>
+                  Búsqueda o ubicación de repuestos<br>
+                  Autolavado<br>
+                  Asistencia en siniestros<br>      
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="width: 17%;font-weight: bold">
+              Siniestros
+              </button>
+              </h2>
+              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Vidrios rotos / Reparación<br>
+                  Vidrios rotos / Sustitución<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="width: 25% ;font-weight: bold">
+                  Mantenimiento
+              </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mantenimiento correctivo<br>
+                  Mantenimiento preventivo<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; margin-left: 20px;">
+              <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" style="width: 37%;font-weight: bold">
+                  Asistencia jurídica
+              </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Asesoria y asitencia legal telefónica<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFor">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFor" aria-expanded="false" aria-controls="collapseFor" style="width: 37%;font-weight: bold">
+                  Asistencia de personas
+              </button>
+              </h2>
+              <div id="collapseFor" class="accordion-collapse collapse" aria-labelledby="headingFor" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Póliza accidentes personales<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; ">
+              <h2 class="accordion-header" id="headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven" style="width: 100%;font-weight: bold;margin-left: 143px;">
+                  Asistencia de vehículos
+              </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mecánica ligera<br>
+				          Carro taller<br>
+				          Paso gasolina<br>
+				          Paso de corriente<br>
+				          Cambio de llanta<br>
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button routerLink="/register" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Registrarme</button>
+        </div>
+      </div>
+    </div>
+  </div><!--fIN DE MODAL DE PLAN LIVIANO-->
+
+<div class="modal fade" id="moto1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  <!--MODAL DE PLAN MOTOCICLETAS 1-->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Club Motocicletas I</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="./assets/imagenes/arys/bicicleta.png" style="max-width: 91px;margin-left: -12px;">
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width: 11%;font-weight: bold">
+                  Grúa
+              </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Servicio de grúas motos<br>
+				          Grúa<br>
+                  ArysVial<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width: 17%;font-weight: bold">
+                  Servicios
+              </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Acceso al call center 24/7<br>
+                  Manejo y administración de siniestros<br>
+                  Acceso a proveedores certificados Arys<br>
+                  Asistencia vial telefefónica en caso de siniestro<br>
+                  Centro de servicios ArysAutos<br>  
+				          Expediente electrónico<br>
+				          Apoyo estadístico<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="width: 25% ;font-weight: bold">
+                  Mantenimiento
+              </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mantenimiento correctivo<br>
+                  Mantenimiento preventivo<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; margin-left: 20px;">
+              <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" style="width: 37%;font-weight: bold">
+                  Asistencia jurídica
+              </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Asesoria y asitencia legal telefónica<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFor">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFor" aria-expanded="false" aria-controls="collapseFor" style="width: 37%;font-weight: bold">
+                  Asistencia de personas
+              </button>
+              </h2>
+              <div id="collapseFor" class="accordion-collapse collapse" aria-labelledby="headingFor" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Póliza de accidentes personales<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; ">
+              <h2 class="accordion-header" id="headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven" style="width: 100%;font-weight: bold;margin-left: 143px;">
+                  Asistencias de vehículos
+              </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mecánica ligera<br>
+				          Carro taller<br>
+				          Paso gasolina<br>
+				          Paso de corriente<br>
+				          Cambio de llanta<br>
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button routerLink="/register"  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Registrarme</button>
+        </div>
+      </div>
+    </div>
+  </div><!--fIN DE MODAL DE PLAN MOTOCICLETAS 1-->
+
+<div class="modal fade" id="moto2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  <!--MODAL DE PLAN MOTOCICLETAS 2-->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Club Motocicletas II </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="./assets/imagenes/arys/bicicleta.png" style="max-width: 91px;margin-left: -12px;">
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width: 11%;font-weight: bold">
+                  Grúa
+              </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Grúa<br>
+				          ArysVial<br>
+                  Servicio de grúas motos<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width: 17%;font-weight: bold">
+                  Servicios
+              </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Acceso al call center 24/7<br>
+                  Manejo y administración de siniestros<br>
+                  Acceso a proveedores certificados Arys<br>
+                  Asistencia vial telefefónica en caso de siniestro<br>
+                  Centro de servicios Arysautos<br>  
+				  Expediente electrónico<br>
+				  Apoyo estadístico<br>
+				  Acompañamiento<br>
+				  Búsqueda ó ubicación de repuestos<br>
+				  Autolavado<br>
+				  Asistencia en siniestros<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="width: 25% ;font-weight: bold">
+                  Mantenimiento
+              </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mantenimiento correctivo<br>
+                  Mantenimiento preventivo<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; margin-left: 20px;">
+              <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" style="width: 37%;font-weight: bold">
+                  Asistencia jurídica
+              </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Asesoria y asitencia legal telefónica<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFor">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFor" aria-expanded="false" aria-controls="collapseFor" style="width: 37%;font-weight: bold">
+                  Asistencia de personas
+              </button>
+              </h2>
+              <div id="collapseFor" class="accordion-collapse collapse" aria-labelledby="headingFor" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Póliza accidentes personales<br>
+                  Descuentos en tratamientos odontológicos especializados<br>
+                  Teleorientación odontológica<br>
+                  Teleorientación psicológica<br>
+                  Teleorientación médica<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; ">
+              <h2 class="accordion-header" id="headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven" style="width: 100%;font-weight: bold;margin-left: 143px;">
+                  Asistencias de vehículos
+              </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mecánica ligera<br>
+				  Carro taller<br>
+				  Paso gasolina<br>
+				  Paso de corriente<br>
+				  Cambio de llanta<br>
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button routerLink="/register"  type="button" class="btn btn-secondary" data-bs-dismiss="modal">Registrarme</button>
+        </div>
+      </div>
+    </div>
+  </div><!--fIN DE MODAL DE PLAN MOTOCICLETAS 2-->
+
+<div class="modal fade" id="pesado" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">  <!--MODAL DE PLAN PESADOS-->
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Club Pesados</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="./assets/imagenes/arys/camion.png" style="max-width: 91px;margin-left: -12px;">
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="width: 11%;font-weight: bold">
+                  Grúa
+              </button>
+              </h2>
+              <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Grúa<br>
+				  ArysVial<br>
+                  Servicio de grúa pesado<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="width: 17%;font-weight: bold">
+                  Servicios
+              </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Acceso al call center 24/7<br>
+                  Manejo y administración se siniestros<br>
+                  Acceso a proveedores certificados Arys<br>
+                  Asistencia vial telefefónica caso de siniestro<br>
+                  Centro de servicios Arysautos<br>  
+				  Expediente electrónico<br>
+				  Apoyo estadístico<br>
+				  Acompañamiento<br>
+				  Cristalería y Vidrios<br>
+				  Búsqueda ó ubicación de repuestos<br>
+				  Servicio promocional<br>
+				  Autolavado<br>
+				  Asistencia en siniestros<br>
+				  Planilla preoperacional pesados<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; ">
+              <h2 class="accordion-header" id="headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven" style="font-weight: bold;margin-left: 188px;">
+                  Siniestros
+              </button>
+              </h2>
+              <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Vidrios rotos / Reparación<br>
+				          Vidrios rotos / Sustitución<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" style="width: 25% ;font-weight: bold">
+                  Mantenimiento
+              </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Mantenimiento correctivo<br>
+                  Mantenimiento preventivo<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center; margin-left: 20px;">
+              <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix" style="width: 37%;font-weight: bold">
+                  Asistencia jurídica
+              </button>
+              </h2>
+              <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Asesoria y asitencia legal telefónica<br>
+              </div>
+              </div>
+          </div>
+          <div class="accordion-item" style="text-align: -webkit-center">
+              <h2 class="accordion-header" id="headingFor">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFor" aria-expanded="false" aria-controls="collapseFor" style="width: 37%;font-weight: bold">
+                  Asistencia de personas
+              </button>
+              </h2>
+              <div id="collapseFor" class="accordion-collapse collapse" aria-labelledby="headingFor" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  Póliza de accidentes personales<br>
+              </div>
+              </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button routerLink="/register"  type="button" class="btn btn-secondary">Registrarme</button>
+        </div>
+      </div>
+    </div>
+  </div><!--fIN DE MODAL DE PESADOS-->
+
+</div><!--Fin de Modales-->
+  <footer id="footer" class="footer" style="background-image:url(./assets/imagenes/arys/planes.jpg)">
+    <div class="footer-content position-relative">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <h3>Arys Auto</h3>
+              <p>
+   Av.Bolivar norte <br>
+                Centro comercial y profesional El Camoruco<br>Piso 9, oficina 01<br> Edo.Valencia<br> Edo.Valencia<br>
+                <br><strong>Teléfono: </strong> <a href="https://api.whatsapp.com/send?phone=584144128237&text=Gracias%20por%20comunicarte%20con%20Arys%20Auto,%20en%20breves%20momentos%20te%20atenderemos"> +58-4144128237</a><br>
+                <strong>Correo: </strong> <a href="https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=siniestros@arysauto.com"> siniestros@arysauto.com</a><br>
+              </p>
+              <div class="social-links d-flex mt-3">
+               
+                <a href="https://instagram.com/arysautos.vzla?igshid=YmMyMTA2M2Y=" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-3 footer-links">
+            <ul>
+              <li><a href="inicio">Inicio</a></li>
+              <li><a href="qsomos">Quienes Somos</a></li>
+              <li><a href="service">Servicios</a></li>
+              <li><a href="./assets/pdf/Politica de privacidad Arysauto SAS.pdf de privacidad Arysauto SAS.pdf">Términos y Condiciones</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-legal text-center position-relative">
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>Arys Auto</span></strong>. Todos los Derechos Reservados
+        </div>
+        <div class="credits">
+          Diseñado por Compuamerica
+        </div>
+      </div>
+    </div>
+  </footer>
+  <div id="preloader"></div>
+  <script src="./styles_Club/js/bootstrap.bundle.min.js"></script>
+  <script src="./styles_Club/vendor/aos/aos.js"></script>
+  <script src="./styles_Club/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="./styles_Club/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="./styles_Club/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="./styles_Club/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="./styles_Club/js/main.js"></script>
