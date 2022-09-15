@@ -522,7 +522,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
       content: [
         {
           columns: [
-            	{
+            	/*{
                 style: 'header',
                 text: [
                   {text: 'RIF: '}, {text: 'J-00034024-2', bold: true},
@@ -535,7 +535,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
                   '\nTeléfono: +58 212 901.07.99 (master)',
                   '\nApartado 2559, Caracas 1011-A',
                 ]
-              },
+              },*/
               {
                 width: 160,
                 height: 80,
@@ -767,7 +767,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
         },
         {
           columns: [
-            	{
+            	/*{
                 style: 'header',
                 pageBreak: 'before',
                 text: [
@@ -781,7 +781,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
                   '\nTeléfono: +58 212 901.07.99 (master)',
                   '\nApartado 2559, Caracas 1011-A',
                 ]
-              },
+              },*/
               {
                 pageBreak: 'before',
                 width: 160,
@@ -928,7 +928,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'Autorizo a las Compañías o Instituciones, para suministrar a Real Seguros, S.A. , todos los datos que posean antes o después del siniestro,', alignment: 'justify', border: [true, false, true, false]}]
+              [{text: 'Autorizo a las Compañías o Instituciones, para suministrar a Mundial Autos, S.A. , todos los datos que posean antes o después del siniestro,', alignment: 'justify', border: [true, false, true, false]}]
             ]
           }
         },
@@ -937,7 +937,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'asimismo autorizo a Real Seguros, S.A. ,a rechazar cualquier información relacionada con el riesgo y verificar los datos de este CUADRO', alignment: 'justify', border: [true, false, true, false]}]
+              [{text: 'asimismo autorizo a Mundial Autos, S.A. ,a rechazar cualquier información relacionada con el riesgo y verificar los datos de este CUADRO', alignment: 'justify', border: [true, false, true, false]}]
             ]
           }
         },
@@ -965,7 +965,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
           table: {
             widths: [120, '*', 120],
             body: [
-              [{text: ' ', margin: [0, 20, 0, 0], border:[true, false, false, false]}, {text: [{text: `Por Real Seguros, S.A. Representante\n\nNombre y Apellido: Raúl Sanz Arcaya\n\nC.I. No.: V.- 14.992.303`}], margin: [0, 20, 0, 0], border:[false, false, false, false]}, {text: ' ', margin: [0, 20, 0, 0], border:[false, false, true, false]}],
+              [{text: ' ', margin: [0, 20, 0, 0], border:[true, false, false, false]}, {text: [{text: `Por Mundial Autos, S.A. Representante\n\nNombre y Apellido: Pedro F. Villasmil\n\n`}], margin: [0, 20, 0, 0], border:[false, false, false, false]}, {text: ' ', margin: [0, 20, 0, 0], border:[false, false, true, false]}],
               [{text: ' ', border:[true, false, false, false]}, 
               { //La imagen está en formato base 64, y se dividio de esta forma para evitar errores por la longitud del string, en el futuro se buscará obtener la imagen desde el backend
                 width: 160,
