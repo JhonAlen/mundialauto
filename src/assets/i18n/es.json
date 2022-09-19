@@ -2045,6 +2045,14 @@
             "AMOUNT": "Monto",
             "PAIDOUT": "Pagado",
             "DELETE": "Eliminar"
+        },
+        "COLLECTION": {
+            "COLLECTION": "Cobranza",
+            "SEARCHRECEIPT": "Buscar Recibo",
+            "SEARCH": "Buscar",
+            "SAVE": "Guardar",
+            "PLATE": "Placa",
+            "RECEIPTLIST": "Lista de Recibos Pendientes"
         }
     },
     "REPORTS": {
