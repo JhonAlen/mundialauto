@@ -14,6 +14,7 @@ import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import { Console } from 'console';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 /*
 pdfMake.fonts = {
@@ -325,6 +326,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       ccontratoflota: this.code
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe((response: any) => {
+
       this.xnombrecliente = response.data.xnombrecliente;
       this.xdocidentidadcliente = response.data.xdocidentidadcliente;
       this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
@@ -407,20 +409,51 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('xnombrecorredor').setValue(response.data.xcorredor);
         this.detail_form.get('xnombrecorredor').disable();
         this.detail_form.get('xcertificadogestion').setValue(response.data.xcertificadogestion);
-        this.detail_form.get('xcertificadoasociado').setValue(response.data.xcertificadoasociado);
-        this.detail_form.get('xcertificadoasociado').disable();
+        if(response.data.xcertificadoasociado){
+          this.detail_form.get('xcertificadoasociado').setValue(response.data.xcertificadoasociado);
+          this.detail_form.get('xcertificadoasociado').disable();
+        }else{
+          this.detail_form.get('xcertificadoasociado').setValue(' ');
+          this.detail_form.get('xcertificadoasociado').disable();
+        }
         this.detail_form.get('xsucursalemision').setValue(response.data.xsucursalemision);
         this.detail_form.get('xsucursalemision').disable();
         this.detail_form.get('xsucursalsuscriptora').setValue(response.data.xsucursalsuscriptora);
         this.detail_form.get('xsucursalsuscriptora').disable();
-        this.detail_form.get('ctrabajador').setValue(response.data.ctrabajador);
-        this.detail_form.get('ctrabajador').disable();
-        this.detail_form.get('xnombretrabajador').setValue(response.data.xnombretrabajador);
-        this.detail_form.get('xtipodocidentidadtrabajador').setValue(response.data.xtipodocidentidadtrabajador);
-        this.detail_form.get('xdocidentidadtrabajador').setValue(response.data.xdocidentidadtrabajador);
-        this.detail_form.get('xdirecciontrabajador').setValue(response.data.xdirecciontrabajador);
-        this.detail_form.get('xtelefonocelulartrabajador').setValue(response.data.xtelefonocelulartrabajador);
-        this.detail_form.get('xemailtrabajador').setValue(response.data.xemailtrabajador);
+        if(response.data.ctrabajador){
+          this.detail_form.get('ctrabajador').setValue(response.data.ctrabajador);
+          this.detail_form.get('ctrabajador').disable();
+        }else{
+          this.detail_form.get('ctrabajador').setValue(' ');
+          this.detail_form.get('ctrabajador').disable();
+        }
+
+        if(response.data.xnombretrabajador){
+          this.detail_form.get('xnombretrabajador').setValue(response.data.xnombretrabajador);
+        }else{
+          this.detail_form.get('xnombretrabajador').setValue(' ');
+        }
+        if(response.data.xtipodocidentidadtrabajador){
+          this.detail_form.get('xtipodocidentidadtrabajador').setValue(response.data.xtipodocidentidadtrabajador);
+        }else{
+          this.detail_form.get('xtipodocidentidadtrabajador').setValue(' ');
+        }
+        if(response.data.xdocidentidadtrabajador){
+          this.detail_form.get('xdocidentidadtrabajador').setValue(response.data.xdocidentidadtrabajador);
+        }else{
+          this.detail_form.get('xdocidentidadtrabajador').setValue(' ');
+        }
+        if(response.data.xdirecciontrabajador){
+          this.detail_form.get('xdirecciontrabajador').setValue(response.data.xdirecciontrabajador);
+        }else{
+          this.detail_form.get('xdirecciontrabajador').setValue(' ');
+        }
+
+        if(response.data.xdirecciontrabajador){
+          this.detail_form.get('xdirecciontrabajador').setValue(response.data.xdirecciontrabajador);
+        }else{
+          this.detail_form.get('xdirecciontrabajador').setValue(' ');
+        }
         this.detail_form.get('cpropietario').setValue(response.data.cpropietario);
         this.detail_form.get('cpropietario').disable();
         this.detail_form.get('xnombrepropietario').setValue(response.data.xnombrepropietario);
@@ -490,25 +523,57 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('xcolor').setValue(response.data.xcolor);
         this.detail_form.get('xserialcarroceria').setValue(response.data.xserialcarroceria);
         this.detail_form.get('xserialmotor').setValue(response.data.xserialmotor);
-        this.detail_form.get('mpreciovehiculo').setValue(response.data.mpreciovehiculo);
-        this.detail_form.get('mpreciovehiculo').disable();
-        this.detail_form.get('ctipovehiculo').setValue(response.data.ctipovehiculo);
-        this.detail_form.get('ctipovehiculo').disable();
+        if(response.data.mpreciovehiculo){
+          this.detail_form.get('mpreciovehiculo').setValue(response.data.mpreciovehiculo);
+          this.detail_form.get('mpreciovehiculo').disable();
+        }else{
+          this.detail_form.get('mpreciovehiculo').setValue('0,00');
+          this.detail_form.get('mpreciovehiculo').disable();
+        }
+        if(response.data.ctipovehiculo){
+          this.detail_form.get('ctipovehiculo').setValue(response.data.ctipovehiculo);
+          this.detail_form.get('ctipovehiculo').disable(); 
+        }else{
+          this.detail_form.get('ctipovehiculo').setValue(' ');
+          this.detail_form.get('ctipovehiculo').disable(); 
+        }
         this.detail_form.get('xuso').setValue(response.data.xuso);
-        this.detail_form.get('xtipovehiculo').setValue(response.data.xtipovehiculo);
-        this.detail_form.get('xtipomodelovehiculo').setValue(response.data.xtipomodelovehiculo);
-        this.detail_form.get('xtipomodelovehiculo').disable();
+        if(response.data.xtipovehiculo){
+          this.detail_form.get('xtipovehiculo').setValue(response.data.xtipovehiculo);
+          this.detail_form.get('xtipovehiculo').disable(); 
+        }else{
+          this.detail_form.get('xtipovehiculo').setValue(' ');
+          this.detail_form.get('xtipovehiculo').disable(); 
+        }
+        if(response.data.xtipomodelovehiculo){
+          this.detail_form.get('xtipomodelovehiculo').setValue(response.data.xtipomodelovehiculo);
+          this.detail_form.get('xtipomodelovehiculo').disable();
+        }else{
+          this.detail_form.get('xtipomodelovehiculo').setValue(' ');
+          this.detail_form.get('xtipomodelovehiculo').disable();
+        }
         if (response.data.ncapacidadcargavehiculo) {
           this.detail_form.get('ncapacidadcargavehiculo').setValue(response.data.ncapacidadcargavehiculo);
           this.detail_form.get('ncapacidadcargavehiculo').disable();
         } else {
-          this.detail_form.get('ncapacidadcargavehiculo').setValue(' ');
+          this.detail_form.get('ncapacidadcargavehiculo').setValue('0');
           this.detail_form.get('ncapacidadcargavehiculo').disable();
         }
-        this.detail_form.get('ncapacidadpasajerosvehiculo').setValue(response.data.ncapacidadpasajerosvehiculo);
-        this.detail_form.get('ncapacidadpasajerosvehiculo').disable();
-        this.detail_form.get('ctipoplan').setValue(response.data.ctipoplan);
-        this.detail_form.get('ctipoplan').disable();
+        if (response.data.ncapacidadpasajerosvehiculo) {
+          this.detail_form.get('ncapacidadpasajerosvehiculo').setValue(response.data.ncapacidadpasajerosvehiculo);
+          this.detail_form.get('ncapacidadpasajerosvehiculo').disable();
+        } else {
+          this.detail_form.get('ncapacidadpasajerosvehiculo').setValue(0);
+          this.detail_form.get('ncapacidadpasajerosvehiculo').disable();
+        }
+
+        if(response.data.ctipoplan){
+          this.detail_form.get('ctipoplan').setValue(response.data.ctipoplan);
+          this.detail_form.get('ctipoplan').disable();
+        }else{
+          this.detail_form.get('ctipoplan').setValue(' ');
+          this.detail_form.get('ctipoplan').disable();
+        }
         //this.planDropdownDataRequest();
         this.detail_form.get('xplan').setValue(response.data.xplancoberturas);
         this.detail_form.get('xplan').disable();
@@ -517,9 +582,10 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.paymentMethodologyDropdownDataRequest();
         this.detail_form.get('cmetodologiapago').setValue(response.data.cmetodologiapago);
         this.detail_form.get('cmetodologiapago').disable();
+        console.log(this.detail_form.get('cmetodologiapago').value)
         this.detail_form.get('ctiporecibo').setValue(response.data.ctiporecibo);
         this.detail_form.get('ctiporecibo').disable();
-        this.searchTotalAmountDataRequest();
+        //this.searchTotalAmountDataRequest();
         this.realCoverageList = [];
         if(response.data.realCoverages) {
           for(let i =0; i < response.data.realCoverages.length; i++){
@@ -537,6 +603,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
                 }
             }
           }
+          console.log(this.realCoverageList)
         }
         this.extraCoverageList = [];
         if(response.data.extraCoverages){
@@ -549,6 +616,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
               mcoberturaextra: response.data.extraCoverages[i].mcoberturaextra
             });
           }
+          console.log(this.extraCoverageList)
         }
         this.accesoryList = [];
         if(response.data.accesories){
@@ -561,6 +629,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
               maccesoriocontratoflota: response.data.accesories[i].maccesoriocontratoflota
             });
           }
+          console.log(this.accesoryList)
         }
         this.inspectionList = [];
         if(response.data.inspections){
@@ -587,6 +656,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
             });
           }
         }
+        console.log(this.inspectionList)
       }
       this.loading_cancel = false;
     }, 
@@ -676,7 +746,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
     return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0];
   }
 
-  searchTotalAmountDataRequest(){
+  /*searchTotalAmountDataRequest(){
     let mpreciovehiculo = 0;
     if(this.detail_form.get('mpreciovehiculo').value){
       mpreciovehiculo = this.detail_form.get('mpreciovehiculo').value;
@@ -782,7 +852,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.alert.show = true;
       });
     }
-  }
+  }*/
 
   searchWorker(){
     if(this.detail_form.get('ccliente').value){
@@ -846,7 +916,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           this.detail_form.get('ctipovehiculo').setValue(result.ctipovehiculo);
           this.detail_form.get('xmoneda').setValue(result.xmoneda);
           this.detail_form.get('mpreciovehiculo').setValue(result.mpreciovehiculo);
-          this.searchTotalAmountDataRequest();
+          //this.searchTotalAmountDataRequest();
         }
       });
     }else{
@@ -1098,7 +1168,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.paymentMethodologyList.push({ id: response.data.list[i].cmetodologiapago, value: response.data.list[i].xmetodologiapago });
         }
-        this.paymentMethodologyList.sort((a,b) => a.value > b.value ? 1 : -1);
+        console.log(this.paymentMethodologyList)
       }
     },
     (err) => {
