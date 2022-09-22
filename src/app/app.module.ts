@@ -268,6 +268,9 @@ import { TablesDocumentsComponent } from './pop-up/tables-documents/tables-docum
 import { ServicesInsurersIndexComponent } from './tables/services-insurers/services-insurers-index/services-insurers-index.component';
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
 import { FleetLoadingComponent } from './subscription/fleet-loading/fleet-loading.component';
+import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
+import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
+import { AdministrationPaymentComponent } from './pop-up/administration-payment/administration-payment.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -530,7 +533,10 @@ export function HttpLoaderFactory(http: HttpClient){
     TablesDocumentsComponent,
     ServicesInsurersIndexComponent,
     ServicesInsurersDetailComponent,
-    FleetLoadingComponent
+    FleetLoadingComponent,
+    CollectionIndexComponent,
+    CollectionDetailComponent,
+    AdministrationPaymentComponent
   ],
   imports: [
     BrowserModule,

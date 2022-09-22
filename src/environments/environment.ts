@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl : "https://apisysqa.arysauto.com.co"
+  apiUrl : "http://localhost:5250"
 };
 
 /*

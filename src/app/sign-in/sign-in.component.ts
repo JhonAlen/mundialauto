@@ -43,6 +43,7 @@ export class SignInComponent implements OnInit {
     this.authenticationService.login(form.xemail, form.xcontrasena).pipe(first()).subscribe((data : any) => {
       this.loading = false;
       if(data.data.status == true){ this.router.navigate(['/home']).then(() =>{ window.location.reload(); });}
+      console.log(data.data)
     },
     (err) => {
       let code = err.error.data.code;
