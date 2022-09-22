@@ -23,6 +23,7 @@ export class CollectionDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   guardado: boolean = false;
+  bpago: boolean = false;
   botonRegresar: boolean = false;
   code;
   sub;
@@ -61,8 +62,7 @@ export class CollectionDetailComponent implements OnInit {
       xreferencia: [''],
       fcobro: [''],
       cbanco: [''],
-      mprima_pagada: [''],
-      cmoneda_pago: ['']
+      mprima_pagada: ['']
     })
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -151,6 +151,8 @@ export class CollectionDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    this.bpago = true;
   }
 
   addPayment(){
@@ -163,18 +165,15 @@ export class CollectionDetailComponent implements OnInit {
             cgrid: this.paymentList.length,
             edit: true,
             ctipopago: result.ctipopago,
-            xtipopago: result.xtipopago,
             xreferencia: result.xreferencia,
             fcobro: result.fcobro,
             cbanco: result.cbanco,
-            xbanco: result.xbanco,
-            mprima_pagada: result.mprima_pagada,
-            cmoneda_pago: result.cmoneda_pago
+            mprima_pagada: result.mprima_pagada
           });
-          this.paymentGridApi.setRowData(this.paymentList);
-
+          
           if(this.paymentList){
             this.showSaveButton= true;
+            this.bpago = false;
           }
       }
     });

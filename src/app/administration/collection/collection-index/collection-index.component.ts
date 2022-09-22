@@ -20,6 +20,7 @@ export class CollectionIndexComponent implements OnInit {
   submitted: boolean = false;
   alert = { show: false, type: "", message: "" };
   collectionList: any[] = [];
+  plateList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -36,7 +37,9 @@ export class CollectionIndexComponent implements OnInit {
       xnombrepropietario: [''],
       cestatusgeneral: [''],
       xestatusgeneral: [''],
-      ccompania: ['']
+      ccompania: [''],
+      mprima_anual: [''],
+      xplaca: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -50,6 +53,8 @@ export class CollectionIndexComponent implements OnInit {
         if(response.data.status){
           if(!response.data.bindice){
             this.router.navigate([`/permission-error`]);
+          }else{
+            this.initializeDropdownDataRequest();
           }
         }
       },
@@ -66,6 +71,33 @@ export class CollectionIndexComponent implements OnInit {
         this.alert.show = true;
       });
     }
+  }
+
+  initializeDropdownDataRequest(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania
+    }
+    this.http.post(`${environment.apiUrl}/api/valrep/plate`, params, options).subscribe((response : any) => {
+      if(response.data.list){
+        this.plateList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.plateList.push({ id: response.data.list[i].crecibo, value: `${response.data.list[i].xplaca} - ${response.data.list[i].xnombrepropietario}`});
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.CHARGENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   onSubmit(form){
@@ -88,7 +120,9 @@ export class CollectionIndexComponent implements OnInit {
             fhasta_pol: new Date(response.data.list[0].fhasta_pol).toISOString().substring(0, 10),
             xnombrepropietario: response.data.list[i].xnombrepropietario,
             cestatusgeneral: response.data.list[i].cestatusgeneral,
-            xestatusgeneral: response.data.list[i].xestatusgeneral
+            xestatusgeneral: response.data.list[i].xestatusgeneral,
+            mprima_anual: response.data.list[i].mprima_anual,
+            xplaca: response.data.list[i].xplaca,
           });
         }
       }

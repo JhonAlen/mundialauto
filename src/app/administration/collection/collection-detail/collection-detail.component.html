@@ -98,15 +98,6 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.STATUS" | translate }}</label>
-                                    <input type="text" formControlName="xestatusgeneral" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xestatusgeneral').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xestatusgeneral').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xestatusgeneral').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
                                     <label>{{ "ADMINISTRATION.COLLECTION.PREMIUM" | translate }}</label>
                                     <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima').errors }">
                                     <div *ngIf="submitted && detail_form.get('mprima').errors"  class="invalid-feedback">
@@ -114,38 +105,26 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "ADMINISTRATION.COLLECTION.STATUS" | translate }}</label>
+                                    <input type="text" formControlName="xestatusgeneral" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xestatusgeneral').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xestatusgeneral').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xestatusgeneral').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="col-6">
+                                <div style="margin: 31px -219px 99px 32px;">
+                                <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addPayment()" *ngIf="bpago">
+                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                    {{ "ADMINISTRATION.COLLECTION.ADDPAYMENT" | translate }}
+                                </button>
+                                </div>
+                            </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header company-card-header">
-                    <div class="row">
-                        <div class="col-6">
-                            {{ "ADMINISTRATION.COLLECTION.COLLECTION" | translate }}
-                        </div>
-                        <div class="col-6">
-                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addPayment()">
-                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                {{ "ADMINISTRATION.COLLECTION.ADDPAYMENT" | translate }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="container">
-                        <ag-grid-angular #agGrid style="width: 100%; height: 150px;" class="ag-theme-alpine" [rowData]="paymentList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onPaymentGridReady($event)">
-                            <ag-grid-column headerName="Tipo de Pago" field="xtipopago" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Banco" field="xbanco" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Prima Cancelada" field="mprima_pagada" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Referencia" field="xreferencia" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Fecha De Cobro" field="fcobro" [width]="230" [sortable]="true"></ag-grid-column>
-                        </ag-grid-angular>
-                    </div>
                 </div>
             </div>
         </div>
