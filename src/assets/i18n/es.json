@@ -2047,12 +2047,31 @@
             "DELETE": "Eliminar"
         },
         "COLLECTION": {
-            "COLLECTION": "Cobranza",
+            "COLLECTION": "Registro de Cobro",
             "SEARCHRECEIPT": "Buscar Recibo",
             "SEARCH": "Buscar",
             "SAVE": "Guardar",
             "PLATE": "Placa",
-            "RECEIPTLIST": "Lista de Recibos Pendientes"
+            "RECEIPTLIST": "Lista de Recibos Pendientes",
+            "OWNERINFORMATION": "Información de Propietario",
+            "NAME": "Nombre",
+            "LASTNAME": "Apellido",
+            "STARDATE": "Fecha Desde",
+            "FINALDATE": "Fecha Hasta",
+            "DOCUMENTSIDENTIFICATION": "Documento de Identidad",
+            "VEHICLE": "Vehículo",
+            "COIN": "Moneda",
+            "STATUS": "Estatus",
+            "PREMIUM": "Prima",
+            "ADDPAYMENT": "Agregar Pago",
+            "PAYMENTTYPE":"Tipo de Pago",
+            "BANK": "Banco",
+            "COINPAY": "Moneda de Pago",
+            "DATEPAY": "Fecha de Cobro",
+            "REFERENCE": "Referencia",
+            "AMOUNT": "Monto",
+            "PAYMENT": "Pago",
+            "TOACCEPT": "Aceptar"
         }
     },
     "REPORTS": {

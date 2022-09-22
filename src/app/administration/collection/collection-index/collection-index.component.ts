@@ -30,13 +30,13 @@ export class CollectionIndexComponent implements OnInit {
   ngOnInit(): void {
     this.search_form = this.formBuilder.group({
       crecibo: [''],
-      xplaca: [''],
       clote: [''],
       fdesde_pol: [''],
       fhasta_pol: [''],
       xnombrepropietario: [''],
       cestatusgeneral: [''],
       xestatusgeneral: [''],
+      ccompania: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -71,41 +71,37 @@ export class CollectionIndexComponent implements OnInit {
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    if(this.search_form.invalid){
-      this.loading = false;
-      return;
-    }
+
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      xplaca: form.xplaca ? form.xplaca : undefined,
       ccompania: this.currentUser.data.ccompania
     }
     this.http.post(`${environment.apiUrl}/api/administration-collection/search`, params, options).subscribe((response : any) => {
-      if(response.data.status){
+      if(response.data.list){
         this.collectionList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.collectionList.push({ 
             crecibo: response.data.list[i].crecibo,
             clote: response.data.list[i].clote,
-            fdesde_pol: response.data.list[i].fdesde_pol,
-            fhasta_pol: response.data.list[i].fhasta_pol,
+            fdesde_pol: new Date(response.data.list[0].fdesde_pol).toISOString().substring(0, 10),
+            fhasta_pol: new Date(response.data.list[0].fhasta_pol).toISOString().substring(0, 10),
             xnombrepropietario: response.data.list[i].xnombrepropietario,
             cestatusgeneral: response.data.list[i].cestatusgeneral,
             xestatusgeneral: response.data.list[i].xestatusgeneral
           });
-          console.log(this.collectionList)
         }
       }
       this.loading = false;
     },(err) => {
       let code = err.error.data.code;
+      console.log(err.error.data.code)
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+      else if(code == 404){ message = "No se encontraron contratos pendientes"; }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
-      this.alert.type = 'danger';
+      this.alert.type = 'primary';
       this.alert.show = true;
       this.loading = false;
     });
@@ -116,7 +112,7 @@ export class CollectionIndexComponent implements OnInit {
   }
 
   rowClicked(event: any){
-    this.router.navigate([`administration/collection-detail/${event.data.crecaudo}`]);
+    this.router.navigate([`administration/collection-detail/${event.data.crecibo}`]);
   }
 
 }

@@ -522,20 +522,17 @@ export class FleetContractManagementIndexComponent implements OnInit {
       content: [
         {
           columns: [
-            	/*{
+            	{
                 style: 'header',
                 text: [
-                  {text: 'RIF: '}, {text: 'J-00034024-2', bold: true},
-                  '\nCapital Suscrito Bs.S 380,00',
-                  '\nCapital Pagado Bs.S 380,00',
-                  '\nInscrita en la Superintendencia de la Actividad Aseguradora bajo el N° 29',
-                  '\nEdificio Centro Seguros Sud América Entre Av. Francisco de Miranda y Av.',
-                  '\nTamanaco con calle Mohedano',
-                  '\nPiso 7 y 8, Urb. El Rosal, Caracas Venezuela 1060',
-                  '\nTeléfono: +58 212 901.07.99 (master)',
-                  '\nApartado 2559, Caracas 1011-A',
-                ]
-              },*/
+                  {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                  '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                  '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                  '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                  '\nUrl: www.lamundialdeseguros.com'
+                ],
+                alignment: 'left'
+              },
               {
                 width: 160,
                 height: 80,
@@ -767,23 +764,19 @@ export class FleetContractManagementIndexComponent implements OnInit {
         },
         {
           columns: [
-            	/*{
-                style: 'header',
-                pageBreak: 'before',
-                text: [
-                  {text: 'RIF: '}, {text: 'J-00034024-2', bold: true},
-                  '\nCapital Suscrito Bs.S 380,00',
-                  '\nCapital Pagado Bs.S 380,00',
-                  '\nInscrita en la Superintendencia de la Actividad Aseguradora bajo el N° 29',
-                  '\nEdificio Centro Seguros Sud América Entre Av. Francisco de Miranda y Av.',
-                  '\nTamanaco con calle Mohedano',
-                  '\nPiso 7 y 8, Urb. El Rosal, Caracas Venezuela 1060',
-                  '\nTeléfono: +58 212 901.07.99 (master)',
-                  '\nApartado 2559, Caracas 1011-A',
-                ]
-              },*/
               {
                 pageBreak: 'before',
+              style: 'header',
+                text: [
+                  {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                  '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                  '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                  '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                  '\nUrl: www.lamundialdeseguros.com'
+                ],
+                alignment: 'left'
+              },
+              {
                 width: 160,
                 height: 80,
                 image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjUAAADXCAYAAADiBqA4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEEdSURBVHhe7Z0HeFRV+ocTYv2vru6qa19WBZUqgigI9rL2gm1dK4qigih2RRHrWkEBG6ioWEBUUIqKgBQp0qsU6b1DElpmJnz/8ztzz3Dmzs1kWkLm5vc+z/eEzNw+IefNd75zTo4QQgghhPgASg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqamkFG/dKtunjpfCX/pJ4Y9fS8GAnlLww0dSOOgT2TK0l2z9ra9snzxEgmuXOnsQQgghFRtKTSWgeMcO2TJliqz7sqcsf/YJWfjfy2XBOXVk8YV1ZMkVdWXZtfVk+c31ZGXzk2Vly/qyunUDWd22gax55BRZ+3hDWffcubL5w/tky09dZceMYRLatMo5MiGEEFJxoNT4mI3DRsicO+6WSbVqy5TaNWT6yTXl' +
@@ -965,7 +958,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
           table: {
             widths: [120, '*', 120],
             body: [
-              [{text: ' ', margin: [0, 20, 0, 0], border:[true, false, false, false]}, {text: [{text: `Por Mundial Autos, S.A. Representante\n\nNombre y Apellido: Pedro F. Villasmil\n\n`}], margin: [0, 20, 0, 0], border:[false, false, false, false]}, {text: ' ', margin: [0, 20, 0, 0], border:[false, false, true, false]}],
+              [{text: ' ', margin: [0, 20, 0, 0], border:[true, false, false, false]}, {text: [{text: `Por Mundial Autos, S.A. Representante\n\nNombre y Apellido: Humberto José Martinez Castillo\n\nC.I. 11.735.446`}], margin: [0, 20, 0, 0], border:[false, false, false, false]}, {text: ' ', margin: [0, 20, 0, 0], border:[false, false, true, false]}],
               [{text: ' ', border:[true, false, false, false]}, 
               { //La imagen está en formato base 64, y se dividio de esta forma para evitar errores por la longitud del string, en el futuro se buscará obtener la imagen desde el backend
                 width: 160,

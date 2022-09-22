@@ -27,16 +27,8 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "ADMINISTRATION.COLLECTION.COLLECTION" | translate }}</label>
-                                    <input type="text" formControlName="crecaudo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('crecaudo').errors }">
-                                    <div *ngIf="submitted && search_form.get('crecaudo').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.PLATE" | translate }}</label>
-                                    <input type="text" formControlName="xplaca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xplaca').errors }">
-                                    <div *ngIf="submitted && search_form.get('xplaca').errors"  class="invalid-feedback">
+                                    <input type="number" formControlName="crecibo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('crecibo').errors }">
+                                    <div *ngIf="submitted && search_form.get('crecibo').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
