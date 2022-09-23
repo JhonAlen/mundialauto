@@ -133,7 +133,8 @@ export class AdministrationPaymentComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
-        this.popup_form.get('mprima_pagada').setValue(response.data.mprima);
+        let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
+        this.popup_form.get('mprima_pagada').setValue(prima);
         this.popup_form.get('mprima_pagada').disable();
       }
     },
