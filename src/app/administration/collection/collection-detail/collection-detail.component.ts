@@ -50,7 +50,7 @@ export class CollectionDetailComponent implements OnInit {
       xapellidopropietario: [''],
       fdesde_pol: [''],
       fhasta_pol: [''],
-      xdocidentidad: [''],
+      xdocidentidadpropietario: [''],
       xvehiculo: [''],
       xplaca: [''],
       crecibo: [''],
@@ -62,7 +62,13 @@ export class CollectionDetailComponent implements OnInit {
       xreferencia: [''],
       fcobro: [''],
       cbanco: [''],
-      mprima_pagada: ['']
+      mprima_pagada: [''],
+      ccliente: [''],
+      xcliente: [''],
+      xdocidentidadcliente: [''],
+      xemail: [''],
+      xtelefono: [''],
+      xnombres: ['']
     })
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -119,22 +125,77 @@ export class CollectionDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
-        this.detail_form.get('xnombrepropietario').setValue(response.data.xnombrepropietario);
-        this.detail_form.get('xnombrepropietario').disable();
-        this.detail_form.get('xapellidopropietario').setValue(response.data.xapellidopropietario);
-        this.detail_form.get('xapellidopropietario').disable();
-        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString().substring(0, 10));
+
+
+        if(response.data.ccliente){
+          this.detail_form.get('ccliente').setValue(response.data.ccliente);
+          this.detail_form.get('ccliente').disable();
+        }else{
+          this.detail_form.get('ccliente').setValue('');
+          this.detail_form.get('ccliente').disable();
+        }
+
+        if(response.data.xcliente){
+          this.detail_form.get('xcliente').setValue(response.data.xcliente);
+          this.detail_form.get('xcliente').disable();
+        }else{
+          this.detail_form.get('xcliente').setValue('');
+          this.detail_form.get('xcliente').disable();
+        }
+        
+        if(response.data.xdocidentidadcliente){
+          this.detail_form.get('xdocidentidadcliente').setValue(response.data.xdocidentidadcliente);
+          this.detail_form.get('xdocidentidadcliente').disable();
+        }else{
+          this.detail_form.get('xdocidentidadcliente').setValue('');
+          this.detail_form.get('xdocidentidadcliente').disable();
+        }
+      
+        if(response.data.xemail){
+          this.detail_form.get('xemail').setValue(response.data.xemail);
+          this.detail_form.get('xemail').disable();
+        }else{
+          this.detail_form.get('xemail').setValue('');
+          this.detail_form.get('xemail').disable();
+        }
+
+        if(response.data.xtelefono){
+          this.detail_form.get('xtelefono').setValue(response.data.xtelefono);
+          this.detail_form.get('xtelefono').disable();
+        }else{
+          this.detail_form.get('xtelefono').setValue('');
+          this.detail_form.get('xtelefono').disable();
+        }
+        console.log(new Date(response.data.fdesde_pol).toISOString().substring(0, 10))
+        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString());
         this.detail_form.get('fdesde_pol').disable();
-        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol).toISOString().substring(0, 10));
+        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol));
         this.detail_form.get('fhasta_pol').disable();
-        this.detail_form.get('xdocidentidad').setValue(response.data.xdocidentidad);
-        this.detail_form.get('xdocidentidad').disable();
-        this.detail_form.get('xvehiculo').setValue(response.data.xvehiculo);
-        this.detail_form.get('xvehiculo').disable();
-        this.detail_form.get('xplaca').setValue(response.data.xplaca);
-        this.detail_form.get('xplaca').disable();
-        this.detail_form.get('xmoneda').setValue(response.data.xmoneda);
-        this.detail_form.get('xmoneda').disable();
+
+        if(response.data.xdocidentidadpropietario){
+          this.detail_form.get('xdocidentidadpropietario').setValue(response.data.xdocidentidadpropietario);
+          this.detail_form.get('xdocidentidadpropietario').disable();
+        }else{
+          this.detail_form.get('xdocidentidadpropietario').setValue('');
+          this.detail_form.get('xdocidentidadpropietario').disable();
+        }
+
+        if(response.data.xvehiculo){
+          this.detail_form.get('xvehiculo').setValue(response.data.xvehiculo);
+          this.detail_form.get('xvehiculo').disable();
+        }else{
+          this.detail_form.get('xvehiculo').setValue('');
+          this.detail_form.get('xvehiculo').disable();
+        }
+
+        if(response.data.xplaca){
+          this.detail_form.get('xplaca').setValue(response.data.xplaca);
+          this.detail_form.get('xplaca').disable();
+        }else{
+          this.detail_form.get('xplaca').setValue('');
+          this.detail_form.get('xplaca').disable();
+        }
+
         this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
         this.detail_form.get('xestatusgeneral').disable();
         this.detail_form.get('mprima').setValue(response.data.mprima);

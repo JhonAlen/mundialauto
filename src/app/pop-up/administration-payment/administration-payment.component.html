@@ -64,9 +64,9 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>{{ "ADMINISTRATION.COLLECTION.AMOUNT" | translate }}</label>
-                                    <input type="text" formControlName="mprima_pagada" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_pagada').errors }">
-                                    <div *ngIf="submitted && popup_form.get('mprima_pagada').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('mprima_pagada').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                    <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima').errors }">
+                                    <div *ngIf="submitted && popup_form.get('mprima').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('mprima').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>

@@ -48,6 +48,7 @@ export class AdministrationPaymentComponent implements OnInit {
       cbanco: [''],
       xbanco: [''],
       mprima_pagada: [''],
+      mprima: [''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -133,8 +134,10 @@ export class AdministrationPaymentComponent implements OnInit {
 
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
-        let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
-        this.popup_form.get('mprima_pagada').setValue(prima);
+        //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
+        this.popup_form.get('mprima').setValue(response.data.mprima);
+        this.popup_form.get('mprima').disable();
+        this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
         this.popup_form.get('mprima_pagada').disable();
       }
     },
