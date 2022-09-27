@@ -16,7 +16,7 @@
             <ngb-carousel>
                 <ng-template ngbSlide>
                 <div class="picsum-img-wrapper">
-                    <img src="./assets/imagenes/Arys.png" alt="Random first slide" width="1500" height="600">
+                    <img src="./assets/imagenes/mundial2.png" alt="Random first slide" width="1500" height="600">
                 </div>
                 <div class="carousel-caption">
                     <div class="container">
@@ -82,8 +82,8 @@
 
                     
 
-                    <button class="btn btn-outline-dark" (click)="show = true">
-                      <h5>
+                    <button class="btn btn-outline-light" style="background-color: #142263;" (click)="show = true">
+                      <h5 style="color: #fff;">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Visión&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       </h5>
                     </button>
@@ -96,7 +96,8 @@
                       (mouseenter)="autohide = false"
                       (mouseleave)="autohide = true"
                       (hide)="show = false; autohide = true"
-                      [class.bg-warning]="!autohide"
+                      [class.text-white]="!autohide"
+                      style="background-color: #6e86ee"
                     >
                       <div *ngIf="autohide">
                         <p style="color: #000;">
@@ -105,7 +106,7 @@
                       </div>
                       <div *ngIf="!autohide">
                         <h5>
-                          Consolidarnos como un grupo de empresas con calidad y calidez humana, dedicada a servir, productiva, rentable y en la búsqueda de la excelencia, a fin de impulsar el desarrollo integral de nuestros trabajadores y sus familias, creando modelos para la evolución de la conciencia en la búsqueda de un ambiente y una sociedad más armoniosa y equitativa.
+                          Con una plataforma organizada y operacional guiada por los más altos estándares de calidad y servicio, La Mundial, C.A. Venezolana de Seguros de Crédito refuerza su solidez financiera, e integra un equipo humano conformado por destacados talentos del mercado asegurador venezolano. Nuestra visión del mercado de seguros es clara, llenar un espacio de satisfacción y asesoría profesional en materia de riesgos y seguros que demandan los asegurados, lo cual se logra con un portafolio de productos que incluye las áreas de Fianzas, Patrimoniales y la autorización exclusiva para las Pólizas de Seguro de Crédito, posicionándonos, así como la única empresa del mercado asegurador venezolano en ofrecer esta solución. Una empresa consolidada con más de cincuenta años en el mercado asegurador venezolano y con una visión de servicio renovada, La Mundial de Seguros C.A. garantiza su solvencia, eficiencia y compromiso con su misión.
                         </h5>
                       </div>
                     </ngb-toast>
@@ -128,8 +129,8 @@
                     data-mdb-animation="slide-in-left" data-mdb-animation-duration="1000"
                     data-mdb-animation-delay="400" style="color: #000;"></p>
 
-                    <button class="btn btn-outline-dark" (click)="show2 = true">
-                      <h5>
+                    <button class="btn btn-outline-light" style="background-color: #142263;" (click)="show2 = true">
+                      <h5 style="color: #fff;">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Misión&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       </h5>
                     </button>
@@ -142,7 +143,8 @@
                       (mouseenter)="autohide2 = false"
                       (mouseleave)="autohide2 = true"
                       (hide)="show2 = false; autohide2 = true"
-                      [class.bg-warning]="!autohide2"
+                      [class.text-white]="!autohide2"
+                      style="background-color: #6e86ee"
                     >
                       <div *ngIf="autohide2">
                         <p style="color: #000;">
@@ -151,7 +153,7 @@
                       </div>
                       <div *ngIf="!autohide2">
                         <h5>
-                          Diseñar, asesorar y administrar fondos para atender las contingencias de los vehículos afiliados a nivel nacional, mediante un servicio exclusivo y personalizado con transparencia en el manejo de los recursos, otorgando la mejor relación costo-beneficio y la satisfacción del cliente.
+                          En la innovación de un nuevo mundo prevalecen su valor, astucia y humanidad, que caracterizan a La Mundial. Con el fin de complementar el sistema de asistencia crediticia a los exportadores de bienes, fue fundada en 1972; en su majestuosa actividad, actualmente la compañía ofrece fianzas, pólizas de seguros de crédito nacional y de exportación y patrimoniales, siendo sus productos reconocidos en el mercado. Nuestro objetivo se basa en brindar soluciones innovadoras y tecnológicas al cliente, como beneficio para las personas y empresas, en respaldo de su patrimonio y el conjunto a quienes la conforman; de esta manera potenciamos el principal propósito de La Mundial, entender la necesidad del asegurado, siendo su mayor aliado ante la prevención de crisis. Trabajar con propósito a largo plazo de la mano de nuestros accionistas es nuestra meta, agregando valor a nuestra gestión
                         </h5>
                       </div>
                     </ngb-toast>
@@ -175,8 +177,8 @@
                     data-mdb-animation="slide-in-left" data-mdb-animation-duration="1000"
                     data-mdb-animation-delay="400" style="color: #000;"></p>
 
-                    <button class="btn btn-outline-dark" (click)="show3 = true">
-                      <h5>
+                    <button class="btn btn-outline-light" style="background-color: #142263;" (click)="show3 = true">
+                      <h5 style="color: #fff;">
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Valores&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       </h5>
                     </button>
@@ -189,7 +191,8 @@
                       (mouseenter)="autohide3 = false"
                       (mouseleave)="autohide3 = true"
                       (hide)="show3 = false; autohide3 = true"
-                      [class.bg-warning]="!autohide3"
+                      [class.text-white]="!autohide3"
+                      style="background-color: #6e86ee"
                     >
                       <div *ngIf="autohide3">
                         <p style="color: #000;">
@@ -198,15 +201,7 @@
                       </div>
                       <div *ngIf="!autohide3">
                         <h5>
-                          ° Viabilidad financiera
-                          ° Respeto
-                          ° Alto desempeño
-                          ° Innovación y creatividad
-                          ° Compromiso
-                          ° Confianza
-                          ° Solidaridad
-                          ° Conciencia ambiental
-                          ° Ética
+                          Somos una empresa consolidada con más de cincuenta años en el mercado asegurador venezolano, garantizando solvencia, eficiencia y compromiso con su misión. Tenemos un amplio portafolio de productos y servicios con una plataforma organizada y operacional guiada por los más altos estándares de calidad del mercado. Somos la única empresa del mercado asegurador venezolano en tener la autorización para la comercialización de las Pólizas de Seguro de Crédito
                         </h5>
                       </div>
                     </ngb-toast>
