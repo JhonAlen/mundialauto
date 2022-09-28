@@ -2058,7 +2058,8 @@
             "LASTNAME": "Apellido",
             "STARDATE": "Fecha Desde",
             "FINALDATE": "Fecha Hasta",
-            "DOCUMENTSIDENTIFICATION": "Documento de Identidad",
+            "DOCUMENTSIDENTIFICATIONOWNER": "Documento de Identidad del Propietario",
+            "DOCUMENTSIDENTIFICATIONCLIENT": "Documento de Identidad del Cliente",
             "VEHICLE": "Vehículo",
             "COIN": "Moneda",
             "STATUS": "Estatus",
@@ -2071,7 +2072,11 @@
             "REFERENCE": "Referencia",
             "AMOUNT": "Monto",
             "PAYMENT": "Pago",
-            "TOACCEPT": "Aceptar"
+            "TOACCEPT": "Aceptar",
+            "CLIENT": "Cliente",
+            "EMAIL": "Correo Electrónico",
+            "PHONE": "Teléfono",
+            "OWNER": "Propietario"
         }
     },
     "REPORTS": {

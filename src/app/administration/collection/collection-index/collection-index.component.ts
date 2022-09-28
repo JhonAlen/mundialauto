@@ -20,6 +20,7 @@ export class CollectionIndexComponent implements OnInit {
   submitted: boolean = false;
   alert = { show: false, type: "", message: "" };
   collectionList: any[] = [];
+  plateList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -36,7 +37,9 @@ export class CollectionIndexComponent implements OnInit {
       xnombrepropietario: [''],
       cestatusgeneral: [''],
       xestatusgeneral: [''],
-      ccompania: ['']
+      ccompania: [''],
+      mprima_anual: [''],
+      xplaca: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -50,6 +53,8 @@ export class CollectionIndexComponent implements OnInit {
         if(response.data.status){
           if(!response.data.bindice){
             this.router.navigate([`/permission-error`]);
+          }else{
+
           }
         }
       },
@@ -75,7 +80,8 @@ export class CollectionIndexComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      ccompania: this.currentUser.data.ccompania
+      ccompania: this.currentUser.data.ccompania,
+      xplaca: form.xplaca
     }
     this.http.post(`${environment.apiUrl}/api/administration-collection/search`, params, options).subscribe((response : any) => {
       if(response.data.list){
@@ -88,7 +94,9 @@ export class CollectionIndexComponent implements OnInit {
             fhasta_pol: new Date(response.data.list[0].fhasta_pol).toISOString().substring(0, 10),
             xnombrepropietario: response.data.list[i].xnombrepropietario,
             cestatusgeneral: response.data.list[i].cestatusgeneral,
-            xestatusgeneral: response.data.list[i].xestatusgeneral
+            xestatusgeneral: response.data.list[i].xestatusgeneral,
+            mprima_anual: response.data.list[i].mprima_anual,
+            xplaca: response.data.list[i].xplaca,
           });
         }
       }

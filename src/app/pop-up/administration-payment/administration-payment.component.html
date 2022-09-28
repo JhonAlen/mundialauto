@@ -22,7 +22,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>{{ "ADMINISTRATION.COLLECTION.PAYMENTTYPE" | translate }}</label>
-                                    <select formControlName="ctipopago" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ctipopago').errors }">
+                                    <select formControlName="ctipopago" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ctipopago').errors }" (change)="changeBank()">
                                         <option></option>
                                         <option *ngFor="let pay of typeOfPayList" value="{{ pay.id }}">{{ pay.value }}</option>
                                     </select>
@@ -40,18 +40,6 @@
                                     </select>
                                     <div *ngIf="submitted && popup_form.get('cbanco').errors"  class="invalid-feedback">
                                         <div *ngIf="popup_form.get('cbanco').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDDOCUMENTTYPE" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.COINPAY" | translate }}</label>
-                                    <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cmoneda').errors }">
-                                        <option></option>
-                                        <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && popup_form.get('cmoneda').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('cmoneda').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDDOCUMENTTYPE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -76,9 +64,9 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>{{ "ADMINISTRATION.COLLECTION.AMOUNT" | translate }}</label>
-                                    <input type="number" formControlName="mprima_pagada" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_pagada').errors }">
-                                    <div *ngIf="submitted && popup_form.get('mprima_pagada').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('mprima_pagada').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                    <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima').errors }">
+                                    <div *ngIf="submitted && popup_form.get('mprima').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('mprima').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
