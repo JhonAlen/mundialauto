@@ -12,7 +12,7 @@
         "PASSWORD_RECOVERY" : "Recuperar Contraseña"
     },
     "HOME" : {
-        "TEXT_1" : "Bienvenido a SysAuto",
+        "TEXT_1" : "Bienvenido a MundialAutos",
         "TEXT_2" : "Sistema de gestión administrativa automotriz.",
         "TEXT_3" : "Si no posee una cuenta de sistema puede comunicarse con un asesor mediante la página web.",
         "TEXT_4" : "Ir a la página web"
@@ -2045,6 +2045,33 @@
             "AMOUNT": "Monto",
             "PAIDOUT": "Pagado",
             "DELETE": "Eliminar"
+        },
+        "COLLECTION": {
+            "COLLECTION": "Registro de Cobro",
+            "SEARCHRECEIPT": "Buscar Recibo",
+            "SEARCH": "Buscar",
+            "SAVE": "Guardar",
+            "PLATE": "Placa",
+            "RECEIPTLIST": "Lista de Recibos Pendientes",
+            "OWNERINFORMATION": "Información de Propietario",
+            "NAME": "Nombre",
+            "LASTNAME": "Apellido",
+            "STARDATE": "Fecha Desde",
+            "FINALDATE": "Fecha Hasta",
+            "DOCUMENTSIDENTIFICATION": "Documento de Identidad",
+            "VEHICLE": "Vehículo",
+            "COIN": "Moneda",
+            "STATUS": "Estatus",
+            "PREMIUM": "Prima",
+            "ADDPAYMENT": "Agregar Pago",
+            "PAYMENTTYPE":"Tipo de Pago",
+            "BANK": "Banco",
+            "COINPAY": "Moneda de Pago",
+            "DATEPAY": "Fecha de Cobro",
+            "REFERENCE": "Referencia",
+            "AMOUNT": "Monto",
+            "PAYMENT": "Pago",
+            "TOACCEPT": "Aceptar"
         }
     },
     "REPORTS": {

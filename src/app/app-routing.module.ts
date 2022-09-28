@@ -175,6 +175,8 @@ import { ServicesComponent } from './club/pages-statics/services/services.compon
 import { DashboardComponent } from './club/dashboard/dashboard.component';
 import { ServicesInsurersIndexComponent } from './tables/services-insurers/services-insurers-index/services-insurers-index.component';
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
+import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
+import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
 
 const routes: Routes = [
  
@@ -431,7 +433,10 @@ const routes: Routes = [
   { path: 'reports/provider/provider-report-index', component: ProviderReportIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/service-order-index', component: ServiceOrderIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/service-order-detail', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
-  { path: 'events/service-order-detail/:id', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] }
+  { path: 'events/service-order-detail/:id', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/collection-index', component: CollectionIndexComponent, canActivate: [AuthGuard] },
+  { path: 'administration/collection-detail', component: CollectionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] }
 
  
 ];
