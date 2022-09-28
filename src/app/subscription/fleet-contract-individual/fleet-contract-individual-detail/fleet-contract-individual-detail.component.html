@@ -1,0 +1,381 @@
+<app-toolbar ></app-toolbar>
+
+<section>
+  <div >
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+          <!-- formulario de busqueda y -->
+          <form [formGroup]="search_form"> <h2>Detalles del Automovil</h2>
+            <div class="row g-0">
+
+              <!-- primera columna -->
+              <div class="col-lg-4">
+                 <div class="row">
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label">Nombre del cliente</label>
+                            <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xnombre').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+    
+    
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" for="form3Examplev3">Apellido del cliente</label> 
+                            <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xapellido').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label">Año del automovil</label>
+                        <input type="text"  formControlName="cano" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }"/>
+                        <div *ngIf="submitted && search_form.get('cano').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('cano').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3">Color</label>
+                        <input type="text" formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xcolor').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xcolor').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  
+                  <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev2">Marca</label>
+                          <select formControlName="cmarca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors } " (change)="getModeloData()">
+                            <option></option>
+                            <option *ngFor="let marca of marcaList" value="{{ marca.id }}">{{ marca.value }}</option>
+                          </select>
+                          <div *ngIf="submitted && search_form.get('cmarca').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('cmarca').errors.required"></div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                         <label class="form-label" for="form3Examplev4">Modelo</label>
+                         <select formControlName="cmodelo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }" (change)="getVersionData()">
+                          <option></option>
+                          <option *ngFor="let modelo of modeloList" value="{{ modelo.cmodelo }}">{{ modelo.xmodelo }}</option>
+                        </select>                       
+                         <div *ngIf="submitted && search_form.get('cmodelo').errors"  class="invalid-feedback">
+                           <div *ngIf="search_form.get('cmodelo').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+
+                  <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+                    <div class="form-outline">                        
+                      <label class="form-label" for="form3Examplev4">Plan de servicio</label>
+                      <select formControlName="cplan" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" >
+                        <option></option>
+                        <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
+                      </select>                       
+                     <div *ngIf="submitted && search_form.get('cplan').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('cplan').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Corredor</label>
+                        <select formControlName="ccorredor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccorredor').errors } ">
+                          <option></option>
+                          <option *ngFor="let corredor of corredorList" value="{{ corredor.ccorredor }}">{{ corredor.xnombre }}</option>
+                        </select>                        
+                        <div *ngIf="submitted && search_form.get('ccorredor').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('ccorredor').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- segunda columna -->
+              <div class="col-lg-4 bg-indigo ">
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev2">Identificación</label>
+                        <input type="text" formControlName="xrif_cliente" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xrif_cliente').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xrif_cliente').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xrif_cliente').errors.required"></div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3">Fecha de nacimiento</label>
+                        <input type="date" formControlName="fnac" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnac').errors }"/>
+                        <div *ngIf="submitted && search_form.get('fnac').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('fnac').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline form-white">
+                      <label class="form-label" for="form3Examplea2">Dirección del cliente</label>
+                      <input type="text" formControlName="xdireccionfiscal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xdireccionfiscal').errors }"/>
+                      <div *ngIf="submitted && search_form.get('xdireccionfiscal').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('xdireccionfiscal').errors.required"></div>
+                    </div>
+                    </div>
+                  </div>
+              
+
+                  <div class="row">
+                    <div class="col-md-5 mb-4 pb-2">
+                      <div class="form-outline form-white">
+                        <label class="form-label" for="form3Examplea7">Versión</label>
+                        <select formControlName="cversion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }" >
+                          <option></option>
+                          <option *ngFor="let version of versionList" value="{{ version.cversion }}">{{ version.xversion }}</option>
+                        </select>                       
+                         <div *ngIf="submitted && search_form.get('cversion').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('cversion').errors.required"></div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-md-5 mb-4 pb-2">
+                      <div class="form-outline form-white">
+                        <label class="form-label" for="form3Examplea8">Serial de motor</label>
+                        <input type="text" formControlName="xserialmotor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xserialmotor').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xserialmotor').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xserialmotor').errors.required"></div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">                        
+                        <label class="form-label" for="form3Examplev4">Plan de servicio</label>
+                        <input type="email" formControlName="xemail" class="form-control form-control-lg"/>
+                        <div *ngIf="submitted && search_form.get('xemail').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xemail').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+  
+                      <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev5">Corredor</label>
+                          <input type="password" formControlName="xcontrasena" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcontrasena').errors }"/>
+                          <div *ngIf="submitted && search_form.get('xcontrasena').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xcontrasena').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          </div>
+                        </div>
+                      </div>
+                  </div> -->
+
+              </div>
+
+             <!-- tercera columna -->
+              <div class="col-lg-4">
+                 <div class="row">
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label">Número del contacto</label>
+                            <input type="text" formControlName="xtelefono_prop" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtelefono_prop').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xtelefono_prop').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xtelefono_prop').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+    
+    
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" for="form3Examplev3">Correo electrónico</label>
+                            <input type="email" formControlName="email" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('email').errors }"/>
+                            <div *ngIf="submitted && search_form.get('email').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('email').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+                  <div class="row">
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" >Tipo de uso</label>
+                        <input type="text" formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xuso').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3">Placa</label>
+                        <input type="text" formControlName="xplaca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xplaca').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xplaca').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xplaca').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev2">Serial de carroceria</label>
+                            <input type="text" formControlName="xserialdecarroceria" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xserialdecarroceria').errors }"/>
+                          <div *ngIf="submitted && search_form.get('xserialdecarroceria').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xserialdecarroceria').errors.required"></div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <!-- <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                         <label class="form-label" for="form3Examplev4">Fecha de emisión</label>
+                         <input type="date" formControlName="femision" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('femision').errors }"/>
+                         <div *ngIf="submitted && search_form.get('femision').errors"  class="invalid-feedback">
+                           <div *ngIf="search_form.get('femision').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                         </div>
+                       </div>
+                     </div> -->
+                    </div>
+
+
+              </div>
+              
+              <!-- cuarta columna -->
+              <!-- <div class="col-lg-6">
+                <div class="p-5">
+
+
+                 <div class="row">
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" >Marca</label>
+                            <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xnombre').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+    
+    
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" for="form3Examplev3">Cliente</label>
+                            <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xapellido').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+                  <div class="row">
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" >Marca</label>
+                        <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xnombre').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3"> Modelo</label>
+                        <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xapellido').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev2">Versión</label>
+                          <select formControlName="csexo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('csexo').errors }">
+                            <option></option>
+                            <option *ngFor="let sex of sexList" value="{{ sex.csexo }}">{{ sex.xsexo }}</option>
+                          </select>
+                          <div *ngIf="submitted && search_form.get('csexo').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('csexo').errors.required"></div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                         <label class="form-label" for="form3Examplev4">Año</label>
+                         <input type="date" formControlName="fnacimiento" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnacimiento').errors }"/>
+                         <div *ngIf="submitted && search_form.get('fnacimiento').errors"  class="invalid-feedback">
+                           <div *ngIf="search_form.get('fnacimiento').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+
+                  <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+                    <div class="form-outline">                        
+                      <label class="form-label" for="form3Examplev4">Color</label>
+                      <input type="email" formControlName="xemail" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xemail').errors }"/>
+                      <div *ngIf="submitted && search_form.get('xemail').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('xemail').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Serial de Carroceria</label>
+                        <input type="password" formControlName="xcontrasena" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcontrasena').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xcontrasena').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xcontrasena').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div> -->
+              <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Subscribir </button>
+
+            </div>
+        </form>
+      </div>
+    </div>
+ </div>
+</section>

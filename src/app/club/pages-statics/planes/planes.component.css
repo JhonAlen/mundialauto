@@ -1,0 +1,31 @@
+
+.rounded-lg {
+    border-radius: 1rem !important;
+  }
+  
+  .text-small {
+    font-size: 0.9rem !important;
+  }
+  
+  .separator {
+    background-color: #ffbd08;
+    width: 5rem;
+    height: 6px;
+    border-radius: 1rem;
+
+  }
+
+  .text-club{
+    color: #ffbd08;
+  }
+
+  .btn{
+    background-color: #ffbd08;
+  }
+  
+  .text-uppercase {
+    letter-spacing: 0.2em;
+  }
+  
+
+  
