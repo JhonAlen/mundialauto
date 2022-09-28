@@ -177,6 +177,7 @@ import { ServicesInsurersIndexComponent } from './tables/services-insurers/servi
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
+import { PlanRcvComponent } from './products/plan-rcv/plan-rcv.component';
 
 const routes: Routes = [
  
@@ -436,7 +437,8 @@ const routes: Routes = [
   { path: 'events/service-order-detail/:id', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-index', component: CollectionIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-detail', component: CollectionDetailComponent, canActivate: [AuthGuard] },
-  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] }
+  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv', component: PlanRcvComponent, canActivate: [AuthGuard] },
 
  
 ];

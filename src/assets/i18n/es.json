@@ -1917,6 +1917,13 @@
             "PAYMENTMETHODOLOGIESLIST": "Lista de Metodologías de Pago",
             "ADDPAYMENTMETHODOLOGY": "Agregar Metodología de Pago",
             "PAYMENTMETHODOLOGY": "Metodología de Pago"
+        },
+        "PLAN_RCV":{
+            "PLAN_RCV": "Planes RCV",
+            "SEARCHPLANRCV": "Buscar Planes RCV",
+            "SEARCH": "Buscar",
+            "PLANTYPE": "Tipo de Plan",
+            "PLAN_RCVLIST": "Lista de Planes RCV"
         }
     },
     "API": {
