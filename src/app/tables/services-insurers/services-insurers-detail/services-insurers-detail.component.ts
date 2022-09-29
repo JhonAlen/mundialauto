@@ -39,6 +39,7 @@ export class ServicesInsurersDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.detail_form = this.formBuilder.group({
       xservicio: ['', Validators.required],
+      ctiposervicio: ['', Validators.required],
       bactivo: [true, Validators.required]
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -56,6 +57,34 @@ export class ServicesInsurersDetailComponent implements OnInit {
         return;
       }
       if (request.data.status) {
+        let params = {
+          permissionData: {
+            cusuario: this.currentUser.data.cusuario,
+            cmodulo: 31
+          },
+          cpais: this.currentUser.data.cpais,
+          ccompania: this.currentUser.data.ccompania,
+        }
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        this.http.post(`${environment.apiUrl}/api/valrep/service-type`, params, options).subscribe((response : any) => {
+          if(response.data.status){
+            this.serviceTypeList = [];
+            for (let i = 0; i < response.data.list.length; i++) {
+              this.serviceTypeList.push({ id: response.data.list[i].ctiposervicio, value: response.data.list[i].xtiposervicio });
+            }
+          }
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 404){ message = "HTTP.ERROR.VALREP.CHARGENOTFOUND"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        });
         this.canCreate = request.data.bcrear;
         this.canDetail = request.data.bdetalle;
         this.canEdit = request.data.beditar;
@@ -109,6 +138,8 @@ export class ServicesInsurersDetailComponent implements OnInit {
     if (response.data.status) {
       this.detail_form.get('xservicio').setValue(response.data.xservicio);
       this.detail_form.get('xservicio').disable();
+      this.detail_form.get('ctiposervicio').setValue(response.data.ctiposervicio);
+      this.detail_form.get('ctiposervicio').disable();
       this.detail_form.get('bactivo').setValue(response.data.bactivo);
       this.detail_form.get('bactivo').disable();
     }

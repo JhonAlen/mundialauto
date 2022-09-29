@@ -1,4 +1,4 @@
-<app-toolbar ></app-toolbar>
+<app-toolbar></app-toolbar>
 <div class="container">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
@@ -25,18 +25,29 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form [formGroup]="search_form">
-                        <div class="row">
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "TABLES.SERVICES.NAME" | translate }}</label>
-                                    <input type="text" formControlName="xservicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xservicio').errors }">
-                                    <div *ngIf="submitted && search_form.get('xservicio').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
+                  <form [formGroup]="search_form">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label>Tipo de Servicio</label>
+                            <select formControlName="ctiposervicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ctiposervicio').errors }">
+                                <option></option>
+                                <option *ngFor="let serviceType of serviceTypeList" value="{{ serviceType.id }}">{{ serviceType.value }}</option>
+                            </select>
+                            <div *ngIf="submitted && search_form.get('ctiposervicio').errors"  class="invalid-feedback">
                             </div>
                         </div>
-                    </form>
+                      </div>
+                      <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                          <label>{{ "TABLES.SERVICES.NAME" | translate }}</label>
+                          <input type="text" formControlName="xservicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xservicio').errors }">
+                          <div *ngIf="submitted && search_form.get('xservicio').errors"  class="invalid-feedback">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
                 </div>
             </div>
         </div>
@@ -54,10 +65,11 @@
                 <div class="card-body">
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="serviceList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="Código" field="cservicio" [width]="259" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Código" field="cservicio" [width]="122" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Tipo de Servicio" field="xtiposervicio" [width]="259" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Nombre" field="xservicio" [width]="259" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Fecha de Creación" field="fcreacion" [width]="259" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Activo" field="xactivo" [width]="259" [sortable]="false"></ag-grid-column>
+                            <ag-grid-column headerName="Activo" field="xactivo" [width]="122" [sortable]="false"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>
