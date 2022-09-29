@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PlanRcvComponent } from './plan-rcv.component';
+import { PlanRcvIndexComponent } from './plan-rcv-index.component';
 
-describe('PlanRcvComponent', () => {
-  let component: PlanRcvComponent;
-  let fixture: ComponentFixture<PlanRcvComponent>;
+describe('PlanRcvIndexComponent', () => {
+  let component: PlanRcvIndexComponent;
+  let fixture: ComponentFixture<PlanRcvIndexComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlanRcvComponent ]
+      declarations: [ PlanRcvIndexComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PlanRcvComponent);
+    fixture = TestBed.createComponent(PlanRcvIndexComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

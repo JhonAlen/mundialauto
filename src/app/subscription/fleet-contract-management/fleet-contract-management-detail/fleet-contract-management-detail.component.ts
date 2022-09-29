@@ -109,6 +109,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
                   this.fdesde_pol = this.router.getCurrentNavigation().extras.state.fdesde_pol;
                   this.fhasta_pol = this.router.getCurrentNavigation().extras.state.fhasta_pol;
                   this.femision   = this.router.getCurrentNavigation().extras.state.femision;
+                  console.log(this.femision)
                 }
               }
 

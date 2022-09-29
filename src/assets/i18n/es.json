@@ -1923,7 +1923,19 @@
             "SEARCHPLANRCV": "Buscar Planes RCV",
             "SEARCH": "Buscar",
             "PLANTYPE": "Tipo de Plan",
-            "PLAN_RCVLIST": "Lista de Planes RCV"
+            "PLAN_RCVLIST": "Lista de Planes RCV",
+            "SAVE": "Guardar",
+            "CANCEL": "Cancelar",
+            "EDIT": "Editar",
+            "CREATE": "Crear",
+            "GENERALINFORMATION": "Información General",
+            "CLASS": "Clase",
+            "TYPE": "Tipo",
+            "GROUP": "Grupo",
+            "NAME": "Nombre",
+            "AMOUNTS": "Montos",
+            "PLAN": "Plan",
+            "RATECODE": "Código de Tarifa"
         }
     },
     "API": {

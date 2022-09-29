@@ -271,7 +271,8 @@ import { FleetLoadingComponent } from './subscription/fleet-loading/fleet-loadin
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
 import { AdministrationPaymentComponent } from './pop-up/administration-payment/administration-payment.component';
-import { PlanRcvComponent } from './products/plan-rcv/plan-rcv.component';
+import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
+import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -538,7 +539,8 @@ export function HttpLoaderFactory(http: HttpClient){
     CollectionIndexComponent,
     CollectionDetailComponent,
     AdministrationPaymentComponent,
-    PlanRcvComponent
+    PlanRcvIndexComponent,
+    PlanRcvDetailComponent
   ],
   imports: [
     BrowserModule,

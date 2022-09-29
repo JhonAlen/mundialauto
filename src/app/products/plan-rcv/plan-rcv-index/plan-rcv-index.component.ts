@@ -6,13 +6,14 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
+import { VariableBinding } from '@angular/compiler';
 
 @Component({
-  selector: 'app-plan-rcv',
-  templateUrl: './plan-rcv.component.html',
-  styleUrls: ['./plan-rcv.component.css']
+  selector: 'app-plan-rcv-index',
+  templateUrl: './plan-rcv-index.component.html',
+  styleUrls: ['./plan-rcv-index.component.css']
 })
-export class PlanRcvComponent implements OnInit {
+export class PlanRcvIndexComponent implements OnInit {
 
   currentUser;
   search_form: UntypedFormGroup;
@@ -39,7 +40,8 @@ export class PlanRcvComponent implements OnInit {
       mprima_rc: [''],
       mexceso_limite: [''],
       msuma_apov_in: [''],
-      mapov_in: ['']
+      mapov_in: [''],
+      ctarifa: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -111,12 +113,13 @@ export class PlanRcvComponent implements OnInit {
     let params = {
       cplan_rc: form.cplan_rc ? form.cplan_rc : undefined
     }
-    this.http.post(`${environment.apiUrl}/api/plan-type/search/planrcv`, params, options).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/plan-rcv/search`, params, options).subscribe((response: any) => {
       if(response.data.status){
         this.planRcvList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.planRcvList.push({ 
             cplan_rc: response.data.list[i].cplan_rc,
+            ctarifa: response.data.list[i].ctarifa,
             xclase: response.data.list[i].xclase,
             xtipo: response.data.list[i].xtipo,
             xgrupo: response.data.list[i].xgrupo,
@@ -142,5 +145,13 @@ export class PlanRcvComponent implements OnInit {
     });
   }
 
+  goToDetail(){
+    this.router.navigate([`products/plan-rcv-detail`]);
+  }
+
+  rowClicked(event: any){
+    let ctarifa = event.data.ctarifa;
+    this.router.navigate([`products/plan-rcv-detail/${event.data.cplan_rc}`], { state: ctarifa});
+  }
 
 }
