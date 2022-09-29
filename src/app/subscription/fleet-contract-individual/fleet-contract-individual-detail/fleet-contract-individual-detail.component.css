@@ -14,3 +14,30 @@ h2{
 form{
     padding: 40px;
 }
+
+footer{
+    background-color: #132646;
+    border-top-style: solid;
+    border-color: white;
+}
+
+h3,h2,h6{
+    color: white;
+}
+
+.g-0{
+    background-color: whitesmoke;
+    border-radius: 7px;
+}
+
+
+button{
+    margin: 21px;
+    background-color: royalblue;
+    color: white;
+
+}
+
+.button{
+    text-align-last: center
+}
