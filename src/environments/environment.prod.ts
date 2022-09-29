@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl : "http://localhost:5250"
+  apiUrl : "https://apiqa.compuamerica.com.ve"
 };
