@@ -16,7 +16,7 @@
                             <label class="form-label">Nombre del cliente</label>
                             <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
                             <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
-                              <div *ngIf="search_form.get('xnombre').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                              <div *ngIf="search_form.get('xnombre').errors.required">Se requiere completar el campo</div>
                             </div>
                           </div>
                         </div>
@@ -27,7 +27,7 @@
                             <label class="form-label" for="form3Examplev3">Apellido del cliente</label> 
                             <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
                             <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
-                              <div *ngIf="search_form.get('xapellido').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                              <div *ngIf="search_form.get('xapellido').errors.required">Se requiere completar el campo</div>
                             </div>
                           </div>
                         </div>
@@ -39,7 +39,7 @@
                         <label class="form-label">Año del automovil</label>
                         <input type="text"  formControlName="cano" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }"/>
                         <div *ngIf="submitted && search_form.get('cano').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('cano').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('cano').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -50,7 +50,7 @@
                         <label class="form-label" for="form3Examplev3">Color</label>
                         <input type="text" formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors }"/>
                         <div *ngIf="submitted && search_form.get('xcolor').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xcolor').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xcolor').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -79,7 +79,7 @@
                           <option *ngFor="let modelo of modeloList" value="{{ modelo.cmodelo }}">{{ modelo.xmodelo }}</option>
                         </select>                       
                          <div *ngIf="submitted && search_form.get('cmodelo').errors"  class="invalid-feedback">
-                           <div *ngIf="search_form.get('cmodelo').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                           <div *ngIf="search_form.get('cmodelo').errors.required">Se requiere completar el campo</div>
                          </div>
                        </div>
                      </div>
@@ -94,7 +94,7 @@
                         <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
                       </select>                       
                      <div *ngIf="submitted && search_form.get('cplan').errors"  class="invalid-feedback">
-                        <div *ngIf="search_form.get('cplan').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        <div *ngIf="search_form.get('cplan').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>
@@ -104,10 +104,10 @@
                         <label class="form-label" for="form3Examplev5">Corredor</label>
                         <select formControlName="ccorredor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccorredor').errors } ">
                           <option></option>
-                          <option *ngFor="let corredor of corredorList" value="{{ corredor.ccorredor }}">{{ corredor.xnombre }}</option>
+                          <option *ngFor="let corredor of corredorList" value="{{ corredor.id }}">{{ corredor.value }}</option>
                         </select>                        
                         <div *ngIf="submitted && search_form.get('ccorredor').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('ccorredor').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('ccorredor').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -131,7 +131,7 @@
                         <label class="form-label" for="form3Examplev3">Fecha de nacimiento</label>
                         <input type="date" formControlName="fnac" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnac').errors }"/>
                         <div *ngIf="submitted && search_form.get('fnac').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('fnac').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('fnac').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -178,7 +178,7 @@
                         <label class="form-label" for="form3Examplev4">Plan de servicio</label>
                         <input type="email" formControlName="xemail" class="form-control form-control-lg"/>
                         <div *ngIf="submitted && search_form.get('xemail').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xemail').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xemail').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -188,7 +188,7 @@
                           <label class="form-label" for="form3Examplev5">Corredor</label>
                           <input type="password" formControlName="xcontrasena" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcontrasena').errors }"/>
                           <div *ngIf="submitted && search_form.get('xcontrasena').errors"  class="invalid-feedback">
-                            <div *ngIf="search_form.get('xcontrasena').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                            <div *ngIf="search_form.get('xcontrasena').errors.required">Se requiere completar el campo</div>
                           </div>
                         </div>
                       </div>
@@ -204,7 +204,7 @@
                             <label class="form-label">Número del contacto</label>
                             <input type="text" formControlName="xtelefono_prop" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtelefono_prop').errors }"/>
                             <div *ngIf="submitted && search_form.get('xtelefono_prop').errors"  class="invalid-feedback">
-                              <div *ngIf="search_form.get('xtelefono_prop').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                              <div *ngIf="search_form.get('xtelefono_prop').errors.required">Se requiere completar el campo</div>
                             </div>
                           </div>
                         </div>
@@ -215,7 +215,7 @@
                             <label class="form-label" for="form3Examplev3">Correo electrónico</label>
                             <input type="email" formControlName="email" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('email').errors }"/>
                             <div *ngIf="submitted && search_form.get('email').errors"  class="invalid-feedback">
-                              <div *ngIf="search_form.get('email').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                              <div *ngIf="search_form.get('email').errors.required">Se requiere completar el campo</div>
                             </div>
                           </div>
                         </div>
@@ -228,7 +228,7 @@
                         <label class="form-label" >Tipo de uso</label>
                         <input type="text" formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors }"/>
                         <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xuso').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -239,7 +239,7 @@
                         <label class="form-label" for="form3Examplev3">Placa</label>
                         <input type="text" formControlName="xplaca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xplaca').errors }"/>
                         <div *ngIf="submitted && search_form.get('xplaca').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xplaca').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xplaca').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -261,7 +261,7 @@
                          <label class="form-label" for="form3Examplev4">Fecha de emisión</label>
                          <input type="date" formControlName="femision" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('femision').errors }"/>
                          <div *ngIf="submitted && search_form.get('femision').errors"  class="invalid-feedback">
-                           <div *ngIf="search_form.get('femision').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                           <div *ngIf="search_form.get('femision').errors.required">Se requiere completar el campo</div>
                          </div>
                        </div>
                      </div> -->
@@ -281,7 +281,7 @@
                             <label class="form-label" >Marca</label>
                             <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
                             <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
-                              <div *ngIf="search_form.get('xnombre').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                              <div *ngIf="search_form.get('xnombre').errors.required">Se requiere completar el campo</div>
                             </div>
                           </div>
                         </div>
@@ -292,7 +292,7 @@
                             <label class="form-label" for="form3Examplev3">Cliente</label>
                             <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
                             <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
-                              <div *ngIf="search_form.get('xapellido').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                              <div *ngIf="search_form.get('xapellido').errors.required">Se requiere completar el campo</div>
                             </div>
                           </div>
                         </div>
@@ -305,7 +305,7 @@
                         <label class="form-label" >Marca</label>
                         <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
                         <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xnombre').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xnombre').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -316,7 +316,7 @@
                         <label class="form-label" for="form3Examplev3"> Modelo</label>
                         <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
                         <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xapellido').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xapellido').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -341,7 +341,7 @@
                          <label class="form-label" for="form3Examplev4">Año</label>
                          <input type="date" formControlName="fnacimiento" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnacimiento').errors }"/>
                          <div *ngIf="submitted && search_form.get('fnacimiento').errors"  class="invalid-feedback">
-                           <div *ngIf="search_form.get('fnacimiento').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                           <div *ngIf="search_form.get('fnacimiento').errors.required">Se requiere completar el campo</div>
                          </div>
                        </div>
                      </div>
@@ -353,7 +353,7 @@
                       <label class="form-label" for="form3Examplev4">Color</label>
                       <input type="email" formControlName="xemail" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xemail').errors }"/>
                       <div *ngIf="submitted && search_form.get('xemail').errors"  class="invalid-feedback">
-                        <div *ngIf="search_form.get('xemail').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                        <div *ngIf="search_form.get('xemail').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>
@@ -363,7 +363,7 @@
                         <label class="form-label" for="form3Examplev5">Serial de Carroceria</label>
                         <input type="password" formControlName="xcontrasena" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcontrasena').errors }"/>
                         <div *ngIf="submitted && search_form.get('xcontrasena').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xcontrasena').errors.required">{{ "THIRDPARTIES.ASSOCIATES.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                          <div *ngIf="search_form.get('xcontrasena').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>

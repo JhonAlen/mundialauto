@@ -1518,7 +1518,7 @@ export class WebServiceConnectionService {
     let options = { headers: headers };
     // validamos.
     try {
-      let response = await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/create/individualContract`, params, options).toPromise();
+      let response = await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/create/individualContract`, params).toPromise();
       return response;
     }
     catch (err) {

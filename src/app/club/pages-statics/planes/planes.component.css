@@ -8,7 +8,7 @@
   }
   
   .separator {
-    background-color: #ffbd08;
+    background-color: #77bbfd;
     width: 5rem;
     height: 6px;
     border-radius: 1rem;
@@ -16,11 +16,12 @@
   }
 
   .text-club{
-    color: #ffbd08;
+    color: #77bbfd;
   }
 
   .btn{
-    background-color: #ffbd08;
+    background-color: #142263;
+    color: white
   }
   
   .text-uppercase {

@@ -29,6 +29,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   canDetail: boolean = false;
   canEdit: boolean = false;
   canDelete: boolean = false;
+  status: boolean = true;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -58,7 +59,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xserialdecarroceria: ['', Validators.required],
       femision: [''],
       ccorredor:[''],
-      xcorredor:[''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -109,7 +109,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       this.loading = false;
       return;
     }
-      if(request.data.status){
+      if(request.data.list){
         for(let i = 0; i < request.data.list.length; i++){
           this.marcaList.push({ 
             id: request.data.list[i].cmarca, value: request.data.list[i].xmarca });
@@ -130,7 +130,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       this.loading = false;
       return;
     }
-    if(request.data.list){
+    if(request.data.status){
       this.modeloList = [];
       for(let i = 0; i < request.data.list.length; i++){
          this.modeloList.push({ 
@@ -147,7 +147,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     };
 
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
-      if(response.data.list){
+      if(response.data.status){
         this.versionList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
@@ -165,12 +165,12 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     ccompania: this.currentUser.data.ccompania,
     };
     this.http.post(`${environment.apiUrl}/api/valrep/broker`, params).subscribe((response : any) => {
-      if(response.data.list){
+      if(response.data.status){
         this.corredorList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.corredorList.push({ 
-            ccorredor: response.data.list[i].ccorredor,
-            xnombre: response.data.list[i].xcorredor,
+            id: response.data.list[i].ccorredor,
+            value: response.data.list[i].xcorredor,
 
           });
         }
@@ -183,13 +183,13 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
-    ctipoplan: 11,
+    ctipoplan: 1,
 
     
   };
 
   this.http.post(`${environment.apiUrl}/api/valrep/plan`, params).subscribe((response: any) => {
-    if(response.data.list){
+    if(response.data.status){
       this.planList = [];
       for(let i = 0; i < response.data.list.length; i++){
         this.planList.push({ 
@@ -202,12 +202,14 @@ export class FleetContractIndividualDetailComponent implements OnInit {
 }
 
 
-  async onSubmit(form){
+   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    let params;
-    let request;
-      params = {
+    if (this.search_form.invalid) {
+      this.loading = false;
+      return;
+    }
+    let params = {
         xnombre: form.xnombre,
         xapellido: form.xapellido,
         cano:form.cano,
@@ -227,28 +229,19 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
       };
-     request = await this.webService.createContractIndividual(params);
-    
-    if(request.error){
-      this.alert.message = request.message;
+     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
+      if(response.data.status){
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
       this.alert.type = 'danger';
       this.alert.show = true;
       this.loading = false;
-      return;
-    }
-      if(request.data.status){
-        location.reload();
-      }else{
-        let condition = request.data.condition;
-        if(condition == "color-name-already-exist"){
-          this.alert.message = "TABLES.COLORS.NAMEALREADYEXIST";
-          this.alert.type = 'danger';
-          this.alert.show = true;
-        }
-      }
-      this.loading = false;
-      return;
+    })
   }
-
 }
-

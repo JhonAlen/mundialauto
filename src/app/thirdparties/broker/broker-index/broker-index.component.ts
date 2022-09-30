@@ -134,15 +134,14 @@ export class BrokerIndexComponent implements OnInit {
       xapellido: form.xapellido ? form.xapellido : undefined,
       xdocidentidad: form.xdocidentidad ? form.xdocidentidad : undefined
     }
-    this.http.post(`${environment.apiUrl}/api/broker/search`, params, options).subscribe((response : any) => {
+    this.http.post(`${environment.apiUrl}/api/valrep/broker`, params, options).subscribe((response : any) => {
       if(response.data.status){
         this.brokerList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.brokerList.push({ 
             ccorredor: response.data.list[i].ccorredor,
             ncorredor: response.data.list[i].ncorredor,
-            xnombre: response.data.list[i].xnombre,
-            xapellido: response.data.list[i].xapellido,
+            xnombre: response.data.list[i].xcorredor,
             xactividadempresa: response.data.list[i].xactividadempresa,
             xactivo: response.data.list[i].bactivo ? this.translate.instant("DROPDOWN.YES") : this.translate.instant("DROPDOWN.NO")
           });
