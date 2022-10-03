@@ -36,7 +36,9 @@ export class NotificationVehicleComponent implements OnInit {
       cmarca: [''],
       cmodelo: [''],
       cversion: [''],
-      xplaca: ['']
+      xplaca: [''],
+      xestatusgeneral: [''],
+      cestatusgeneral: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -154,6 +156,8 @@ export class NotificationVehicleComponent implements OnInit {
           this.vehicleList.push({ 
             ccontratoflota: response.data.list[i].ccontratoflota,
             xcliente: response.data.list[i].xcliente,
+            xestatusgeneral: response.data.list[i].xestatusgeneral,
+            cestatusgeneral: response.data.list[i].cestatusgeneral,
             fdesde_pol: response.data.list[i].fdesde_pol,
             fhasta_pol: response.data.list[i].fhasta_pol,
             xmarca: response.data.list[i].xmarca,
@@ -172,6 +176,7 @@ export class NotificationVehicleComponent implements OnInit {
             xemailpropietario: response.data.list[i].xemailpropietario,
           });
         }
+        console.log(this.vehicleList)
       }
       this.loading = false;
     },
@@ -207,6 +212,8 @@ export class NotificationVehicleComponent implements OnInit {
     this.vehicle.xdireccionpropietario = event.data.xdireccionpropietario;
     this.vehicle.xtelefonocelularpropietario = event.data.xtelefonocelularpropietario;
     this.vehicle.xemailpropietario = event.data.xemailpropietario;
+    this.vehicle.cestatusgeneral = event.data.cestatusgeneral;
+    this.vehicle.xestatusgeneral = event.data.xestatusgeneral;
     this.activeModal.close(this.vehicle);
   }
 

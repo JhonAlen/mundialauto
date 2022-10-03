@@ -107,6 +107,7 @@ export class NotificationDetailComponent implements OnInit {
       xmodelo: [{ value: '', disabled: true }],
       xtipo: [{ value: '', disabled: true }],
       xplaca: [{ value: '', disabled: true }],
+      xestatusgeneral: [{ value: '', disabled: true }],
       fano: [{ value: '', disabled: true }],
       xcolor: [{ value: '', disabled: true }],
       xserialcarroceria: [{ value: '', disabled: true }],
@@ -363,6 +364,8 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('npasajero').disable();
         this.detail_form.get('xobservacion').setValue(response.data.xobservacion);
         this.detail_form.get('xobservacion').disable();
+        this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
+        this.detail_form.get('xestatusgeneral').disable();
         this.noteList = [];
         if(response.data.notes){
           for(let i = 0; i < response.data.notes.length; i++){
@@ -694,6 +697,13 @@ export class NotificationDetailComponent implements OnInit {
           this.detail_form.get('fhasta_pol').setValue(dateFormat);
         }
         this.detail_form.get('xcliente').setValue(result.xcliente);
+        this.detail_form.get('xestatusgeneral').setValue(result.xestatusgeneral);
+        this.detail_form.get('cestatusgeneral').setValue(result.cestatusgeneral);
+        if(this.detail_form.get('cestatusgeneral').value == 13){
+          if(window.confirm("Este usuario no ha pagado mano")){
+            this.router.navigate([`events/notification-index`]);
+          }
+        }
         this.detail_form.get('xmarca').setValue(result.xmarca);
         this.detail_form.get('xmodelo').setValue(result.xmodelo);
         this.detail_form.get('xtipo').setValue(result.xtipo);

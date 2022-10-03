@@ -128,6 +128,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       xsucursalemision: ['', Validators.required],
       xsucursalsuscriptora: ['', Validators.required],
       cestatusgeneral: ['', Validators.required],
+      xestatusgeneral: [''],
       ccorredor: ['', Validators.required],
       xnombrecorredor: [{ value: '', disabled: true }],
       ctrabajador: ['', Validators.required],
@@ -403,8 +404,11 @@ export class FleetContractManagementDetailComponent implements OnInit {
           this.detail_form.get('femision').setValue(this.femision);
           this.detail_form.get('femision').disable();
         }
+        this.generalStatusList.push({ id: response.data.cestatusgeneral, value: response.data.xestatusgeneral });
         this.detail_form.get('cestatusgeneral').setValue(response.data.cestatusgeneral);
         this.detail_form.get('cestatusgeneral').disable();
+        this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
+        this.detail_form.get('xestatusgeneral').disable();
         this.detail_form.get('ccorredor').setValue(response.data.ccorredor);
         this.detail_form.get('ccorredor').disable();
         this.detail_form.get('xnombrecorredor').setValue(response.data.xcorredor);

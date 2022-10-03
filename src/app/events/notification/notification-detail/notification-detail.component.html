@@ -129,6 +129,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.NOTIFICATIONS.STATUS" | translate }}</label>
+                                    <input type="text" formControlName="xestatusgeneral" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xestatusgeneral').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xestatusgeneral').errors" class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
