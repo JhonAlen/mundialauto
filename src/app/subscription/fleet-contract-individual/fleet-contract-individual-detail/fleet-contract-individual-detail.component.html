@@ -1,0 +1,452 @@
+<app-toolbar ></app-toolbar>
+
+<section>
+  <div >
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+          <!-- formulario de busqueda y -->
+          <form [formGroup]="search_form"> <div class="card-header"><h2>Detalles del Cliente</h2></div>
+            <div class="row g-0">
+
+              <!-- primera columna -->
+              <div class="col-lg-4">
+                 <div class="row">
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label">Nombre del cliente</label>
+                            <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xnombre').errors.required">Se requiere completar el campo</div>
+                            </div>
+                          </div>
+                        </div>
+    
+    
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" for="form3Examplev3">Apellido del cliente</label> 
+                            <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xapellido').errors.required">Se requiere completar el campo</div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label">Año del automovil</label>
+                        <input type="text"  formControlName="cano" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }"/>
+                        <div *ngIf="submitted && search_form.get('cano').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('cano').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3">Color</label>
+                        <select formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors } " >
+                          <label class="andes-form-control--search-box"> <span class="andes-form-control__search-icon" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="rgba(0, 0, 0, 0.9)"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.99742 10.8458C8.96319 11.6919 7.64125 12.1996 6.20073 12.1996C2.88713 12.1996 0.200928 9.51341 0.200928 6.19981C0.200928 2.88621 2.88713 0.200012 6.20073 0.200012C9.51432 0.200012 12.2005 2.88621 12.2005 6.19981C12.2005 7.6407 11.6926 8.96297 10.846 9.99731L14.8475 13.9987L13.9989 14.8473L9.99742 10.8458ZM1.40093 6.19981C1.40093 8.85067 3.54987 10.9996 6.20073 10.9996C8.85158 10.9996 11.0005 8.85067 11.0005 6.19981C11.0005 3.54896 8.85158 1.40001 6.20073 1.40001C3.54987 1.40001 1.40093 3.54896 1.40093 6.19981Z" fill="rgba(0, 0, 0, 0.9)"></path></svg></span><span class="andes-visually-hidden">Buscar</span><input class="andes-form-control__field" placeholder="Buscar..." role="combobox" aria-autocomplete="list" aria-expanded="true" aria-controls="andes-dropdown-list" value=""></label>
+                          <option *ngFor="let color of colorList" value="{{ color.id }}">{{ color.value }}</option>
+                        </select>                        
+                         <div *ngIf="submitted && search_form.get('xcolor').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xcolor').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  
+                  <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev2">Marca</label>
+                          <select formControlName="cmarca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors } " (change)="getModeloData()">
+                            <option *ngFor="let marca of marcaList" value="{{ marca.id }}">{{ marca.value }}</option>
+                          </select>
+                          <div *ngIf="submitted && search_form.get('cmarca').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('cmarca').errors.required"></div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                         <label class="form-label" for="form3Examplev4">Modelo</label>
+                         <select formControlName="cmodelo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }" (change)="getVersionData()">
+                          <option></option>
+                          <option *ngFor="let modelo of modeloList" value="{{ modelo.cmodelo }}">{{ modelo.xmodelo }}</option>
+                        </select>                       
+                         <div *ngIf="submitted && search_form.get('cmodelo').errors"  class="invalid-feedback">
+                           <div *ngIf="search_form.get('cmodelo').errors.required">Se requiere completar el campo</div>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+
+                  <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+                    <div class="form-outline">                        
+                      <label class="form-label" for="form3Examplev4">Plan de servicio</label>
+                      <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" >
+                        <option></option>
+                        <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
+                      </select>                       
+                     <div *ngIf="submitted && search_form.get('cplan').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('cplan').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Corredor</label>
+                        <select formControlName="ccorredor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccorredor').errors } ">
+                          <option *ngFor="let corredor of corredorList" value="{{ corredor.id }}">{{ corredor.value }}</option>
+                        </select>                        
+                        <div *ngIf="submitted && search_form.get('ccorredor').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('ccorredor').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- segunda columna -->
+              <div class="col-lg-4 bg-indigo ">
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev2">Identificación</label>
+                        <input type="text" formControlName="xrif_cliente" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xrif_cliente').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xrif_cliente').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xrif_cliente').errors.required"></div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3">Fecha de nacimiento</label>
+                        <input type="date" formControlName="fnac" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnac').errors }"/>
+                        <div *ngIf="submitted && search_form.get('fnac').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('fnac').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 pb-2">
+                    <div class="form-outline form-white">
+                      <label class="form-label" for="form3Examplea2">Dirección del cliente</label>
+                      <input type="text" formControlName="xdireccionfiscal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xdireccionfiscal').errors }"/>
+                      <div *ngIf="submitted && search_form.get('xdireccionfiscal').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('xdireccionfiscal').errors.required"></div>
+                    </div>
+                    </div>
+                  </div>
+              
+
+                  <div class="row">
+                    <div class="col-md-5 mb-4 pb-2">
+                      <div class="form-outline form-white">
+                        <label class="form-label" for="form3Examplea7">Versión</label>
+                        <select formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }" >
+                          <option *ngFor="let version of versionList" value="{{ version.cversion }}">{{ version.xversion }}</option>
+                        </select>                       
+                         <div *ngIf="submitted && search_form.get('cversion').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('cversion').errors.required"></div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-md-5 mb-4 pb-2">
+                      <div class="form-outline form-white">
+                        <label class="form-label" for="form3Examplea8">Serial de motor</label>
+                        <input type="text" formControlName="xserialmotor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xserialmotor').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xserialmotor').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xserialmotor').errors.required"></div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">                        
+                        <label class="form-label" for="form3Examplev4">Plan de servicio</label>
+                        <input type="email" formControlName="xemail" class="form-control form-control-lg"/>
+                        <div *ngIf="submitted && search_form.get('xemail').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xemail').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+  
+                      <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev5">Corredor</label>
+                          <input type="password" formControlName="xcontrasena" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcontrasena').errors }"/>
+                          <div *ngIf="submitted && search_form.get('xcontrasena').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xcontrasena').errors.required">Se requiere completar el campo</div>
+                          </div>
+                        </div>
+                      </div>
+                  </div> -->
+
+              </div>
+
+             <!-- tercera columna -->
+              <div class="col-lg-4">
+                 <div class="row">
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label">Número del contacto</label>
+                            <input type="text" formControlName="xtelefono_prop" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtelefono_prop').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xtelefono_prop').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xtelefono_prop').errors.required">Se requiere completar el campo</div>
+                            </div>
+                          </div>
+                        </div>
+    
+    
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" for="form3Examplev3">Correo electrónico</label>
+                            <input type="email" formControlName="email" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('email').errors }"/>
+                            <div *ngIf="submitted && search_form.get('email').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('email').errors.required">Se requiere completar el campo</div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+                  <div class="row">
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" >Tipo de uso</label>
+                        <select formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors } " >
+                          <option *ngFor="let uso of usoList" value="{{ uso.id }}">{{ uso.value }}</option>
+                        </select>                       
+                         <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3">Placa</label>
+                        <input type="text" formControlName="xplaca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xplaca').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xplaca').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xplaca').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev2">Serial de carroceria</label>
+                            <input type="text" formControlName="xserialcarroceria" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xserialcarroceria').errors }"/>
+                          <div *ngIf="submitted && search_form.get('xserialcarroceria').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xserialcarroceria').errors.required"></div>
+                        </div>
+                        </div>
+                      </div>
+
+                       <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                         <label class="form-label" for="form3Examplev4">Moneda</label>
+                         <select formControlName="cmoneda" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmoneda').errors }" >
+                          <option *ngFor="let moneda of coinList" value="{{ moneda.id }}">{{ moneda.value }}</option>
+                        </select>                           
+                         <div *ngIf="submitted && search_form.get('cmoneda').errors"  class="invalid-feedback">
+                           <div *ngIf="search_form.get('cmoneda').errors.required">Se requiere completar el campo</div>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+
+
+              </div>
+              
+              <!-- cuarta columna -->
+              <!-- <div class="col-lg-6">
+                <div class="p-5">
+
+
+                 <div class="row">
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" >Marca</label>
+                            <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xnombre').errors.required">Se requiere completar el campo</div>
+                            </div>
+                          </div>
+                        </div>
+    
+    
+                        <div class="col-md-6 mb-4 pb-2">
+                          <div class="form-outline">
+                            <label class="form-label" for="form3Examplev3">Cliente</label>
+                            <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
+                            <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
+                              <div *ngIf="search_form.get('xapellido').errors.required">Se requiere completar el campo</div>
+                            </div>
+                          </div>
+                        </div>
+                 </div>
+
+                  <div class="row">
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" >Marca</label>
+                        <input type="text" formControlName="xnombre" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xnombre').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xnombre').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xnombre').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev3"> Modelo</label>
+                        <input type="text" formControlName="xapellido" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xapellido').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xapellido').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xapellido').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev2">Versión</label>
+                          <select formControlName="csexo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('csexo').errors }">
+                            <option></option>
+                            <option *ngFor="let sex of sexList" value="{{ sex.csexo }}">{{ sex.xsexo }}</option>
+                          </select>
+                          <div *ngIf="submitted && search_form.get('csexo').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('csexo').errors.required"></div>
+                        </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                         <label class="form-label" for="form3Examplev4">Año</label>
+                         <input type="date" formControlName="fnacimiento" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fnacimiento').errors }"/>
+                         <div *ngIf="submitted && search_form.get('fnacimiento').errors"  class="invalid-feedback">
+                           <div *ngIf="search_form.get('fnacimiento').errors.required">Se requiere completar el campo</div>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+
+                  <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+                    <div class="form-outline">                        
+                      <label class="form-label" for="form3Examplev4">Color</label>
+                      <input type="email" formControlName="xemail" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xemail').errors }"/>
+                      <div *ngIf="submitted && search_form.get('xemail').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('xemail').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
+
+                    <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                      <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Serial de Carroceria</label>
+                        <input type="password" formControlName="xcontrasena" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcontrasena').errors }"/>
+                        <div *ngIf="submitted && search_form.get('xcontrasena').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('xcontrasena').errors.required">Se requiere completar el campo</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div> -->
+              
+              
+            <div class="button">
+              
+              <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Subscribir </button>
+              
+            </div>
+
+
+            </div>
+        </form>
+      </div>
+    </div>
+ </div>
+</section>
+
+
+<footer>    
+  <div class="container">       
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="footer-widget">
+          <h3 style="margin-right: 110px;">Horario</h3>
+          <div class="footer-widget-content">
+            <div class="open-time ">
+                <ul class="opening-time">
+                  <li><span></span><h6>Horario disponible de Lunes a Viernes</h6>
+                  <li><span></span><h6><strong>A partir de :</strong> 8am - 4pm</h6>
+                </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="footer-widget" style="margin-top: 50px;text-align: -webkit-center;">
+          <h6 >Copyright© CompuAmerica 2022.</h6>
+          <div class="footer-widget-content">
+              <br>
+              <h6>6 C. Negrín, Caracas 1050, Frente al CC. El Recreo. Distrito Capital</h6>
+              <div class="footer-social">
+          </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="footer-widget">
+          <h3>Redes Sociales</h3>
+          <div class="footer-widget-content" style=" text-align: -webkit-center;">
+            <div class="images-gellary">
+              <p></p>
+              <table style="margin-left: 25px;">
+                <tr>
+                  <td>
+                    <ul>
+                      <li ><a href="https://www.facebook.com/Mundial Autos-Sas-107360681039695" target="_blank"><img  style="border-radius: 6px;background-color: #ffffff7d;" src="./assets/imagenes/facebook.png" alt="Instagram 01" width="40px" height="40px"></a></li>
+                      <br>
+                      <li><a href="https://www.instagram.com/Mundial Autoss.vzla/?hl=es-la" target="_blank"><img style="background-color: #ffffff7d;border-radius: 15px;" src="./assets/imagenes/instagram.png" alt="Instagram 02" width="40px" height="40px"></a></li>
+                    </ul>
+                  </td>
+                  <td>
+                    <ul>
+                      <li style="border-radius: 15px;"><a  href="https://twitter.com/Mundial Autos" target="_blank"><img style="background-color: #ffffff7d;" src="./assets/imagenes/twitter.png" alt="Instagram 01" width="40px" height="40px"></a></li>
+                      <br>
+                      <li style="border-radius: 15px;"><a href="https://co.linkedin.com/company/linkedin-com-company-Mundial Autossas" target="_blank"><img  style="background-color: #ffffff7d"src="./assets/imagenes/linkedin.png"  width="40px" height="40px"></a></li>
+                    </ul>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

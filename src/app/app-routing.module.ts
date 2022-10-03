@@ -177,8 +177,12 @@ import { ServicesInsurersIndexComponent } from './tables/services-insurers/servi
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
+<<<<<<< HEAD
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
+=======
+import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+>>>>>>> aa8f84740817d3c34bfaa2bb643b2c339db7c1d4
 
 const routes: Routes = [
  
@@ -190,8 +194,8 @@ const routes: Routes = [
   { path: 'service', component: ServicesComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'dasboard', component: DashboardComponent},
-  { path: '', component: AdminLayoutComponent, children: [{path:'', loadChildren:() => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule)}]},
   { path: 'sign-in', component: SignInComponent },
+  {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
   { path: 'sign-in', component: SignInComponent},
   { path: 'change-password/:id', component: ChangePasswordComponent, canActivate: [SessionGuard]  },
@@ -385,6 +389,7 @@ const routes: Routes = [
   { path: 'tables/material-damage-detail/:id', component: MaterialDamageDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-index', component: NotificationIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail', component: NotificationDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/fleet-contract-individual-detail', component: FleetContractIndividualDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail/:id', component: NotificationDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/tracing-type-index', component: TracingTypeIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/tracing-type-detail', component: TracingTypeDetailComponent, canActivate: [AuthGuard] },
