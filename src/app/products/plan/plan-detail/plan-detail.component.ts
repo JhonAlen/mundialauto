@@ -216,8 +216,9 @@ export class PlanDetailComponent implements OnInit {
         if(response.data.servicesInsurers){
           for(let i =0; i < response.data.servicesInsurers.length; i++){
             this.serviceInsurerList.push({
-              cservicio: response.data.services[i].cservicio,
-              xservicio: response.data.services[i].xservicio,
+              cservicio: response.data.servicesInsurers[i].cservicio,
+              xservicio: response.data.servicesInsurers[i].xservicio,
+              xtiposervicio: response.data.servicesInsurers[i].xtiposervicio,
             })
           }
         }

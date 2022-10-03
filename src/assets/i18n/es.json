@@ -734,6 +734,9 @@
             "DOCUMENTS": "Documentos",
             "COLLECTION": "Recaudo",
             "ADDDOCUMENTS": "Agregar Documentos"
+        },
+        "SERVICESINSURERS": {
+            "SERVICESINSURERS": "Servicios de Aseguradoras"
         }
     },
     "CONFIGURATION": {
