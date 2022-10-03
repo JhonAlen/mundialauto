@@ -36,11 +36,8 @@ export class PlanRcvIndexComponent implements OnInit {
       xclase: [''],
       xtipo: [''],
       xgrupo: [''],
-      mut_personas_rc: [''],
+      msuma_cosas_rc: [''],
       mprima_rc: [''],
-      mexceso_limite: [''],
-      msuma_apov_in: [''],
-      mapov_in: [''],
       ctarifa: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -123,11 +120,8 @@ export class PlanRcvIndexComponent implements OnInit {
             xclase: response.data.list[i].xclase,
             xtipo: response.data.list[i].xtipo,
             xgrupo: response.data.list[i].xgrupo,
-            mut_personas_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mut_personas_rc)}`,
-            mprima_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mprima_rc)}`,
-            mexceso_limite: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mexceso_limite)}`,
-            msuma_apov_in: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_apov_in)}`,
-            mapov_in: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mapov_in)}`
+            msuma_cosas_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_cosas_rc)}`,
+            mprima_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mprima_rc)}`
           });
         }
       }

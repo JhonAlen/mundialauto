@@ -38,8 +38,7 @@ export class PlanRcvDetailComponent implements OnInit {
   paymentMethodologyDeletedRowList: any[] = [];
   insurerDeletedRowList: any[] = [];
   serviceDeletedRowList: any[] = [];
-  ctarifa: number;
-  tarifaList: any[] = [];
+  ctarifa;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -50,7 +49,7 @@ export class PlanRcvDetailComponent implements OnInit {
                 if (this.router.getCurrentNavigation().extras.state == null) {
                   this.router.navigate([`products/plan-rcv-index`]);
                 } else {
-                  this.ctarifa = this.router.getCurrentNavigation().extras.state.ctarifa; 
+                  this.ctarifa = this.router.getCurrentNavigation().extras.state; 
                 }
               }
 
@@ -62,15 +61,9 @@ export class PlanRcvDetailComponent implements OnInit {
       xclase: [''],
       xtipo: [''],
       xgrupo: [''],
-      mut_cosas_rc: [''],
       msuma_cosas_rc: [''],
-      mut_personas_rc: [''],
       msuma_personas_rc: [''],
-      mut_prima_rc: [''],
       mprima_rc: [''],
-      mexceso_limite: [''],
-      mgastos_cat: [''],
-      mrecuperacion: [''],
       msuma_defensa_per: [''],
       mprima_defensa_per: [''],
       msuma_limite_ind: [''],
@@ -138,83 +131,172 @@ export class PlanRcvDetailComponent implements OnInit {
     });
   }  
 
-    getPlanData(){
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        cplan_rc: this.code,
-        ctarifa: this.ctarifa
-      };
-      console.log(params)
-      this.http.post(`${environment.apiUrl}/api/plan-rcv/detail`, params, options).subscribe((response : any) => {
-        if(response.data.status){
-          this.detail_form.get('xplan_rc').setValue(response.data.xplan_rc);
-          this.detail_form.get('xplan_rc').disable();
-          this.detail_form.get('ctarifa').setValue(response.data.ctarifa);
-          this.detail_form.get('ctarifa').disable();
-          this.detail_form.get('xclase').setValue(response.data.xclase);
-          this.detail_form.get('xclase').disable();
-          this.detail_form.get('xtipo').setValue(response.data.xtipo);
-          this.detail_form.get('xtipo').disable();
-          this.detail_form.get('xgrupo').setValue(response.data.xgrupo);
-          this.detail_form.get('xgrupo').disable();
-          this.detail_form.get('mut_cosas_rc').setValue(response.data.mut_cosas_rc);
-          this.detail_form.get('mut_cosas_rc').disable();
-          this.detail_form.get('msuma_cosas_rc').setValue(response.data.msuma_cosas_rc);
-          this.detail_form.get('msuma_cosas_rc').disable();
-          this.detail_form.get('mut_personas_rc').setValue(response.data.mut_personas_rc);
-          this.detail_form.get('mut_personas_rc').disable();
-          this.detail_form.get('msuma_personas_rc').setValue(response.data.msuma_personas_rc);
-          this.detail_form.get('msuma_personas_rc').disable();
-          this.detail_form.get('mut_prima_rc').setValue(response.data.mut_prima_rc);
-          this.detail_form.get('mut_prima_rc').disable();
-          this.detail_form.get('mprima_rc').setValue(response.data.mprima_rc);
-          this.detail_form.get('mprima_rc').disable();
-          this.detail_form.get('mexceso_limite').setValue(response.data.mexceso_limite);
-          this.detail_form.get('mexceso_limite').disable();
-          this.detail_form.get('mgastos_cat').setValue(response.data.mgastos_cat);
-          this.detail_form.get('mgastos_cat').disable();
-          this.detail_form.get('mrecuperacion').setValue(response.data.mrecuperacion);
-          this.detail_form.get('mrecuperacion').disable();
-          this.detail_form.get('msuma_defensa_per').setValue(response.data.msuma_defensa_per);
-          this.detail_form.get('msuma_defensa_per').disable();
-          this.detail_form.get('mprima_defensa_per').setValue(response.data.mprima_defensa_per);
-          this.detail_form.get('mprima_defensa_per').disable();
-          this.detail_form.get('msuma_limite_ind').setValue(response.data.msuma_limite_ind);
-          this.detail_form.get('msuma_limite_ind').disable();
-          this.detail_form.get('mprima_limite_ind').setValue(response.data.mprima_limite_ind);
-          this.detail_form.get('mprima_limite_ind').disable();
-          this.detail_form.get('msuma_apov_mu').setValue(response.data.msuma_apov_mu);
-          this.detail_form.get('msuma_apov_mu').disable();
-          this.detail_form.get('mapov_mu').setValue(response.data.mapov_mu);
-          this.detail_form.get('mapov_mu').disable();
-          this.detail_form.get('msuma_apov_in').setValue(response.data.msuma_apov_in);
-          this.detail_form.get('msuma_apov_in').disable();
-          this.detail_form.get('mapov_in').setValue(response.data.mapov_in);
-          this.detail_form.get('mapov_in').disable();
-          this.detail_form.get('msuma_apov_ga').setValue(response.data.msuma_apov_ga);
-          this.detail_form.get('msuma_apov_ga').disable();
-          this.detail_form.get('mapov_ga').setValue(response.data.mapov_ga);
-          this.detail_form.get('mapov_ga').disable();
-          this.detail_form.get('msuma_apov_fu').setValue(response.data.msuma_apov_fu);
-          this.detail_form.get('msuma_apov_fu').disable();
-          this.detail_form.get('mapov_fu').setValue(response.data.mapov_fu);
-          this.detail_form.get('mapov_fu').disable();
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.VALREP.PLANTYPENOTFOUND"; }
-        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
-    }
+  getPlanData(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cplan_rc: this.code,
+      ctarifa: this.ctarifa
+    };
+    this.http.post(`${environment.apiUrl}/api/plan-rcv/detail`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.detail_form.get('xplan_rc').setValue(response.data.xplan_rc);
+        this.detail_form.get('xplan_rc').disable();
+        this.detail_form.get('ctarifa').setValue(response.data.ctarifa);
+        this.detail_form.get('ctarifa').disable();
+        this.detail_form.get('xclase').setValue(response.data.xclase);
+        this.detail_form.get('xclase').disable();
+        this.detail_form.get('xtipo').setValue(response.data.xtipo);
+        this.detail_form.get('xtipo').disable();
+        this.detail_form.get('xgrupo').setValue(response.data.xgrupo);
+        this.detail_form.get('xgrupo').disable();
+        this.detail_form.get('msuma_cosas_rc').setValue(response.data.msuma_cosas_rc);
+        this.detail_form.get('msuma_cosas_rc').disable();
+        this.detail_form.get('msuma_personas_rc').setValue(response.data.msuma_personas_rc);
+        this.detail_form.get('msuma_personas_rc').disable();
+        this.detail_form.get('mprima_rc').setValue(response.data.mprima_rc);
+        this.detail_form.get('mprima_rc').disable();
+        this.detail_form.get('msuma_defensa_per').setValue(response.data.msuma_defensa_per);
+        this.detail_form.get('msuma_defensa_per').disable();
+        this.detail_form.get('mprima_defensa_per').setValue(response.data.mprima_defensa_per);
+        this.detail_form.get('mprima_defensa_per').disable();
+        this.detail_form.get('msuma_limite_ind').setValue(response.data.msuma_limite_ind);
+        this.detail_form.get('msuma_limite_ind').disable();
+        this.detail_form.get('mprima_limite_ind').setValue(response.data.mprima_limite_ind);
+        this.detail_form.get('mprima_limite_ind').disable();
+        this.detail_form.get('msuma_apov_mu').setValue(response.data.msuma_apov_mu);
+        this.detail_form.get('msuma_apov_mu').disable();
+        this.detail_form.get('mapov_mu').setValue(response.data.mapov_mu);
+        this.detail_form.get('mapov_mu').disable();
+        this.detail_form.get('msuma_apov_in').setValue(response.data.msuma_apov_in);
+        this.detail_form.get('msuma_apov_in').disable();
+        this.detail_form.get('mapov_in').setValue(response.data.mapov_in);
+        this.detail_form.get('mapov_in').disable();
+        this.detail_form.get('msuma_apov_ga').setValue(response.data.msuma_apov_ga);
+        this.detail_form.get('msuma_apov_ga').disable();
+        this.detail_form.get('mapov_ga').setValue(response.data.mapov_ga);
+        this.detail_form.get('mapov_ga').disable();
+        this.detail_form.get('msuma_apov_fu').setValue(response.data.msuma_apov_fu);
+        this.detail_form.get('msuma_apov_fu').disable();
+        this.detail_form.get('mapov_fu').setValue(response.data.mapov_fu);
+        this.detail_form.get('mapov_fu').disable();
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.PLANTYPENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
 
-    onSubmit(form){
-      console.log('hola')
+  editPlan(){
+    this.detail_form.get('xplan_rc').enable();
+    this.detail_form.get('xclase').enable();
+    this.detail_form.get('xtipo').enable();
+    this.detail_form.get('xgrupo').enable();
+    this.detail_form.get('msuma_cosas_rc').enable();
+    this.detail_form.get('msuma_personas_rc').enable();
+    this.detail_form.get('mprima_rc').enable();
+    this.detail_form.get('msuma_defensa_per').enable();
+    this.detail_form.get('mprima_defensa_per').enable();
+    this.detail_form.get('msuma_limite_ind').enable();
+    this.detail_form.get('mprima_limite_ind').enable();
+    this.detail_form.get('msuma_apov_ga').enable();
+    this.detail_form.get('msuma_apov_mu').enable();
+    this.detail_form.get('mapov_mu').enable();
+    this.detail_form.get('msuma_apov_in').enable();
+    this.detail_form.get('mapov_in').enable();
+    this.detail_form.get('mapov_ga').enable();
+    this.detail_form.get('msuma_apov_fu').enable();
+    this.detail_form.get('mapov_fu').enable();
+    this.showEditButton = false;
+    this.showSaveButton = true;
+    this.editStatus = true;
+  }
+
+  cancelSave(){
+    if(this.code){
+      this.loading_cancel = true;
+      this.showSaveButton = false;
+      this.showEditButton = true;
+      this.editStatus = false;
+      this.getPlanData();
+    }else{
+      this.router.navigate([`/products/plan-rcv-index`]);
     }
+  }
+
+  onSubmit(form){
+    this.submitted = true;
+    this.loading = true;
+    if(this.detail_form.invalid){
+      this.loading = false;
+      return;
+    }
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params;
+    let url;
+
+    if(this.code){
+      params = {
+        cusuario: this.currentUser.data.cusuario,
+        cplan_rc: this.code,
+        xplan_rc: form.xplan_rc,
+        ctarifa: this.ctarifa,
+        xclase: form.xclase,
+        xtipo: form.xtipo,
+        xgrupo: form.xgrupo,
+        msuma_cosas_rc: form.msuma_cosas_rc,
+        msuma_personas_rc: form.msuma_personas_rc,
+        mprima_rc: form.mprima_rc,
+        msuma_defensa_per: form.msuma_defensa_per,
+        mprima_defensa_per: form.mprima_defensa_per,
+        msuma_limite_ind: form.msuma_limite_ind,
+        mprima_limite_ind: form.mprima_limite_ind,
+        msuma_apov_ga: form.msuma_apov_ga,
+        msuma_apov_mu: form.msuma_apov_mu,
+        mapov_mu: form.mapov_mu,
+        msuma_apov_in: form.msuma_apov_in,
+        mapov_in: form.mapov_in,
+        mapov_ga: form.mapov_ga,
+        msuma_apov_fu: form.msuma_apov_fu,
+        mapov_fu: form.mapov_fu
+      };
+      url = `${environment.apiUrl}/api/plan-rcv/update`;
+    }
+    this.http.post(url, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        if(this.code){
+          location.reload();
+        }else{
+          this.router.navigate([`/plan-rcv/plan-rcv-detail/${response.data.cplan_rc}`]);
+        }
+      }else{
+        let condition = response.data.condition;
+        if(condition == "service-order-already-exist"){
+          this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        }
+      }
+      this.loading = false;
+    },
+    (err) => {
+      let code = 1;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
+      //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+      this.loading = false;
+    });
+  }
 }

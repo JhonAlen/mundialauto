@@ -57,15 +57,12 @@
                 <div class="card-body">
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="planRcvList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="C. Tarifa" field="ctarifa" [width]="110" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="C. Tarifa" field="ctarifa" [width]="100" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Clase" field="xclase" [width]="210" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Tipo" field="xtipo" [width]="215" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Grupo" field="xgrupo" [width]="258" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Personas RCV" field="mut_personas_rc" [width]="110" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Prima Rcv" field="mprima_rc" [width]="110" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Exceso de Limite" field="mexceso_limite" [width]="110" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Suma Apov Inicial" field="msuma_apov_in" [width]="110" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Apov Inicial" field="mapov_in" [width]="110" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Daños a Personas" field="msuma_cosas_rc" [width]="215" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Daños a Cosas" field="mprima_rc" [width]="215" [sortable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>
