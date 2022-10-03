@@ -25,6 +25,9 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
+  coinList:any[] = [];
+  usoList:any[] = [];
+  colorList:any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -56,7 +59,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       email: [''],
       xuso: ['', Validators.required],
       xplaca: ['', Validators.required],
-      xserialdecarroceria: ['', Validators.required],
+      xserialcarroceria: ['', Validators.required],
+      cmoneda:['', Validators.required],
       femision: [''],
       ccorredor:[''],
     });
@@ -96,6 +100,9 @@ export class FleetContractIndividualDetailComponent implements OnInit {
 
     this.getPlanData();
     this.getCorredorData();
+    this.getMoneda();
+    this.getUso();
+    this.getColor();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -117,7 +124,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       }
   }
 
-  async getModeloData(){
+async getModeloData(){
     let params = {
       cpais: 58,
       cmarca: this.search_form.get('cmarca').value
@@ -138,8 +145,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       }
     }
   }
-
-  async getVersionData(){
+async getVersionData(){
     let params = {
       cpais: 58,
       cmarca: this.search_form.get('cmarca').value,
@@ -158,8 +164,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       }
       },);
   }
-
- async getCorredorData() {
+async getCorredorData() {
    let params={
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
@@ -177,9 +182,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       }
     }, );
   
- }
-
- async getPlanData(){
+  }
+async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
@@ -199,8 +203,64 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       }
     }
     },);
-}
+  }
+async getMoneda(){
+  let params =  {
+    cpais: this.currentUser.data.cpais,
+    ccompania: this.currentUser.data.ccompania,
 
+  };
+
+  this.http.post(`${environment.apiUrl}/api/valrep/coin`, params).subscribe((response: any) => {
+    if(response.data.status){
+      this.coinList = [];
+      for(let i = 0; i < response.data.list.length; i++){
+        this.coinList.push({ 
+          id: response.data.list[i].cmoneda,
+          value: response.data.list[i].xmoneda,
+        });
+      }
+    }
+    },);
+  }
+async getUso(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+  
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.usoList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.usoList.push({ 
+            id: response.data.list[i].cuso,
+            value: response.data.list[i].xuso,
+          });
+        }
+      }
+      },);
+  }
+async getColor(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+  
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/color`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.colorList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.colorList.push({ 
+            id: response.data.list[i].ccolor,
+            value: response.data.list[i].xcolor,
+          });
+        }
+      }
+      },);
+  }
 
    onSubmit(form){
     this.submitted = true;
@@ -213,7 +273,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         xnombre: form.xnombre,
         xapellido: form.xapellido,
         cano:form.cano,
-        xcolor:form.xcolor,      
+        xcolor:this.search_form.get('xcolor').value,      
         cmarca: this.search_form.get('cmarca').value,
         cmodelo: this.search_form.get('cmodelo').value,
         cversion: this.search_form.get('cversion').value,
@@ -222,15 +282,18 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         fnac: form.fnac,
         xdireccionfiscal: form.xdireccionfiscal,
         xserialmotor: form.xserialmotor,
-        xserialdecarroceria: form.xserialdecarroceria,
+        xserialcarroceria: form.xserialcarroceria,
         xplaca: form.xplaca,
-        xuso: form.xuso,
+        xuso: this.search_form.get('xuso').value,
+        cmoneda: this.search_form.get('cmoneda').value,
         xtelefono_prop: form.xtelefono_prop,
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
+        xcedula: form.xrif_cliente,
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
+        this.router.navigate([`subscription/fleet-contract-management-index`]);
       }
     },
     (err) => {

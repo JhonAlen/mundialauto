@@ -3,7 +3,7 @@ section{
 }
 
 h2{
-    margin-left: 50px;
+    color: #364d59;
 }
 
 
@@ -21,13 +21,13 @@ footer{
     border-color: white;
 }
 
-h3,h2,h6{
+h3,h6{
     color: white;
 }
 
 .g-0{
     background-color: whitesmoke;
-    border-radius: 7px;
+    border-radius: 0px 0px 5px 5px;
 }
 
 
@@ -39,4 +39,10 @@ button{
 
 .button{
     text-align-last: center
+}
+
+.card-header{
+padding: 2px;
+border-radius: 5px 5px 0px 0px;
+text-align-last: center;
 }
