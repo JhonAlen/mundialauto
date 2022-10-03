@@ -700,7 +700,7 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('xestatusgeneral').setValue(result.xestatusgeneral);
         this.detail_form.get('cestatusgeneral').setValue(result.cestatusgeneral);
         if(this.detail_form.get('cestatusgeneral').value == 13){
-          if(window.confirm("Este usuario no ha pagado mano")){
+          if(window.confirm("Este usuario está en estatus pendiente, por ende, no se le prestará ningun servicio.")){
             this.router.navigate([`events/notification-index`]);
           }
         }
