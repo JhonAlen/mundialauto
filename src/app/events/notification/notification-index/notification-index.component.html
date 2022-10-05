@@ -100,12 +100,13 @@
                 <div class="card-body">
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="notificationList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="Codigo" field="cnotificacion" [width]="172" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Codigo" field="cnotificacion" [width]="100" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Fecha de Creacion" field="fcreacion" [width]="173" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Fecha de Evento" field="fevento" [width]="173" [sortable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Cliente" field="xcliente" [width]="173" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Asociado" field="xasociado" [width]="172" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Placa" field="xplaca" [width]="172" [sortable]="false"></ag-grid-column>
+                            <ag-grid-column headerName="Vehiculo" field="xvehiculo" [width]="310" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Causa Siniestro" field="xcausasiniestro" [width]="172" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Placa" field="xplaca" [width]="110" [sortable]="false"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>

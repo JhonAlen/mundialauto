@@ -56,7 +56,8 @@ export class NotificationServiceOrderComponent implements OnInit {
   statusList: any[] = [];
   cancellationList: any[] = [];
   alert = { show : false, type : "", message : "" }
-  replacementDeletedRowList
+  replacementDeletedRowList;
+  cancelled: boolean = false;
 
     constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -128,7 +129,11 @@ export class NotificationServiceOrderComponent implements OnInit {
       cestatusgeneral: [''],
       xestatusgeneral: [''],
       ccausaanulacion: [''],
-      xcausaanulacion: ['']
+      xcausaanulacion: [''],
+      xauto: [''],
+      xnombres: [''],
+      xnombresalternativos: [''],
+      xnombrespropietario: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -173,6 +178,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.repuestos();
       this.getStatus();
       if(this.notificacion.cnotificacion){
+        console.log('si entro')
         this.searchQuote();
       }
     }
@@ -182,7 +188,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.createServiceOrder();
       this.repuestos();
       this.getStatus();
-      this.popup_form.get('cestatusgeneral').setValue(52);
+      this.popup_form.get('cestatusgeneral').setValue(13);
       this.popup_form.get('cestatusgeneral').disable();
       this.popup_form.get('ccausaanulacion').setValue('');
       this.popup_form.get('ccausaanulacion').disable();
@@ -260,6 +266,14 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
             this.popup_form.get('bactivo').disable();
             this.popup_form.get('xactivo').disable();
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
           }
           this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion });
       }
@@ -359,20 +373,23 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   searchQuote(){
     //Buscar cotizacion para obtener el código y elaborar el reporte
-
+    console.log('por aca tambien')
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
       cnotificacion: this.notificacion.cnotificacion,
     }
+    console.log(params)
     this.http.post(`${environment.apiUrl}/api/quote-request/search-quote`, params, options).subscribe((response: any) => {
       if(response.data.list){
+        console.log(response.data.list)
         for(let i = 0; i < response.data.list.length; i++){
           this.popup_form.get('ccotizacion').setValue(response.data.list[i].ccotizacion);
           this.popup_form.get('ccotizacion').disable();
         }
       }
       if(this.popup_form.get('ccotizacion').value) {
+        console.log('holaaaa')
         this.listRepairOrder();
       }
     },
@@ -497,6 +514,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cproveedor').disable();
             this.popup_form.get('xproveedor').setValue(response.data.list[0].xproveedor);
             this.popup_form.get('xproveedor').disable();
+            this.providerList.push({ proveedor: response.data.list[0].cproveedor, value: response.data.list[0].xproveedor});
             this.popup_form.get('xdireccionproveedor').setValue(response.data.list[0].xdireccionproveedor);
             this.popup_form.get('xdireccionproveedor').disable();
             this.popup_form.get('xdescripcion').setValue(response.data.list[0].xdescripcion);
@@ -523,8 +541,22 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('fano').disable();
             this.popup_form.get('fcreacion').setValue(response.data.list[0].fcreacion);
             this.popup_form.get('fcreacion').disable(); 
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
             this.popup_form.get('cestatusgeneral').setValue(response.data.list[0].cestatusgeneral);
+            if(this.popup_form.get('cestatusgeneral').value == 3){
+              this.cancelled = true;
+            }else{
+              this.cancelled = false;
+            }
             this.popup_form.get('xestatusgeneral').setValue(response.data.list[0].xestatusgeneral);
+            this.statusList.push({ id: response.data.list[0].cestatusgeneral, value: response.data.list[0].xestatusgeneral})
             this.changeCancellationCause();
             //this.cancellationList.push({ id: response.data.list[0].ccausaanulacion, value: response.data.list[0].xcausaanulacion})
             this.popup_form.get('ccausaanulacion').setValue(response.data.list[0].ccausaanulacion);
@@ -691,18 +723,24 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cservicio').disable();
             this.popup_form.get('xservicio').setValue(response.data.list[0].xservicio);
             this.popup_form.get('xservicio').disable();
+            this.serviceList.push({ servicio: response.data.list[0].cservicio, value: response.data.list[0].xservicio});
             this.popup_form.get('cservicioadicional').setValue(response.data.list[0].cservicioadicional);
             this.popup_form.get('cservicioadicional').disable();
             this.popup_form.get('xservicioadicional').setValue(response.data.list[0].xservicioadicional);
             this.popup_form.get('xservicioadicional').disable();
+            this.aditionalServiceList.push({ servicio: response.data.list[0].cservicioadicional, value: response.data.list[0].xservicioadicional});
             if(response.data.list[0].cservicioadicional == 224){
               this.popup_form.get('cservicioadicional').setValue(response.data.list[0].cservicioadicional);
               this.popup_form.get('cservicioadicional').disable();
               this.popup_form.get('xservicioadicional').setValue(response.data.list[0].xservicioadicional);
               this.popup_form.get('xservicioadicional').disable();
+              this.aditionalServiceList.push({ servicio: response.data.list[0].cservicioadicional, value: response.data.list[0].xservicioadicional});
             }
             this.popup_form.get('cproveedor').setValue(response.data.list[0].cproveedor);
             this.popup_form.get('cproveedor').disable();
+            this.popup_form.get('xproveedor').setValue(response.data.list[0].xproveedor);
+            this.popup_form.get('xproveedor').disable();
+            this.providerList.push({ proveedor: response.data.list[0].cproveedor, value: response.data.list[0].xproveedor});
             this.popup_form.get('xtelefonoproveedor').setValue(response.data.list[0].xtelefonoproveedor);
             this.popup_form.get('xtelefonoproveedor').disable();
             this.popup_form.get('xdescripcion').setValue(response.data.list[0].xdescripcion);
@@ -745,6 +783,15 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cestatusgeneral').disable()
             this.popup_form.get('xestatusgeneral').setValue(response.data.list[0].xestatusgeneral);
             this.popup_form.get('xestatusgeneral').disable()
+            this.statusList.push({ id: response.data.list[0].cestatusgeneral, value: response.data.list[0].xestatusgeneral})
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
             this.cancellationList.push({ id: response.data.list[0].ccausaanulacion, value: response.data.list[0].xcausaanulacion})
             this.popup_form.get('ccausaanulacion').setValue(response.data.list[0].ccausaanulacion);
             this.popup_form.get('ccausaanulacion').disable()
@@ -870,7 +917,10 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   editar(){
-    this.popup_form.get('bactivo').enable();
+    this.popup_form.get('cestatusgeneral').enable();
+    this.popup_form.get('xestatusgeneral').enable();
+    this.popup_form.get('ccausaanulacion').enable();
+    this.popup_form.get('xcausaanulacion').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
   }
@@ -1035,6 +1085,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       baceptacion: 1,
       ccotizacion: this.popup_form.get('ccotizacion').value
     };
+    console.log(params)
     this.http.post(`${environment.apiUrl}/api/quote-request/detail-list`, params, options).subscribe((response : any) => {
       this.purchaseOrder = {}
       if(response.data.status){
@@ -1049,6 +1100,7 @@ export class NotificationServiceOrderComponent implements OnInit {
               cmoneda: response.data.replacements[i].cmoneda,
               xmoneda: response.data.replacements[i].xmoneda
             }
+            console.log(replacement)
             replacementsList.push(replacement);
           }
           this.purchaseOrder = {
@@ -1098,6 +1150,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       baceptacion: 1,
       ccotizacion: this.popup_form.get('ccotizacion').value
     };
+    console.log(params)
     this.http.post(`${environment.apiUrl}/api/quote-request/detail-list`, params, options).subscribe((response : any) => {
       this.purchaseOrder = {}
       if(response.data.status){
@@ -1149,6 +1202,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       dataRow.push({text: row.ncantidad, border:[false, false, false, false]});
       dataRow.push({text: row.xrepuesto, border:[false, false, false, false]});
       dataRow.push({text:    `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.munitariorepuesto)} ${row.xmoneda} `, border:[false, false, false, false]});
+      console.log(dataRow)
       body.push(dataRow);
     });
     return body;
@@ -1240,24 +1294,13 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.alert.show = true;
     });
   }
-  // sendEmail(){
-  //   let orden = { corden: this.notificacion.corden };
-  //   const modalRef = this.modalService.open(NotificationEmailComponent);
-  //   modalRef.componentInstance.orden = orden;
-  //   modalRef.result.then((result: any) => { 
-  //     if(result){
-  //       this.emailList.push({
-  //         cgrid: this.emailList.length,
-  //         create: true,
-  //         corden: result.corden,
-  //         xmensaje: result.xmensaje,
-  //         xrutaarchivo: result.xrutaarchivo
-  //       });
-  //     }
-  //   });
-  // }
 
   changeCancellationCause(){  
+    if(this.popup_form.get('cestatusgeneral').value == 3){
+      this.cancelled = true;
+    }else{
+      this.cancelled = false;
+    }
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -1267,11 +1310,11 @@ export class NotificationServiceOrderComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/valrep/cancellation-cause/service-order`, params, options).subscribe((response: any) => {
       if(response.data.list){
         for(let i = 0; i < response.data.list.length; i++){
-          if(this.popup_form.get('cestatusgeneral').value == 42){
+          if(this.popup_form.get('cestatusgeneral').value == 3){
             this.cancellationList.push({ id: response.data.list[i].ccausaanulacion, value: response.data.list[i].xcausaanulacion})
             this.popup_form.get('ccausaanulacion').enable()
             this.popup_form.get('xcausaanulacion').enable()
-          }else if(this.popup_form.get('cestatusgeneral').value != 42){
+          }else if(this.popup_form.get('cestatusgeneral').value != 3){
             this.popup_form.get('ccausaanulacion').setValue('')
             this.popup_form.get('ccausaanulacion').disable()
             this.popup_form.get('xcausaanulacion').setValue('')

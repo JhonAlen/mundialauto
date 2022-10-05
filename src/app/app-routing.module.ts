@@ -177,12 +177,9 @@ import { ServicesInsurersIndexComponent } from './tables/services-insurers/servi
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
-<<<<<<< HEAD
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
-=======
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
->>>>>>> aa8f84740817d3c34bfaa2bb643b2c339db7c1d4
 
 const routes: Routes = [
  

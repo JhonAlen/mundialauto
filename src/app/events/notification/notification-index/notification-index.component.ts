@@ -37,7 +37,9 @@ export class NotificationIndexComponent implements OnInit {
       casociado: [''],
       fcreacion: [''],
       fevento: [''],
-      xplaca: ['']
+      xplaca: [''],
+      xcausasiniestro: [''],
+      xvehiculo: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -163,7 +165,9 @@ export class NotificationIndexComponent implements OnInit {
             fevento: new Date(response.data.list[i].fevento).toISOString().substring(0, 10),
             xcliente: response.data.list[i].xcliente,
             xasociado: response.data.list[i].xasociado,
-            xplaca: response.data.list[i].xplaca
+            xplaca: response.data.list[i].xplaca,
+            xvehiculo: response.data.list[i].xvehiculo,
+            xcausasiniestro: response.data.list[i].xcausasiniestro
           });
         }
       }

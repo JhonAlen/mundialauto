@@ -1929,7 +1929,9 @@
             "ACTIVE": "Activo",
             "STATUS": "Estatus",
             "SENDEMAIL": "Enviar Correo",
-            "CANCELLATIONCAUSE": "Causa de Anulación"
+            "CANCELLATIONCAUSE": "Causa de Anulación",
+            "VEHICLE":"Vehículo",
+            "OWNER": "Propietario"
         },
         "SETTLEMENT": {
             "SETTLEMENT": "Finiquito",
