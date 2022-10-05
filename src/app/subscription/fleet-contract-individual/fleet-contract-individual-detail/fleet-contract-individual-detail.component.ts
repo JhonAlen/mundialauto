@@ -195,18 +195,18 @@ async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
-    ctipoplan: 1,
+ 
 
     
   };
 
-  this.http.post(`${environment.apiUrl}/api/valrep/plan`, params).subscribe((response: any) => {
+  this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
     if(response.data.status){
       this.planList = [];
       for(let i = 0; i < response.data.list.length; i++){
         this.planList.push({ 
           id: response.data.list[i].cplan,
-          value: response.data.list[i].xplan,
+          value: response.data.list[i].xplan_rc,
         });
       }
     }
@@ -238,12 +238,11 @@ async getUso(){
   
     };
   
-    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
       if(response.data.status){
         this.usoList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.usoList.push({ 
-            id: response.data.list[i].cuso,
             value: response.data.list[i].xuso,
           });
         }

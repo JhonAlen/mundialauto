@@ -197,7 +197,7 @@
                       <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
                         <div class="form-outline">
                           <label class="form-label" for="form3Examplev5">Tipo de vehículo</label>
-                          <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }" >
+                          <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }"  >
                             <option></option>
                             <option *ngFor="let tipo of tipoList" value="{{ tipo.value }}">{{ tipo.value }}</option>
                           </select>                       
@@ -238,17 +238,20 @@
 
                   <div class="row">
 
+
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label" >Tipo de uso</label>
-                        <select formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors } " >
-                          <option *ngFor="let uso of usoList" value="{{ uso.value }}">{{ uso.value }}</option>
-                        </select>                       
-                         <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
+                        <label class="form-label" >Puestos de pasajeros</label>
+                        <input type="text" formControlName="ncapacidad_p" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncapacidad_p').errors }"/>
+                        <div *ngIf="submitted && search_form.get('ncapacidad_p').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('ncapacidad_p').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
+
+
+
+
 
 
                     <div class="col-md-6 mb-4 pb-2">
@@ -289,10 +292,12 @@
                     <div class="row">
                       <div class="col-md-6 mb-4 pb-2">
                         <div class="form-outline">
-                          <label class="form-label" >Puestos de pasajeros</label>
-                          <input type="text" formControlName="ncapacidad_p" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncapacidad_p').errors }"/>
-                          <div *ngIf="submitted && search_form.get('ncapacidad_p').errors"  class="invalid-feedback">
-                            <div *ngIf="search_form.get('ncapacidad_p').errors.required">Se requiere completar el campo</div>
+                          <label class="form-label" >Tipo de clase</label>
+                          <select formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors } " (change)="getTipo()">
+                            <option *ngFor="let uso of usoList" value="{{ uso.value }}">{{ uso.value }}</option>
+                          </select>                       
+                           <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
                           </div>
                         </div>
                       </div>
