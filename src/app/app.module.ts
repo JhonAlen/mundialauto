@@ -278,8 +278,8 @@ import { CollectionDetailComponent } from './administration/collection/collectio
 import { AdministrationPaymentComponent } from './pop-up/administration-payment/administration-payment.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 import { FleetContractIndividualIndexComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-index/fleet-contract-individual-index.component';
-
-
+import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
+import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 
 
 export function HttpLoaderFactory(http: HttpClient){
@@ -548,7 +548,9 @@ export function HttpLoaderFactory(http: HttpClient){
     CollectionDetailComponent,
     AdministrationPaymentComponent,
     FleetContractIndividualDetailComponent,
-    FleetContractIndividualIndexComponent
+    FleetContractIndividualIndexComponent,
+    PlanRcvIndexComponent,
+    PlanRcvDetailComponent
   ],
   imports: [
     BrowserModule,
