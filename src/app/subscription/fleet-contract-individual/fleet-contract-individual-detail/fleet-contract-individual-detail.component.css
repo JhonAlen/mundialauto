@@ -33,7 +33,7 @@ h3,h6{
 
 button{
     margin: 21px;
-    background-color: royalblue;
+    background-color: #142263;
     color: white;
 }
 
@@ -45,4 +45,12 @@ button{
 padding: 2px;
 border-radius: 5px 5px 0px 0px;
 text-align-last: center;
+}
+
+option{
+    font-size: 17px;
+}
+select{
+    font-size: 17px;
+
 }
