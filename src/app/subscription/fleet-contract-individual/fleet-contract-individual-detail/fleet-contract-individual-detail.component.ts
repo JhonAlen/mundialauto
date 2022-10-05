@@ -57,11 +57,11 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       cversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
       xcobertura: ['', Validators.required],
-      xtipo: ['', Validators.required],
-      cplan: ['', Validators.required],
+      xtipo: [''],
+      cplan: [''],
       xtelefono_prop: ['', Validators.required],
       email: [''],
-      xuso: ['', Validators.required],
+      xuso: [''],
       xplaca: ['', Validators.required],
       xserialcarroceria: ['', Validators.required],
       cmoneda:['', Validators.required],
@@ -195,18 +195,18 @@ async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
- 
+    ctipoplan:1
 
     
   };
 
-  this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
+  this.http.post(`${environment.apiUrl}/api/valrep/plan`, params).subscribe((response: any) => {
     if(response.data.status){
       this.planList = [];
       for(let i = 0; i < response.data.list.length; i++){
         this.planList.push({ 
           id: response.data.list[i].cplan,
-          value: response.data.list[i].xplan_rc,
+          value: response.data.list[i].xplan,
         });
       }
     }
