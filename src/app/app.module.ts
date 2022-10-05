@@ -276,12 +276,18 @@ import { FleetLoadingComponent } from './subscription/fleet-loading/fleet-loadin
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
 import { AdministrationPaymentComponent } from './pop-up/administration-payment/administration-payment.component';
+<<<<<<< HEAD
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 import { FleetContractIndividualIndexComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-index/fleet-contract-individual-index.component';
 
 
+=======
+import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
+import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
+>>>>>>> origin/fran
 
 
 export function HttpLoaderFactory(http: HttpClient){
@@ -549,10 +555,16 @@ export function HttpLoaderFactory(http: HttpClient){
     CollectionIndexComponent,
     CollectionDetailComponent,
     AdministrationPaymentComponent,
+<<<<<<< HEAD
     PlanRcvIndexComponent,
     PlanRcvDetailComponent,
     FleetContractIndividualDetailComponent,
     FleetContractIndividualIndexComponent
+=======
+    FleetContractIndividualDetailComponent,
+    PlanRcvIndexComponent,
+    PlanRcvDetailComponent
+>>>>>>> origin/fran
   ],
   imports: [
     BrowserModule,
