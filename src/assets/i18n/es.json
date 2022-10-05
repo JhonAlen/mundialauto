@@ -1831,7 +1831,8 @@
             "TYPECOLLECTIONS": "Tipo de Recaudos",
             "SENDEMAIL": "Enviar Correo",
             "MESSAGE": "Mensaje del Correo",
-            "GENERATESETTLEMENT": "Generar Finiquito"
+            "GENERATESETTLEMENT": "Generar Finiquito",
+            "STATUS": "Estatus"
         },
         "SERVICEREQUESTS": {
             "SERVICEREQUESTS": "Solicitudes de Servicio",
@@ -1973,6 +1974,25 @@
             "PAYMENTMETHODOLOGIESLIST": "Lista de Metodologías de Pago",
             "ADDPAYMENTMETHODOLOGY": "Agregar Metodología de Pago",
             "PAYMENTMETHODOLOGY": "Metodología de Pago"
+        },
+        "PLAN_RCV":{
+            "PLAN_RCV": "Planes RCV",
+            "SEARCHPLANRCV": "Buscar Planes RCV",
+            "SEARCH": "Buscar",
+            "PLANTYPE": "Tipo de Plan",
+            "PLAN_RCVLIST": "Lista de Planes RCV",
+            "SAVE": "Guardar",
+            "CANCEL": "Cancelar",
+            "EDIT": "Editar",
+            "CREATE": "Crear",
+            "GENERALINFORMATION": "Información General",
+            "CLASS": "Clase",
+            "TYPE": "Tipo",
+            "GROUP": "Grupo",
+            "NAME": "Nombre",
+            "AMOUNTS": "Montos",
+            "PLAN": "Plan",
+            "RATECODE": "Código de Tarifa"
         }
     },
     "API": {

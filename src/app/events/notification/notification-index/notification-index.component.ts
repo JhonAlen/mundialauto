@@ -93,7 +93,7 @@ export class NotificationIndexComponent implements OnInit {
       else if(code == 404){ message = "No se encontró información con los parámetros ingresados."; }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
-      this.alert.type = 'danger';
+      this.alert.type = 'primary';
       this.alert.show = true;
     });
   }
@@ -123,7 +123,7 @@ export class NotificationIndexComponent implements OnInit {
         else if(code == 404){ message = "No se encontró información con los parámetros ingresados."; }
         else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
         this.alert.message = message;
-        this.alert.type = 'danger';
+        this.alert.type = 'primary';
         this.alert.show = true;
       });
     }
@@ -176,7 +176,7 @@ export class NotificationIndexComponent implements OnInit {
       else if(code == 404){ message = "No se encontró información con los parámetros ingresados."; }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
-      this.alert.type = 'danger';
+      this.alert.type = 'primary';
       this.alert.show = true;
       this.loading = false;
     });

@@ -177,6 +177,8 @@ import { ServicesInsurersIndexComponent } from './tables/services-insurers/servi
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
+import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
+import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 
 const routes: Routes = [
@@ -438,7 +440,10 @@ const routes: Routes = [
   { path: 'events/service-order-detail/:id', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-index', component: CollectionIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-detail', component: CollectionDetailComponent, canActivate: [AuthGuard] },
-  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] }
+  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv-index', component: PlanRcvIndexComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv-detail', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv-detail/:id', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
 
  
 ];
