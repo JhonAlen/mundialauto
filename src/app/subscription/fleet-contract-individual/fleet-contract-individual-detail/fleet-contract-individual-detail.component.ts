@@ -22,6 +22,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   alert = { show: false, type: "", message: "" };
   marcaList: any[] = [];
   modeloList: any[] = [];
+  coberturaList: any[] = [];
+  tipoList: any[] = [];
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
@@ -54,15 +56,19 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xdireccionfiscal: ['', Validators.required],
       cversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
-      cplan: ['', Validators.required],
+      xcobertura: ['', Validators.required],
+      xtipo: [''],
+      cplan: [''],
       xtelefono_prop: ['', Validators.required],
       email: [''],
-      xuso: ['', Validators.required],
+      xuso: [''],
       xplaca: ['', Validators.required],
       xserialcarroceria: ['', Validators.required],
       cmoneda:['', Validators.required],
       femision: [''],
       ccorredor:[''],
+      ncapacidad_p: [''],
+      
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -103,6 +109,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.getMoneda();
     this.getUso();
     this.getColor();
+    this.getCobertura();
+    this.getTipo();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -187,7 +195,7 @@ async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
-    ctipoplan: 1,
+    ctipoplan:1
 
     
   };
@@ -230,12 +238,11 @@ async getUso(){
   
     };
   
-    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
       if(response.data.status){
         this.usoList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.usoList.push({ 
-            id: response.data.list[i].cuso,
             value: response.data.list[i].xuso,
           });
         }
@@ -261,6 +268,42 @@ async getColor(){
       }
       },);
   }
+async getCobertura(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/coverage`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.coberturaList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.coberturaList.push({ 
+            id: response.data.list[i].ccobertura,
+            value: response.data.list[i].xcobertura,
+          });
+        }
+      }
+      },);
+  }
+async getTipo(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/type-vehicle`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.tipoList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.tipoList.push({ 
+            value: response.data.list[i].xtipo,
+          });
+        }
+      }
+      },);
+  }
+
 
    onSubmit(form){
     this.submitted = true;
@@ -290,6 +333,9 @@ async getColor(){
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
         xcedula: form.xrif_cliente,
+        xtipo: this.search_form.get('xtipo').value,
+        xcobertura: this.search_form.get('xcobertura').value,
+        ncapacidad_p: form.ncapacidad_p,
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
