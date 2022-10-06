@@ -244,7 +244,8 @@ export class FleetContractManagementIndexComponent implements OnInit {
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
       let params = {
-        clote: this.search_form.get('clote').value
+        clote: this.search_form.get('clote').value,
+        ccarga: this.search_form.get('ccarga').value
       }
       this.http.post(`${environment.apiUrl}/api/valrep/receipt`, params, options).subscribe((response : any) => {
         if(response.data.status){

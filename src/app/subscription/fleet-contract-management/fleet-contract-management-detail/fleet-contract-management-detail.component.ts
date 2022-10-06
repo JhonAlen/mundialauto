@@ -608,7 +608,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
                 }
             }
           }
-          console.log(this.realCoverageList)
         }
         this.extraCoverageList = [];
         if(response.data.extraCoverages){
@@ -621,7 +620,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
               mcoberturaextra: response.data.extraCoverages[i].mcoberturaextra
             });
           }
-          console.log(this.extraCoverageList)
         }
         this.accesoryList = [];
         if(response.data.accesories){
@@ -634,7 +632,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
               maccesoriocontratoflota: response.data.accesories[i].maccesoriocontratoflota
             });
           }
-          console.log(this.accesoryList)
         }
         this.inspectionList = [];
         if(response.data.inspections){
@@ -661,7 +658,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
             });
           }
         }
-        console.log(this.inspectionList)
       }
       this.loading_cancel = false;
     }, 

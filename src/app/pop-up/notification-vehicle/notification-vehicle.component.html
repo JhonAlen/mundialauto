@@ -84,12 +84,13 @@
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <ag-grid-angular style="width: 100%; height: 267px;" class="ag-theme-alpine" [rowData]="vehicleList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="Code" field="ccontratoflota" [width]="207" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Brand" field="xmarca" [width]="207" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Model" field="xmodelo" [width]="207" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Version" field="xversion" [width]="207" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Plate" field="xplaca" [width]="208" [sortable]="true"></ag-grid-column>
+                        <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="vehicleList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
+                            <ag-grid-column headerName="Propietario" field="xpropietario" [width]="190" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Marca" field="xmarca" [width]="170" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Modelo" field="xmodelo" [width]="190" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Version" field="xversion" [width]="190" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Placa" field="xplaca" [width]="140" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Estatus" field="xestatusgeneral" [width]="150" [sortable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>
