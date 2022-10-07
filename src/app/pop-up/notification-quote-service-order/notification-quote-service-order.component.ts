@@ -221,7 +221,8 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
     let options = { headers: headers };
     let params = {
       cnotificacion: this.popup_form.get('cnotificacion').value,
-      ccompania: this.currentUser.data.ccompania
+      ccompania: this.currentUser.data.ccompania,
+      cpais: this.currentUser.data.cpais
     }
     this.http.post(`${environment.apiUrl}/api/valrep/aditional-service-quote`, params, options).subscribe((response: any) => {
       if(response.data.status){

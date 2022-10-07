@@ -166,10 +166,9 @@ export class CollectionDetailComponent implements OnInit {
           this.detail_form.get('xtelefono').setValue('');
           this.detail_form.get('xtelefono').disable();
         }
-        console.log(new Date(response.data.fdesde_pol).toISOString().substring(0, 10))
-        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString());
+        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString().substring(0, 10));
         this.detail_form.get('fdesde_pol').disable();
-        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol));
+        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol).toISOString().substring(0, 10));
         this.detail_form.get('fhasta_pol').disable();
 
         if(response.data.xdocidentidadpropietario){

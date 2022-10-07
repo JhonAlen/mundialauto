@@ -57,11 +57,17 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
       xcobertura: ['', Validators.required],
+<<<<<<< HEAD
       xtipo: ['', Validators.required],
       cplan: ['', Validators.required],
       xtelefono_emp: ['', Validators.required],
+=======
+      xtipo: [''],
+      cplan: [''],
+      xtelefono_prop: ['', Validators.required],
+>>>>>>> origin/develop
       email: [''],
-      xuso: ['', Validators.required],
+      xuso: [''],
       xplaca: ['', Validators.required],
       xserialcarroceria: ['', Validators.required],
       cmoneda:['', Validators.required],
@@ -196,8 +202,14 @@ async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
+<<<<<<< HEAD
     ctipoplan: 1
  
+=======
+    ctipoplan:1
+
+    
+>>>>>>> origin/develop
   };
 
   this.http.post(`${environment.apiUrl}/api/valrep/plan`, params).subscribe((response: any) => {

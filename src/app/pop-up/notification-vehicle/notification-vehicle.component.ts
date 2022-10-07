@@ -36,9 +36,11 @@ export class NotificationVehicleComponent implements OnInit {
       cmarca: [''],
       cmodelo: [''],
       cversion: [''],
+      xversion: [''],
       xplaca: [''],
       xestatusgeneral: [''],
-      cestatusgeneral: ['']
+      cestatusgeneral: [''],
+      xpropietario: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -162,6 +164,7 @@ export class NotificationVehicleComponent implements OnInit {
             fhasta_pol: response.data.list[i].fhasta_pol,
             xmarca: response.data.list[i].xmarca,
             xmodelo: response.data.list[i].xmodelo,
+            xversion: response.data.list[i].xversion,
             xtipo: response.data.list[i].xtipo,
             xplaca: response.data.list[i].xplaca,
             fano: response.data.list[i].fano,
@@ -174,6 +177,7 @@ export class NotificationVehicleComponent implements OnInit {
             xdireccionpropietario: response.data.list[i].xdireccionpropietario,
             xtelefonocelularpropietario: response.data.list[i].xtelefonocelularpropietario,
             xemailpropietario: response.data.list[i].xemailpropietario,
+            xpropietario: response.data.list[i].xpropietario
           });
         }
         console.log(this.vehicleList)

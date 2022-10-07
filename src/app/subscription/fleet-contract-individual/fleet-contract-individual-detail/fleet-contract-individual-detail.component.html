@@ -198,12 +198,31 @@
                           <option></option>
                           <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
                         </select>                       
-                       <div *ngIf="submitted && search_form.get('cplan').errors"  class="invalid-feedback">
+                       <!-- <div *ngIf="submitted && search_form.get('cplan').errors"  class="invalid-feedback">
                           <div *ngIf="search_form.get('cplan').errors.required">Se requiere completar el campo</div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
 
+<<<<<<< HEAD
+=======
+
+
+  
+                      <div class="col-md-6 mb-4 pb-2 mb-md-0 pb-md-0">
+                        <div class="form-outline">
+                          <label class="form-label" for="form3Examplev5">Tipo de vehículo</label>
+                          <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }"  >
+                            <option></option>
+                            <option *ngFor="let tipo of tipoList" value="{{ tipo.value }}">{{ tipo.value }}</option>
+                          </select>                       
+                           <!-- <div *ngIf="submitted && search_form.get('xtipo').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
+                          </div> -->
+                        </div>
+                      </div>
+                      
+>>>>>>> origin/develop
                   </div> 
 
               </div>
@@ -293,9 +312,9 @@
                           <select formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors } ">
                             <option *ngFor="let uso of usoList" value="{{ uso.value}}">{{ uso.value }}</option>
                           </select>                       
-                           <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
-                            <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
-                          </div>
+                           <!-- <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div> 
+                          </div>-->
                         </div>
                       </div>
                     </div>

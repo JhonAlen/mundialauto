@@ -34,6 +34,17 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
+                                    <label>Tipo de Servicio</label>
+                                    <select formControlName="ctiposervicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ctiposervicio').errors }">
+                                        <option></option>
+                                        <option *ngFor="let serviceType of serviceTypeList" value="{{ serviceType.id }}">{{ serviceType.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('ctiposervicio').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                              </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
                                     <label>{{ "TABLES.SERVICES.NAME" | translate }}</label>
                                     <input type="text" formControlName="xservicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xservicio').errors }">
                                     <div *ngIf="submitted && detail_form.get('xservicio').errors"  class="invalid-feedback">

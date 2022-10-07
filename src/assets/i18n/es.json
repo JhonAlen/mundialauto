@@ -734,6 +734,9 @@
             "DOCUMENTS": "Documentos",
             "COLLECTION": "Recaudo",
             "ADDDOCUMENTS": "Agregar Documentos"
+        },
+        "SERVICESINSURERS": {
+            "SERVICESINSURERS": "Servicios de Aseguradoras"
         }
     },
     "CONFIGURATION": {
@@ -1881,7 +1884,8 @@
             "TYPECOLLECTIONS": "Tipo de Recaudos",
             "SENDEMAIL": "Enviar Correo",
             "MESSAGE": "Mensaje del Correo",
-            "GENERATESETTLEMENT": "Generar Finiquito"
+            "GENERATESETTLEMENT": "Generar Finiquito",
+            "STATUS": "Estatus"
         },
         "SERVICEREQUESTS": {
             "SERVICEREQUESTS": "Solicitudes de Servicio",
@@ -1978,7 +1982,9 @@
             "ACTIVE": "Activo",
             "STATUS": "Estatus",
             "SENDEMAIL": "Enviar Correo",
-            "CANCELLATIONCAUSE": "Causa de Anulación"
+            "CANCELLATIONCAUSE": "Causa de Anulación",
+            "VEHICLE":"Vehículo",
+            "OWNER": "Propietario"
         },
         "SETTLEMENT": {
             "SETTLEMENT": "Finiquito",
