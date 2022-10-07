@@ -90,8 +90,8 @@ export class CollectionIndexComponent implements OnInit {
           this.collectionList.push({ 
             crecibo: response.data.list[i].crecibo,
             clote: response.data.list[i].clote,
-            fdesde_pol: new Date(response.data.list[0].fdesde_pol).toISOString().substring(0, 10),
-            fhasta_pol: new Date(response.data.list[0].fhasta_pol).toISOString().substring(0, 10),
+            fdesde_pol: new Date(response.data.list[i].fdesde_pol).toISOString().substring(0, 10),
+            fhasta_pol: new Date(response.data.list[i].fhasta_pol).toISOString().substring(0, 10),
             xnombrepropietario: response.data.list[i].xnombrepropietario,
             cestatusgeneral: response.data.list[i].cestatusgeneral,
             xestatusgeneral: response.data.list[i].xestatusgeneral,
