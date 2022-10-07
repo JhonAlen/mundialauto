@@ -49,17 +49,17 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xapellido: ['', Validators.required],
       cano: ['', Validators.required],
       xcolor: [''],
-      cmarca: [''],
-      cmodelo: [''],
+      xmarca: [''],
+      xmodelo: [''],
       xrif_cliente:[''],
       fnac:[''],
       xdireccionfiscal: ['', Validators.required],
-      cversion: ['', Validators.required],
+      xversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
       xcobertura: ['', Validators.required],
       xtipo: ['', Validators.required],
       cplan: ['', Validators.required],
-      xtelefono_prop: ['', Validators.required],
+      xtelefono_emp: ['', Validators.required],
       email: [''],
       xuso: ['', Validators.required],
       xplaca: ['', Validators.required],
@@ -103,7 +103,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
   async initializeDropdownDataRequest(){
-
     this.getPlanData();
     this.getCorredorData();
     this.getMoneda();
@@ -127,15 +126,16 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       if(request.data.list){
         for(let i = 0; i < request.data.list.length; i++){
           this.marcaList.push({ 
-            id: request.data.list[i].cmarca, value: request.data.list[i].xmarca });
+            id: request.data.list[i].cmarca, 
+            value: request.data.list[i].xmarca });
         }
       }
   }
 
 async getModeloData(){
     let params = {
-      cpais: 58,
-      cmarca: this.search_form.get('cmarca').value
+      cpais: this.currentUser.data.cpais,
+      xmarca: this.search_form.get('xmarca').value
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -149,15 +149,15 @@ async getModeloData(){
       this.modeloList = [];
       for(let i = 0; i < request.data.list.length; i++){
          this.modeloList.push({ 
-           cmodelo: request.data.list[i].cmodelo, xmodelo: request.data.list[i].xmodelo });
+           id: request.data.list[i].cmodelo, 
+           value: request.data.list[i].xmodelo });
       }
     }
   }
 async getVersionData(){
     let params = {
       cpais: 58,
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value
+      xmodelo: this.search_form.get('xmodelo').value
     };
 
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
@@ -165,10 +165,11 @@ async getVersionData(){
         this.versionList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
-            cversion: response.data.list[i].cversion,
-            xversion: response.data.list[i].xversion,
+            id: response.data.list[i].cversion,
+            value: response.data.list[i].xversion,
           });
         }
+        
       }
       },);
   }
@@ -195,18 +196,17 @@ async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
+    ctipoplan: 1
  
-
-    
   };
 
-  this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
+  this.http.post(`${environment.apiUrl}/api/valrep/plan`, params).subscribe((response: any) => {
     if(response.data.status){
       this.planList = [];
       for(let i = 0; i < response.data.list.length; i++){
         this.planList.push({ 
           id: response.data.list[i].cplan,
-          value: response.data.list[i].xplan_rc,
+          value: response.data.list[i].xplan,
         });
       }
     }
@@ -238,11 +238,12 @@ async getUso(){
   
     };
   
-    this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
       if(response.data.status){
         this.usoList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.usoList.push({ 
+            id: response.data.list[i].cuso,
             value: response.data.list[i].xuso,
           });
         }
@@ -317,9 +318,9 @@ async getTipo(){
         xapellido: form.xapellido,
         cano:form.cano,
         xcolor:this.search_form.get('xcolor').value,      
-        cmarca: this.search_form.get('cmarca').value,
-        cmodelo: this.search_form.get('cmodelo').value,
-        cversion: this.search_form.get('cversion').value,
+        xmarca: this.search_form.get('xmarca').value,
+        xmodelo: this.search_form.get('xmodelo').value,
+        xversion: this.search_form.get('xversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
         fnac: form.fnac,
@@ -329,7 +330,7 @@ async getTipo(){
         xplaca: form.xplaca,
         xuso: this.search_form.get('xuso').value,
         cmoneda: this.search_form.get('cmoneda').value,
-        xtelefono_prop: form.xtelefono_prop,
+        xtelefono_emp: form.xtelefono_emp,
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
         xcedula: form.xrif_cliente,
