@@ -30,6 +30,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   coinList:any[] = [];
   usoList:any[] = [];
   colorList:any[] = [];
+  metodologiaList:any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -47,14 +48,14 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
-      cano: ['', Validators.required],
+      cano: [''],
       xcolor: [''],
       xmarca: [''],
       xmodelo: [''],
-      xrif_cliente:[''],
-      fnac:[''],
+      xrif_cliente:['', Validators.required],
+      xtelefono_prop:[''],
       xdireccionfiscal: ['', Validators.required],
-      xversion: ['', Validators.required],
+      xversion: [''],
       xserialmotor: ['', Validators.required],
       xcobertura: ['', Validators.required],
       xtipo: ['', Validators.required],
@@ -65,9 +66,16 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xplaca: ['', Validators.required],
       xserialcarroceria: ['', Validators.required],
       cmoneda:['', Validators.required],
-      femision: [''],
+      femision: ['', Validators.required],
       ccorredor:[''],
       ncapacidad_p: [''],
+      cmetodologiapago: ['', Validators.required],
+      fdesde_pol: ['', Validators.required],
+      fhasta_pol: ['', Validators.required],
+      fdesde_rec: ['', Validators.required],
+      fhasta_rec: ['', Validators.required],
+
+
       
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -110,6 +118,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.getColor();
     this.getCobertura();
     this.getTipo();
+    this.getmetodologia();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -304,6 +313,24 @@ async getTipo(){
       }
       },);
   }
+async getmetodologia(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.metodologiaList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.metodologiaList.push({ 
+            id: response.data.list[i].cmetodologiapago,
+            value: response.data.list[i].xmetodologiapago,
+          });
+        }
+      }
+      },);
+  }  
 
 
    onSubmit(form){
@@ -323,7 +350,7 @@ async getTipo(){
         xversion: this.search_form.get('xversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
-        fnac: form.fnac,
+        xtelefono_prop: form.xtelefono_prop,
         xdireccionfiscal: form.xdireccionfiscal,
         xserialmotor: form.xserialmotor,
         xserialcarroceria: form.xserialcarroceria,
@@ -337,6 +364,15 @@ async getTipo(){
         xtipo: this.search_form.get('xtipo').value,
         xcobertura: this.search_form.get('xcobertura').value,
         ncapacidad_p: form.ncapacidad_p,
+        cmetodologiapago: form.cmetodologiapago,
+        femision: form.femision,
+        fdesde_pol: form.fdesde_pol,
+        fhasta_pol: form.fhasta_pol,
+        fdesde_rec: form.fdesde_rec,
+        fhasta_rec: form.fhasta_rec,
+
+
+
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
