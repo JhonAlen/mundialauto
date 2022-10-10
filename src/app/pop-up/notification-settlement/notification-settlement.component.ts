@@ -81,7 +81,11 @@ export class NotificationSettlementComponent implements OnInit {
       crepuesto: [''],
       xrepuesto: [''],
       repuestos: [''],
-      xdescripcion: ['']
+      xdescripcion: [''],
+      xnombres: [''],
+      xauto: [''],
+      xnombrespropietario: [''],
+      xnombresalternativos: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -118,7 +122,7 @@ export class NotificationSettlementComponent implements OnInit {
       this.canSave = true;
       this.createSettlement();
       this.repuestos();
-      this.searchServiceOrder();
+      //this.searchServiceOrder();
     }
   }
 
@@ -164,6 +168,14 @@ export class NotificationSettlementComponent implements OnInit {
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
             this.popup_form.get('bactivo').disable();
             this.popup_form.get('xactivo').disable();
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
           }
           this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion });
       }
@@ -203,7 +215,7 @@ export class NotificationSettlementComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
       if(response.data.list){
         for(let i = 0; i < response.data.list.length; i++){
-          this.replacementList.push({ crepuesto: response.data.list[i].crepuesto, xrepuesto: response.data.list[i].xrepuesto});
+          this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
         }
       }
     },
@@ -219,14 +231,48 @@ export class NotificationSettlementComponent implements OnInit {
     });
   }
 
-  searchServiceOrder(){
+  // searchServiceOrder(){
+  //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  //   let options = { headers: headers };
+  //   let params = {
+  //     cnotificacion: this.notificacion.cnotificacion
+  //   };
+  //   this.http.post(`${environment.apiUrl}/api/valrep/settlement/service-order`, params, options).subscribe((response : any) => {
+  //     if(response.data.list){
+  //       for(let i = 0; i < response.data.list.length; i++){
+  //         let xservicio;
+  //         if(response.data.list[i].xservicio){
+  //           xservicio = response.data.list[i].xservicio
+  //         }else{
+  //           xservicio = response.data.list[i].xservicioadicional
+  //         }
+  //         this.serviceOrderList.push({ id: response.data.list[i].corden, data: `${response.data.list[i].corden} - ${xservicio} - ${response.data.list[i].xdanos ? response.data.list[i].xdanos : ' '}`});
+  //       }
+  //     }
+  //   },
+  //   (err) => {
+  //     let code = err.error.data.code;
+  //     let message;
+  //     if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+  //     else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+  //     else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+  //     this.alert.message = message;
+  //     this.alert.type = 'danger';
+  //     this.alert.show = true;
+  //   });
+  // }
+
+  changeServiceOrder(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cnotificacion: this.notificacion.cnotificacion
+      cnotificacion: this.notificacion.cnotificacion,
+      xdanos: this.popup_form.get('xrepuesto').value
     };
-    this.http.post(`${environment.apiUrl}/api/valrep/settlement/service-order`, params, options).subscribe((response : any) => {
+    console.log(params)
+    this.http.post(`${environment.apiUrl}/api/notification/settlement/service-order`, params, options).subscribe((response : any) => {
       if(response.data.list){
+        this.serviceOrderList = [];
         for(let i = 0; i < response.data.list.length; i++){
           let xservicio;
           if(response.data.list[i].xservicio){
@@ -259,8 +305,8 @@ export class NotificationSettlementComponent implements OnInit {
     let serviceOrderFilter = this.serviceOrderList.filter((option) => { return option.id == this.popup_form.get('corden').value; });
 
     this.notificacion.xobservacion = form.xobservacion;
-    this.notificacion.crepuesto = replacementFilter[0].crepuesto;
-    this.notificacion.xdanos = replacementFilter[0].xrepuesto;
+    //this.notificacion.crepuesto = replacementFilter[0].crepuesto;
+    this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
     this.notificacion.corden = this.popup_form.get('corden').value;
 
     console.log(this.notificacion.corden)
