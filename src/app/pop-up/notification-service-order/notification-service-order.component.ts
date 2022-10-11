@@ -134,7 +134,8 @@ export class NotificationServiceOrderComponent implements OnInit {
       xauto: [''],
       xnombres: [''],
       xnombresalternativos: [''],
-      xnombrespropietario: ['']
+      xnombrespropietario: [''],
+      ccarga: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -176,7 +177,6 @@ export class NotificationServiceOrderComponent implements OnInit {
 
     if(!this.notificacion.edit && !this.notificacion.createServiceOrder ){
       this.editServiceOrder();
-      this.repuestos();
       this.getStatus();
       if(this.notificacion.cnotificacion){
         this.searchQuote();
@@ -274,6 +274,8 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xnombrespropietario').disable(); 
             this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
             this.popup_form.get('xnombresalternativos').disable(); 
+            this.popup_form.get('ccarga').setValue(response.data.list[0].ccarga);
+            this.popup_form.get('ccarga').disable(); 
           }
           this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion });
       }
@@ -283,7 +285,8 @@ export class NotificationServiceOrderComponent implements OnInit {
     let params = {
       cnotificacion: this.popup_form.get('cnotificacion').value,
       ccompania: this.currentUser.data.ccompania,
-      cpais: this.currentUser.data.cpais
+      cpais: this.currentUser.data.cpais,
+      ccarga: this.popup_form.get('ccarga').value
     }
     this.http.post(`${environment.apiUrl}/api/valrep/notification-services`, params, options).subscribe((response: any) => {
       this.serviceList = [];
@@ -393,7 +396,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "No se encontraron Daños"; }
+      else if(code == 404){ message = "¡Recuerda que el proveedor no ha cotizado!"; }
       //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
       this.alert.type = 'primary';
@@ -664,6 +667,7 @@ export class NotificationServiceOrderComponent implements OnInit {
           if (this.notificacion.cnotificacion == response.data.list[0].cnotificacion){
             this.popup_form.get('corden').setValue(response.data.list[0].corden);
             this.popup_form.get('corden').disable();
+            this.repuestos();
             this.popup_form.get('cnotificacion').setValue(response.data.list[0].cnotificacion);
             this.popup_form.get('cnotificacion').disable();
             this.popup_form.get('ccontratoflota').setValue(response.data.list[0].ccontratoflota);
@@ -705,6 +709,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cmoneda').disable();
             this.popup_form.get('xmoneda').setValue(response.data.list[0].xmoneda);
             this.popup_form.get('xmoneda').disable();
+            this.coinList.push({ id: response.data.list[0].cmoneda, value: response.data.list[0].xmoneda });
             this.popup_form.get('pimpuesto').setValue(response.data.list[0].pimpuesto);
             this.popup_form.get('pimpuesto').disable();
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
@@ -948,9 +953,9 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.notificacion.xservicio = aditionalServiceFilter[0].value ? aditionalServiceFilter[0].value: undefined;
     }
     
-    if(this.notificacion.cmoneda){
+    if(this.popup_form.get('cmoneda').value){
       this.notificacion.cmoneda = this.popup_form.get('cmoneda').value;
-      this.notificacion.xmoneda = this.popup_form.get('xmoneda').value;
+      this.notificacion.xmoneda = coinFilter[0].value;
     }else{
       this.notificacion.cmoneda = 0;
       this.notificacion.xmoneda = 'Sin Moneda';
@@ -979,7 +984,7 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   changeAditionalService(){
 
-    if(this.popup_form.get('cservicioadicional').value != 224){
+    if(this.popup_form.get('cservicioadicional').value != 228){
       this.popup_form.get('xdesde').disable();
       this.popup_form.get('xhacia').disable();
       this.popup_form.get('mmonto').disable();
@@ -1276,6 +1281,7 @@ export class NotificationServiceOrderComponent implements OnInit {
           cnotificacion: this.notificacion.cnotificacion,
           corden: this.popup_form.get('corden').value
         };
+        console.log(params)
         this.http.post(`${environment.apiUrl}/api/service-order/notification-service-order`, params, options).subscribe((response : any) => {
           if(response.data.list){
             this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
@@ -1284,6 +1290,8 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos)
             this.popup_form.get('xdanos').disable();
           }
+          console.log(this.replacementList)
+          console.log('holaaaa')
         },
         (err) => {
           let code = err.error.data.code;
@@ -1382,7 +1390,7 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   buildStatus(){
-    if(this.popup_form.get('cestatusgeneral').value == 52){
+    if(this.popup_form.get('cestatusgeneral').value == 13){
       this.popup_form.get('xestatusgeneral').value
       return "color1"
     }else{
@@ -1968,7 +1976,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`Orden de Servicio para ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`Orden de Servicio para ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
   } else if(this.popup_form.get('cservicioadicional').value == 282 || this.popup_form.get('cservicio').value == 282){
     const pdfDefinition: any = {
       content: [
@@ -2492,7 +2500,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       }
     }
     pdfMake.createPdf(pdfDefinition).open();
-    pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+    pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
     } else if(this.popup_form.get('cservicioadicional').value == 283 || this.popup_form.get('cservicio').value == 283){
       const pdfDefinition: any = {
         content: [
@@ -3015,7 +3023,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
       }else{
       const pdfDefinition: any = {
         content: [
@@ -3485,7 +3493,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
     }
   }
 }

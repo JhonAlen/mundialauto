@@ -422,7 +422,9 @@ export class FleetContractManagementIndexComponent implements OnInit {
             xmarca: response.data.list[i].xmarca,
             xmodelo: response.data.list[i].xmodelo,
             xversion: response.data.list[i].xversion,
-            xplaca: response.data.list[i].xplaca
+            xplaca: response.data.list[i].xplaca,
+            xestatusgeneral: response.data.list[i].xestatusgeneral,
+            xpoliza: response.data.list[i].xpoliza
           });
         }
         this.receiptInfo = {
