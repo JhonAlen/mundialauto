@@ -1754,6 +1754,9 @@
             "MODEL": "Modelo",
             "VERSION": "Versión",
             "VEHICLESLIST": "Lista de Vehículos"
+        },
+        "FLEETLOADING": {
+            "FLEETLOADING": "Carga de Flotas"
         }
     },
     "EVENTS": {
