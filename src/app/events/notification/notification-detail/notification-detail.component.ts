@@ -702,6 +702,8 @@ export class NotificationDetailComponent implements OnInit {
         if(this.detail_form.get('cestatusgeneral').value == 13){
           if(window.confirm("Este usuario está en estatus pendiente, por ende, no se le prestará ningun servicio.")){
             this.router.navigate([`events/notification-index`]);
+          }else{
+            this.router.navigate([`events/notification-index`]);
           }
         }
         this.detail_form.get('xmarca').setValue(result.xmarca);
