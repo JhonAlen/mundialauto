@@ -282,11 +282,19 @@ export class NotificationServiceOrderComponent implements OnInit {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
+    let servicio;
+    if(this.popup_form.get('cservicio').value){
+      servicio = this.popup_form.get('cservicio').value
+    }else{
+      servicio = this.popup_form.get('cservicioadicional').value
+    }
     let params = {
       cnotificacion: this.popup_form.get('cnotificacion').value,
       ccompania: this.currentUser.data.ccompania,
       cpais: this.currentUser.data.cpais,
-      ccarga: this.popup_form.get('ccarga').value
+      ccarga: this.popup_form.get('ccarga').value,
+      cestado: this.notificacion.cestado,
+      cservicio: servicio
     }
     this.http.post(`${environment.apiUrl}/api/valrep/notification-services`, params, options).subscribe((response: any) => {
       this.serviceList = [];
@@ -663,8 +671,6 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.serviceList = [];
       this.aditionalServiceList = [];
       if(this.notificacion.cnotificacion){
-        console.log(response.data.list)
-        //let cnotificacion = this.code;
           if (this.notificacion.cnotificacion == response.data.list[0].cnotificacion){
             this.popup_form.get('corden').setValue(response.data.list[0].corden);
             this.popup_form.get('corden').disable();
@@ -747,9 +753,10 @@ export class NotificationServiceOrderComponent implements OnInit {
             }
             this.popup_form.get('cproveedor').setValue(response.data.list[0].cproveedor);
             this.popup_form.get('cproveedor').disable();
-            this.popup_form.get('xproveedor').setValue(response.data.list[0].xproveedor);
+            this.popup_form.get('xproveedor').setValue(response.data.list[0].xnombreproveedor);
             this.popup_form.get('xproveedor').disable();
-            this.providerList.push({ proveedor: response.data.list[0].cproveedor, value: response.data.list[0].xproveedor});
+            console.log(this.popup_form.get('xproveedor').value)
+            this.providerList.push({ proveedor: response.data.list[0].cproveedor, value: response.data.list[0].xnombreproveedor});
             this.popup_form.get('xtelefonoproveedor').setValue(response.data.list[0].xtelefonoproveedor);
             this.popup_form.get('xtelefonoproveedor').disable();
             this.popup_form.get('xdescripcion').setValue(response.data.list[0].xdescripcion);
@@ -1017,14 +1024,14 @@ export class NotificationServiceOrderComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cservicio: this.popup_form.get('cservicioadicional').value
+      cservicio: this.popup_form.get('cservicioadicional').value,
+      cestado: this.notificacion.cestado
     }
     this.http.post(`${environment.apiUrl}/api/valrep/service-providers`, params, options).subscribe((response: any) => {
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
-          this.providerList.push({ proveedor: response.data.list[i].cproveedor, value: response.data.list[i].xproveedor, direccion: response.data.list[i].xdireccionproveedor, telefono: response.data.list[i].xtelefonoproveedor});
+          this.providerList.push({ proveedor: response.data.list[i].cproveedor, value: response.data.list[i].xproveedor});
         }
-        //this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
     },
     (err) => {
@@ -1062,7 +1069,8 @@ export class NotificationServiceOrderComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cservicio: this.popup_form.get('cservicio').value
+      cservicio: this.popup_form.get('cservicio').value,
+      cestado: this.notificacion.cestado
     }
     this.http.post(`${environment.apiUrl}/api/valrep/service-providers`, params, options).subscribe((response: any) => {
       if(response.data.status){
@@ -1292,7 +1300,6 @@ export class NotificationServiceOrderComponent implements OnInit {
           cnotificacion: this.notificacion.cnotificacion,
           corden: this.popup_form.get('corden').value
         };
-        console.log(params)
         this.http.post(`${environment.apiUrl}/api/service-order/notification-service-order`, params, options).subscribe((response : any) => {
           if(response.data.list){
             this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
@@ -1301,8 +1308,6 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos)
             this.popup_form.get('xdanos').disable();
           }
-          console.log(this.replacementList)
-          console.log('holaaaa')
         },
         (err) => {
           let code = err.error.data.code;

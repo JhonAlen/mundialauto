@@ -1507,7 +1507,7 @@ export class NotificationDetailComponent implements OnInit {
 
   addServiceOrder(){
     if(this.code){
-      let notificacion = {cnotificacion: this.code, repuestos: this.replacementList, createServiceOrder: true};
+      let notificacion = {cnotificacion: this.code, repuestos: this.replacementList, createServiceOrder: true, cestado: this.detail_form.get('cestado').value};
       const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
       modalRef.componentInstance.notificacion = notificacion;
       modalRef.result.then((result: any) => { 
@@ -1537,7 +1537,6 @@ export class NotificationDetailComponent implements OnInit {
         cestatusgeneral: result.cestatusgeneral,
         ccausaanulacion: result.ccausaanulacion
        });
-       console.log(this.serviceOrderList)
        this.serviceOrderGridApi.setRowData(this.serviceOrderList);
       });
     }
