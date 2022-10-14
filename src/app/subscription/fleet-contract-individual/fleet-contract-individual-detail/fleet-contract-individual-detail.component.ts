@@ -74,9 +74,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       fhasta_pol: ['', Validators.required],
       fdesde_rec: ['', Validators.required],
       fhasta_rec: ['', Validators.required],
-
-
-      
+      msuma_aseg:[''],
+      mtarifa:[''],
+      mprima_casco:[''],
+      mcatastrofico:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -370,6 +371,10 @@ async getmetodologia(){
         fhasta_pol: form.fhasta_pol,
         fdesde_rec: form.fdesde_rec,
         fhasta_rec: form.fhasta_rec,
+        msuma_aseg: form.msuma_aseg,
+        mtarifa: form.mtarifa,
+        mprima_casco: form.mprima_casco,
+        mcatastrofico: form.mcatastrofico
 
 
 

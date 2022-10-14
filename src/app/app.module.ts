@@ -265,6 +265,9 @@ import { QsomosComponent } from './club/pages-statics/qsomos/qsomos.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -554,7 +557,9 @@ export function HttpLoaderFactory(http: HttpClient){
     MatButtonModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatAutocompleteModule,
     MatDividerModule,
+    MatFormFieldModule,
     NgbModule,
     MatSidenavModule,
     MatToolbarModule,
