@@ -19,14 +19,14 @@
                                     <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.CANCEL" | translate }}
                                 </button>
-                                <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="createPDF()">
+                                <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="createPDF()" *ngIf="cuadro">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.POLICYBOX" | translate }}
                                 </button>
-                                <!--<button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editFleetContract()" *ngIf="canEdit && showEditButton">
+                                <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editFleetContract()" *ngIf="canEdit && showEditButton">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.EDIT" | translate }}
-                                </button>-->
+                                </button>
                                 <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.SAVE" | translate }}
@@ -352,7 +352,8 @@
                     </div>
                     <div class="card-body">
                         <div class="container">
-                            <ag-grid-angular #agGrid style="width: 100%; height: 440px;" class="ag-theme-alpine" [rowData]="realCoverageList" [pagination]="true" [paginationPageSize]="8" rowSelection="single" [enableCellChangeFlash]="true">
+                            <ag-grid-angular #agGrid style="width: 100%; height: 440px;" class="ag-theme-alpine" [rowData]="realCoverageList" [pagination]="true" [paginationPageSize]="8" rowSelection="single" [enableCellChangeFlash]="true" (rowClicked)="rowClicked($event)" (gridReady)="onCoverageGridReady($event)">
+                                <ag-grid-column headerName="Código" field="ccobertura" [width]="120" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Cobertura" field="xcobertura" [width]="518" [sortable]="true"></ag-grid-column>
                                 <ag-grid-column headerName="Prima" field="xprimacobertura" [width]="518" [sortable]="true"></ag-grid-column>
                             </ag-grid-angular>

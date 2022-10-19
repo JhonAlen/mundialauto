@@ -1792,6 +1792,7 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: event.data.bactivo,
         delete: false
       };
+      console.log(notificacion)
     }else{
       notificacion = { 
         edit: this.editStatus,
@@ -1821,6 +1822,7 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: event.data.bactivo,
         delete: false
       }
+      console.log(notificacion)
     }
     if(this.editStatus){
     const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
