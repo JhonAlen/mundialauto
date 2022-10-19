@@ -36,6 +36,7 @@
     "classlist.js": "^1.1.20150312",
     "html2canvas": "^1.4.1",
     "jquery": "^3.5.1",
+    "ngx-mat-select-search": "^5.0.0",
     "ngx-papaparse": "^5.1.0",
     "pdfmake": "^0.2.4",
     "perfect-scrollbar": "^1.5.5",
