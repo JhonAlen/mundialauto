@@ -80,9 +80,36 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       mcatastrofico:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
-
+    if(this.currentUser){
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cusuario: this.currentUser.data.cusuario,
+        cmodulo: 107
+      }
+      this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
+        if(response.data.status){
+          this.canCreate = response.data.bcrear;
+          this.canDetail = response.data.bdetalle;
+          this.canEdit = response.data.beditar;
+          this.canDelete = response.data.beliminar;
+          this.initializeDropdownDataRequest();
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 401){
+          let condition = err.error.data.condition;
+          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    } 
   }
-
 
   async initializeDropdownDataRequest(){
     this.getPlanData();
