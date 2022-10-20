@@ -20,10 +20,6 @@
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.SETTLEMENT.SAVE" | translate }}
                                 </button>
-                                <!-- <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(popup_form.value)" *ngIf="canEdit && showEditButton">
-                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                    {{ "EVENTS.SETTLEMENT.GENERATESETTLEMENT" | translate }}
-                                </button> -->
                                 <button [disabled]="loading || loading_cancel" class="btn btn-danger float-right mr-1" type="button" (click)="deleteProvider()" *ngIf="isEdit">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.SETTLEMENT.DELETE" | translate }}
@@ -90,24 +86,12 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
-                                    <select formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto').errors }" (change) = "changeServiceOrder()">
+                                    <select formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto').errors }">
                                         <option></option>
                                         <option *ngFor="let replacement of replacementList" value="{{ replacement.value }}">{{ replacement.value }}</option>
                                     </select>
                                     <div *ngIf="submitted && popup_form.get('xrepuesto').errors"  class="invalid-feedback">
                                         <div *ngIf="popup_form.get('xrepuesto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.SERVICEORDER" | translate }}</label>
-                                    <select formControlName="corden" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('corden').errors }">
-                                        <option></option>
-                                        <option *ngFor="let serviceOrder of serviceOrderList" value="{{ serviceOrder.id }}">{{ serviceOrder.data }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && popup_form.get('corden').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('corden').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>

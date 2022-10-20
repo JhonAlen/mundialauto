@@ -231,85 +231,15 @@ export class NotificationSettlementComponent implements OnInit {
     });
   }
 
-  // searchServiceOrder(){
-  //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-  //   let options = { headers: headers };
-  //   let params = {
-  //     cnotificacion: this.notificacion.cnotificacion
-  //   };
-  //   this.http.post(`${environment.apiUrl}/api/valrep/settlement/service-order`, params, options).subscribe((response : any) => {
-  //     if(response.data.list){
-  //       for(let i = 0; i < response.data.list.length; i++){
-  //         let xservicio;
-  //         if(response.data.list[i].xservicio){
-  //           xservicio = response.data.list[i].xservicio
-  //         }else{
-  //           xservicio = response.data.list[i].xservicioadicional
-  //         }
-  //         this.serviceOrderList.push({ id: response.data.list[i].corden, data: `${response.data.list[i].corden} - ${xservicio} - ${response.data.list[i].xdanos ? response.data.list[i].xdanos : ' '}`});
-  //       }
-  //     }
-  //   },
-  //   (err) => {
-  //     let code = err.error.data.code;
-  //     let message;
-  //     if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-  //     else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
-  //     else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-  //     this.alert.message = message;
-  //     this.alert.type = 'danger';
-  //     this.alert.show = true;
-  //   });
-  // }
-
-  changeServiceOrder(){
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params = {
-      cnotificacion: this.notificacion.cnotificacion,
-      xdanos: this.popup_form.get('xrepuesto').value
-    };
-    console.log(params)
-    this.http.post(`${environment.apiUrl}/api/notification/settlement/service-order`, params, options).subscribe((response : any) => {
-      if(response.data.list){
-        this.serviceOrderList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          let xservicio;
-          if(response.data.list[i].xservicio){
-            xservicio = response.data.list[i].xservicio
-          }else{
-            xservicio = response.data.list[i].xservicioadicional
-          }
-          this.serviceOrderList.push({ id: response.data.list[i].corden, data: `${response.data.list[i].corden} - ${xservicio} - ${response.data.list[i].xdanos ? response.data.list[i].xdanos : ' '}`});
-        }
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
-  }
-
   onSubmit(form){
      this.submitted = true;
      this.loading = true;
 
     let notificacionFilter = this.notificationList.filter((option) => { return option.id == this.popup_form.get('cnotificacion').value; });
     let replacementFilter = this.replacementList.filter((option) => { return option.crepuesto == this.popup_form.get('crepuesto').value; });
-    let serviceOrderFilter = this.serviceOrderList.filter((option) => { return option.id == this.popup_form.get('corden').value; });
 
     this.notificacion.xobservacion = form.xobservacion;
-    //this.notificacion.crepuesto = replacementFilter[0].crepuesto;
     this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
-    this.notificacion.corden = this.popup_form.get('corden').value;
-
-    console.log(this.notificacion.corden)
 
     this.activeModal.close(this.notificacion);
   }
