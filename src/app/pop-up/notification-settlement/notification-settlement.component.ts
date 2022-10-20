@@ -38,13 +38,18 @@ export class NotificationSettlementComponent implements OnInit {
   showSaveButton: boolean = false;
   showEditButton: boolean = false;
   notificationList: any[] = [];
-  purchaseOrder;
   coinList: any[] = []
   code;
   danos;
-  serviceOrderList: any[] = [];
   alert = { show : false, type : "", message : "" }
-  replacementDeletedRowList
+  repuesto2: boolean = false;
+  repuesto3: boolean = false;
+  repuesto4: boolean = false;
+  repuesto5: boolean = false;
+  repuesto6: boolean = false;
+  repuesto7: boolean = false;
+  repuesto8: boolean = false;
+  activar: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -85,7 +90,9 @@ export class NotificationSettlementComponent implements OnInit {
       xnombres: [''],
       xauto: [''],
       xnombrespropietario: [''],
-      xnombresalternativos: ['']
+      xnombresalternativos: [''],
+      cmoneda: [''],
+      botro: [false]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -122,7 +129,7 @@ export class NotificationSettlementComponent implements OnInit {
       this.canSave = true;
       this.createSettlement();
       this.repuestos();
-      //this.searchServiceOrder();
+      this.searchCoin();
     }
   }
 
@@ -231,6 +238,67 @@ export class NotificationSettlementComponent implements OnInit {
     });
   }
 
+  searchCoin(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpais: this.currentUser.data.cpais
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/coin`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.coinList.push({ id: response.data.list[i].cmoneda, value: response.data.list[i].xmoneda });
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.COINNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  activateCheck(){
+    this.activar = true;
+    this.popup_form.get('botro').enable();
+    this.activateReplacement();
+  }
+
+  activateReplacement(){
+    this.repuesto2 = true;
+    let campo = this.popup_form.get('crepuesto').value;
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cnotificacion: this.notificacion.cnotificacion
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+      this.replacementList = [];
+      if(response.data.list){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+    console.log(campo)
+    
+  }
+
   onSubmit(form){
      this.submitted = true;
      this.loading = true;
@@ -240,6 +308,9 @@ export class NotificationSettlementComponent implements OnInit {
 
     this.notificacion.xobservacion = form.xobservacion;
     this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
+    this.notificacion.mmontofiniquito = form.mmontofiniquito;
+    this.notificacion.cmoneda = this.popup_form.get('cmoneda').value;
+    
 
     this.activeModal.close(this.notificacion);
   }
