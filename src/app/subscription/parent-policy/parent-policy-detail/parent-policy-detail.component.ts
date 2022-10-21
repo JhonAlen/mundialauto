@@ -59,7 +59,7 @@ export class ParentPolicyDetailComponent implements OnInit {
     if (this.currentUser) {
       let params = {
         cusuario: this.currentUser.data.cusuario,
-        cmodulo: 105
+        cmodulo: 109
       }
       let request = await this.webService.securityVerifyModulePermission(params);
       if (request.error) {
@@ -90,7 +90,7 @@ export class ParentPolicyDetailComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      cmodulo: 105
+      cmodulo: 109
     };
     this.http.post(`${environment.apiUrl}/api/valrep/client`, params, options).subscribe((response : any) => {
       if(response.data.status){
@@ -192,7 +192,7 @@ export class ParentPolicyDetailComponent implements OnInit {
     let params = {
       permissionData: {
         cusuario: this.currentUser.data.cusuario,
-        cmodulo: 105
+        cmodulo: 109
       },
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
