@@ -1704,6 +1704,9 @@
         },
         "FLEETLOADING": {
             "FLEETLOADING": "Carga de Flotas"
+        },
+        "PARENTPOLICY": {
+            "PARENTPOLICY":"Póliza Matriz"
         }
     },
     "EVENTS": {
