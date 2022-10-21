@@ -71,7 +71,7 @@
                             <option *ngFor="let marca of marcaList" value="{{ marca.value }}">{{ marca.value }}</option>
                           </select>
                           <div *ngIf="submitted && search_form.get('xmarca').errors"  class="invalid-feedback">
-                            <div *ngIf="search_form.get('xmarca').errors.required"></div>
+                            <div *ngIf="search_form.get('xmarca').errors.required">Se requiere completar el campo</div>
                         </div>
                         </div>
                       </div>
@@ -159,7 +159,7 @@
 
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label">Número del contacto</label>
+                        <label class="form-label">Número de teléfono</label>
                         <input type="text" formControlName="xtelefono_emp" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtelefono_emp').errors }"/>
                         <div *ngIf="submitted && search_form.get('xtelefono_emp').errors"  class="invalid-feedback">
                           <div *ngIf="search_form.get('xtelefono_emp').errors.required">Se requiere completar el campo</div>
@@ -169,7 +169,7 @@
 
                   <div class="mb-4 pb-2">
                     <div class="form-outline form-white">
-                      <label class="form-label" for="form3Examplea2">Dirección del cliente</label>
+                      <label class="form-label" for="form3Examplea2">Dirección fiscal</label>
                       <input type="text" formControlName="xdireccionfiscal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xdireccionfiscal').errors }"/>
                       <div *ngIf="submitted && search_form.get('xdireccionfiscal').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('xdireccionfiscal').errors.required">Se requiere completar el campo</div>
@@ -186,7 +186,7 @@
                           <option *ngFor="let version of versionList" value="{{ version.value }}">{{ version.value }}</option>
                         </select>                       
                          <div *ngIf="submitted && search_form.get('xversion').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xversion').errors.required"></div>
+                          <div *ngIf="search_form.get('xversion').errors.required">Se requiere completar el campo</div>
                       </div>
                       </div>
                     </div>
@@ -264,7 +264,7 @@
 
                   <div class="col-md-6 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label" for="form3Examplev3">Número alterno</label>
+                      <label class="form-label" for="form3Examplev3">Número de teléfono alterno</label>
                       <input type="text" formControlName="xtelefono_prop" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtelefono_prop').errors }"/>
                       <div *ngIf="submitted && search_form.get('xtelefono_prop').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('xtelefono_prop').errors.required">Se requiere completar el campo</div>
@@ -290,7 +290,7 @@
 
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label" >Puestos de pasajeros</label>
+                        <label class="form-label" >Número de pasajeros</label>
                         <input type="text" formControlName="ncapacidad_p" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncapacidad_p').errors }"/>
                         <div *ngIf="submitted && search_form.get('ncapacidad_p').errors"  class="invalid-feedback">
                           <div *ngIf="search_form.get('ncapacidad_p').errors.required">Se requiere completar el campo</div>
@@ -354,7 +354,7 @@
 
                       <div class="col-md-6 mb-4 pb-2">
                         <div class="form-outline">
-                          <label class="form-label" >Metodología de pago</label>
+                          <label class="form-label" >Frecuencia de pago</label>
                           <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors } ">
                             <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id}}">{{ metodologia.value }}</option>
                           </select>                       
