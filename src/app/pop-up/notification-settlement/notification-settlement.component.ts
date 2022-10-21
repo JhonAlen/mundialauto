@@ -29,6 +29,13 @@ export class NotificationSettlementComponent implements OnInit {
   canSave: boolean = false;
   isEdit: boolean = false;
   replacementList: any[] = [];
+  replacementList2: any[] = [];
+  replacementList3: any[] = [];
+  replacementList4: any[] = [];
+  replacementList5: any[] = [];
+  replacementList6: any[] = [];
+  replacementList7: any[] = [];
+  replacementList8: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -49,7 +56,14 @@ export class NotificationSettlementComponent implements OnInit {
   repuesto6: boolean = false;
   repuesto7: boolean = false;
   repuesto8: boolean = false;
-  activar: boolean = false;
+  activarCheck: boolean = false;
+  activarCheck2: boolean = false;
+  activarCheck3: boolean = false;
+  activarCheck4: boolean = false;
+  activarCheck5: boolean = false;
+  activarCheck6: boolean = false;
+  activarCheck7: boolean = false;
+  activarCheck8: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -85,6 +99,13 @@ export class NotificationSettlementComponent implements OnInit {
       ccotizacion: [''],
       crepuesto: [''],
       xrepuesto: [''],
+      xrepuesto2: [''],
+      xrepuesto3: [''],
+      xrepuesto4: [''],
+      xrepuesto5: [''],
+      xrepuesto6: [''],
+      xrepuesto7: [''],
+      xrepuesto8: [''],
       repuestos: [''],
       xdescripcion: [''],
       xnombres: [''],
@@ -92,7 +113,14 @@ export class NotificationSettlementComponent implements OnInit {
       xnombrespropietario: [''],
       xnombresalternativos: [''],
       cmoneda: [''],
-      botro: [false]
+      botro: [false],
+      botro2: [false],
+      botro3: [false],
+      botro4: [false],
+      botro5: [false],
+      botro6: [false],
+      botro7: [false],
+      botro8: [false],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -264,39 +292,253 @@ export class NotificationSettlementComponent implements OnInit {
   }
 
   activateCheck(){
-    this.activar = true;
+    this.activarCheck = true;
     this.popup_form.get('botro').enable();
-    this.activateReplacement();
   }
 
-  activateReplacement(){
-    this.repuesto2 = true;
-    let campo = this.popup_form.get('crepuesto').value;
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params = {
-      cnotificacion: this.notificacion.cnotificacion
-    };
-    this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
-      this.replacementList = [];
-      if(response.data.list){
-        for(let i = 0; i < response.data.list.length; i++){
-          this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
+  activateCheck2(){
+    this.activarCheck2 = true;
+    this.popup_form.get('botro2').enable();
+  }
+
+  activateCheck3(){
+    this.activarCheck3 = true;
+    this.popup_form.get('botro3').enable();
+  }
+
+  activateCheck4(){
+    this.activarCheck4 = true;
+    this.popup_form.get('botro4').enable();
+  }
+
+  activateCheck5(){
+    this.activarCheck5 = true;
+    this.popup_form.get('botro5').enable();
+  }
+
+  activateCheck6(){
+    this.activarCheck6 = true;
+    this.popup_form.get('botro6').enable();
+  }
+
+  activateCheck7(){
+    this.activarCheck7 = true;
+    this.popup_form.get('botro7').enable();
+  }
+
+  activateCheck8(){
+    this.activarCheck8 = true;
+    this.popup_form.get('botro8').enable();
+  }
+
+  activateReplacement(form){
+    if(form.botro == true){
+      this.activarCheck = false;
+      this.repuesto2 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList2 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList2.push({ id2: response.data.list[i].crepuesto, value2: response.data.list[i].xrepuesto});
+          }
         }
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
-    console.log(campo)
-    
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+  }
+
+  activateReplacement2(form){
+    if(form.botro2 == true){
+      this.activarCheck2 = false;
+      this.repuesto3 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList3 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList3.push({ id3: response.data.list[i].crepuesto, value3: response.data.list[i].xrepuesto});
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+  }
+
+  activateReplacement3(form){
+    if(form.botro3 == true){
+      this.activarCheck3 = false;
+      this.repuesto4 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList4 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList4.push({ id4: response.data.list[i].crepuesto, value4: response.data.list[i].xrepuesto});
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+  }
+
+  activateReplacement4(form){
+    if(form.botro4 == true){
+      this.activarCheck4 = false;
+      this.repuesto5 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList5 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList5.push({ id5: response.data.list[i].crepuesto, value5: response.data.list[i].xrepuesto});
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+  }
+
+  activateReplacement5(form){
+    if(form.botro5 == true){
+      this.activarCheck5 = false;
+      this.repuesto6 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList6 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList6.push({ id6: response.data.list[i].crepuesto, value6: response.data.list[i].xrepuesto});
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+  }
+
+  activateReplacement6(form){
+    if(form.botro6 == true){
+      this.activarCheck = false;
+      this.repuesto7 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList7 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList7.push({ id7: response.data.list[i].crepuesto, value7: response.data.list[i].xrepuesto});
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+  }
+
+  activateReplacement7(form){
+    if(form.botro7 == true){
+      this.activarCheck7 = false;
+      this.repuesto8 = true;
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cnotificacion: this.notificacion.cnotificacion
+      };
+      this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+        this.replacementList8 = [];
+        if(response.data.list){
+          for(let i = 0; i < response.data.list.length; i++){
+            this.replacementList8.push({ id8: response.data.list[i].crepuesto, value8: response.data.list[i].xrepuesto});
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
   }
 
   onSubmit(form){
@@ -304,13 +546,123 @@ export class NotificationSettlementComponent implements OnInit {
      this.loading = true;
 
     let notificacionFilter = this.notificationList.filter((option) => { return option.id == this.popup_form.get('cnotificacion').value; });
-    let replacementFilter = this.replacementList.filter((option) => { return option.crepuesto == this.popup_form.get('crepuesto').value; });
+    let replacementFilter = this.replacementList.filter((option) => { return option.value == this.popup_form.get('xrepuesto').value; });
+    let replacement2Filter = this.replacementList2.filter((option) => { return option.value2 == this.popup_form.get('xrepuesto2').value; });
+    let replacement3Filter = this.replacementList3.filter((option) => { return option.value3 == this.popup_form.get('xrepuesto3').value; });
+    let replacement4Filter = this.replacementList4.filter((option) => { return option.value4 == this.popup_form.get('xrepuesto4').value; });
+    let replacement5Filter = this.replacementList5.filter((option) => { return option.value5 == this.popup_form.get('xrepuesto5').value; });
+    let replacement6Filter = this.replacementList6.filter((option) => { return option.value6 == this.popup_form.get('xrepuesto6').value; });
+    let replacement7Filter = this.replacementList7.filter((option) => { return option.value7 == this.popup_form.get('xrepuesto7').value; });
+    let replacement8Filter = this.replacementList8.filter((option) => { return option.value8 == this.popup_form.get('xrepuesto8').value; });
+
+
+    let repuesto1;
+    let repuesto2;
+    let repuesto3;
+    let repuesto4;
+    let repuesto5;
+    let repuesto6;
+    let repuesto7;
+    let repuesto8;
+
+    repuesto1 = replacementFilter[0].value
+
+    if(this.replacementList2.length > 0){
+       repuesto2 = replacement2Filter[0].value2;
+    }else{
+       repuesto2 = ' ';
+    }
+
+    if(this.replacementList3.length > 0){
+       repuesto3 = replacement3Filter[0].value3;
+    }else{
+       repuesto3 = ' ';
+    }
+
+    if(this.replacementList4.length > 0){
+       repuesto4 = replacement4Filter[0].value4;
+    }else{
+       repuesto4 = ' ';
+    }
+
+    if(this.replacementList5.length > 0){
+       repuesto5 = replacement5Filter[0].value5;
+    }else{
+       repuesto5 = ' ';
+    }
+
+    if(this.replacementList6.length > 0){
+       repuesto6 = replacement6Filter[0].value6;
+    }else{
+       repuesto6 = ' ';
+    }
+
+    if(this.replacementList7.length > 0){
+       repuesto7 = replacement7Filter[0].value7;
+    }else{
+       repuesto7 = ' ';
+    }
+
+    if(this.replacementList8.length > 0){
+       repuesto8 = replacement8Filter[0].value8;
+    }else{
+       repuesto8 = ' ';
+    }
+
+    let repuestos;
+    if(repuesto1){
+      repuestos = repuesto1
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto2){
+      repuestos = repuesto1  + ' ' +  repuesto2
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto3){
+      repuestos = repuesto1  + ' ' + repuesto2  + ' ' + repuesto3
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto4){
+      repuestos = repuesto1  + ' ' + repuesto2  + ' ' + repuesto3  + ' ' + repuesto4
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto5){
+      repuestos = repuesto1  + ' ' + repuesto2  + ' ' + repuesto3  + ' ' + repuesto4  + ' ' 
+                  + repuesto5
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto6){
+      repuestos = repuesto1  + ' ' + repuesto2  + ' ' + repuesto3  + ' ' + repuesto4  + ' ' 
+                  + repuesto5  + ' ' + repuesto6
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto7){
+      repuestos = repuesto1  + ' ' + repuesto2  + ' ' + repuesto3  + ' ' + repuesto4  + ' ' 
+                  + repuesto5  + ' ' + repuesto6  + ' ' + repuesto7
+    }else{
+      repuestos = ' '
+    }
+    if(repuesto8){
+      repuestos = repuesto1 + ' ' + repuesto2 + ' ' + repuesto3 + ' ' + repuesto4 + ' ' 
+                  + repuesto5 + ' ' + repuesto6  + ' ' + repuesto7  + ' ' + repuesto8
+    }else{
+      repuestos = ' '
+    }
+
+    console.log(repuestos)
 
     this.notificacion.xobservacion = form.xobservacion;
-    this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
+    this.notificacion.xdanos = repuestos;
     this.notificacion.mmontofiniquito = form.mmontofiniquito;
     this.notificacion.cmoneda = this.popup_form.get('cmoneda').value;
     
+    console.log(this.notificacion.xdanos)
 
     this.activeModal.close(this.notificacion);
   }
