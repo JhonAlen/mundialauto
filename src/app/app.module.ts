@@ -283,6 +283,9 @@ import { AdministrationPaymentComponent } from './pop-up/administration-payment/
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
+import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
+import { BatchComponent } from './pop-up/batch/batch.component';
 import { MatSelectModule } from '@angular/material/select';
 
 export function HttpLoaderFactory(http: HttpClient){
@@ -552,7 +555,10 @@ export function HttpLoaderFactory(http: HttpClient){
     AdministrationPaymentComponent,
     PlanRcvIndexComponent,
     PlanRcvDetailComponent,
-    FleetContractIndividualDetailComponent 
+    FleetContractIndividualDetailComponent,
+    ParentPolicyIndexComponent,
+    ParentPolicyDetailComponent,
+    BatchComponent 
   ],
   imports: [
     BrowserModule,

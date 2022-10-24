@@ -180,6 +180,8 @@ import { CollectionDetailComponent } from './administration/collection/collectio
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
+import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 
 const routes: Routes = [
  
@@ -387,6 +389,9 @@ const routes: Routes = [
   { path: 'events/notification-index', component: NotificationIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail', component: NotificationDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-individual-detail', component: FleetContractIndividualDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/parent-policy-index', component: ParentPolicyIndexComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/parent-policy-detail', component: ParentPolicyDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/parent-policy-detail/:id', component: ParentPolicyDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail/:id', component: NotificationDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/tracing-type-index', component: TracingTypeIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/tracing-type-detail', component: TracingTypeDetailComponent, canActivate: [AuthGuard] },
