@@ -37,6 +37,7 @@ export class ParentPolicyDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   editStatus: boolean = false;
+  isEditing: boolean = false;
   batchDeletedRowList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -168,6 +169,7 @@ export class ParentPolicyDetailComponent implements OnInit {
     this.sub = this.activatedRoute.paramMap.subscribe(params => {
       this.code = params.get('id');
       if(this.code){
+        this.isEditing = true;
         if(!this.canDetail){
           this.router.navigate([`/permission-error`]);
           return;
@@ -258,12 +260,17 @@ export class ParentPolicyDetailComponent implements OnInit {
         cmoneda: form.cmoneda,
         ccorredor: form.ccorredor,
         mprimaanual: form.mprimaanual,
+        xdescripcion_l: this.clientList.filter((cli) => { return cli.id == form.ccliente})[0].value,
         lotes: this.batchList
       }
     }
     this.http.post(`${environment.apiUrl}/api/parent-policy/create`, params, options).subscribe((response : any) => {
       if(response.data.status){
-        console.log('insertado');
+        if(this.code){
+          location.reload();
+        }else{
+          this.router.navigate([`/subscription/parent-policy-detail/${response.data.ccarga}`]);
+        }
       }
       this.loading = false
     },

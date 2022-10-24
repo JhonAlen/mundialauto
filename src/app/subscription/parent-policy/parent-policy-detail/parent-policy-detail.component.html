@@ -104,7 +104,7 @@
                             Lista de Lotes
                         </div>
                         <div class="col-6">
-                            <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addBatch()" *ngIf="canEdit || canCreate">
+                            <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addBatch()" *ngIf="isEditing">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 Crear Lote
                             </button>
