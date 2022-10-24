@@ -51,13 +51,14 @@ export class NotificationServiceOrderComponent implements OnInit {
   purchaseOrder;
   coinList: any[] = [];
   code;
-  danos;
+  danos: boolean = false;
   emailList: any[] = [];
   statusList: any[] = [];
   cancellationList: any[] = [];
   alert = { show : false, type : "", message : "" }
   replacementDeletedRowList;
   cancelled: boolean = false;
+  replacement: boolean = false
 
     constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -133,7 +134,8 @@ export class NotificationServiceOrderComponent implements OnInit {
       xauto: [''],
       xnombres: [''],
       xnombresalternativos: [''],
-      xnombrespropietario: ['']
+      xnombrespropietario: [''],
+      ccarga: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -175,10 +177,8 @@ export class NotificationServiceOrderComponent implements OnInit {
 
     if(!this.notificacion.edit && !this.notificacion.createServiceOrder ){
       this.editServiceOrder();
-      this.repuestos();
       this.getStatus();
       if(this.notificacion.cnotificacion){
-        console.log('si entro')
         this.searchQuote();
       }
     }
@@ -274,6 +274,8 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xnombrespropietario').disable(); 
             this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
             this.popup_form.get('xnombresalternativos').disable(); 
+            this.popup_form.get('ccarga').setValue(response.data.list[0].ccarga);
+            this.popup_form.get('ccarga').disable(); 
           }
           this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion });
       }
@@ -283,7 +285,8 @@ export class NotificationServiceOrderComponent implements OnInit {
     let params = {
       cnotificacion: this.popup_form.get('cnotificacion').value,
       ccompania: this.currentUser.data.ccompania,
-      cpais: this.currentUser.data.cpais
+      cpais: this.currentUser.data.cpais,
+      ccarga: this.popup_form.get('ccarga').value
     }
     this.http.post(`${environment.apiUrl}/api/valrep/notification-services`, params, options).subscribe((response: any) => {
       this.serviceList = [];
@@ -373,23 +376,19 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   searchQuote(){
     //Buscar cotizacion para obtener el código y elaborar el reporte
-    console.log('por aca tambien')
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
       cnotificacion: this.notificacion.cnotificacion,
     }
-    console.log(params)
     this.http.post(`${environment.apiUrl}/api/quote-request/search-quote`, params, options).subscribe((response: any) => {
       if(response.data.list){
-        console.log(response.data.list)
         for(let i = 0; i < response.data.list.length; i++){
           this.popup_form.get('ccotizacion').setValue(response.data.list[i].ccotizacion);
           this.popup_form.get('ccotizacion').disable();
         }
       }
       if(this.popup_form.get('ccotizacion').value) {
-        console.log('holaaaa')
         this.listRepairOrder();
       }
     },
@@ -397,7 +396,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "No se encontraron Daños"; }
+      else if(code == 404){ message = "¡Recuerda que el proveedor no ha cotizado!"; }
       //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
       this.alert.type = 'primary';
@@ -459,6 +458,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('pimpuesto').disable();
             this.popup_form.get('xobservacion').setValue(response.data.list[0].xobservacion);
             this.popup_form.get('xobservacion').disable();
+            this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
             this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos);
             this.popup_form.get('xdanos').disable();
             this.popup_form.get('cmoneda').setValue(response.data.list[0].cmoneda);
@@ -667,6 +667,7 @@ export class NotificationServiceOrderComponent implements OnInit {
           if (this.notificacion.cnotificacion == response.data.list[0].cnotificacion){
             this.popup_form.get('corden').setValue(response.data.list[0].corden);
             this.popup_form.get('corden').disable();
+            this.repuestos();
             this.popup_form.get('cnotificacion').setValue(response.data.list[0].cnotificacion);
             this.popup_form.get('cnotificacion').disable();
             this.popup_form.get('ccontratoflota').setValue(response.data.list[0].ccontratoflota);
@@ -697,6 +698,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xdocumentoproveedor').disable();
             this.popup_form.get('xobservacion').setValue(response.data.list[0].xobservacion);
             this.popup_form.get('xobservacion').disable();
+            this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
             this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos);
             this.popup_form.get('xdanos').disable();
             this.popup_form.get('mmontototal').setValue(response.data.list[0].mmontototal);
@@ -707,6 +709,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cmoneda').disable();
             this.popup_form.get('xmoneda').setValue(response.data.list[0].xmoneda);
             this.popup_form.get('xmoneda').disable();
+            this.coinList.push({ id: response.data.list[0].cmoneda, value: response.data.list[0].xmoneda });
             this.popup_form.get('pimpuesto').setValue(response.data.list[0].pimpuesto);
             this.popup_form.get('pimpuesto').disable();
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
@@ -928,10 +931,10 @@ export class NotificationServiceOrderComponent implements OnInit {
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    if (this.popup_form.invalid) {
-      this.loading = false;
-      return;
-    }
+    // if (this.popup_form.invalid) {
+    //   this.loading = false;
+    //   return;
+    // }
 
     let notificacionFilter = this.notificationList.filter((option) => { return option.id == this.popup_form.get('cnotificacion').value; });
     let serviceFilter = this.serviceList.filter((option) => { return option.servicio == this.popup_form.get('cservicio').value ; });
@@ -940,6 +943,7 @@ export class NotificationServiceOrderComponent implements OnInit {
     let coinFilter = this.coinList.filter((option) => { return option.id == this.popup_form.get('cmoneda').value; });
     let statusFilter = this.statusList.filter((option) => { return option.id == this.popup_form.get('cestatusgeneral').value; });
     let cancellationFilter = this.cancellationList.filter((option) => { return option.id == this.popup_form.get('ccausaanulacion').value; });
+    let replacementFilter = this.replacementList.filter((option) => { return option.value == this.popup_form.get('xrepuesto').value; });
 
     if(this.popup_form.get('cservicio').value){
       this.notificacion.cservicio = this.popup_form.get('cservicio').value ? this.popup_form.get('cservicio').value: undefined;
@@ -949,9 +953,9 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.notificacion.xservicio = aditionalServiceFilter[0].value ? aditionalServiceFilter[0].value: undefined;
     }
     
-    if(this.notificacion.cmoneda){
+    if(this.popup_form.get('cmoneda').value){
       this.notificacion.cmoneda = this.popup_form.get('cmoneda').value;
-      this.notificacion.xmoneda = this.popup_form.get('xmoneda').value;
+      this.notificacion.xmoneda = coinFilter[0].value;
     }else{
       this.notificacion.cmoneda = 0;
       this.notificacion.xmoneda = 'Sin Moneda';
@@ -962,7 +966,8 @@ export class NotificationServiceOrderComponent implements OnInit {
     this.notificacion.mmonto = this.popup_form.get('mmonto').value;
     this.notificacion.xobservacion = this.popup_form.get('xobservacion').value;
     this.notificacion.xfecha = this.popup_form.get('xfecha').value;
-    this.notificacion.xdanos = this.danos;
+    //this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
+    this.notificacion.xdanos = replacementFilter[0].value;
     this.notificacion.fajuste = this.popup_form.get('fajuste').value.substring(0, 10);
     this.notificacion.cproveedor = this.popup_form.get('cproveedor').value;
     this.notificacion.bactivo = this.popup_form.get('bactivo').value;
@@ -979,7 +984,7 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   changeAditionalService(){
 
-    if(this.popup_form.get('cservicioadicional').value != 224){
+    if(this.popup_form.get('cservicioadicional').value != 228){
       this.popup_form.get('xdesde').disable();
       this.popup_form.get('xhacia').disable();
       this.popup_form.get('mmonto').disable();
@@ -1085,7 +1090,6 @@ export class NotificationServiceOrderComponent implements OnInit {
       baceptacion: 1,
       ccotizacion: this.popup_form.get('ccotizacion').value
     };
-    console.log(params)
     this.http.post(`${environment.apiUrl}/api/quote-request/detail-list`, params, options).subscribe((response : any) => {
       this.purchaseOrder = {}
       if(response.data.status){
@@ -1100,7 +1104,6 @@ export class NotificationServiceOrderComponent implements OnInit {
               cmoneda: response.data.replacements[i].cmoneda,
               xmoneda: response.data.replacements[i].xmoneda
             }
-            console.log(replacement)
             replacementsList.push(replacement);
           }
           this.purchaseOrder = {
@@ -1150,7 +1153,6 @@ export class NotificationServiceOrderComponent implements OnInit {
       baceptacion: 1,
       ccotizacion: this.popup_form.get('ccotizacion').value
     };
-    console.log(params)
     this.http.post(`${environment.apiUrl}/api/quote-request/detail-list`, params, options).subscribe((response : any) => {
       this.purchaseOrder = {}
       if(response.data.status){
@@ -1165,7 +1167,6 @@ export class NotificationServiceOrderComponent implements OnInit {
               cmoneda: response.data.replacements[i].cmoneda,
               xmoneda: response.data.replacements[i].xmoneda
             }
-            console.log(replacement)
             replacementsList.push(replacement);
           }
           this.purchaseOrder = {
@@ -1202,7 +1203,6 @@ export class NotificationServiceOrderComponent implements OnInit {
       dataRow.push({text: row.ncantidad, border:[false, false, false, false]});
       dataRow.push({text: row.xrepuesto, border:[false, false, false, false]});
       dataRow.push({text:    `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.munitariorepuesto)} ${row.xmoneda} `, border:[false, false, false, false]});
-      console.log(dataRow)
       body.push(dataRow);
     });
     return body;
@@ -1249,19 +1249,73 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   repuestos(){
-    let repuestos = [];
-    if(this.notificacion.repuestos){
-      for(let i = 0; i < this.notificacion.repuestos.length; i++){
-        let repuesto = this.notificacion.repuestos[i].xrepuesto;
-
-        repuestos.push(repuesto);
-      }
-      this.popup_form.get('xrepuesto').setValue(repuestos);
-      this.popup_form.get('xrepuesto').disable();
+    if(this.notificacion.createServiceOrder){
+        this.replacement = true;
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        let params = {
+          cnotificacion: this.notificacion.cnotificacion
+        };
+        this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+          if(response.data.list){
+            for(let i = 0; i < response.data.list.length; i++){
+              this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
+            }
+          }
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        });
+    }else{
+        this.danos = true;
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        let params = {
+          cnotificacion: this.notificacion.cnotificacion,
+          corden: this.popup_form.get('corden').value
+        };
+        console.log(params)
+        this.http.post(`${environment.apiUrl}/api/service-order/notification-service-order`, params, options).subscribe((response : any) => {
+          if(response.data.list){
+            this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
+            this.popup_form.get('corden').setValue(response.data.list[0].corden)
+            this.popup_form.get('corden').disable();
+            this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos)
+            this.popup_form.get('xdanos').disable();
+          }
+          console.log(this.replacementList)
+          console.log('holaaaa')
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        });
     }
-    this.danos = this.popup_form.get('xrepuesto').value;
-    this.popup_form.get('xdanos').setValue(`${this.danos}`);
-    this.popup_form.get('xdanos').disable();
+    // if(this.notificacion.repuestos){
+    //   for(let i = 0; i < this.notificacion.repuestos.length; i++){
+    //     let repuesto = this.notificacion.repuestos[i].xrepuesto;
+
+    //     repuestos.push(repuesto);
+    //   }
+    //   this.popup_form.get('xrepuesto').setValue(repuestos);
+    //   this.popup_form.get('xrepuesto').disable();
+    // }
+    // this.danos = this.popup_form.get('xrepuesto').value;
+    // this.popup_form.get('xdanos').setValue(`${this.danos}`);
+    // this.popup_form.get('xdanos').disable();
   }
 
   changeDateFormat(date) {
@@ -1336,7 +1390,7 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   buildStatus(){
-    if(this.popup_form.get('cestatusgeneral').value == 52){
+    if(this.popup_form.get('cestatusgeneral').value == 13){
       this.popup_form.get('xestatusgeneral').value
       return "color1"
     }else{
@@ -1607,7 +1661,7 @@ export class NotificationServiceOrderComponent implements OnInit {
               {
                 style: 'data',
                 text: [
-                  {text: 'NOMBRE:   ', bold: true}, {text: `${this.popup_form.get('xnombrepropietario').value}`}, {text: ', Documento de identificación: ', bold: true}, {text: `${this.popup_form.get('xdocidentidad').value}`}, {text: ', TLF.: ', bold: true}, {text: `${this.popup_form.get('xtelefonocelular').value}`}
+                  {text: 'NOMBRE:   ', bold: true}, {text: `${this.popup_form.get('xnombrepropietario').value}`}, {text: ', Documento de identificación: ', bold: true}, {text: `${this.popup_form.get('xdocidentidadpropietario').value}`}, {text: ', TLF.: ', bold: true}, {text: `${this.popup_form.get('xtelefonocelular').value}`}
                 ]
               }
             ]
@@ -1922,7 +1976,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`Orden de Servicio para ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`Orden de Servicio para ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
   } else if(this.popup_form.get('cservicioadicional').value == 282 || this.popup_form.get('cservicio').value == 282){
     const pdfDefinition: any = {
       content: [
@@ -2446,7 +2500,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       }
     }
     pdfMake.createPdf(pdfDefinition).open();
-    pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+    pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
     } else if(this.popup_form.get('cservicioadicional').value == 283 || this.popup_form.get('cservicio').value == 283){
       const pdfDefinition: any = {
         content: [
@@ -2969,7 +3023,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
       }else{
       const pdfDefinition: any = {
         content: [
@@ -3439,7 +3493,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
     }
   }
 }

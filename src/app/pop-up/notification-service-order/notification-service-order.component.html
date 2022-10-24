@@ -87,12 +87,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
                                     <textarea type="text" formControlName="xdanos" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xdanos').errors }"></textarea>
                                     <div *ngIf="submitted && popup_form.get('xdanos').errors"  class="invalid-feedback">
                                         <div *ngIf="popup_form.get('xdanos').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-12 col-md-4" *ngIf="replacement">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto').errors }">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList" value="{{ replacement.value }}">{{ replacement.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="danos">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="corden" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('corden').errors }">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList" value="{{ replacement.id }}">{{ replacement.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('corden').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('corden').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>

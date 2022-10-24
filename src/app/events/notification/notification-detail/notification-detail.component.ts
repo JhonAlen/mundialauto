@@ -1406,7 +1406,6 @@ export class NotificationDetailComponent implements OnInit {
         cimpuesto: 13,
         delete: false
       };
-      console.log(quote)
     }else{ 
       quote = { 
         type: 2,
@@ -1422,7 +1421,6 @@ export class NotificationDetailComponent implements OnInit {
         cimpuesto: 13,
         delete: false
       }; 
-      console.log(quote)
     }
  
     const modalRef = this.modalService.open(NotificationQuoteComponent, {size: 'xl'});
@@ -1537,6 +1535,7 @@ export class NotificationDetailComponent implements OnInit {
         cestatusgeneral: result.cestatusgeneral,
         ccausaanulacion: result.ccausaanulacion
        });
+       console.log(this.serviceOrderList)
        this.serviceOrderGridApi.setRowData(this.serviceOrderList);
       });
     }
@@ -1634,7 +1633,6 @@ export class NotificationDetailComponent implements OnInit {
             orden: this.serviceOrderList[i]
           })
         }
-        console.log(updateServiceOrderList)
       }
       //let updateServiceOrderList = this.serviceOrderList.filter((row) => { return row.edit; });
       let createServiceOrderList = this.serviceOrderList.filter((row) => { return row.createServiceOrder; });

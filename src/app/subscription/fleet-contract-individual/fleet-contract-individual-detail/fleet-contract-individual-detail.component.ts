@@ -30,6 +30,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   coinList:any[] = [];
   usoList:any[] = [];
   colorList:any[] = [];
+  metodologiaList:any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -47,28 +48,36 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
-      cano: ['', Validators.required],
+      cano: [''],
       xcolor: [''],
-      cmarca: [''],
-      cmodelo: [''],
-      xrif_cliente:[''],
-      fnac:[''],
+      xmarca: ['', Validators.required],
+      xmodelo: ['', Validators.required],
+      xrif_cliente:['', Validators.required],
+      xtelefono_prop:[''],
       xdireccionfiscal: ['', Validators.required],
-      cversion: ['', Validators.required],
+      xversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
       xcobertura: ['', Validators.required],
-      xtipo: [''],
-      cplan: [''],
-      xtelefono_prop: ['', Validators.required],
+      xtipo: ['', Validators.required],
+      cplan: ['', Validators.required],
+      xtelefono_emp: ['', Validators.required],
       email: [''],
       xuso: [''],
       xplaca: ['', Validators.required],
       xserialcarroceria: ['', Validators.required],
       cmoneda:['', Validators.required],
-      femision: [''],
-      ccorredor:[''],
-      ncapacidad_p: [''],
-      
+      femision: ['', Validators.required],
+      ccorredor:['', Validators.required],
+      ncapacidad_p: ['', Validators.required],
+      cmetodologiapago: ['', Validators.required],
+      fdesde_pol: ['', Validators.required],
+      fhasta_pol: ['', Validators.required],
+      fdesde_rec: ['', Validators.required],
+      fhasta_rec: ['', Validators.required],
+      msuma_aseg:[''],
+      mtarifa:[''],
+      mprima_casco:[''],
+      mcatastrofico:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -103,7 +112,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
   async initializeDropdownDataRequest(){
-
     this.getPlanData();
     this.getCorredorData();
     this.getMoneda();
@@ -111,6 +119,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.getColor();
     this.getCobertura();
     this.getTipo();
+    this.getmetodologia();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -127,15 +136,16 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       if(request.data.list){
         for(let i = 0; i < request.data.list.length; i++){
           this.marcaList.push({ 
-            id: request.data.list[i].cmarca, value: request.data.list[i].xmarca });
+            id: request.data.list[i].cmarca, 
+            value: request.data.list[i].xmarca });
         }
       }
   }
 
 async getModeloData(){
     let params = {
-      cpais: 58,
-      cmarca: this.search_form.get('cmarca').value
+      cpais: this.currentUser.data.cpais,
+      xmarca: this.search_form.get('xmarca').value
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -149,15 +159,15 @@ async getModeloData(){
       this.modeloList = [];
       for(let i = 0; i < request.data.list.length; i++){
          this.modeloList.push({ 
-           cmodelo: request.data.list[i].cmodelo, xmodelo: request.data.list[i].xmodelo });
+           id: request.data.list[i].cmodelo, 
+           value: request.data.list[i].xmodelo });
       }
     }
   }
 async getVersionData(){
     let params = {
       cpais: 58,
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value
+      xmodelo: this.search_form.get('xmodelo').value
     };
 
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
@@ -165,10 +175,11 @@ async getVersionData(){
         this.versionList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
-            cversion: response.data.list[i].cversion,
-            xversion: response.data.list[i].xversion,
+            id: response.data.list[i].cversion,
+            value: response.data.list[i].xversion,
           });
         }
+        
       }
       },);
   }
@@ -195,9 +206,8 @@ async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
     ccompania: this.currentUser.data.ccompania,
-    ctipoplan:1
-
-    
+    ctipoplan: 1
+ 
   };
 
   this.http.post(`${environment.apiUrl}/api/valrep/plan`, params).subscribe((response: any) => {
@@ -238,11 +248,12 @@ async getUso(){
   
     };
   
-    this.http.post(`${environment.apiUrl}/api/valrep/type-planRCV`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
       if(response.data.status){
         this.usoList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.usoList.push({ 
+            id: response.data.list[i].cuso,
             value: response.data.list[i].xuso,
           });
         }
@@ -303,6 +314,24 @@ async getTipo(){
       }
       },);
   }
+async getmetodologia(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.metodologiaList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.metodologiaList.push({ 
+            id: response.data.list[i].cmetodologiapago,
+            value: response.data.list[i].xmetodologiapago,
+          });
+        }
+      }
+      },);
+  }  
 
 
    onSubmit(form){
@@ -317,25 +346,38 @@ async getTipo(){
         xapellido: form.xapellido,
         cano:form.cano,
         xcolor:this.search_form.get('xcolor').value,      
-        cmarca: this.search_form.get('cmarca').value,
-        cmodelo: this.search_form.get('cmodelo').value,
-        cversion: this.search_form.get('cversion').value,
+        xmarca: this.search_form.get('xmarca').value,
+        xmodelo: this.search_form.get('xmodelo').value,
+        xversion: this.search_form.get('xversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
-        fnac: form.fnac,
+        xtelefono_prop: form.xtelefono_prop,
         xdireccionfiscal: form.xdireccionfiscal,
         xserialmotor: form.xserialmotor,
         xserialcarroceria: form.xserialcarroceria,
         xplaca: form.xplaca,
         xuso: this.search_form.get('xuso').value,
         cmoneda: this.search_form.get('cmoneda').value,
-        xtelefono_prop: form.xtelefono_prop,
+        xtelefono_emp: form.xtelefono_emp,
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
         xcedula: form.xrif_cliente,
         xtipo: this.search_form.get('xtipo').value,
         xcobertura: this.search_form.get('xcobertura').value,
         ncapacidad_p: form.ncapacidad_p,
+        cmetodologiapago: form.cmetodologiapago,
+        femision: form.femision,
+        fdesde_pol: form.fdesde_pol,
+        fhasta_pol: form.fhasta_pol,
+        fdesde_rec: form.fdesde_rec,
+        fhasta_rec: form.fhasta_rec,
+        msuma_aseg: form.msuma_aseg,
+        mtarifa: form.mtarifa,
+        mprima_casco: form.mprima_casco,
+        mcatastrofico: form.mcatastrofico
+
+
+
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
