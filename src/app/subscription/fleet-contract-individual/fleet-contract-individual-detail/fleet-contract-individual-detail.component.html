@@ -109,8 +109,10 @@
                       <div class="form-outline">                        
                         <label class="form-label" for="form3Examplev4">Cobertura</label>
                         <select formControlName="xcobertura" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcobertura').errors } ">
-                          <option *ngFor="let cobertura of coberturaList" value="{{ cobertura.value }}">{{ cobertura.value }}</option>
-                        </select>  
+                          <option value="RCV">RCV</option>
+                          <option value="AMPLIA">AMPLIA</option>
+                          <option value="PERDIDA TOTAL">PERDIDA TOTAL</option>
+                        </select>                         
                          <div *ngIf="submitted && search_form.get('xcobertura').errors"  class="invalid-feedback">
                           <div *ngIf="search_form.get('xcobertura').errors.required">Se requiere completar el campo</div>
                         </div>
