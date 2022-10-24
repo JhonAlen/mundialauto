@@ -27,7 +27,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
-  coinList:any[] = [];
   usoList:any[] = [];
   colorList:any[] = [];
   metodologiaList:any[] = [];
@@ -65,7 +64,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xuso: [''],
       xplaca: ['', Validators.required],
       xserialcarroceria: ['', Validators.required],
-      cmoneda:['', Validators.required],
       femision: ['', Validators.required],
       ccorredor:['', Validators.required],
       ncapacidad_p: ['', Validators.required],
@@ -114,7 +112,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
-    this.getMoneda();
     this.getUso();
     this.getColor();
     this.getCobertura();
@@ -222,25 +219,7 @@ async getPlanData(){
     }
     },);
   }
-async getMoneda(){
-  let params =  {
-    cpais: this.currentUser.data.cpais,
-    ccompania: this.currentUser.data.ccompania,
 
-  };
-
-  this.http.post(`${environment.apiUrl}/api/valrep/coin`, params).subscribe((response: any) => {
-    if(response.data.status){
-      this.coinList = [];
-      for(let i = 0; i < response.data.list.length; i++){
-        this.coinList.push({ 
-          id: response.data.list[i].cmoneda,
-          value: response.data.list[i].xmoneda,
-        });
-      }
-    }
-    },);
-  }
 async getUso(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -357,7 +336,6 @@ async getmetodologia(){
         xserialcarroceria: form.xserialcarroceria,
         xplaca: form.xplaca,
         xuso: this.search_form.get('xuso').value,
-        cmoneda: this.search_form.get('cmoneda').value,
         xtelefono_emp: form.xtelefono_emp,
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,

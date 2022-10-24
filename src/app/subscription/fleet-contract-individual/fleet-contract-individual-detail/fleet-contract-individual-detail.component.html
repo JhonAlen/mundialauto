@@ -264,7 +264,7 @@
 
                   <div class="col-md-6 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label" for="form3Examplev3">Número de teléfono alterno</label>
+                      <label class="form-label" for="form3Examplev3">Teléfono alterno</label>
                       <input type="text" formControlName="xtelefono_prop" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtelefono_prop').errors }"/>
                       <div *ngIf="submitted && search_form.get('xtelefono_prop').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('xtelefono_prop').errors.required">Se requiere completar el campo</div>
@@ -325,17 +325,18 @@
                         </div>
                       </div>
 
-                       <div class="col-md-6 mb-4 pb-2">
+
+                      <div class="col-md-6 mb-4 pb-2">
                         <div class="form-outline">
-                         <label class="form-label" for="form3Examplev4">Moneda</label>
-                         <select formControlName="cmoneda" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmoneda').errors }" >
-                          <option *ngFor="let moneda of coinList" value="{{ moneda.id }}">{{ moneda.value }}</option>
-                        </select>                           
-                         <div *ngIf="submitted && search_form.get('cmoneda').errors"  class="invalid-feedback">
-                           <div *ngIf="search_form.get('cmoneda').errors.required">Se requiere completar el campo</div>
-                         </div>
-                       </div>
-                     </div>
+                          <label class="form-label" >Frecuencia de pago</label>
+                          <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors } ">
+                            <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id}}">{{ metodologia.value }}</option>
+                          </select>                       
+                            <div *ngIf="submitted && search_form.get('cmetodologiapago').errors"  class="invalid-feedback">
+                            <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div> 
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div class="row">
@@ -352,17 +353,6 @@
                         </div>
                       </div>
 
-                      <div class="col-md-6 mb-4 pb-2">
-                        <div class="form-outline">
-                          <label class="form-label" >Frecuencia de pago</label>
-                          <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors } ">
-                            <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id}}">{{ metodologia.value }}</option>
-                          </select>                       
-                            <div *ngIf="submitted && search_form.get('cmetodologiapago').errors"  class="invalid-feedback">
-                            <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div> 
-                          </div>
-                        </div>
-                      </div>
                     </div>
 
                     <div class="row">
