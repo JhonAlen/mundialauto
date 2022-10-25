@@ -374,6 +374,7 @@ export class NotificationDetailComponent implements OnInit {
               create: false,
               cnotanotificacion: response.data.notes[i].cnotanotificacion,
               xnotanotificacion: response.data.notes[i].xnotanotificacion,
+              xcausafiniquito: response.data.notes[i].xcausafiniquito,
               xrutaarchivo: response.data.notes[i].xrutaarchivo,
               cfiniquito: response.data.notes[i].cfiniquito
             });
@@ -1556,11 +1557,13 @@ export class NotificationDetailComponent implements OnInit {
           edit: false,
           cnotificacion: result.cnotificacion,
           xobservacion: result.xobservacion,
-          crepuesto: result.crepuesto,
           xdanos: result.xdanos,
-          corden: result.corden
+          mmontofiniquito: result.mmontofiniquito,
+          ccausafiniquito: result.ccausafiniquito,
+          cmoneda: result.cmoneda
         }
       });
+      console.log(this.settlement)
     }
   }
 

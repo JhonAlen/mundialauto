@@ -64,14 +64,13 @@ export class NotificationSettlementComponent implements OnInit {
   activarCheck6: boolean = false;
   activarCheck7: boolean = false;
   activarCheck8: boolean = false;
+  causaList: any [] = []
 
   constructor(public activeModal: NgbActiveModal,
-    private modalService: NgbModal,
-    private authenticationService : AuthenticationService,
-    private http: HttpClient,
-    private formBuilder: UntypedFormBuilder,
-    private activatedRoute: ActivatedRoute,
-    private router: Router) { }
+              private authenticationService : AuthenticationService,
+              private http: HttpClient,
+              private formBuilder: UntypedFormBuilder,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
@@ -96,7 +95,9 @@ export class NotificationSettlementComponent implements OnInit {
       xmarca: [''],
       bactivo: [true],
       xactivo: [''],
-      ccotizacion: [''],
+      mmontofiniquito: [''],
+      ccausafiniquito: [''],
+      xcausafiniquito: [''],
       crepuesto: [''],
       xrepuesto: [''],
       xrepuesto2: [''],
@@ -106,6 +107,7 @@ export class NotificationSettlementComponent implements OnInit {
       xrepuesto6: [''],
       xrepuesto7: [''],
       xrepuesto8: [''],
+      xcausa: [''],
       repuestos: [''],
       xdescripcion: [''],
       xnombres: [''],
@@ -158,6 +160,7 @@ export class NotificationSettlementComponent implements OnInit {
       this.createSettlement();
       this.repuestos();
       this.searchCoin();
+      this.getCauseSettlement();
     }
   }
 
@@ -541,6 +544,32 @@ export class NotificationSettlementComponent implements OnInit {
     }
   }
 
+  getCauseSettlement(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cnotificacion: this.notificacion.cnotificacion
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/cause-settlement`, params, options).subscribe((response : any) => {
+      this.causaList = [];
+      if(response.data.list){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.causaList.push({ id: response.data.list[i].ccausafiniquito, value: response.data.list[i].xcausafiniquito});
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
   onSubmit(form){
      this.submitted = true;
      this.loading = true;
@@ -567,49 +596,50 @@ export class NotificationSettlementComponent implements OnInit {
 
     repuesto1 = replacementFilter[0].value
 
-    if(this.replacementList2.length > 0){
-       repuesto2 = replacement2Filter[0].value2;
+    if(this.popup_form.get('xrepuesto2').value){
+       repuesto2 = this.popup_form.get('xrepuesto2').value;
     }else{
        repuesto2 = ' ';
     }
 
-    if(this.replacementList3.length > 0){
-       repuesto3 = replacement3Filter[0].value3;
+    if(this.popup_form.get('xrepuesto3').value){
+       repuesto3 = this.popup_form.get('xrepuesto3').value;
     }else{
        repuesto3 = ' ';
     }
 
-    if(this.replacementList4.length > 0){
-       repuesto4 = replacement4Filter[0].value4;
+    if(this.popup_form.get('xrepuesto4').value){
+       repuesto4 = this.popup_form.get('xrepuesto4').value;
     }else{
        repuesto4 = ' ';
     }
 
-    if(this.replacementList5.length > 0){
-       repuesto5 = replacement5Filter[0].value5;
+    if(this.popup_form.get('xrepuesto5').value){
+       repuesto5 = this.popup_form.get('xrepuesto5').value;
     }else{
        repuesto5 = ' ';
     }
 
-    if(this.replacementList6.length > 0){
-       repuesto6 = replacement6Filter[0].value6;
+    if(this.popup_form.get('xrepuesto6').value){
+       repuesto6 = this.popup_form.get('xrepuesto6').value;
     }else{
        repuesto6 = ' ';
     }
 
-    if(this.replacementList7.length > 0){
-       repuesto7 = replacement7Filter[0].value7;
+    if(this.popup_form.get('xrepuesto7').value){
+       repuesto7 = this.popup_form.get('xrepuesto7').value;
     }else{
        repuesto7 = ' ';
     }
 
-    if(this.replacementList8.length > 0){
-       repuesto8 = replacement8Filter[0].value8;
+    if(this.popup_form.get('xrepuesto8').value){
+       repuesto8 = this.popup_form.get('xrepuesto8').value;
     }else{
        repuesto8 = ' ';
     }
 
-    let repuestos;
+    let repuestos = "";
+
     if(repuesto1){
       repuestos = repuesto1
     }else{
@@ -650,20 +680,18 @@ export class NotificationSettlementComponent implements OnInit {
     }
     if(repuesto8){
       repuestos = repuesto1 + ' ' + repuesto2 + ' ' + repuesto3 + ' ' + repuesto4 + ' ' 
-                  + repuesto5 + ' ' + repuesto6  + ' ' + repuesto7  + ' ' + repuesto8
+      + repuesto5 + ' ' + repuesto6  + ' ' + repuesto7  + ' ' + repuesto8
     }else{
       repuestos = ' '
     }
 
-    console.log(repuestos)
-
     this.notificacion.xobservacion = form.xobservacion;
-    this.notificacion.xdanos = repuestos;
+    this.notificacion.xdanos = repuestos.trim();
     this.notificacion.mmontofiniquito = form.mmontofiniquito;
     this.notificacion.cmoneda = this.popup_form.get('cmoneda').value;
-    
-    console.log(this.notificacion.xdanos)
+    this.notificacion.ccausafiniquito = this.popup_form.get('ccausafiniquito').value;
 
+    console.log(this.notificacion.ccausafiniquito)
     this.activeModal.close(this.notificacion);
   }
 }

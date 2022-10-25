@@ -280,6 +280,7 @@ import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-r
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 import { FleetContractManagementRealcoverageComponent } from './pop-up/fleet-contract-management-realcoverage/fleet-contract-management-realcoverage.component';
+import { NotificationRejectionLetterComponent } from './pop-up/notification-rejection-letter/notification-rejection-letter.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -549,7 +550,8 @@ export function HttpLoaderFactory(http: HttpClient){
     PlanRcvIndexComponent,
     PlanRcvDetailComponent,
     FleetContractIndividualDetailComponent,
-    FleetContractManagementRealcoverageComponent
+    FleetContractManagementRealcoverageComponent,
+    NotificationRejectionLetterComponent
   ],
   imports: [
     BrowserModule,
