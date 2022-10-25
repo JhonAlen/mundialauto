@@ -34,19 +34,18 @@ h3,h6{
 }
 
 .g-0{
-    background-color: whitesmoke;
     border-radius: 0px 0px 5px 5px;
 }
 
 
 button{
-    margin: 21px;
     background-color: #142263;
     color: white;
 }
 
 .button{
-    text-align-last: center
+    text-align-last: center;
+    /* margin-top:-90px */
 }
 
 .card-header{
@@ -57,8 +56,51 @@ text-align-last: center;
 
 option{
     font-size: 17px;
-}
-select{
-    font-size: 17px;
 
 }
+select{
+    font-size: 15px;
+
+}
+
+.card{
+    width: 49%;
+    margin: 6px;
+}
+.cards{
+    --bs-card-spacer-y: 1rem;
+    --bs-card-spacer-x: 1rem;
+    --bs-card-title-spacer-y: 0.5rem;
+    --bs-card-border-color: var(--bs-border-color-translucent);
+    --bs-card-border-radius: 0.375rem;
+    --bs-card-box-shadow:  ;
+    --bs-card-inner-border-radius: calc(0.375rem - 1px);
+    --bs-card-cap-padding-y: 0.5rem;
+    --bs-card-cap-padding-x: 1rem;
+    --bs-card-cap-bg: rgba(0, 0, 0, 0.03);
+    --bs-card-cap-color:  ;
+    --bs-card-height:  ;
+    --bs-card-color:  ;
+    --bs-card-bg: #fff;
+    --bs-card-img-overlay-padding: 1rem;
+    --bs-card-group-margin: 0.75rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0px;
+    height: var(--bs-card-height);
+    overflow-wrap: break-word;
+    background-color: var(--bs-card-bg);
+    background-clip: border-box;
+    border: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    border-radius: var(--bs-card-border-radius);
+    margin-top: 5px;
+    height: 450px;
+
+}
+
+input{
+    font-size: 15px;
+}
+
+

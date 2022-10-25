@@ -287,6 +287,7 @@ import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 import { BatchComponent } from './pop-up/batch/batch.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -565,6 +566,7 @@ export function HttpLoaderFactory(http: HttpClient){
     MatNativeDateModule,
     MatButtonModule,
     MatSelectModule,
+    MatCheckboxModule,
     NgxMatSelectSearchModule,
     BrowserAnimationsModule,
     MatIconModule,
