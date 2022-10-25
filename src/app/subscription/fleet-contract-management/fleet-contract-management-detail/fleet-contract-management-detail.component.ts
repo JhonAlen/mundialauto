@@ -92,6 +92,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   inspectionDeletedRowList: any[] = [];
   planCoberturas: string;
   planServicios: string;
+  xtituloreporte: string;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -358,6 +359,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       if(response.data.status){
         this.ccontratoflota = response.data.ccontratoflota;
         this.ccarga = response.data.ccarga;
+        this.xtituloreporte = response.data.xtituloreporte;
         this.detail_form.get('ccliente').setValue(response.data.ccliente);
         this.detail_form.get('ccliente').disable();
         this.xciudadcliente = response.data.xciudadcliente;
@@ -1432,7 +1434,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
     this.coverageList.forEach(function(row) {
       if (row.ititulo == 'C') {
         let dataRow = [];
-        dataRow.push({text: row.ccobertura, border: [true, false, false, true]});
         dataRow.push({text: row.xcobertura, margin: [10, 0, 0, 0], border: [true, false, false, true]});
         //Se utiliza el formato DE (alemania) ya que es el que coloca '.' para representar miles, y ',' para los decimales fuente: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
         dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.msumaasegurada)} ${row.xmoneda}`, alignment: 'right', border:[true, false, false, true]});
@@ -1455,7 +1456,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
       }
       if (row.ititulo == 'T') {
         let dataRow = [];
-        dataRow.push({text: row.ccobertura, border: [true, false, false, true]});
         dataRow.push({text: row.xcobertura, decoration: 'underline', margin: [2, 0, 0, 0], border: [true, false, false, true]});
         dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
         dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
@@ -1552,9 +1552,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 180, 40, 60, '*', '*'],
+            widths: [60, 150, 70, 60, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1599,7 +1599,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'ASEGURADO:', bold: true, border: [true, false, false, true]}, {text: `\n ${this.detail_form.get('xnombrepropietario').value} ${this.detail_form.get('xapellidopropietario').value}`, border: [false, false, false, true]}, {text: '\nC.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: `\n ${this.detail_form.get('xdocidentidadpropietario').value}`, border: [false, false, true, true]}]
+              [{text: 'ASEGURADO:', bold: true, border: [true, false, false, true]}, {text: `${this.detail_form.get('xnombrepropietario').value} ${this.detail_form.get('xapellidopropietario').value}`, border: [false, false, false, true]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: `${this.detail_form.get('xdocidentidadpropietario').value}`, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1687,16 +1687,16 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [30, 120, 100, 60, 50, 100],
+            widths: [150, 100, 60, 50, '*'],
             body: [
-              [{text: 'CÓDIGO', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'COBERTURAS', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'SUMA ASEGURADA USD', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'TASAS', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: '% DESC.', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'PRIMA ANUAL', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
+              [{text: 'COBERTURAS', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'SUMA ASEGURADA', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'TASAS', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: '% DESC.', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'PRIMA ANUAL', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [30, 120, 100, 60, 50, 100],
+            widths: [150, 100, 60, 50, '*'],
             body: this.buildCoverageBody2()
           }
         },
