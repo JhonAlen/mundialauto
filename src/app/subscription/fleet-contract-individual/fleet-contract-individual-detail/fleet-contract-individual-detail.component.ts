@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators , FormBuilder} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
@@ -37,6 +37,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   status: boolean = true;
 
   constructor(private formBuilder: UntypedFormBuilder, 
+              private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
               private router: Router,
               private http: HttpClient,
@@ -47,8 +48,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
-      cano: [''],
-      xcolor: [''],
+      cano: ['', Validators.required],
+      xcolor: ['', Validators.required],
       xmarca: ['', Validators.required],
       xmodelo: ['', Validators.required],
       xrif_cliente:['', Validators.required],
@@ -219,7 +220,6 @@ async getPlanData(){
     }
     },);
   }
-
 async getUso(){
     let params =  {
       cpais: this.currentUser.data.cpais,
