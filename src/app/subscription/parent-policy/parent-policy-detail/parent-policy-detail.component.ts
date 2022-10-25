@@ -51,10 +51,7 @@ export class ParentPolicyDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.detail_form = this.formBuilder.group({
       ccliente: ['', Validators.required],
-      cmetodologiapago: ['', Validators.required],
-      ccorredor: ['', Validators.required],
-      cmoneda: ['', Validators.required],
-      mprimaanual: ['', Validators.required],
+      ccorredor: ['', Validators.required]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if (this.currentUser) {
@@ -106,43 +103,6 @@ export class ParentPolicyDetailComponent implements OnInit {
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
       else if(code == 404){ message = "HTTP.ERROR.VALREP.CLIENTNOTFOUND"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
-    this.http.post(`${environment.apiUrl}/api/v2/valrep/production/search/plan/payment-methodology`, params, options).subscribe((response : any) => {
-      if(response.data.status){
-        this.paymentMethodologyList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.paymentMethodologyList.push({ id: response.data.list[i].cmetodologiapago, value: response.data.list[i].xmetodologiapago });
-        }
-        this.paymentMethodologyList.sort((a,b) => a.value > b.value ? 1 : -1);
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.VALREP.PAYMENTMETHODOLOGYNOTFOUND"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
-    this.http.post(`${environment.apiUrl}/api/valrep/coin`, params, options).subscribe((response : any) => {
-      if(response.data.status){
-        for(let i = 0; i < response.data.list.length; i++){
-          this.coinList.push({ id: response.data.list[i].cmoneda, value: response.data.list[i].xmoneda });
-        }
-        this.coinList.sort((a,b) => a.value > b.value ? 1 : -1);
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.VALREP.COINNOTFOUND"; }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
       this.alert.type = 'danger';
@@ -204,14 +164,8 @@ export class ParentPolicyDetailComponent implements OnInit {
       if(response.data.status){
         this.detail_form.get('ccliente').setValue(response.data.ccliente);
         this.detail_form.get('ccliente').disable();
-        this.detail_form.get('cmetodologiapago').setValue(response.data.cmetodologiapago);
-        this.detail_form.get('cmetodologiapago').disable();
         this.detail_form.get('ccorredor').setValue(response.data.ccorredor);
         this.detail_form.get('ccorredor').disable();
-        this.detail_form.get('cmoneda').setValue(response.data.cmoneda);
-        this.detail_form.get('cmoneda').disable();
-        this.detail_form.get('mprimaanual').setValue(response.data.mprimaanual);
-        this.detail_form.get('mprimaanual').disable();
         this.batchList = [];
         if(response.data.batches){
           for(let i = 0; i < response.data.batches.length; i++){
@@ -256,10 +210,7 @@ export class ParentPolicyDetailComponent implements OnInit {
       polizaMatriz: {
         ccarga: this.code,
         ccliente: form.ccliente,
-        cmetodologiapago: form.cmetodologiapago,
-        cmoneda: form.cmoneda,
         ccorredor: form.ccorredor,
-        mprimaanual: form.mprimaanual,
         xdescripcion_l: this.clientList.filter((cli) => { return cli.id == form.ccliente})[0].value,
         lotes: this.batchList
       }
@@ -290,11 +241,6 @@ export class ParentPolicyDetailComponent implements OnInit {
   }
 
   editParentPolicy() {
-    this.detail_form.get('ccliente').enable();
-    this.detail_form.get('cmetodologiapago').enable();
-    this.detail_form.get('ccorredor').enable();
-    this.detail_form.get('cmoneda').enable();
-    this.detail_form.get('mprimaanual').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;

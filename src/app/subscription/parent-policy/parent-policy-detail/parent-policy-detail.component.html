@@ -46,18 +46,6 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>Método de Pago</label>
-                                    <select formControlName="cmetodologiapago" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('cmetodologiapago').errors }">
-                                        <option></option>
-                                        <option *ngFor="let paymentMethodology of paymentMethodologyList" value="{{ paymentMethodology.id }}">{{ paymentMethodology.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && detail_form.get('cmetodologiapago').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('cmetodologiapago').errors.required">Se requiere seleccionar una metodología de pago</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
                                     <label>Corredor</label>
                                     <select formControlName="ccorredor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ccorredor').errors }">
                                         <option></option>
@@ -65,27 +53,6 @@
                                     </select>
                                     <div *ngIf="submitted && detail_form.get('ccorredor').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('ccorredor').errors.required">Se requiere seleccionar un corredor</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>Moneda</label>
-                                    <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('cmoneda').errors }">
-                                        <option></option>
-                                        <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && detail_form.get('cmoneda').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('cmoneda').errors.required">Se requiere seleccionar la moneda</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>Prima Anual</label>
-                                    <input type="number" formControlName="mprimaanual" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprimaanual').errors }">
-                                    <div *ngIf="submitted && detail_form.get('mprimaanual').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('mprimaanual').errors.required">Se requiere colocar la prima anual</div>
                                     </div>
                                 </div>
                             </div>
