@@ -94,8 +94,8 @@ select{
     background-clip: border-box;
     border: var(--bs-card-border-width) solid var(--bs-card-border-color);
     border-radius: var(--bs-card-border-radius);
-    margin-top: 18px;
-    height: 450px;
+    margin-top: 5px;
+    height: 510px;
 
 }
 
