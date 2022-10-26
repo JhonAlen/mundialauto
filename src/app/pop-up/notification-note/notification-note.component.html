@@ -17,6 +17,15 @@
                     </div>
                 </div>
             </div>
+            <div class="col-12" *ngIf="finiquito">
+                <div class="form-group">
+                    <label>{{ "EVENTS.NOTIFICATIONS.MOTIVE" | translate }}</label>
+                    <textarea type="text" formControlName="xcausafiniquito" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xcausafiniquito').errors }" cols="30" rows="2"></textarea>
+                    <div *ngIf="submitted && popup_form.get('xcausafiniquito').errors"  class="invalid-feedback">
+                        <div *ngIf="popup_form.get('xcausafiniquito').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDNOTE" | translate }}</div>
+                    </div>
+                </div>
+            </div>
             <div class="col-12">
                 <div class="form-group">
                     <label>{{ "EVENTS.NOTIFICATIONS.DOCUMENTROUTE" | translate }}</label>

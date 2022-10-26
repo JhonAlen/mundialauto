@@ -9,6 +9,7 @@ import { FleetContractManagementOwnerComponent } from '@app/pop-up/fleet-contrac
 import { FleetContractManagementVehicleComponent } from '@app/pop-up/fleet-contract-management-vehicle/fleet-contract-management-vehicle.component';
 import { FleetContractManagementAccesoryComponent } from '@app/pop-up/fleet-contract-management-accesory/fleet-contract-management-accesory.component';
 import { FleetContractManagementInspectionComponent } from '@app/pop-up/fleet-contract-management-inspection/fleet-contract-management-inspection.component';
+import { FleetContractManagementRealcoverageComponent } from '@app/pop-up/fleet-contract-management-realcoverage/fleet-contract-management-realcoverage.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -92,6 +93,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
   inspectionDeletedRowList: any[] = [];
   planCoberturas: string;
   planServicios: string;
+  rowClick: boolean = false;
+  cuadro: boolean = false;
+  coverage = {};
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -183,7 +187,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
       xplan: [{ value: '', disabled: true }],
       //cmoneda: [{ value: '', disabled: true }],
       cmetodologiapago: ['', Validators.required],
-      ctiporecibo: ['', Validators.required]
+      ctiporecibo: ['', Validators.required],
+      ccobertura: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -327,7 +332,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       ccontratoflota: this.code
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe((response: any) => {
-
+      this.cuadro = true;
       this.xnombrecliente = response.data.xnombrecliente;
       this.xdocidentidadcliente = response.data.xdocidentidadcliente;
       this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
@@ -595,13 +600,23 @@ export class FleetContractManagementDetailComponent implements OnInit {
             if (response.data.realCoverages[i].ititulo == 'C') {
               if (response.data.realCoverages[i].mprima) {
                 this.realCoverageList.push({
+                  ccobertura: response.data.realCoverages[i].ccobertura,
                   xcobertura: response.data.realCoverages[i].xcobertura,
-                  xprimacobertura: `${response.data.realCoverages[i].mprima} ${response.data.realCoverages[i].xmoneda}`
+                  xprimacobertura: `${response.data.realCoverages[i].mprima} ${response.data.realCoverages[i].xmoneda}`,
+                  ititulo: response.data.realCoverages[i].ititulo,
+                  ccontratoflota: response.data.realCoverages[i].ccontratoflota,
+                  msuma_aseg: response.data.realCoverages[i].msumaasegurada,
+                  mprima: response.data.realCoverages[i].mprima
                 })
               } else {
                 this.realCoverageList.push({
+                  ccobertura: response.data.realCoverages[i].ccobertura,
                   xcobertura: response.data.realCoverages[i].xcobertura,
-                  xprimacobertura: `0 ${response.data.realCoverages[i].xmoneda}`
+                  xprimacobertura: `0 ${response.data.realCoverages[i].xmoneda}`,
+                  ititulo: response.data.realCoverages[i].ititulo,
+                  ccontratoflota: response.data.realCoverages[i].ccontratoflota,
+                  msuma_aseg: response.data.realCoverages[i].msumaasegurada,
+                  mprima: response.data.realCoverages[i].mprima
                 })
                 }
             }
@@ -932,28 +947,14 @@ export class FleetContractManagementDetailComponent implements OnInit {
   }
 
   editFleetContract(){
-    this.detail_form.get('ccliente').enable();
-    this.detail_form.get('casociado').enable();
-    this.detail_form.get('cagrupador').enable();
-    this.detail_form.get('cestatusgeneral').enable();
-    this.detail_form.get('finicio').enable();
-    this.detail_form.get('fhasta').enable();
-    this.detail_form.get('fhastarecibo').enable();
-    this.detail_form.get('xcertificadoasociado').enable();
-    this.detail_form.get('xsucursalemision').enable();
-    this.detail_form.get('xsucursalsuscriptora').enable();
-    this.detail_form.get('ctrabajador').enable();
-    this.detail_form.get('cpropietario').enable();
-    this.detail_form.get('cvehiculopropietario').enable();
-    this.detail_form.get('mpreciovehiculo').enable();
-    this.detail_form.get('ctipovehiculo').enable();
-    this.detail_form.get('ctipoplan').enable();
-    this.detail_form.get('cplan').enable();
-    this.detail_form.get('cmetodologiapago').enable();
-    this.detail_form.get('ctiporecibo').enable();
+    this.detail_form.get('fdesde_pol').enable();
+    this.detail_form.get('fhasta_pol').enable();
+    this.detail_form.get('fdesde_rec').enable();
+    this.detail_form.get('fhasta_rec').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
+    this.cuadro = false;
   }
 
   cancelSave(){
@@ -1207,38 +1208,42 @@ export class FleetContractManagementDetailComponent implements OnInit {
     this.inspectionGridApi = event.api;
   }
 
+  onCoverageGridReady(event){
+    this.coverageGridApi = event.api;
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    if(this.detail_form.invalid){
-      if(!this.detail_form.get('ctrabajador').value){
-        this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDWORKER";
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      }else if(!this.detail_form.get('cpropietario').value){
-        this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDOWNER";
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      }else if(!this.detail_form.get('cvehiculopropietario').value){
-        this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDVEHICLE";
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      }else if(!this.detail_form.get('cregistrotasa').value){
-        this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.ASSOCIATEFEESREGISTERNOTFOUND";
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      }else if(!this.detail_form.get('cconfiguraciongestionvial').value){
-        this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.ASSOCIATEROADMANAGEMENTCONFIGURATIONNOTFOUND";
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      }else if(!this.detail_form.get('ccotizadorflota').value){
-        this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.ASSOCIATEQUOTEBYFLEETNOTFOUND";
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      }
-      this.loading = false;
-      return;
-    }
+    // if(this.detail_form.invalid){
+    //   if(!this.detail_form.get('ctrabajador').value){
+    //     this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDWORKER";
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   }else if(!this.detail_form.get('cpropietario').value){
+    //     this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDOWNER";
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   }else if(!this.detail_form.get('cvehiculopropietario').value){
+    //     this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.REQUIREDVEHICLE";
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   }else if(!this.detail_form.get('cregistrotasa').value){
+    //     this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.ASSOCIATEFEESREGISTERNOTFOUND";
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   }else if(!this.detail_form.get('cconfiguraciongestionvial').value){
+    //     this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.ASSOCIATEROADMANAGEMENTCONFIGURATIONNOTFOUND";
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   }else if(!this.detail_form.get('ccotizadorflota').value){
+    //     this.alert.message = "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.ASSOCIATEQUOTEBYFLEETNOTFOUND";
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   }
+    //   this.loading = false;
+    //   return;
+    // }
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params;
@@ -1285,9 +1290,19 @@ export class FleetContractManagementDetailComponent implements OnInit {
           create: createInspectionList,
           update: updateInspectionList,
           delete: this.inspectionDeletedRowList
+        },
+        coverage: {
+          update: this.coverage
+        },
+        fechas: {
+          fdesde_pol: form.fdesde_pol,
+          fhasta_pol: form.fhasta_pol,
+          fdesde_rec: form.fdesde_rec,
+          fhasta_rec: form.fhasta_rec,
+          ccarga: this.ccarga
         }
       };
-      url = `${environment.apiUrl}/api/fleet-contract-management/update`;
+      url = `${environment.apiUrl}/api/fleet-contract-management/update-coverage`;
     }else{
       params = {
         ccontratoflota: this.ccontratoflota,
@@ -1426,6 +1441,61 @@ export class FleetContractManagementDetailComponent implements OnInit {
     }
   }
 
+  rowClicked(event: any){
+    let recoverage = {};
+      if(this.editStatus){ 
+        recoverage = { 
+          type: 1,
+          edit: this.editStatus,
+          create: false, 
+          cgrid: event.data.cgrid,
+          ccobertura: event.data.ccobertura,
+          xcobertura: event.data.xcobertura,
+          mprima: event.data.mprima,
+          ititulo: event.data.ititulo,
+          ccontratoflota: event.data.ccontratoflota,
+          delete: false
+        };
+      }else{ 
+        recoverage = { 
+          type: 2,
+          edit: this.editStatus,
+          create: false,
+          ccobertura: event.data.ccobertura,
+          xcobertura: event.data.xcobertura,
+          mprima: event.data.mprima,
+          ititulo: event.data.ititulo,
+          ccontratoflota: event.data.ccontratoflota,
+          delete: false
+        }; 
+      }
+      const modalRef = this.modalService.open(FleetContractManagementRealcoverageComponent);
+      modalRef.componentInstance.recoverage = recoverage;
+      modalRef.result.then((result: any) => {
+        if(result){
+          this.coverage = {
+            ccobertura: result.ccobertura,
+            ccontratoflota: result.ccontratoflota,
+            mprima: result.mprima,
+            msuma_aseg: result.msuma_aseg,
+            edit: this.editStatus
+          }
+          console.log(this.coverage)
+          // for(let i = 0; i < this.realCoverageList.length; i++){
+          //   if(this.realCoverageList[i].ccobertura == result.ccobertura){
+          //     this.realCoverageList[i].ccontratoflota = result.ccontratoflota;
+          //     this.realCoverageList[i].mprima = result.mprima;
+          //     this.realCoverageList[i].msuma_aseg = result.msuma_aseg;
+          //     this.realCoverageList[i].edit = this.editStatus;
+          //   }
+          // }
+          //this.coverageGridApi.refreshCells();
+          return;
+        }
+        //this.coverageGridApi.setRowData(this.realCoverageList);
+      });
+    }
+    
   buildCoverageBody2() {
     let body = [];
     console.log(this.coverageList);

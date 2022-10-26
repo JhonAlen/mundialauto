@@ -20,10 +20,6 @@
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.SETTLEMENT.SAVE" | translate }}
                                 </button>
-                                <!-- <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(popup_form.value)" *ngIf="canEdit && showEditButton">
-                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                    {{ "EVENTS.SETTLEMENT.GENERATESETTLEMENT" | translate }}
-                                </button> -->
                                 <button [disabled]="loading || loading_cancel" class="btn btn-danger float-right mr-1" type="button" (click)="deleteProvider()" *ngIf="isEdit">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.SETTLEMENT.DELETE" | translate }}
@@ -80,39 +76,6 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.OBSERVATION" | translate }}</label>
-                                    <textarea type="text" formControlName="xobservacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xobservacion').errors }"></textarea>
-                                    <div *ngIf="submitted && popup_form.get('xobservacion').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xobservacion').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
-                                    <select formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto').errors }" (change) = "changeServiceOrder()">
-                                        <option></option>
-                                        <option *ngFor="let replacement of replacementList" value="{{ replacement.value }}">{{ replacement.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && popup_form.get('xrepuesto').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xrepuesto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.SERVICEORDER" | translate }}</label>
-                                    <select formControlName="corden" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('corden').errors }">
-                                        <option></option>
-                                        <option *ngFor="let serviceOrder of serviceOrderList" value="{{ serviceOrder.id }}">{{ serviceOrder.data }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && popup_form.get('corden').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('corden').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.OWNER" | translate }}</label>
                                     <input type="text" formControlName="xnombrespropietario" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombrespropietario').errors }">
                                     <div *ngIf="submitted && popup_form.get('xnombrespropietario').errors"  class="invalid-feedback">
@@ -157,7 +120,224 @@
                                 </div>
                             </div>
                         </div>
-                    </div>        
+                    </div>    
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.OBSERVATION" | translate }}</label>
+                                    <textarea type="text" formControlName="xobservacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xobservacion').errors }"></textarea>
+                                    <div *ngIf="submitted && popup_form.get('xobservacion').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xobservacion').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto').errors }" (change)="activateCheck()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList" value="{{ replacement.value }}">{{ replacement.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto2">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto2" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto2').errors }" (change)="activateCheck2()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList2" value="{{ replacement.value2 }}">{{ replacement.value2 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto2').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto2').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto3">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto3" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto3').errors }" (change)="activateCheck3()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList3" value="{{ replacement.value3 }}">{{ replacement.value3 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto3').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto3').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto4">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto4" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto4').errors }" (change)="activateCheck4()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList4" value="{{ replacement.value4 }}">{{ replacement.value4 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto4').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto4').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto5">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto5" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto5').errors }" (change)="activateCheck5()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList5" value="{{ replacement.value5 }}">{{ replacement.value5 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto5').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto5').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto6">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto6" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto6').errors }" (change)="activateCheck6()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList6" value="{{ replacement.value6 }}">{{ replacement.value6 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto6').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto6').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto7">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto7" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto7').errors }" (change)="activateCheck7()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList7" value="{{ replacement.value7 }}">{{ replacement.value7 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto7').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto7').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="repuesto8">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto8" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto8').errors }" (change)="activateCheck8()">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList8" value="{{ replacement.value8 }}">{{ replacement.value8 }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto8').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto8').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.CAUSESETTLEMENT" | translate }}</label>
+                                    <select formControlName="ccausafiniquito" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ccausafiniquito').errors }">
+                                        <option></option>
+                                        <option *ngFor="let causa of causaList" value="{{ causa.id }}">{{ causa.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('ccausafiniquito').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('ccausafiniquito').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="width: 150px">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.AMOUNT" | translate }}</label>
+                                    <input type="number" formControlName="mmontofiniquito" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mmontofiniquito').errors }">
+                                    <div *ngIf="submitted && popup_form.get('mmontofiniquito').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('mmontofiniquito').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width: 150px">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.COIN" | translate }}</label>
+                                    <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cmoneda').errors }">
+                                        <option></option>
+                                        <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('cmoneda').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('cmoneda').errors.required">{{ "THIRDPARTIES.OWNERS.REQUIREDCOIN" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   
+                    <br> 
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck">
+                            <input type="checkbox" formControlName="botro" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro').errors }" (change)="activateReplacement(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck2">
+                            <input type="checkbox" formControlName="botro2" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro2').errors }" (change)="activateReplacement2(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro2').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro2').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck3">
+                            <input type="checkbox" formControlName="botro3" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro3').errors }" (change)="activateReplacement3(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro3').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro3').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck4">
+                            <input type="checkbox" formControlName="botro4" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro4').errors }" (change)="activateReplacement4(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro4').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro4').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck5">
+                            <input type="checkbox" formControlName="botro5" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro5').errors }" (change)="activateReplacement5(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro5').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro5').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck6">
+                            <input type="checkbox" formControlName="botro6" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro6').errors }" (change)="activateReplacement6(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro6').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro6').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck7">
+                            <input type="checkbox" formControlName="botro7" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro7').errors }" (change)="activateReplacement7(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro7').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro7').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-4" style="margin-left: 405px;">
+                        <div class="form-group form-check" *ngIf="activarCheck8">
+                            <input type="checkbox" formControlName="botro8" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('botro8').errors }" (change)="activateReplacement8(popup_form.value)">
+                            <label><b>¿Deseas agregar otro repuesto?</b></label>
+                            <div *ngIf="submitted && popup_form.get('botro8').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('botro8').errors.required">{{ "CLIENTS.CLIENTS.REQUIREDCOLECTIVE" | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
