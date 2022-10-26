@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {MatNativeDateModule} from '@angular/material/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -265,10 +266,13 @@ import { QsomosComponent } from './club/pages-statics/qsomos/qsomos.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
-//import angularChartist from 'angular-chartist.js';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TablesDocumentsComponent } from './pop-up/tables-documents/tables-documents.component';
 import { ServicesInsurersIndexComponent } from './tables/services-insurers/services-insurers-index/services-insurers-index.component';
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
@@ -281,6 +285,11 @@ import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 import { FleetContractManagementRealcoverageComponent } from './pop-up/fleet-contract-management-realcoverage/fleet-contract-management-realcoverage.component';
 import { NotificationRejectionLetterComponent } from './pop-up/notification-rejection-letter/notification-rejection-letter.component';
+import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
+import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
+import { BatchComponent } from './pop-up/batch/batch.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -551,14 +560,23 @@ export function HttpLoaderFactory(http: HttpClient){
     PlanRcvDetailComponent,
     FleetContractIndividualDetailComponent,
     FleetContractManagementRealcoverageComponent,
-    NotificationRejectionLetterComponent
+    NotificationRejectionLetterComponent,
+    ParentPolicyIndexComponent,
+    ParentPolicyDetailComponent,
+    BatchComponent 
   ],
   imports: [
     BrowserModule,
+    MatNativeDateModule,
     MatButtonModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    NgxMatSelectSearchModule,
     BrowserAnimationsModule,
     MatIconModule,
+    MatAutocompleteModule,
     MatDividerModule,
+    MatFormFieldModule,
     NgbModule,
     MatSidenavModule,
     MatToolbarModule,

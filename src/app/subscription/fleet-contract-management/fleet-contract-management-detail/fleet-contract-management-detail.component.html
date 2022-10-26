@@ -19,7 +19,8 @@
                                     <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.CANCEL" | translate }}
                                 </button>
-                                <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="createPDF()" *ngIf="cuadro">
+
+                                <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="createPDF2()" *ngIf="cuadro">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.POLICYBOX" | translate }}
                                 </button>
