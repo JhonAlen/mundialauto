@@ -268,7 +268,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
-
+import {MatInputModule} from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -285,6 +285,7 @@ import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component'
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -553,10 +554,13 @@ export function HttpLoaderFactory(http: HttpClient){
     AdministrationPaymentComponent,
     PlanRcvIndexComponent,
     PlanRcvDetailComponent,
-    FleetContractIndividualDetailComponent 
+    FleetContractIndividualDetailComponent,
+    ReceiptGenerationComponent
+
   ],
   imports: [
     BrowserModule,
+    MatInputModule,
     MatNativeDateModule,
     MatButtonModule,
     MatSelectModule,

@@ -76,7 +76,11 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       msuma_aseg:[''],
       mtarifa:[''],
       mprima_casco:[''],
-      mcatastrofico:['']
+      mcatastrofico:[''],
+      msuma_blindaje:[''],
+      mprima_blindaje:[''],
+      pdescuento:['']
+
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -311,6 +315,10 @@ async getmetodologia(){
       }
       },);
   }  
+  
+  addAccessory(){
+
+  }
 
 
    onSubmit(form){
@@ -352,9 +360,10 @@ async getmetodologia(){
         msuma_aseg: form.msuma_aseg,
         mtarifa: form.mtarifa,
         mprima_casco: form.mprima_casco,
-        mcatastrofico: form.mcatastrofico
-
-
+        mcatastrofico: form.mcatastrofico,
+        mprima_blindaje: form.mprima_blindaje,
+        msuma_blindaje: form.msuma_blindaje,
+        pdescuento: form.pdescuento
 
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
