@@ -14,7 +14,10 @@ import { environment } from '@environments/environment';
   styleUrls: ['./fleet-contract-individual-detail.component.css']
 })
 export class FleetContractIndividualDetailComponent implements OnInit {
-
+  checked = false;
+  indeterminate = false;
+  labelPosition: 'before' | 'after' = 'after';
+  disabled = false;
   currentUser;
   search_form : UntypedFormGroup;
   loading: boolean = false;
@@ -79,7 +82,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       mcatastrofico:[''],
       msuma_blindaje:[''],
       mprima_blindaje:[''],
-      pdescuento:['']
+      pdescuento:[''],
+      fraccionado:['']
 
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -145,6 +149,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
 async getModeloData(){
+
+
+
+  
     let params = {
       cpais: this.currentUser.data.cpais,
       xmarca: this.search_form.get('xmarca').value

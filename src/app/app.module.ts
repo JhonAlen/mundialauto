@@ -291,6 +291,9 @@ import { BatchComponent } from './pop-up/batch/batch.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component'
+import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
+
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -569,6 +572,8 @@ export function HttpLoaderFactory(http: HttpClient){
   ],
   imports: [
     BrowserModule,
+    MatCardModule,
+    MatRadioModule,
     MatInputModule,
     MatNativeDateModule,
     MatButtonModule,
