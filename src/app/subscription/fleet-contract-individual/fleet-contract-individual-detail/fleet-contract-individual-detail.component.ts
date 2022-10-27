@@ -4,8 +4,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
-import { TranslateService } from '@ngx-translate/core';
 import { environment } from '@environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
               private authenticationService : AuthenticationService,
               private router: Router,
               private http: HttpClient,
-              private translate: TranslateService,
+              private modalService : NgbModal,
               private webService: WebServiceConnectionService) { }
 
   async ngOnInit(): Promise<void>{
@@ -76,7 +77,11 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       msuma_aseg:[''],
       mtarifa:[''],
       mprima_casco:[''],
-      mcatastrofico:['']
+      mcatastrofico:[''],
+      msuma_blindaje:[''],
+      mprima_blindaje:[''],
+      pdescuento:['']
+
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -311,6 +316,15 @@ async getmetodologia(){
       }
       },);
   }  
+  
+  addAccessory(){
+    let accessory;
+    const modalRef = this.modalService.open(FleetContractIndividualAccessorysComponent, {size: 'xl'});
+    modalRef.componentInstance.accessory = accessory;
+    modalRef.result.then((result: any) => { 
+
+    });
+  }
 
 
    onSubmit(form){
@@ -352,9 +366,10 @@ async getmetodologia(){
         msuma_aseg: form.msuma_aseg,
         mtarifa: form.mtarifa,
         mprima_casco: form.mprima_casco,
-        mcatastrofico: form.mcatastrofico
-
-
+        mcatastrofico: form.mcatastrofico,
+        mprima_blindaje: form.mprima_blindaje,
+        msuma_blindaje: form.msuma_blindaje,
+        pdescuento: form.pdescuento
 
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
