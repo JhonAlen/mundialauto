@@ -58,11 +58,10 @@
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 520px;" class="ag-theme-alpine" [rowData]="parentPolicyResultList" [pagination]="true" [paginationPageSize]="10" rowSelection="single" (rowClicked)="rowClicked($event)">
                             <ag-grid-column headerName="Código" field="ccarga" [width]="122" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Descripción" field="xdescripcion" [width]="174" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="N° de Póliza" field="xpoliza" [width]="160" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Descripción" field="xdescripcion" [width]="300" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Corredor" field="xcorredor" [width]="300" [sortable]="false" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Fecha de Creación" field="fcreacion" [width]="172" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Cantidad de Recibos" field="nrecibos" [width]="122" [sortable]="false" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Prima Anual" field="xprimaanual" [width]="172" [sortable]="false" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Metodología de Pago" field="xmetodologiapago" [width]="174" [sortable]="false" [resizable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>
