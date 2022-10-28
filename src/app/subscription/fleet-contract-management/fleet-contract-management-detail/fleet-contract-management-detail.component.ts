@@ -1444,7 +1444,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
     let body = []
     this.annexList.forEach(function(row) {
       let dataRow = [];
-      dataRow.push({text: row.xanexo, margin: [10, 0, 0, 0], border: [true, false, true, false]});
+      dataRow.push({text: row.xanexo, border: [true, false, true, false]});
       body.push(dataRow);
     })
     return body;
