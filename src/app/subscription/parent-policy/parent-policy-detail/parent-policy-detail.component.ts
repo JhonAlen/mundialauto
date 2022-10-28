@@ -25,6 +25,7 @@ export class ParentPolicyDetailComponent implements OnInit {
   loading_cancel: boolean = false;
   submitted: boolean = false;
   alert = { show: false, type: "", message: "" };
+  xpoliza: string = '';
   clientList: any[] = [];
   paymentMethodologyList: any[] = [];
   coinList: any[] = [];
@@ -162,6 +163,7 @@ export class ParentPolicyDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/parent-policy/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
+        this.xpoliza = response.data.xpoliza;
         this.detail_form.get('ccliente').setValue(response.data.ccliente);
         this.detail_form.get('ccliente').disable();
         this.detail_form.get('ccorredor').setValue(response.data.ccorredor);
@@ -211,6 +213,7 @@ export class ParentPolicyDetailComponent implements OnInit {
         ccarga: this.code,
         ccliente: form.ccliente,
         ccorredor: form.ccorredor,
+        xpoliza: this.xpoliza,
         xdescripcion_l: this.clientList.filter((cli) => { return cli.id == form.ccliente})[0].value,
         lotes: this.batchList
       }
