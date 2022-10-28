@@ -119,3 +119,7 @@ input{
     -moz-appearance: textfield;
   }
 
+.buton{
+    padding: 29px;
+    width: 41%;
+}

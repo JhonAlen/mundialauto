@@ -309,7 +309,6 @@ async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
-
     };
     this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -325,7 +324,24 @@ async getmetodologia(){
   }  
   
   addAccessory(){
+   // /tarifa-casco
 
+  }
+
+  generateTarifa(){
+    let params =  {
+      xtipo: this.search_form.get('xtipo').value,  
+      xmarca: this.search_form.get('xmarca').value,
+      xmodelo: this.search_form.get('xmodelo').value,
+      cano: this.search_form.get('cano').value,
+      xcobertura: this.search_form.get('xcobertura').value,
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('mtarifa').setValue(response.data.ptasa_casco);
+        this.search_form.get('mtarifa').disable();
+      }
+    },);
   }
 
 
