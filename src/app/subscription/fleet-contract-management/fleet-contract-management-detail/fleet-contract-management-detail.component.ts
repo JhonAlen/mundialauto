@@ -61,6 +61,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   coverageList: any[] = [];
   realCoverageList: any[] = [];
   annexList: any[] = [];
+  accesoriesList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -592,6 +593,16 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('ctiporecibo').setValue(response.data.ctiporecibo);
         this.detail_form.get('ctiporecibo').disable();
         //this.searchTotalAmountDataRequest();
+        this.accesoriesList = [];
+        if(response.data.accesories){
+          for(let i =0; i < response.data.accesories.length; i++){
+            this.accesoriesList.push({
+              ccobertura: response.data.accesories[i].caccesorio,
+              canexo: response.data.accesories[i].canexo,
+              xanexo: response.data.accesories[i].xaccesorio,
+            });
+          }
+        }
         this.annexList = [];
         if(response.data.coverageAnnexes){
           for(let i =0; i < response.data.coverageAnnexes.length; i++){
@@ -602,7 +613,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
             });
           }
         }
-        console.log(this.annexList);
         this.realCoverageList = [];
         if(response.data.realCoverages) {
           for(let i =0; i < response.data.realCoverages.length; i++){
@@ -1440,6 +1450,16 @@ export class FleetContractManagementDetailComponent implements OnInit {
     }
   }
 
+  buildAccesoriesBody() {
+    let body = []
+    this.accesoriesList.forEach(function(row) {
+      let dataRow = [];
+      dataRow.push({text: row.xaccesorio, border: [true, false, true, false]});
+      body.push(dataRow);
+    })
+    return body;
+  }
+
   buildAnnexesBody() {
     let body = []
     this.annexList.forEach(function(row) {
@@ -1938,6 +1958,22 @@ export class FleetContractManagementDetailComponent implements OnInit {
             body: [
               [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
             ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'ACCESORIOS', alignment: 'center', fillColor: '#ababab', bold: true}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: this.buildAccesoriesBody()
           }
         },
         {
