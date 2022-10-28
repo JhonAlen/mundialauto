@@ -15,6 +15,7 @@ import { FleetContractIndividualAccessoryAmountComponent } from '@app/pop-up/fle
 })
 export class FleetContractIndividualAccessorysComponent implements OnInit {
 
+  @Input() public accessory;
   private accesorryGridApi;
   private acceptedAccesoryGridApi;
   currentUser;
@@ -142,14 +143,13 @@ export class FleetContractIndividualAccessorysComponent implements OnInit {
     modalRef.result.then((result: any) => { 
 
     if(result){
-      for(let i = 0; i < this.accesoryList.length; i++){
-        if(this.accesoryList[i].caccesorio == result.caccesorio){
-          this.accessoryListResult[i].cgrid == i;
-          this.accessoryListResult[i].caccesorio = result.caccesorio;
-          this.accessoryListResult[i].msuma_aseg = result.msuma_aseg;
-          this.accessoryListResult[i].mprima = result.mprima;
+      for(let i = 0; i < this.acceptedAccesoryList.length; i++){
+        if(this.acceptedAccesoryList[i].caccesorio == result.caccesorio){
+          this.acceptedAccesoryList[i].cgrid == i;
+          this.acceptedAccesoryList[i].caccesorio = result.caccesorio;
+          this.acceptedAccesoryList[i].msuma_aseg = result.msuma_aseg;
+          this.acceptedAccesoryList[i].mprima = result.mprima;
         }
-        console.log(this.accessoryListResult[i])
       }
     }
     })
@@ -165,6 +165,12 @@ export class FleetContractIndividualAccessorysComponent implements OnInit {
 
   onSubmit(form){
 
+    this.submitted = true;
+    this.loading = true;
+
+    this.accessory = this.acceptedAccesoryList
+
+    this.activeModal.close(this.acceptedAccesoryList);
   }
 
 

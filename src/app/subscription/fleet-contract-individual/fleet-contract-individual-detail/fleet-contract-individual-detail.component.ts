@@ -36,6 +36,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   status: boolean = true;
+  accessoryList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -323,6 +324,9 @@ async getmetodologia(){
     modalRef.componentInstance.accessory = accessory;
     modalRef.result.then((result: any) => { 
 
+      if(result){
+        this.accessoryList = result;
+      }
     });
   }
 
@@ -369,8 +373,10 @@ async getmetodologia(){
         mcatastrofico: form.mcatastrofico,
         mprima_blindaje: form.mprima_blindaje,
         msuma_blindaje: form.msuma_blindaje,
-        pdescuento: form.pdescuento
-
+        pdescuento: form.pdescuento,
+        accessory:{
+          create: this.accessoryList
+        }
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
