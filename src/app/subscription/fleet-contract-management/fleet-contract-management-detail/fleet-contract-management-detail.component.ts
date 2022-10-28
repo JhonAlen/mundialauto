@@ -60,6 +60,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   serviceList: any[] = [];
   coverageList: any[] = [];
   realCoverageList: any[] = [];
+  annexList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -591,6 +592,17 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('ctiporecibo').setValue(response.data.ctiporecibo);
         this.detail_form.get('ctiporecibo').disable();
         //this.searchTotalAmountDataRequest();
+        this.annexList = [];
+        if(response.data.coverageAnnexes){
+          for(let i =0; i < response.data.coverageAnnexes.length; i++){
+            this.annexList.push({
+              ccobertura: response.data.coverageAnnexes[i].ccobertura,
+              canexo: response.data.coverageAnnexes[i].canexo,
+              xanexo: response.data.coverageAnnexes[i].xanexo,
+            });
+          }
+        }
+        console.log(this.annexList);
         this.realCoverageList = [];
         if(response.data.realCoverages) {
           for(let i =0; i < response.data.realCoverages.length; i++){
@@ -1428,9 +1440,18 @@ export class FleetContractManagementDetailComponent implements OnInit {
     }
   }
 
+  buildAnnexesBody() {
+    let body = []
+    this.annexList.forEach(function(row) {
+      let dataRow = [];
+      dataRow.push({text: row.xanexo, margin: [10, 0, 0, 0], border: [true, false, true, false]});
+      body.push(dataRow);
+    })
+    return body;
+  }
+
   buildCoverageBody2() {
     let body = [];
-    console.log(this.coverageList);
     this.coverageList.forEach(function(row) {
       if (row.ititulo == 'C') {
         let dataRow = [];
@@ -1950,17 +1971,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           style: 'data',
           table: {
             widths: ['*'],
-            body: [
-              [{text: 'CONDICIONADO DE SEGURO DE CASCO DE VEHÍCULOS TERRESTRES-COBERTURA AMPLIA\n' +
-                      'ANEXO DE COBERTURA DE DAÑOS MALICIOSOS PARA EL SEGURO DE CASCO DE VEHÍCULOS TERRESTRES-COBERTURA AMPLIA\n' +
-                      'ANEXO DE COBERTURA DE EVENTOS CATASTRÓFICOS PARA EL SEGURO DE CASCO DE VEHÍCULOS TERRESTRES\n' +
-                      'PÓLIZA DE SEGURO DE RESPONSABILIDAD CIVIL DE VEHÍCULOS\n' +
-                      'ANEXO DE COBERTURA DE ASISTENCIA LEGAL Y DEFENSA PENAL\n' +
-                      'ANEXO DE COBERTURA DE EXCESO DE LÍMITE\n' +
-                      'ANEXO DE COBERTURA DE ACCIDENTES PERSONALES PARA OCUPANTES DEL VEHÍCULO\n' +
-                      'ANEXO DE COBERTURA DE GASTOS FUNERARIOS\n' +
-                      'ANEXO DE COBERTURA EN MONEDA EXTRANJERA\n', border: [true, false, true, false] }]
-            ]
+            body: this.buildAnnexesBody()
           }
         },
         {
