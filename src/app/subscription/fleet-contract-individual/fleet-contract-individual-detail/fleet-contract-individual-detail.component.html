@@ -179,10 +179,10 @@
                     <div class="form-outline">
                       <label class="form-label" for="form3Examplev5">Tipo de vehículo</label>
                       <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }">
-                        <option value="Rustico">Particular</option>
+                        <option value="Particular">Particular</option>
                         <option value="Rustico">Rustico</option>
-                        <option value="Rustico">Pick-UP</option>
-                        <option value="Rustico">Carga</option>
+                        <option value="Pick-UP">Pick-UP</option>
+                        <option value="Carga">Carga</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
@@ -316,7 +316,7 @@
                   <div class="form-outline">
                     <label class="form-label">Pago fraccionado</label>
                     <section class="example-section">
-                      <mat-checkbox formControlName="fraccionado">fraccionado</mat-checkbox>
+                      <mat-checkbox formControlName="ifraccionamiento" (change)="changeDivision(search_form.value)">fraccionado</mat-checkbox>
                     </section>
                   </div>
                 </div>
@@ -359,10 +359,10 @@
                     </section>
                   </mat-card-content>
                 </mat-card> -->
-                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0" *ngIf="cuotas">
                   <div class="form-outline">
                     <label class="form-label" for="form3Examplev5">Número de cuotas</label>
-                    <input type="number" formControlName="femision" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('femision').errors }" />
+                    <input type="number" formControlName="ncuotas" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncuotas').errors }" />
                   </div>
                 </div>
                 <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">

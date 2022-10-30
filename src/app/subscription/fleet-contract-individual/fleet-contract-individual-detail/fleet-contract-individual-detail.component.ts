@@ -39,6 +39,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   status: boolean = true;
+  cuotas: boolean = false;
   accessoryList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -85,7 +86,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       msuma_blindaje:[''],
       mprima_blindaje:[''],
       pdescuento:[''],
-      fraccionado:['']
+      ifraccionamiento:[false],
+      ncuotas:[''],
 
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -337,6 +339,11 @@ async getmetodologia(){
     },);
   }
 
+  changeDivision(form){
+    if(form.ifraccionamiento == true){
+      this.cuotas = true;
+    }
+  }
 
    onSubmit(form){
     this.submitted = true;
@@ -381,6 +388,8 @@ async getmetodologia(){
         mprima_blindaje: form.mprima_blindaje,
         msuma_blindaje: form.msuma_blindaje,
         pdescuento: form.pdescuento,
+        ifraccionamiento: form.ifraccionamiento,
+        ncuotas: form.ncuotas,
         accessory:{
           create: this.accessoryList
         }
