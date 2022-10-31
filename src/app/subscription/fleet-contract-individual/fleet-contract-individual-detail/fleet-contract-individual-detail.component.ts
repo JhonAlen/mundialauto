@@ -41,6 +41,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   status: boolean = true;
   cuotas: boolean = false;
   accessoryList: any[] = [];
+  descuento: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -123,6 +124,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
   async initializeDropdownDataRequest(){
+    this.search_form.get('mprima_casco').disable();
     this.getPlanData();
     this.getCorredorData();
     this.getUso();
@@ -343,6 +345,19 @@ async getmetodologia(){
     if(form.ifraccionamiento == true){
       this.cuotas = true;
     }
+  }
+
+  calculation(){
+    let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('mtarifa').value / 100;
+    this.search_form.get('mprima_casco').setValue(calculo);
+  }
+
+
+  data(){
+    let division = this.search_form.get('pdescuento').value / 100
+    let multiplicacion = this.search_form.get('mprima_casco').value * division
+    let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
+    this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
 
    onSubmit(form){
