@@ -180,6 +180,7 @@ import { CollectionDetailComponent } from './administration/collection/collectio
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component'
 import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 
@@ -449,7 +450,7 @@ const routes: Routes = [
   { path: 'products/plan-rcv-index', component: PlanRcvIndexComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-detail', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-detail/:id', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
-
+  { path: 'subscription/receipt-generation', component: ReceiptGenerationComponent, canActivate: [AuthGuard]}
  
 ];
 

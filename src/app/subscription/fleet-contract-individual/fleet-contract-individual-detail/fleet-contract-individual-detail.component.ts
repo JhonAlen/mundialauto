@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators , FormBuilder} from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
-import { TranslateService } from '@ngx-translate/core';
 import { environment } from '@environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 
 
 @Component({
@@ -14,7 +15,10 @@ import { environment } from '@environments/environment';
   styleUrls: ['./fleet-contract-individual-detail.component.css']
 })
 export class FleetContractIndividualDetailComponent implements OnInit {
-
+  checked = false;
+  indeterminate = false;
+  labelPosition: 'before' | 'after' = 'after';
+  disabled = false;
   currentUser;
   search_form : UntypedFormGroup;
   loading: boolean = false;
@@ -23,7 +27,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   marcaList: any[] = [];
   modeloList: any[] = [];
   coberturaList: any[] = [];
-  tipoList: any[] = [];
+
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
@@ -35,20 +39,23 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   status: boolean = true;
+  cuotas: boolean = false;
+  accessoryList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
+              private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
               private router: Router,
               private http: HttpClient,
-              private translate: TranslateService,
+              private modalService : NgbModal,
               private webService: WebServiceConnectionService) { }
 
   async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
-      cano: [''],
-      xcolor: [''],
+      cano: ['', Validators.required],
+      xcolor: ['', Validators.required],
       xmarca: ['', Validators.required],
       xmodelo: ['', Validators.required],
       xrif_cliente:['', Validators.required],
@@ -75,7 +82,13 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       msuma_aseg:[''],
       mtarifa:[''],
       mprima_casco:[''],
-      mcatastrofico:['']
+      mcatastrofico:[''],
+      msuma_blindaje:[''],
+      mprima_blindaje:[''],
+      pdescuento:[''],
+      ifraccionamiento:[false],
+      ncuotas:[''],
+
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -115,7 +128,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
     this.getUso();
     this.getColor();
     this.getCobertura();
-    this.getTipo();
+    
     this.getmetodologia();
 
     let params = {
@@ -140,6 +153,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
 async getModeloData(){
+
+
+
+  
     let params = {
       cpais: this.currentUser.data.cpais,
       xmarca: this.search_form.get('xmarca').value
@@ -219,7 +236,6 @@ async getPlanData(){
     }
     },);
   }
-
 async getUso(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -276,28 +292,11 @@ async getCobertura(){
       }
       },);
   }
-async getTipo(){
-    let params =  {
-      cpais: this.currentUser.data.cpais,  
-      ccompania: this.currentUser.data.ccompania,
 
-    };
-    this.http.post(`${environment.apiUrl}/api/valrep/type-vehicle`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.tipoList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.tipoList.push({ 
-            value: response.data.list[i].xtipo,
-          });
-        }
-      }
-      },);
-  }
 async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
-
     };
     this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -311,7 +310,40 @@ async getmetodologia(){
       }
       },);
   }  
+  
+  addAccessory(){
+    let accessory;
+    const modalRef = this.modalService.open(FleetContractIndividualAccessorysComponent, {size: 'xl'});
+    modalRef.componentInstance.accessory = accessory;
+    modalRef.result.then((result: any) => { 
 
+      if(result){
+        this.accessoryList = result;
+      }
+    });
+  }
+
+  generateTarifa(){
+    let params =  {
+      xtipo: this.search_form.get('xtipo').value,  
+      xmarca: this.search_form.get('xmarca').value,
+      xmodelo: this.search_form.get('xmodelo').value,
+      cano: this.search_form.get('cano').value,
+      xcobertura: this.search_form.get('xcobertura').value,
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('mtarifa').setValue(response.data.ptasa_casco);
+        this.search_form.get('mtarifa').disable();
+      }
+    },);
+  }
+
+  changeDivision(form){
+    if(form.ifraccionamiento == true){
+      this.cuotas = true;
+    }
+  }
 
    onSubmit(form){
     this.submitted = true;
@@ -352,10 +384,15 @@ async getmetodologia(){
         msuma_aseg: form.msuma_aseg,
         mtarifa: form.mtarifa,
         mprima_casco: form.mprima_casco,
-        mcatastrofico: form.mcatastrofico
-
-
-
+        mcatastrofico: form.mcatastrofico,
+        mprima_blindaje: form.mprima_blindaje,
+        msuma_blindaje: form.msuma_blindaje,
+        pdescuento: form.pdescuento,
+        ifraccionamiento: form.ifraccionamiento,
+        ncuotas: form.ncuotas,
+        accessory:{
+          create: this.accessoryList
+        }
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
