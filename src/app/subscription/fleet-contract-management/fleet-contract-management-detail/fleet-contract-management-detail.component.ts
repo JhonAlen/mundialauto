@@ -61,6 +61,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
   serviceList: any[] = [];
   coverageList: any[] = [];
   realCoverageList: any[] = [];
+  annexList: any[] = [];
+  accesoriesList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -93,6 +95,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   inspectionDeletedRowList: any[] = [];
   planCoberturas: string;
   planServicios: string;
+  xtituloreporte: string;
   rowClick: boolean = false;
   cuadro: boolean = false;
   coverage = {};
@@ -363,6 +366,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       if(response.data.status){
         this.ccontratoflota = response.data.ccontratoflota;
         this.ccarga = response.data.ccarga;
+        this.xtituloreporte = response.data.xtituloreporte;
         this.detail_form.get('ccliente').setValue(response.data.ccliente);
         this.detail_form.get('ccliente').disable();
         this.xciudadcliente = response.data.xciudadcliente;
@@ -594,6 +598,26 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('ctiporecibo').setValue(response.data.ctiporecibo);
         this.detail_form.get('ctiporecibo').disable();
         //this.searchTotalAmountDataRequest();
+        this.accesoriesList = [];
+        if(response.data.accesories){
+          for(let i =0; i < response.data.accesories.length; i++){
+            this.accesoriesList.push({
+              ccobertura: response.data.accesories[i].caccesorio,
+              canexo: response.data.accesories[i].canexo,
+              xanexo: response.data.accesories[i].xaccesorio,
+            });
+          }
+        }
+        this.annexList = [];
+        if(response.data.coverageAnnexes){
+          for(let i =0; i < response.data.coverageAnnexes.length; i++){
+            this.annexList.push({
+              ccobertura: response.data.coverageAnnexes[i].ccobertura,
+              canexo: response.data.coverageAnnexes[i].canexo,
+              xanexo: response.data.coverageAnnexes[i].xanexo,
+            });
+          }
+        }
         this.realCoverageList = [];
         if(response.data.realCoverages) {
           for(let i =0; i < response.data.realCoverages.length; i++){
@@ -1441,6 +1465,32 @@ export class FleetContractManagementDetailComponent implements OnInit {
     }
   }
 
+  buildAccesoriesBody() {
+    let body = [];
+    if (this.accesoriesList.length > 0){
+      this.accesoriesList.forEach(function(row) {
+        let dataRow = [];
+        dataRow.push({text: row.xaccesorio, border: [true, false, true, false]});
+        body.push(dataRow);
+      })
+    } else {
+      let dataRow = [];
+      dataRow.push({text: ' ', border: [true, false, true, false]});
+      body.push(dataRow);
+    }
+    return body;
+  }
+
+  buildAnnexesBody() {
+    let body = []
+    this.annexList.forEach(function(row) {
+      let dataRow = [];
+      dataRow.push({text: row.xanexo, border: [true, false, true, false]});
+      body.push(dataRow);
+    })
+    return body;
+  }
+
   rowClicked(event: any){
     let recoverage = {};
       if(this.editStatus){ 
@@ -1498,14 +1548,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
     
   buildCoverageBody2() {
     let body = [];
-    console.log(this.coverageList);
     this.coverageList.forEach(function(row) {
       if (row.ititulo == 'C') {
         let dataRow = [];
-        dataRow.push({text: row.ccobertura, border: [true, false, false, true]});
         dataRow.push({text: row.xcobertura, margin: [10, 0, 0, 0], border: [true, false, false, true]});
         //Se utiliza el formato DE (alemania) ya que es el que coloca '.' para representar miles, y ',' para los decimales fuente: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
-        dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.msumaasegurada)} ${row.xmoneda}`, alignment: 'right', border:[true, false, false, true]});
+        dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.msumaasegurada)}`, alignment: 'right', border:[true, false, false, true]});
         if (row.mtasa) {
           dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mtasa)}`, alignment: 'right', border:[true, false, false, true]});
         } else {
@@ -1517,7 +1565,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           dataRow.push({text: ` `, alignment: 'right', border: [true, false, true, true]});
         }
         if(row.mprima){
-          dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mprima)} ${row.xmoneda}`, fillColor: '#f2f2f2', alignment: 'right', border:[true, false, true, true]});
+          dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mprima)}`, fillColor: '#f2f2f2', alignment: 'right', border:[true, false, true, true]});
         } else {
           dataRow.push({text: ` `,fillColor: '#f2f2f2', alignment: 'right', border: [true, false, true, true]});
         }
@@ -1525,7 +1573,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
       }
       if (row.ititulo == 'T') {
         let dataRow = [];
-        dataRow.push({text: row.ccobertura, border: [true, false, false, true]});
         dataRow.push({text: row.xcobertura, decoration: 'underline', margin: [2, 0, 0, 0], border: [true, false, false, true]});
         dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
         dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
@@ -1538,6 +1585,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   }
 
   createPDF2(){
+    try{
     const pdfDefinition: any = {
       footer: function(currentPage, pageCount) { 
         return {
@@ -1622,9 +1670,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 180, 40, 60, '*', '*'],
+            widths: [60, 150, 70, 60, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1669,7 +1717,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'ASEGURADO:', bold: true, border: [true, false, false, true]}, {text: `\n ${this.detail_form.get('xnombrepropietario').value} ${this.detail_form.get('xapellidopropietario').value}`, border: [false, false, false, true]}, {text: '\nC.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: `\n ${this.detail_form.get('xdocidentidadpropietario').value}`, border: [false, false, true, true]}]
+              [{text: 'ASEGURADO:', bold: true, border: [true, false, false, true]}, {text: `${this.detail_form.get('xnombrepropietario').value} ${this.detail_form.get('xapellidopropietario').value}`, border: [false, false, false, true]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: `${this.detail_form.get('xdocidentidadpropietario').value}`, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1757,25 +1805,25 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [30, 120, 100, 60, 50, 100],
+            widths: [150, 100, 60, 50, '*'],
             body: [
-              [{text: 'CÓDIGO', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'COBERTURAS', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'SUMA ASEGURADA USD', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'TASAS', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: '% DESC.', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'PRIMA ANUAL', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
+              [{text: 'COBERTURAS', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'SUMA ASEGURADA', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'TASAS', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: '% DESC.', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'PRIMA ANUAL', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [30, 120, 100, 60, 50, 100],
+            widths: [150, 100, 60, 50, '*'],
             body: this.buildCoverageBody2()
           }
         },
         {
           style: 'data',
           table: {
-            widths: [30, 120, 100, 60, 50, 100],
+            widths: [150, 100, 60, 50, '*'],
             body: [
-              [{text: 'Total de Prima Anual', colSpan: 5, alignment: 'right', bold: true, border: [true, false, true, false]}, {}, {}, {}, {}, {text: `${this.detail_form.get('xmoneda').value} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal)}`, alignment: 'right', bold: true, border: [false, false, true, false]}]
+              [{text: 'Total de Prima Anual', colSpan: 4, alignment: 'right', bold: true, border: [true, false, true, false]}, {}, {}, {}, {text: `${this.detail_form.get('xmoneda').value} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal)}`, alignment: 'right', bold: true, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1809,18 +1857,18 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [50, 40, '*', 100],
+            widths: [50, 50, 160, 100, '*'],
             body: [
-              [{text: 'Recibo N°.:', bold: true, border: [true, false, true, true]}, {text: this.xrecibo, alignment: 'center', border: [false, false, true, true]}, {text: `Vigencia del Recibo:  Desde:  ${this.fdesde_rec}  Hasta:  ${this.fhasta_rec}`, border: [false, false, true, true]}, {text: 'Tipo e Movimiento: EMISIÓN', bold: true, border: [false, false, true, true]}]
+              [{text: 'Recibo N°.:', bold: true, border: [true, false, true, true]}, {text: this.xrecibo, alignment: 'center', border: [false, false, true, true]}, {text: `Vigencia del Recibo:  Desde:  ${this.fdesde_rec}  Hasta:  ${this.fhasta_rec}`, colSpan: 2, border: [false, false, true, true]}, {}, {text: 'Tipo e Movimiento: EMISIÓN', bold: true, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [50, 40, '*', 100],
+            widths: [150, 100, 60, 50, '*'],
             body: [
-              [{text: 'Total a Cobrar:', colSpan: 3, alignment: 'right', bold: true, border: [true, false, false, false]}, {}, {}, {text: `${this.detail_form.get('xmoneda').value} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal)}`, alignment: 'center', bold: true, border: [true, false, true, false]}]
+              [{text: 'Total a Cobrar:', colSpan: 4, alignment: 'right', bold: true, border: [true, false, false, false]}, {}, {}, {}, {text: `${this.detail_form.get('xmoneda').value} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal)}`, alignment: 'center', bold: true, border: [true, false, true, false]}]
             ]
           }
         },
@@ -1994,6 +2042,22 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
+              [{text: 'ACCESORIOS', alignment: 'center', fillColor: '#ababab', bold: true}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: this.buildAccesoriesBody()
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
               [{text: 'DATOS DEL INTERMEDIARIO', alignment: 'center', fillColor: '#ababab', bold: true}]
             ]
           }
@@ -2020,17 +2084,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           style: 'data',
           table: {
             widths: ['*'],
-            body: [
-              [{text: 'CONDICIONADO DE SEGURO DE CASCO DE VEHÍCULOS TERRESTRES-COBERTURA AMPLIA\n' +
-                      'ANEXO DE COBERTURA DE DAÑOS MALICIOSOS PARA EL SEGURO DE CASCO DE VEHÍCULOS TERRESTRES-COBERTURA AMPLIA\n' +
-                      'ANEXO DE COBERTURA DE EVENTOS CATASTRÓFICOS PARA EL SEGURO DE CASCO DE VEHÍCULOS TERRESTRES\n' +
-                      'PÓLIZA DE SEGURO DE RESPONSABILIDAD CIVIL DE VEHÍCULOS\n' +
-                      'ANEXO DE COBERTURA DE ASISTENCIA LEGAL Y DEFENSA PENAL\n' +
-                      'ANEXO DE COBERTURA DE EXCESO DE LÍMITE\n' +
-                      'ANEXO DE COBERTURA DE ACCIDENTES PERSONALES PARA OCUPANTES DEL VEHÍCULO\n' +
-                      'ANEXO DE COBERTURA DE GASTOS FUNERARIOS\n' +
-                      'ANEXO DE COBERTURA EN MONEDA EXTRANJERA\n', border: [true, false, true, false] }]
-            ]
+            body: this.buildAnnexesBody()
           }
         },
         {
@@ -2077,7 +2131,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
         }
       }
     }
-    pdfMake.createPdf(pdfDefinition).open();
+    pdfMake.createPdf(pdfDefinition).open();}
+    catch(err){console.log(err.message)}
   }
 
   buildCoverageBody() {

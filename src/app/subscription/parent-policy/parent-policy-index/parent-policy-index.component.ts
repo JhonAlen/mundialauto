@@ -37,7 +37,7 @@ export class ParentPolicyIndexComponent implements OnInit {
     if (this.currentUser) {
       let params = {
         cusuario: this.currentUser.data.cusuario,
-        cmodulo: 31
+        cmodulo: 109
       }
       let request = await this.webService.securityVerifyModulePermission(params);
       if (request.error) {
@@ -68,9 +68,8 @@ export class ParentPolicyIndexComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/valrep/parent-policy`, params, options).subscribe((response : any) => {
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
-          this.parentPolicyList.push({ id: response.data.list[i].ccarga, value: `Póliza Matriz #${response.data.list[i].ccarga} ${response.data.list[i].xdescripcion} ${response.data.list[i].fcreacion}`});
+          this.parentPolicyList.push({ id: response.data.list[i].ccarga, value: `Póliza Matriz #${response.data.list[i].xpoliza} ${response.data.list[i].xdescripcion} ${response.data.list[i].fcreacion}`});
         }
-        this.parentPolicyList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
     },
     (err) => {
@@ -105,11 +104,9 @@ export class ParentPolicyIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.parentPolicyResultList.push({ 
             ccarga: response.data.list[i].ccarga,
-            xmetodologiapago: response.data.list[i].xmetodologiapago,
+            xcorredor: response.data.list[i].xcorredor,
             xdescripcion: response.data.list[i].xdescripcion,
             xpoliza: response.data.list[i].xpoliza,
-            nrecibos: response.data.list[i].nrecibos,
-            xprimaanual: `${response.data.list[i].mprimaanual} ${response.data.list[i].xmoneda}`,
             fcreacion: response.data.list[i].fcreacion,
           });
         }
