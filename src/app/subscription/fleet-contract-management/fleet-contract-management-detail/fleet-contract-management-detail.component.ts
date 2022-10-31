@@ -1466,12 +1466,18 @@ export class FleetContractManagementDetailComponent implements OnInit {
   }
 
   buildAccesoriesBody() {
-    let body = []
-    this.accesoriesList.forEach(function(row) {
+    let body = [];
+    if (this.accesoriesList.length > 0){
+      this.accesoriesList.forEach(function(row) {
+        let dataRow = [];
+        dataRow.push({text: row.xaccesorio, border: [true, false, true, false]});
+        body.push(dataRow);
+      })
+    } else {
       let dataRow = [];
-      dataRow.push({text: row.xaccesorio, border: [true, false, true, false]});
+      dataRow.push({text: ' ', border: [true, false, true, false]});
       body.push(dataRow);
-    })
+    }
     return body;
   }
 
@@ -2040,13 +2046,13 @@ export class FleetContractManagementDetailComponent implements OnInit {
             ]
           }
         },
-        /*{
+        {
           style: 'data',
           table: {
             widths: ['*'],
             body: this.buildAccesoriesBody()
           }
-        },*/
+        },
         {
           style: 'data',
           table: {
