@@ -570,7 +570,8 @@
                         <div class="container">
                             <ag-grid-angular #agGrid style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="noteList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="noteRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onNotesGridReady($event)">
                                 <ag-grid-column headerName="Nota" field="xnotanotificacion" [width]="518" [sortable]="true"></ag-grid-column>
-                                <ag-grid-column headerName="Ruta" field="xrutaarchivo" [width]="518" [sortable]="true"></ag-grid-column>
+                                <ag-grid-column headerName="Motivo" field="xcausafiniquito" [width]="250" [sortable]="true"></ag-grid-column>
+                                <ag-grid-column headerName="Ruta" field="xrutaarchivo" [width]="450" [sortable]="true"></ag-grid-column>
                             </ag-grid-angular>
                         </div>
                     </div>

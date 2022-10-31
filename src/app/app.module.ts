@@ -268,7 +268,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
-
+import {MatInputModule} from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
@@ -283,11 +283,16 @@ import { AdministrationPaymentComponent } from './pop-up/administration-payment/
 import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
 import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
 import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { FleetContractManagementRealcoverageComponent } from './pop-up/fleet-contract-management-realcoverage/fleet-contract-management-realcoverage.component';
+import { NotificationRejectionLetterComponent } from './pop-up/notification-rejection-letter/notification-rejection-letter.component';
 import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 import { BatchComponent } from './pop-up/batch/batch.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component';
+import { FleetContractIndividualAccessorysComponent } from './pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
+import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component'
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -557,12 +562,19 @@ export function HttpLoaderFactory(http: HttpClient){
     PlanRcvIndexComponent,
     PlanRcvDetailComponent,
     FleetContractIndividualDetailComponent,
+    ReceiptGenerationComponent,
+    FleetContractManagementRealcoverageComponent,
+    NotificationRejectionLetterComponent,
     ParentPolicyIndexComponent,
     ParentPolicyDetailComponent,
-    BatchComponent 
+    BatchComponent,
+    ReceiptGenerationComponent,
+    FleetContractIndividualAccessorysComponent,
+    FleetContractIndividualAccessoryAmountComponent
   ],
   imports: [
     BrowserModule,
+    MatInputModule,
     MatNativeDateModule,
     MatButtonModule,
     MatSelectModule,

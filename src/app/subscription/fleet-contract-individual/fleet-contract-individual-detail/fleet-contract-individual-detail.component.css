@@ -95,8 +95,6 @@ select{
     border: var(--bs-card-border-width) solid var(--bs-card-border-color);
     border-radius: var(--bs-card-border-radius);
     margin-top: 5px;
-    height: 510px;
-
 }
 
 input{
@@ -104,3 +102,24 @@ input{
 }
 
 
+.example-container .mat-form-field + .mat-form-field {
+    margin-left: 8px;
+  }
+  
+  .example-right-align {
+    text-align: right;
+  }
+  
+  input.example-right-align::-webkit-outer-spin-button,
+  input.example-right-align::-webkit-inner-spin-button {
+    display: none;
+  }
+  
+  input.example-right-align {
+    -moz-appearance: textfield;
+  }
+
+.buton{
+    padding: 29px;
+    width: 41%;
+}

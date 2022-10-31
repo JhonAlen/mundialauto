@@ -1594,7 +1594,12 @@
             "RECEIPTTYPE": "Periodo de Vigencia del Recibo",
             "CHARGE": "Carga",
             "PLAN": "Lista de Coberturas del",
-            "SERVICE": "Lista de Servicios del Plan "
+            "SERVICE": "Lista de Servicios del Plan ",
+            "EDITCOVERAGE": "Editar Cobertura",
+            "CONTRACT": "Contrato",
+            "CODECOVERAGE": "Codigo de Cobertura",
+            "COVERAGE": "Cobertura",
+            "SUMASSURED": "Suma Asegurada"
         },
         "CLUBCONTRACTSMANAGEMENT": {
             "CLUBCONTRACTSMANAGEMENT": "Administración de Contratos por Club",
@@ -1891,7 +1896,8 @@
             "SENDEMAIL": "Enviar Correo",
             "MESSAGE": "Mensaje del Correo",
             "GENERATESETTLEMENT": "Generar Finiquito",
-            "STATUS": "Estatus"
+            "STATUS": "Estatus",
+            "MOTIVE": "Motivo"
         },
         "SERVICEREQUESTS": {
             "SERVICEREQUESTS": "Solicitudes de Servicio",
@@ -1990,7 +1996,8 @@
             "SENDEMAIL": "Enviar Correo",
             "CANCELLATIONCAUSE": "Causa de Anulación",
             "VEHICLE":"Vehículo",
-            "OWNER": "Propietario"
+            "OWNER": "Propietario",
+            "CAUSESETTLEMENT": "Causa del Finiquito"
         },
         "SETTLEMENT": {
             "SETTLEMENT": "Finiquito",
