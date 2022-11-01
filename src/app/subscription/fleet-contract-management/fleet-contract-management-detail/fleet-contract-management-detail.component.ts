@@ -604,6 +604,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
             this.accesoriesList.push({
               caccesorio: response.data.accesories[i].caccesorio,
               msuma_accesorio: response.data.accesories[i].msuma_accesorio,
+              mprima_accesorio: response.data.accesories[i].mprima_accesorio,
               xaccesorio: response.data.accesories[i].xaccesorio,
             });
           }
@@ -1472,6 +1473,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         let dataRow = [];
         dataRow.push({text: row.xaccesorio, alignment: 'center', border: [true, false, true, false]});
         dataRow.push({text: row.msuma_accesorio, alignment: 'center', border: [false, false, true, false]})
+        dataRow.push({text: row.mprima_accesorio, alignment: 'center', border: [false, false, true, false]})
         body.push(dataRow);
       })
     } else {
@@ -2043,31 +2045,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'ACCESORIOS', alignment: 'center', fillColor: '#ababab', bold: true}]
-            ]
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: ['*', '*'],
-            body: [
-              [{text: 'ACCESORIO', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'SUMA ASEGURADA', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
-            ]
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: ['*', '*'],
-            body: this.buildAccesoriesBody()
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: ['*'],
-            body: [
               [{text: 'DATOS DEL INTERMEDIARIO', alignment: 'center', fillColor: '#ababab', bold: true}]
             ]
           }
@@ -2095,6 +2072,31 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: this.buildAnnexesBody()
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'ACCESORIOS', alignment: 'center', fillColor: '#ababab', bold: true}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*', '*', '*'],
+            body: [
+              [{text: 'ACCESORIO', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'SUMA ASEGURADA', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}, {text: 'PRIMA ANUAL', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*', '*', '*'],
+            body: this.buildAccesoriesBody()
           }
         },
         {
