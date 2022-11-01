@@ -297,19 +297,15 @@ export class FleetContractManagementIndexComponent implements OnInit {
             let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
             this.fdesde_pol = dateFormat;
           }
-          if (response.data.fdesde_pol) {
-            let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
-            this.fdesde_pol = dateFormat;
-          }
           if (response.data.fhasta_pol) {
             let dateFormat = new Date(response.data.fhasta_pol).toISOString().substring(0, 10);
             this.fhasta_pol = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fdesde_rec) {
             let dateFormat = new Date(response.data.fdesde_rec).toISOString().substring(0, 10);
             this.fdesde_rec = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fhasta_rec) {
             let dateFormat = new Date(response.data.fhasta_rec).toISOString().substring(0, 10);
             this.fhasta_rec = dateFormat
           }
