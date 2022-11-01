@@ -81,7 +81,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       fdesde_rec: ['', Validators.required],
       fhasta_rec: ['', Validators.required],
       msuma_aseg:[''],
-      mtarifa:[''],
+      pcasco:[''],
       mprima_casco:[''],
       mcatastrofico:[''],
       msuma_blindaje:[''],
@@ -89,6 +89,11 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       pdescuento:[''],
       ifraccionamiento:[false],
       ncuotas:[''],
+      mprima_bruta:[''],
+      pcatastrofico:[''],
+      pmotin:[''],
+      mmotin:[''],
+      pblindaje:['']
 
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -124,7 +129,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
   async initializeDropdownDataRequest(){
-    this.search_form.get('mprima_casco').disable();
     this.getPlanData();
     this.getCorredorData();
     this.getUso();
@@ -155,10 +159,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   }
 
 async getModeloData(){
-
-
-
-  
     let params = {
       cpais: this.currentUser.data.cpais,
       xmarca: this.search_form.get('xmarca').value
@@ -335,8 +335,7 @@ async getmetodologia(){
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
-        this.search_form.get('mtarifa').setValue(response.data.ptasa_casco);
-        this.search_form.get('mtarifa').disable();
+        this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
       }
     },);
   }
@@ -348,8 +347,10 @@ async getmetodologia(){
   }
 
   calculation(){
-    let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('mtarifa').value / 100;
+    let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
     this.search_form.get('mprima_casco').setValue(calculo);
+    this.search_form.get('mprima_bruta').setValue(calculo);
+
   }
 
 
@@ -397,7 +398,7 @@ async getmetodologia(){
         fdesde_rec: form.fdesde_rec,
         fhasta_rec: form.fhasta_rec,
         msuma_aseg: form.msuma_aseg,
-        mtarifa: form.mtarifa,
+        pcasco: form.pcasco,
         mprima_casco: form.mprima_casco,
         mcatastrofico: form.mcatastrofico,
         mprima_blindaje: form.mprima_blindaje,
@@ -405,6 +406,11 @@ async getmetodologia(){
         pdescuento: form.pdescuento,
         ifraccionamiento: form.ifraccionamiento,
         ncuotas: form.ncuotas,
+        mprima_bruta: form.mprima_bruta,
+        pcatastrofico: form.pcatastrofico,
+        pmotin:form.pmotin,
+        mmotin:form.mmotin,
+        pblindaje: form.pblindaje,
         accessory:{
           create: this.accessoryList
         }
