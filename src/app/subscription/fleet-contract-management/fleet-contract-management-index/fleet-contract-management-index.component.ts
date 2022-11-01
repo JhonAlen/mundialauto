@@ -315,11 +315,11 @@ export class FleetContractManagementIndexComponent implements OnInit {
           this.xmoneda = response.data.xmoneda;
           this.mprimaanual = response.data.mprimaanual;
           this.mprimaprorrata = response.data.mprimaprorrata;
-          if (response.data.fhasta_pol) {
+          if (response.data.fanulado) {
             let dateFormat = new Date(response.data.fanulado).toISOString().substring(0, 10);
             this.fanulado = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fcobro) {
             let dateFormat = new Date(response.data.fcobro).toISOString().substring(0, 10);
             this.fcobro = dateFormat
           }
