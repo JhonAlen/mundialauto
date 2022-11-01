@@ -602,9 +602,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
         if(response.data.accesories){
           for(let i =0; i < response.data.accesories.length; i++){
             this.accesoriesList.push({
-              ccobertura: response.data.accesories[i].caccesorio,
-              canexo: response.data.accesories[i].canexo,
-              xanexo: response.data.accesories[i].xaccesorio,
+              caccesorio: response.data.accesories[i].caccesorio,
+              msuma_accesorio: response.data.accesories[i].msuma_accesorio,
+              xaccesorio: response.data.accesories[i].xaccesorio,
             });
           }
         }
@@ -1470,7 +1470,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
     if (this.accesoriesList.length > 0){
       this.accesoriesList.forEach(function(row) {
         let dataRow = [];
-        dataRow.push({text: row.xaccesorio, border: [true, false, true, false]});
+        dataRow.push({text: row.xaccesorio, alignment: 'center', border: [true, false, true, false]});
+        dataRow.push({text: row.msuma_accesorio, alignment: 'center', border: [false, false, true, false]})
         body.push(dataRow);
       })
     } else {
@@ -2049,7 +2050,16 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: ['*'],
+            widths: ['*', '*'],
+            body: [
+              [{text: 'ACCESORIO', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [true, false, true, true]}, {text: 'SUMA ASEGURADA', alignment: 'center', fillColor: '#d9d9d9', bold: true, border: [false, false, true, true]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*', '*'],
             body: this.buildAccesoriesBody()
           }
         },
