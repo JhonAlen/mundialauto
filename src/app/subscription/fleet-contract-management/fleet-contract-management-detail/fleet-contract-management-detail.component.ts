@@ -79,6 +79,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   fdesde_pol: Date;
   fhasta_pol: Date;
   femision: Date;
+  fsuscripcion: Date;
   fnacimientopropietario2: string;
   xnombrecliente: string;
   xdocidentidadcliente: string;
@@ -376,6 +377,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('casociado').disable();
         this.detail_form.get('cagrupador').setValue(response.data.cagrupador);
         this.detail_form.get('cagrupador').disable();*/
+        this.fsuscripcion = response.data.fsuscripcion;
         if(this.fdesde_pol){
           //let dateFormat = new Date(response.data.finicio).toISOString().substring(0, 10);
           this.detail_form.get('fdesde_pol').setValue(this.fdesde_pol);
@@ -781,7 +783,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   }
 
   changeDateFormat(date) {
-    let dateArray = date.split("-");
+    let dateArray = date.substring(0,10).split("-");
     return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0];
   }
 
@@ -1478,7 +1480,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       })
     } else {
       let dataRow = [];
-      dataRow.push({text: ' ', border: [true, false, true, false]});
+      dataRow.push({text: ' ', border: [true, false, true, false]}, {text: ' ', border: [false, false, true, false]}, {text: ' ', border: [false, false, true, false]});
       body.push(dataRow);
     }
     return body;
@@ -1646,7 +1648,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [70, 51, 80, '*'],
             body: [
-              [{text: 'Fecha de Suscripción:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: ` `, rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, false]}, {text: `Sucursal ${this.detail_form.get('xsucursalemision').value}`, border: [false, false, true, false]}],
+              [{text: 'Fecha de Suscripción:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.fsuscripcion), rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, false]}, {text: `Sucursal ${this.detail_form.get('xsucursalemision').value}`, border: [false, false, true, false]}],
               [{}, {}, {text: 'Sucursal Suscriptora:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.detail_form.get('xsucursalsuscriptora').value}`, border: [false, false, true, true]}]
             ]
           }
@@ -1943,7 +1945,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [70, 51, 80, '*'],
             body: [
-              [{text: 'Fecha de Suscripción:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: ` `, rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, false]}, {text: `Sucursal ${this.detail_form.get('xsucursalemision').value}`, border: [false, false, true, false]}],
+              [{text: 'Fecha de Suscripción:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.fsuscripcion), rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, false]}, {text: `Sucursal ${this.detail_form.get('xsucursalemision').value}`, border: [false, false, true, false]}],
               [{}, {}, {text: 'Sucursal Suscriptora:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.detail_form.get('xsucursalsuscriptora').value}`, border: [false, false, true, true]}]
             ]
           }
