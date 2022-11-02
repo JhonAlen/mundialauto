@@ -27,7 +27,6 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   marcaList: any[] = [];
   modeloList: any[] = [];
   coberturaList: any[] = [];
-
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
@@ -42,6 +41,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   cuotas: boolean = false;
   accessoryList: any[] = [];
   descuento: boolean = false;
+  cobertura: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -59,27 +59,21 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xcolor: ['', Validators.required],
       xmarca: ['', Validators.required],
       xmodelo: ['', Validators.required],
+      xversion: ['', Validators.required],
       xrif_cliente:['', Validators.required],
+      email: [''],
       xtelefono_prop:[''],
       xdireccionfiscal: ['', Validators.required],
-      xversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
+      xserialcarroceria: ['', Validators.required],
+      xplaca: ['', Validators.required],
+      xtelefono_emp: ['', Validators.required],
+      cplan: ['', Validators.required],
+      ccorredor:['', Validators.required],
       xcobertura: ['', Validators.required],
       xtipo: ['', Validators.required],
-      cplan: ['', Validators.required],
-      xtelefono_emp: ['', Validators.required],
-      email: [''],
-      xuso: [''],
-      xplaca: ['', Validators.required],
-      xserialcarroceria: ['', Validators.required],
-      femision: ['', Validators.required],
-      ccorredor:['', Validators.required],
       ncapacidad_p: ['', Validators.required],
       cmetodologiapago: ['', Validators.required],
-      fdesde_pol: ['', Validators.required],
-      fhasta_pol: ['', Validators.required],
-      fdesde_rec: ['', Validators.required],
-      fhasta_rec: ['', Validators.required],
       msuma_aseg:[''],
       pcasco:[''],
       mprima_casco:[''],
@@ -93,8 +87,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       pcatastrofico:[''],
       pmotin:[''],
       mmotin:[''],
-      pblindaje:['']
-
+      pblindaje:[''],
+      tarifas:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -336,6 +330,11 @@ async getmetodologia(){
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
+        this.search_form.get('pmotin').setValue(response.data.ptarifa);
+        for(let i = 0; i < response.data.ptarifa.length; i++){
+          this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
+          this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
+        }
       }
     },);
   }
@@ -343,6 +342,8 @@ async getmetodologia(){
   changeDivision(form){
     if(form.ifraccionamiento == true){
       this.cuotas = true;
+    }else{
+      this.cuotas = false;
     }
   }
 
@@ -351,14 +352,26 @@ async getmetodologia(){
     this.search_form.get('mprima_casco').setValue(calculo);
     this.search_form.get('mprima_bruta').setValue(calculo);
 
-  }
+    let catastrofico = this.search_form.get('msuma_aseg').value * this.search_form.get('pcatastrofico').value / 100;
+    this.search_form.get('mcatastrofico').setValue(catastrofico);
 
+    let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
+    this.search_form.get('mmotin').setValue(motin);
+  }
 
   data(){
     let division = this.search_form.get('pdescuento').value / 100
     let multiplicacion = this.search_form.get('mprima_casco').value * division
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
+  }
+
+  funcion(){
+    if(this.search_form.get('xcobertura').value == 'RCV'){
+      this.cobertura = false;
+    }else{
+      this.cobertura = true;
+    }
   }
 
    onSubmit(form){
@@ -383,20 +396,14 @@ async getmetodologia(){
         xserialmotor: form.xserialmotor,
         xserialcarroceria: form.xserialcarroceria,
         xplaca: form.xplaca,
-        xuso: this.search_form.get('xuso').value,
         xtelefono_emp: form.xtelefono_emp,
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
         xcedula: form.xrif_cliente,
-        xtipo: this.search_form.get('xtipo').value,
         xcobertura: this.search_form.get('xcobertura').value,
+        xtipo: this.search_form.get('xtipo').value,
         ncapacidad_p: form.ncapacidad_p,
         cmetodologiapago: form.cmetodologiapago,
-        femision: form.femision,
-        fdesde_pol: form.fdesde_pol,
-        fhasta_pol: form.fhasta_pol,
-        fdesde_rec: form.fdesde_rec,
-        fhasta_rec: form.fhasta_rec,
         msuma_aseg: form.msuma_aseg,
         pcasco: form.pcasco,
         mprima_casco: form.mprima_casco,
