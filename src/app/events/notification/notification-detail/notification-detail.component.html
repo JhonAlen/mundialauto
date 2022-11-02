@@ -329,45 +329,65 @@
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" formControlName="bdano" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdano').errors }">
-                                    <label>{{ "EVENTS.NOTIFICATIONS.VEHICLEDAMAGE" | translate }}</label>
+                                <div class="form-check form-switch">
+                                    <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.VEHICLEDAMAGE" | translate }}</label>
+                                    <div class="row">
+                                      <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
+                                      <input type="checkbox" formControlName="bdano" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdano').errors }" style="margin-left: 122px;"> 
+                                      <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                                   </div>
                                     <div *ngIf="submitted && detail_form.get('bdano').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('bdano').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" formControlName="btransitar" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btransitar').errors }">
-                                    <label>{{ "EVENTS.NOTIFICATIONS.CANTRANSIT" | translate }}</label>
+                                <div class="form-check form-switch">
+                                    <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.CANTRANSIT" | translate }}</label>
+                                    <div class="row">
+                                        <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
+                                        <input type="checkbox" formControlName="btransitar" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('btransitar').errors }" style="margin-left: 122px;">
+                                        <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                                     </div>
                                     <div *ngIf="submitted && detail_form.get('btransitar').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('btransitar').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDCANTRANSIT" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" formControlName="bdanootro" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdanootro').errors }">
-                                    <label>{{ "EVENTS.NOTIFICATIONS.OTHERDAMAGE" | translate }}</label>
+                                <div class="form-check form-switch">
+                                    <label style="margin-left: -40px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.OTHERDAMAGE" | translate }}</label>
+                                    <div class="row">
+                                        <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
+                                        <input type="checkbox" formControlName="bdanootro" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bdanootro').errors }" style="margin-left: 122px;">
+                                        <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                                     </div>
                                     <div *ngIf="submitted && detail_form.get('bdanootro').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('bdanootro').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOTHERDAMAGE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" formControlName="blesionado" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('blesionado').errors }">
-                                    <label>{{ "EVENTS.NOTIFICATIONS.INJURED" | translate }}</label>
+                                <div class="form-check form-switch">
+                                    <label style="margin-left: 48px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.INJURED" | translate }}</label>
+                                    <div class="row">
+                                        <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
+                                        <input type="checkbox" formControlName="blesionado" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('blesionado').errors }" style="margin-left: 122px;">
+                                        <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                                     </div>
                                     <div *ngIf="submitted && detail_form.get('blesionado').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('blesionado').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDINJURED" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
-                                <div class="form-group form-check">
-                                    <input type="checkbox" formControlName="bpropietario" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bpropietario').errors }">
-                                    <label>{{ "EVENTS.NOTIFICATIONS.OWNER" | translate }}</label>
+                                <div class="form-check form-switch">
+                                    <label style="margin-left: 4px;margin-top: 13px;">{{ "EVENTS.NOTIFICATIONS.OWNER" | translate }}</label>
+                                    <div class="row">
+                                        <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
+                                        <input type="checkbox" formControlName="bpropietario" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bpropietario').errors }" style="margin-left: 122px;">
+                                        <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                                     </div>
                                     <div *ngIf="submitted && detail_form.get('bpropietario').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('bpropietario').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOWNER" | translate }}</div>
                                     </div>

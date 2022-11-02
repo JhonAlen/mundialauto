@@ -107,7 +107,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
     });
     this.search_form.get('clote').disable();
     this.search_form.get('crecibo').disable();
-    this.search_form.get('xplaca').disable();
+    //this.search_form.get('xplaca').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -231,7 +231,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
     } else {
       this.search_form.get('clote').disable();
       this.search_form.get('crecibo').disable();
-      this.search_form.get('xplaca').disable();
+      //this.search_form.get('xplaca').disable();
     }
   }
 
@@ -269,7 +269,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
       this.search_form.get('crecibo').enable();
     } else {
       this.search_form.get('crecibo').disable();
-      this.search_form.get('xplaca').disable();
+      //this.search_form.get('xplaca').disable();
       this.search_form.get('crecibo').setValue(undefined);
       this.search_form.get('xplaca').setValue(undefined);
     }
@@ -387,7 +387,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
     } else {
       this.searchStatus = false;
       this.receiptStatus = false;
-      this.search_form.get('xplaca').disable();
+      //this.search_form.get('xplaca').disable();
       this.search_form.get('xplaca').setValue(undefined);
     }
   }
