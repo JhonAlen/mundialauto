@@ -297,19 +297,15 @@ export class FleetContractManagementIndexComponent implements OnInit {
             let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
             this.fdesde_pol = dateFormat;
           }
-          if (response.data.fdesde_pol) {
-            let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
-            this.fdesde_pol = dateFormat;
-          }
           if (response.data.fhasta_pol) {
             let dateFormat = new Date(response.data.fhasta_pol).toISOString().substring(0, 10);
             this.fhasta_pol = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fdesde_rec) {
             let dateFormat = new Date(response.data.fdesde_rec).toISOString().substring(0, 10);
             this.fdesde_rec = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fhasta_rec) {
             let dateFormat = new Date(response.data.fhasta_rec).toISOString().substring(0, 10);
             this.fhasta_rec = dateFormat
           }
@@ -319,11 +315,11 @@ export class FleetContractManagementIndexComponent implements OnInit {
           this.xmoneda = response.data.xmoneda;
           this.mprimaanual = response.data.mprimaanual;
           this.mprimaprorrata = response.data.mprimaprorrata;
-          if (response.data.fhasta_pol) {
+          if (response.data.fanulado) {
             let dateFormat = new Date(response.data.fanulado).toISOString().substring(0, 10);
             this.fanulado = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fcobro) {
             let dateFormat = new Date(response.data.fcobro).toISOString().substring(0, 10);
             this.fcobro = dateFormat
           }
