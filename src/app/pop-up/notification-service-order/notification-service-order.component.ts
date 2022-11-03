@@ -395,16 +395,24 @@ export class NotificationServiceOrderComponent implements OnInit {
           this.popup_form.get('ccotizacion').setValue(response.data.list[i].ccotizacion);
           this.popup_form.get('ccotizacion').disable();
         }
+        console.log(this.popup_form.get('ccotizacion').value)
       }
       if(this.popup_form.get('ccotizacion').value) {
         this.listRepairOrder();
+      }else{
+        window.alert('Los repuestos no han sido cotizados, no se puede generar ordenes de servicios.')
+        this.activeModal.close();
       }
     },
     (err) => {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "¡Recuerda que el proveedor no ha cotizado!"; }
+      else if(code == 404){ 
+        message = "¡Recuerda que el proveedor no ha cotizado!"; 
+        window.alert('Los repuestos no han sido cotizados, no se puede generar ordenes de servicios.')
+        this.activeModal.close();
+      }
       //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
       this.alert.type = 'primary';
@@ -1280,6 +1288,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             for(let i = 0; i < response.data.list.length; i++){
               this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
             }
+            console.log(this.replacementList)
           }
         },
         (err) => {
@@ -2375,30 +2384,6 @@ export class NotificationServiceOrderComponent implements OnInit {
               width: 475,
               style: 'data',
               text: [
-                {text: 'Depreciación:             ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              alignment: 'right',
-              width: 475,
-              style: 'data',
-              text: [
-                {text: 'Penalización:              ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              alignment: 'right',
-              width: 475,
-              style: 'data',
-              text: [
                 {text: 'IVA:                            ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.popup_form.get('mmontoiva').value)} `, {text: `${this.popup_form.get('xmoneda').value}`}
               ]
             }
@@ -2824,7 +2809,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 alignment: 'left',
                 style: 'data',
                 text: [
-                  {text: 'REPUESTOS A REPARAR', bold: true}
+                  {text: 'PIEZAS A REPARAR', bold: true}
                 ]
               }
             ]
@@ -2906,30 +2891,6 @@ export class NotificationServiceOrderComponent implements OnInit {
                 style: 'data',
                 text: [
                   {text: 'Subtotal:                 ', bold: true}, `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.purchaseOrder.mtotalcotizacion)} `, {text: `${this.popup_form.get('xmoneda').value}`}
-                ]
-              }
-            ]
-          },
-          {
-            columns: [
-              {
-                alignment: 'right',
-                width: 475,
-                style: 'data',
-                text: [
-                  {text: 'Depreciación:             ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
-                ]
-              }
-            ]
-          },
-          {
-            columns: [
-              {
-                alignment: 'right',
-                width: 475,
-                style: 'data',
-                text: [
-                  {text: 'Penalización:              ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
                 ]
               }
             ]
