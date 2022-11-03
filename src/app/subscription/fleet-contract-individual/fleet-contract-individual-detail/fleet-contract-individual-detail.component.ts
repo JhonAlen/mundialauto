@@ -336,7 +336,18 @@ async getmetodologia(){
           this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
         }
       }
-    },);
+     },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 401){}
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+    },
+    );
   }
 
   changeDivision(form){
@@ -372,6 +383,25 @@ async getmetodologia(){
     }else{
       this.cobertura = true;
     }
+  }
+
+  frecuencias(){
+
+    if(this.search_form.get('cmetodologiapago').value == 2){
+    this.search_form.get('ncuotas').setValue(4);}
+  
+    if(this.search_form.get('cmetodologiapago').value == 1){
+    this.search_form.get('ncuotas').setValue(12);}
+      
+    if(this.search_form.get('cmetodologiapago').value == 4)
+    this.search_form.get('ncuotas').setValue(2);
+      
+    if(this.search_form.get('cmetodologiapago').value == 3){
+    this.search_form.get('ncuotas').setValue(1);}
+      
+    if(this.search_form.get('cmetodologiapago').value == 5){
+    this.search_form.get('ncuotas').setValue(1);}
+
   }
 
    onSubmit(form){

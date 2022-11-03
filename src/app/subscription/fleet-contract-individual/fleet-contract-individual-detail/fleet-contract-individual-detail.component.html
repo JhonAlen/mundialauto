@@ -327,7 +327,7 @@
                     </div>
                     <div class="col-md-2 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label" for="form3Examplev4">Suma asegurada de Blindaje</label>
+                        <label class="form-label" for="form3Examplev4">Suma Asegurada de Blindaje</label>
                         <input type="number" formControlName="msuma_blindaje" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('msuma_blindaje').errors }" />
                         <div *ngIf="submitted && search_form.get('msuma_blindaje').errors" class="invalid-feedback">
                           <div *ngIf="search_form.get('msuma_blindaje').errors.required">Se requiere completar el campo</div>
@@ -356,7 +356,7 @@
                 <div class="col-md-4 mb-4 pb-2">
                   <div class="form-outline">
                     <label class="form-label">Frecuencia de Pago</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors } ">
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="frecuencias()" >
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id}}">{{ metodologia.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
@@ -375,7 +375,7 @@
                 <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0" *ngIf="cuotas">
                   <div class="form-outline">
                     <label class="form-label" for="form3Examplev5">Número de Cuotas</label>
-                    <input type="number" formControlName="ncuotas" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncuotas').errors }" />
+                    <input type="number" formControlName="ncuotas" class="form-control form-control-lg" disabled [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncuotas').errors }" />
                   </div>
                 </div>
                 <!-- <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">

@@ -281,6 +281,8 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('ccontratoflota').setValue(response.data.ccontratoflota);
         this.detail_form.get('ccontratoflota').disable();
         this.detail_form.get('xcliente').setValue(response.data.xcliente);
+        console.log(response.data.fdesde_pol)
+        console.log(response.data.fhasta_pol)
         if(response.data.fdesde_pol) {
           let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
           this.detail_form.get('fdesde_pol').setValue(dateFormat);
