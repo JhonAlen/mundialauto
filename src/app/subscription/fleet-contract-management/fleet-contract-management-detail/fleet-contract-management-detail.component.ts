@@ -192,7 +192,10 @@ export class FleetContractManagementDetailComponent implements OnInit {
       //cmoneda: [{ value: '', disabled: true }],
       cmetodologiapago: ['', Validators.required],
       ctiporecibo: ['', Validators.required],
-      ccobertura: ['']
+      ccobertura: [''],
+      xanexo:[''],
+      xobservaciones:['']
+
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -370,6 +373,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.xtituloreporte = response.data.xtituloreporte;
         this.detail_form.get('ccliente').setValue(response.data.ccliente);
         this.detail_form.get('ccliente').disable();
+        this.detail_form.get('xanexo').disable();
+        this.detail_form.get('xobservaciones').disable();
         this.xciudadcliente = response.data.xciudadcliente;
         this.xestadocliente = response.data.xestadocliente;
         this.searchDropdownDataRequest();
@@ -978,6 +983,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
     this.detail_form.get('fhasta_pol').enable();
     this.detail_form.get('fdesde_rec').enable();
     this.detail_form.get('fhasta_rec').enable();
+    this.detail_form.get('xanexo').enable();
+    this.detail_form.get('xobservaciones').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
@@ -1308,6 +1315,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
         cmetodologiapago: parseInt(form.cmetodologiapago),
         ctiporecibo: parseInt(form.ctiporecibo),
         fhastarecibo: new Date(form.fhastarecibo).toUTCString(),
+        xanexo: form.xanexo,
+        xobservaciones: form.xobservaciones,
         accesories: {
           create: createAccesoryList,
           update: updateAccesoryList,
@@ -1329,7 +1338,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           ccarga: this.ccarga
         }
       };
-      url = `${environment.apiUrl}/api/fleet-contract-management/update-coverage`;
+      url = `${environment.apiUrl}/api/fleet-contract-management/update`;
     }else{
       params = {
         ccontratoflota: this.ccontratoflota,

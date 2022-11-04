@@ -326,6 +326,7 @@ async getmetodologia(){
       xmodelo: this.search_form.get('xmodelo').value,
       cano: this.search_form.get('cano').value,
       xcobertura: this.search_form.get('xcobertura').value,
+      
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -335,19 +336,8 @@ async getmetodologia(){
           this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
           this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
         }
-      }
-     },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 401){}
-        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-    },
-    );
+      } 
+    },);
   }
 
   changeDivision(form){

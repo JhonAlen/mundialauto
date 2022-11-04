@@ -265,7 +265,7 @@ import { PlanesComponent } from './club/pages-statics/planes/planes.component';
 import { QsomosComponent } from './club/pages-statics/qsomos/qsomos.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatDividerModule } from '@angular/material/divider';
+import { MaterialExampleModule } from './../material.module';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import {MatInputModule} from '@angular/material/input';
@@ -574,6 +574,7 @@ export function HttpLoaderFactory(http: HttpClient){
   ],
   imports: [
     BrowserModule,
+    MaterialExampleModule,
     MatInputModule,
     MatNativeDateModule,
     MatButtonModule,
@@ -583,7 +584,6 @@ export function HttpLoaderFactory(http: HttpClient){
     BrowserAnimationsModule,
     MatIconModule,
     MatAutocompleteModule,
-    MatDividerModule,
     MatFormFieldModule,
     NgbModule,
     MatSidenavModule,
