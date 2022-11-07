@@ -292,7 +292,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component';
 import { FleetContractIndividualAccessorysComponent } from './pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component'
+import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component';
+import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
+import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -570,7 +572,9 @@ export function HttpLoaderFactory(http: HttpClient){
     BatchComponent,
     ReceiptGenerationComponent,
     FleetContractIndividualAccessorysComponent,
-    FleetContractIndividualAccessoryAmountComponent
+    FleetContractIndividualAccessoryAmountComponent,
+    PaymentRecordIndexComponent,
+    PaymentRecordDetailComponent
   ],
   imports: [
     BrowserModule,
