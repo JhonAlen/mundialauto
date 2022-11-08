@@ -60,7 +60,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xcolor: ['', Validators.required],
       xmarca: ['', Validators.required],
       xmodelo: ['', Validators.required],
-      xversion: ['', Validators.required],
+      xversion: [''],
       xrif_cliente:['', Validators.required],
       email: [''],
       xtelefono_prop:[''],
@@ -90,8 +90,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       mmotin:[''],
       pblindaje:[''],
       tarifas:[''],
-      cestado:[''],
-      cciudad:['']
+      cestado:['', Validators.required],
+      cciudad:['', Validators.required]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -400,7 +400,7 @@ async getmetodologia(){
   }
   years(){
    if(this.search_form.get('cano').value < 2007){
-    this.search_form.get('cano').setValue(2007);
+    // this.search_form.get('cano').setValue(2007);
    }
  }
   frecuencias(){
@@ -485,6 +485,7 @@ async getmetodologia(){
         mmotin:form.mmotin,
         cestado: this.search_form.get('cestado').value,
         cciudad: this.search_form.get('cciudad').value,
+        cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
         accessory:{
           create: this.accessoryList
