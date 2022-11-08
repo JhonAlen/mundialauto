@@ -30,7 +30,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
-  usoList:any[] = [];
+  StateList: any[] = [];
+  CityList:  any[] = [];
   colorList:any[] = [];
   metodologiaList:any[] = [];
   canCreate: boolean = false;
@@ -88,7 +89,9 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       pmotin:[''],
       mmotin:[''],
       pblindaje:[''],
-      tarifas:['']
+      tarifas:[''],
+      cestado:[''],
+      cciudad:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -125,11 +128,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
-    this.getUso();
     this.getColor();
     this.getCobertura();
-    
     this.getmetodologia();
+    this.getState()
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -151,7 +153,39 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         }
       }
   }
-
+async getState(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/state`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.StateList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.StateList.push({ 
+            id: response.data.list[i].cestado,
+            value: response.data.list[i].xestado,
+          });
+        }
+      }
+      },);
+  } 
+async getCity(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      cestado: this.search_form.get('cestado').value
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/city`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.CityList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.CityList.push({ 
+            id: response.data.list[i].cciudad,
+            value: response.data.list[i].xciudad,
+          });
+        }
+      }
+      },);
+  } 
 async getModeloData(){
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -232,25 +266,6 @@ async getPlanData(){
     }
     },);
   }
-async getUso(){
-    let params =  {
-      cpais: this.currentUser.data.cpais,
-      ccompania: this.currentUser.data.ccompania,
-  
-    };
-  
-    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.usoList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.usoList.push({ 
-            id: response.data.list[i].cuso,
-            value: response.data.list[i].xuso,
-          });
-        }
-      }
-      },);
-  }
 async getColor(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -288,7 +303,6 @@ async getCobertura(){
       }
       },);
   }
-
 async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
@@ -336,8 +350,18 @@ async getmetodologia(){
           this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
           this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
         }
-      } 
-    },);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+      else if(code == 500){  message = "Los parametros no coinciden con la busqueda"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   changeDivision(form){
@@ -374,7 +398,11 @@ async getmetodologia(){
       this.cobertura = true;
     }
   }
-
+  years(){
+   if(this.search_form.get('cano').value < 2007){
+    this.search_form.get('cano').setValue(2007);
+   }
+ }
   frecuencias(){
 
     if(this.search_form.get('cmetodologiapago').value == 2){
@@ -392,6 +420,24 @@ async getmetodologia(){
     if(this.search_form.get('cmetodologiapago').value == 5){
     this.search_form.get('ncuotas').setValue(1);}
 
+  }
+
+  Validation(){
+    let params =  {
+      xdocidentidad: this.search_form.get('xrif_cliente').value
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('xnombre').setValue(response.data.xnombre);
+        this.search_form.get('xapellido').setValue(response.data.xapellido);
+        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocelular);
+        this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocasa);
+        this.search_form.get('email').setValue(response.data.xemail);
+        this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
+        this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+
+      } 
+    },);
   }
 
    onSubmit(form){
@@ -437,6 +483,8 @@ async getmetodologia(){
         pcatastrofico: form.pcatastrofico,
         pmotin:form.pmotin,
         mmotin:form.mmotin,
+        cestado: this.search_form.get('cestado').value,
+        cciudad: this.search_form.get('cciudad').value,
         pblindaje: form.pblindaje,
         accessory:{
           create: this.accessoryList

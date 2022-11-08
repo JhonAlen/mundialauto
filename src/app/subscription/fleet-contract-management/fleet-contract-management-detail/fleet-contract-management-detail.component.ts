@@ -193,9 +193,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
       cmetodologiapago: ['', Validators.required],
       ctiporecibo: ['', Validators.required],
       ccobertura: [''],
-      xanexo:[''],
-      xobservaciones:['']
-
+      xanexo: [''],
+      xobservaciones: [''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -373,8 +372,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.xtituloreporte = response.data.xtituloreporte;
         this.detail_form.get('ccliente').setValue(response.data.ccliente);
         this.detail_form.get('ccliente').disable();
-        this.detail_form.get('xanexo').disable();
-        this.detail_form.get('xobservaciones').disable();
         this.xciudadcliente = response.data.xciudadcliente;
         this.xestadocliente = response.data.xestadocliente;
         this.searchDropdownDataRequest();
@@ -476,6 +473,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
         }
         this.detail_form.get('cpropietario').setValue(response.data.cpropietario);
         this.detail_form.get('cpropietario').disable();
+        this.detail_form.get('xanexo').disable();
+        this.detail_form.get('xobservaciones').disable();
         this.detail_form.get('xnombrepropietario').setValue(response.data.xnombrepropietario);
         this.detail_form.get('xtipodocidentidadpropietario').setValue(response.data.xtipodocidentidadpropietario);
         this.detail_form.get('xdocidentidadpropietario').setValue(response.data.xdocidentidadpropietario);
@@ -985,6 +984,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
     this.detail_form.get('fhasta_rec').enable();
     this.detail_form.get('xanexo').enable();
     this.detail_form.get('xobservaciones').enable();
+
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
@@ -1315,8 +1315,6 @@ export class FleetContractManagementDetailComponent implements OnInit {
         cmetodologiapago: parseInt(form.cmetodologiapago),
         ctiporecibo: parseInt(form.ctiporecibo),
         fhastarecibo: new Date(form.fhastarecibo).toUTCString(),
-        xanexo: form.xanexo,
-        xobservaciones: form.xobservaciones,
         accesories: {
           create: createAccesoryList,
           update: updateAccesoryList,
@@ -1338,7 +1336,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           ccarga: this.ccarga
         }
       };
-      url = `${environment.apiUrl}/api/fleet-contract-management/update`;
+      url = `${environment.apiUrl}/api/fleet-contract-management/update-coverage`;
     }else{
       params = {
         ccontratoflota: this.ccontratoflota,
