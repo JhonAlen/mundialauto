@@ -192,7 +192,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
       //cmoneda: [{ value: '', disabled: true }],
       cmetodologiapago: ['', Validators.required],
       ctiporecibo: ['', Validators.required],
-      ccobertura: ['']
+      ccobertura: [''],
+      xanexo: [''],
+      xobservaciones: [''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -471,6 +473,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
         }
         this.detail_form.get('cpropietario').setValue(response.data.cpropietario);
         this.detail_form.get('cpropietario').disable();
+        this.detail_form.get('xanexo').disable();
+        this.detail_form.get('xobservaciones').disable();
         this.detail_form.get('xnombrepropietario').setValue(response.data.xnombrepropietario);
         this.detail_form.get('xtipodocidentidadpropietario').setValue(response.data.xtipodocidentidadpropietario);
         this.detail_form.get('xdocidentidadpropietario').setValue(response.data.xdocidentidadpropietario);
@@ -978,6 +982,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
     this.detail_form.get('fhasta_pol').enable();
     this.detail_form.get('fdesde_rec').enable();
     this.detail_form.get('fhasta_rec').enable();
+    this.detail_form.get('xanexo').enable();
+    this.detail_form.get('xobservaciones').enable();
+
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
@@ -1326,7 +1333,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
           fhasta_pol: form.fhasta_pol,
           fdesde_rec: form.fdesde_rec,
           fhasta_rec: form.fhasta_rec,
-          ccarga: this.ccarga
+          ccarga: this.ccarga,
+          xanexo: form.xanexo,
+          xobservaciones: form.xobservaciones,
         }
       };
       url = `${environment.apiUrl}/api/fleet-contract-management/update-coverage`;
