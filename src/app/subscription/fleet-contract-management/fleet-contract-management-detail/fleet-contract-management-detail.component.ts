@@ -1531,6 +1531,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           delete: false
         }; 
       }
+      console.log(recoverage)
       const modalRef = this.modalService.open(FleetContractManagementRealcoverageComponent);
       modalRef.componentInstance.recoverage = recoverage;
       modalRef.result.then((result: any) => {
@@ -1542,19 +1543,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
             msuma_aseg: result.msuma_aseg,
             edit: this.editStatus
           }
-          console.log(this.coverage)
-          // for(let i = 0; i < this.realCoverageList.length; i++){
-          //   if(this.realCoverageList[i].ccobertura == result.ccobertura){
-          //     this.realCoverageList[i].ccontratoflota = result.ccontratoflota;
-          //     this.realCoverageList[i].mprima = result.mprima;
-          //     this.realCoverageList[i].msuma_aseg = result.msuma_aseg;
-          //     this.realCoverageList[i].edit = this.editStatus;
-          //   }
-          // }
-          //this.coverageGridApi.refreshCells();
           return;
         }
-        //this.coverageGridApi.setRowData(this.realCoverageList);
       });
     }
     
