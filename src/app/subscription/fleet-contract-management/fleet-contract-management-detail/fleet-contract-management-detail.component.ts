@@ -1334,8 +1334,11 @@ export class FleetContractManagementDetailComponent implements OnInit {
           fdesde_rec: form.fdesde_rec,
           fhasta_rec: form.fhasta_rec,
           ccarga: this.ccarga,
+        },
+        contract: {
           xanexo: form.xanexo,
           xobservaciones: form.xobservaciones,
+          ccarga: this.ccarga
         }
       };
       url = `${environment.apiUrl}/api/fleet-contract-management/update-coverage`;
