@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-
+import { initUbii } from '@ubiipagos/boton-ubii';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
@@ -241,6 +241,19 @@ export class CollectionDetailComponent implements OnInit {
 
   onPaymentGridReady(event){
     this.paymentGridApi = event.api;
+  }
+
+  initUbii (ubiiboton){
+    ubiiboton = {
+      amount_ds: "11.13",
+      amount_bs: "10000.00",
+      concept: "Pago de viaje",
+      principal: "ds",
+      clientId:"11111111-aaaa-2222-bbbb-333333",
+      orderId: "1",
+    }
+    ubiiboton();
+    console.log(ubiiboton)
   }
 
   onSubmit(form){
