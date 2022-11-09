@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-
+import { initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -93,6 +93,21 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       cestado:['', Validators.required],
       cciudad:['', Validators.required]
     });
+    initUbii(
+      'ubiiboton',
+      {
+        amount_ds: "100.00",
+        amount_bs: "100.00",
+        concept: "COMPRA",
+        principal: "ds",
+        clientId:"11111111-aaaa-2222-bbbb-333333",
+        orderId: '1'
+      },
+      this.callbackFn,
+      {
+        text: 'Pagar'
+      }
+    );
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -122,7 +137,14 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         this.alert.type = 'danger';
         this.alert.show = true;
       });
-    } 
+    }
+    
+  }
+
+  callbackFn(answer) {
+    if (answer.error) {
+      console.log(answer.data);
+    }
   }
 
   async initializeDropdownDataRequest(){
