@@ -212,6 +212,7 @@
                         <option value="Rustico">Rustico</option>
                         <option value="Pick-UP">Pick-UP</option>
                         <option value="Carga">Carga</option>
+                        <option value="Motocicleta">Motocicleta</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
@@ -221,7 +222,7 @@
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label">Año del automovil</label>
-                      <input type="number" formControlName="cano" class="form-control form-control-lg" min="2007" placeholder="El año debe ser mayor a 2007" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" (change)="years()"/>
+                      <input type="number" formControlName="cano" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" (change)="years()"/>
                       <div *ngIf="submitted && search_form.get('cano').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('cano').errors.required">Se requiere completar el campo</div>
                       </div>

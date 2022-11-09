@@ -1334,6 +1334,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
           fdesde_rec: form.fdesde_rec,
           fhasta_rec: form.fhasta_rec,
           ccarga: this.ccarga,
+        },
+        extras:{
           xanexo: form.xanexo,
           xobservaciones: form.xobservaciones,
         }
