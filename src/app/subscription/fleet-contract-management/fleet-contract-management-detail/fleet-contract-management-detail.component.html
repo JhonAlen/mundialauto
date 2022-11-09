@@ -423,8 +423,40 @@
                     </div>
                 </div>
             </div>
-        </div><!--
+        </div>
         <div class="row mt-5">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header company-card-header">
+                        <div class="row">
+                            <div class="col-12">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4 pb-2">
+                                <div class="form-outline">
+                                  <label class="form-label">Anexos</label>
+                                  <textarea type="text" formControlName="xanexo" class="form-control form-control-lg" required [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xanexo').errors }" ></textarea>
+                                </div>
+                              </div>
+                              <div class="col-md-6 mb-4 pb-2">
+                                <div class="form-outline">
+                                  <label class="form-label">Observaciones</label>
+                                  <textarea type="text" formControlName="xobservaciones" class="form-control form-control-lg" required [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xobservaciones').errors }" ></textarea>
+
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+     <!--   <div class="row mt-5">
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header company-card-header">

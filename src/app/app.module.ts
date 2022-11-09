@@ -265,7 +265,7 @@ import { PlanesComponent } from './club/pages-statics/planes/planes.component';
 import { QsomosComponent } from './club/pages-statics/qsomos/qsomos.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatDividerModule } from '@angular/material/divider';
+import { MaterialExampleModule } from './../material.module';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import {MatInputModule} from '@angular/material/input';
@@ -292,7 +292,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component';
 import { FleetContractIndividualAccessorysComponent } from './pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component'
+import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component';
+import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
+import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component';
+import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -570,10 +573,14 @@ export function HttpLoaderFactory(http: HttpClient){
     BatchComponent,
     ReceiptGenerationComponent,
     FleetContractIndividualAccessorysComponent,
-    FleetContractIndividualAccessoryAmountComponent
+    FleetContractIndividualAccessoryAmountComponent,
+    PaymentRecordIndexComponent,
+    PaymentRecordDetailComponent,
+    BillLoadingComponent
   ],
   imports: [
     BrowserModule,
+    MaterialExampleModule,
     MatInputModule,
     MatNativeDateModule,
     MatButtonModule,
@@ -583,7 +590,6 @@ export function HttpLoaderFactory(http: HttpClient){
     BrowserAnimationsModule,
     MatIconModule,
     MatAutocompleteModule,
-    MatDividerModule,
     MatFormFieldModule,
     NgbModule,
     MatSidenavModule,

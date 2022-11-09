@@ -1760,9 +1760,6 @@
             "VERSION": "Versión",
             "VEHICLESLIST": "Lista de Vehículos"
         },
-        "FLEETLOADING": {
-            "FLEETLOADING": "Carga de Flotas"
-        },
         "PARENTPOLICY": {
             "PARENTPOLICY":"Póliza Matriz"
         }
@@ -2221,6 +2218,9 @@
             "EMAIL": "Correo Electrónico",
             "PHONE": "Teléfono",
             "OWNER": "Propietario"
+        },
+        "PAYMENT-RECORD": {
+            "PAYMENT-RECORD": "Registros de Pagos"
         }
     },
     "REPORTS": {

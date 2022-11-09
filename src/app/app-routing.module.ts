@@ -183,6 +183,8 @@ import { FleetContractIndividualDetailComponent } from './subscription/fleet-con
 import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component'
 import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
+import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
+import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
 
 const routes: Routes = [
  
@@ -450,7 +452,10 @@ const routes: Routes = [
   { path: 'products/plan-rcv-index', component: PlanRcvIndexComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-detail', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
   { path: 'products/plan-rcv-detail/:id', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/receipt-generation', component: ReceiptGenerationComponent, canActivate: [AuthGuard]}
+  { path: 'subscription/receipt-generation', component: ReceiptGenerationComponent, canActivate: [AuthGuard]},
+  { path: 'administration/payment-record-index', component: PaymentRecordIndexComponent, canActivate: [AuthGuard] },
+  { path: 'administration/payment-record-detail', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/payment-record-detail/:id', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
  
 ];
 
