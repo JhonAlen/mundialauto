@@ -294,7 +294,8 @@ import { ReceiptGenerationComponent } from './subscription/fleet-contract-indivi
 import { FleetContractIndividualAccessorysComponent } from './pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component';
 import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
-import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
+import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component';
+import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -574,7 +575,8 @@ export function HttpLoaderFactory(http: HttpClient){
     FleetContractIndividualAccessorysComponent,
     FleetContractIndividualAccessoryAmountComponent,
     PaymentRecordIndexComponent,
-    PaymentRecordDetailComponent
+    PaymentRecordDetailComponent,
+    BillLoadingComponent
   ],
   imports: [
     BrowserModule,

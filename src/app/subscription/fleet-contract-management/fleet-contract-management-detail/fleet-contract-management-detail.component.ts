@@ -1338,6 +1338,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         extras:{
           xanexo: form.xanexo,
           xobservaciones: form.xobservaciones,
+          ccarga: this.ccarga
         }
       };
       url = `${environment.apiUrl}/api/fleet-contract-management/update-coverage`;
