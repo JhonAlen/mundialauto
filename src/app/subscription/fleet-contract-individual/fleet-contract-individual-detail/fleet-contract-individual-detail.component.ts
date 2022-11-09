@@ -27,11 +27,11 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   marcaList: any[] = [];
   modeloList: any[] = [];
   coberturaList: any[] = [];
-
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
-  usoList:any[] = [];
+  StateList: any[] = [];
+  CityList:  any[] = [];
   colorList:any[] = [];
   metodologiaList:any[] = [];
   canCreate: boolean = false;
@@ -42,6 +42,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   cuotas: boolean = false;
   accessoryList: any[] = [];
   descuento: boolean = false;
+  cobertura: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -59,27 +60,21 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xcolor: ['', Validators.required],
       xmarca: ['', Validators.required],
       xmodelo: ['', Validators.required],
+      xversion: [''],
       xrif_cliente:['', Validators.required],
+      email: [''],
       xtelefono_prop:[''],
       xdireccionfiscal: ['', Validators.required],
-      xversion: ['', Validators.required],
       xserialmotor: ['', Validators.required],
+      xserialcarroceria: ['', Validators.required],
+      xplaca: ['', Validators.required],
+      xtelefono_emp: ['', Validators.required],
+      cplan: ['', Validators.required],
+      ccorredor:['', Validators.required],
       xcobertura: ['', Validators.required],
       xtipo: ['', Validators.required],
-      cplan: ['', Validators.required],
-      xtelefono_emp: ['', Validators.required],
-      email: [''],
-      xuso: [''],
-      xplaca: ['', Validators.required],
-      xserialcarroceria: ['', Validators.required],
-      femision: ['', Validators.required],
-      ccorredor:['', Validators.required],
       ncapacidad_p: ['', Validators.required],
       cmetodologiapago: ['', Validators.required],
-      fdesde_pol: ['', Validators.required],
-      fhasta_pol: ['', Validators.required],
-      fdesde_rec: ['', Validators.required],
-      fhasta_rec: ['', Validators.required],
       msuma_aseg:[''],
       pcasco:[''],
       mprima_casco:[''],
@@ -93,8 +88,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       pcatastrofico:[''],
       pmotin:[''],
       mmotin:[''],
-      pblindaje:['']
-
+      pblindaje:[''],
+      tarifas:[''],
+      cestado:['', Validators.required],
+      cciudad:['', Validators.required]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -131,11 +128,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
-    this.getUso();
     this.getColor();
     this.getCobertura();
-    
     this.getmetodologia();
+    this.getState()
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -157,7 +153,39 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         }
       }
   }
-
+async getState(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/state`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.StateList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.StateList.push({ 
+            id: response.data.list[i].cestado,
+            value: response.data.list[i].xestado,
+          });
+        }
+      }
+      },);
+  } 
+async getCity(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      cestado: this.search_form.get('cestado').value
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/city`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.CityList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.CityList.push({ 
+            id: response.data.list[i].cciudad,
+            value: response.data.list[i].xciudad,
+          });
+        }
+      }
+      },);
+  } 
 async getModeloData(){
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -238,25 +266,6 @@ async getPlanData(){
     }
     },);
   }
-async getUso(){
-    let params =  {
-      cpais: this.currentUser.data.cpais,
-      ccompania: this.currentUser.data.ccompania,
-  
-    };
-  
-    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.usoList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.usoList.push({ 
-            id: response.data.list[i].cuso,
-            value: response.data.list[i].xuso,
-          });
-        }
-      }
-      },);
-  }
 async getColor(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -294,7 +303,6 @@ async getCobertura(){
       }
       },);
   }
-
 async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
@@ -332,17 +340,35 @@ async getmetodologia(){
       xmodelo: this.search_form.get('xmodelo').value,
       cano: this.search_form.get('cano').value,
       xcobertura: this.search_form.get('xcobertura').value,
+      
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
+        this.search_form.get('pmotin').setValue(response.data.ptarifa);
+        for(let i = 0; i < response.data.ptarifa.length; i++){
+          this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
+          this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
+        }
       }
-    },);
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+      else if(code == 500){  message = "Los parametros no coinciden con la busqueda"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   changeDivision(form){
     if(form.ifraccionamiento == true){
       this.cuotas = true;
+    }else{
+      this.cuotas = false;
     }
   }
 
@@ -351,14 +377,67 @@ async getmetodologia(){
     this.search_form.get('mprima_casco').setValue(calculo);
     this.search_form.get('mprima_bruta').setValue(calculo);
 
-  }
+    let catastrofico = this.search_form.get('msuma_aseg').value * this.search_form.get('pcatastrofico').value / 100;
+    this.search_form.get('mcatastrofico').setValue(catastrofico);
 
+    let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
+    this.search_form.get('mmotin').setValue(motin);
+  }
 
   data(){
     let division = this.search_form.get('pdescuento').value / 100
     let multiplicacion = this.search_form.get('mprima_casco').value * division
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
+  }
+
+  funcion(){
+    if(this.search_form.get('xcobertura').value == 'RCV'){
+      this.cobertura = false;
+    }else{
+      this.cobertura = true;
+    }
+  }
+  years(){
+   if(this.search_form.get('cano').value < 2007){
+    // this.search_form.get('cano').setValue(2007);
+   }
+ }
+  frecuencias(){
+
+    if(this.search_form.get('cmetodologiapago').value == 2){
+    this.search_form.get('ncuotas').setValue(4);}
+  
+    if(this.search_form.get('cmetodologiapago').value == 1){
+    this.search_form.get('ncuotas').setValue(12);}
+      
+    if(this.search_form.get('cmetodologiapago').value == 4)
+    this.search_form.get('ncuotas').setValue(2);
+      
+    if(this.search_form.get('cmetodologiapago').value == 3){
+    this.search_form.get('ncuotas').setValue(1);}
+      
+    if(this.search_form.get('cmetodologiapago').value == 5){
+    this.search_form.get('ncuotas').setValue(1);}
+
+  }
+
+  Validation(){
+    let params =  {
+      xdocidentidad: this.search_form.get('xrif_cliente').value
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('xnombre').setValue(response.data.xnombre);
+        this.search_form.get('xapellido').setValue(response.data.xapellido);
+        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocelular);
+        this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocasa);
+        this.search_form.get('email').setValue(response.data.xemail);
+        this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
+        this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+
+      } 
+    },);
   }
 
    onSubmit(form){
@@ -383,20 +462,14 @@ async getmetodologia(){
         xserialmotor: form.xserialmotor,
         xserialcarroceria: form.xserialcarroceria,
         xplaca: form.xplaca,
-        xuso: this.search_form.get('xuso').value,
         xtelefono_emp: form.xtelefono_emp,
         cplan:this.search_form.get('cplan').value,
         ccorredor:  this.search_form.get('ccorredor').value,
         xcedula: form.xrif_cliente,
-        xtipo: this.search_form.get('xtipo').value,
         xcobertura: this.search_form.get('xcobertura').value,
+        xtipo: this.search_form.get('xtipo').value,
         ncapacidad_p: form.ncapacidad_p,
         cmetodologiapago: form.cmetodologiapago,
-        femision: form.femision,
-        fdesde_pol: form.fdesde_pol,
-        fhasta_pol: form.fhasta_pol,
-        fdesde_rec: form.fdesde_rec,
-        fhasta_rec: form.fhasta_rec,
         msuma_aseg: form.msuma_aseg,
         pcasco: form.pcasco,
         mprima_casco: form.mprima_casco,
@@ -410,6 +483,9 @@ async getmetodologia(){
         pcatastrofico: form.pcatastrofico,
         pmotin:form.pmotin,
         mmotin:form.mmotin,
+        cestado: this.search_form.get('cestado').value,
+        cciudad: this.search_form.get('cciudad').value,
+        cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
         accessory:{
           create: this.accessoryList

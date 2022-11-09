@@ -110,7 +110,8 @@ export class FleetContractManagementRealcoverageComponent implements OnInit {
       ccobertura: this.recoverage.ccobertura,
       ccontratoflota: this.recoverage.ccontratoflota
     };
-    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail-recoverage`, params, options).subscribe((response : any) => {
+    console.log(params)
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail-coverage`, params, options).subscribe((response : any) => {
       if(response.data.status){
         this.popup_form.get('ccobertura').setValue(response.data.ccobertura);
         this.popup_form.get('ccobertura').disable();
