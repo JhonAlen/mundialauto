@@ -126,3 +126,7 @@ input{
 hr{
     width: 98%;
 }
+.required:after {
+    content:" *";
+    color: red;
+  }

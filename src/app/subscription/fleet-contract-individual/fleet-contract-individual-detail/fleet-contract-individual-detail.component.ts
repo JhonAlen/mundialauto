@@ -52,7 +52,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
               private modalService : NgbModal,
               private webService: WebServiceConnectionService) { }
 
-  async ngOnInit(): Promise<void>{
+async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
@@ -62,7 +62,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xmodelo: ['', Validators.required],
       xversion: [''],
       xrif_cliente:['', Validators.required],
-      email: [''],
+      email: ['', Validators.required],
       xtelefono_prop:[''],
       xdireccionfiscal: ['', Validators.required],
       xserialmotor: ['', Validators.required],
@@ -124,8 +124,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       });
     } 
   }
-
-  async initializeDropdownDataRequest(){
+async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
     this.getColor();
@@ -320,7 +319,6 @@ async getmetodologia(){
       }
       },);
   }  
-  
   addAccessory(){
     let accessory;
     const modalRef = this.modalService.open(FleetContractIndividualAccessorysComponent, {size: 'xl'});
@@ -332,7 +330,6 @@ async getmetodologia(){
       }
     });
   }
-
   generateTarifa(){
     let params =  {
       xtipo: this.search_form.get('xtipo').value,  
@@ -345,9 +342,12 @@ async getmetodologia(){
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
+        this.search_form.get('pcasco').disable();
         this.search_form.get('pmotin').setValue(response.data.ptarifa);
+        this.search_form.get('pmotin').disable();
         for(let i = 0; i < response.data.ptarifa.length; i++){
           this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
+          this.search_form.get('pcatastrofico').disable();
           this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
         }
       }
@@ -363,7 +363,6 @@ async getmetodologia(){
       this.alert.show = true;
     });
   }
-
   changeDivision(form){
     if(form.ifraccionamiento == true){
       this.cuotas = true;
@@ -371,7 +370,6 @@ async getmetodologia(){
       this.cuotas = false;
     }
   }
-
   calculation(){
     let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
     this.search_form.get('mprima_casco').setValue(calculo);
@@ -383,14 +381,12 @@ async getmetodologia(){
     let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
     this.search_form.get('mmotin').setValue(motin);
   }
-
   data(){
     let division = this.search_form.get('pdescuento').value / 100
     let multiplicacion = this.search_form.get('mprima_casco').value * division
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
-
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
       this.cobertura = false;
@@ -402,6 +398,10 @@ async getmetodologia(){
    if(this.search_form.get('cano').value < 2007){
     // this.search_form.get('cano').setValue(2007);
    }
+   if(this.search_form.get('cano').value > 2023){
+     this.search_form.get('cano').setValue(2022);
+   }
+
  }
   frecuencias(){
 
@@ -421,7 +421,6 @@ async getmetodologia(){
     this.search_form.get('ncuotas').setValue(1);}
 
   }
-
   Validation(){
     let params =  {
       xdocidentidad: this.search_form.get('xrif_cliente').value
@@ -430,8 +429,8 @@ async getmetodologia(){
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
-        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocelular);
-        this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocasa);
+        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocasa);
+        this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocelular);
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
@@ -493,7 +492,7 @@ async getmetodologia(){
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
-        this.router.navigate([`subscription/fleet-contract-management-index`]);
+        location.reload()
       }
     },
     (err) => {
