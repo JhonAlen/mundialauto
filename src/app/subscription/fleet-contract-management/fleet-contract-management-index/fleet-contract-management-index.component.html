@@ -17,9 +17,9 @@
                             <!--<button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
                                 {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.CREATE" | translate }}
                             </button>-->
-                            <button [disabled]="loading || !receiptStatus" class="btn company-detail-button float-right" type="button" (click)="createReceipt()">
+                            <!--<button [disabled]="loading || !receiptStatus" class="btn company-detail-button float-right" type="button" (click)="createReceipt()">
                                 Generar Recibo
-                            </button>
+                            </button>-->
                             <button [disabled]="loading || !searchStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.SEARCH" | translate }}
