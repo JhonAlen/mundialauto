@@ -100,7 +100,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         amount_bs: "100.00",
         concept: "COMPRA",
         principal: "ds",
-        clientId:"11111111-aaaa-2222-bbbb-333333",
+        clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
         orderId: '1'
       },
       this.callbackFn,
