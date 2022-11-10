@@ -143,8 +143,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
 
   callbackFn(answer) {
     if (answer.error) {
+      console.log('a');
       console.log(answer.data);
     }
+    console.log(answer);
   }
 
   async initializeDropdownDataRequest(){
