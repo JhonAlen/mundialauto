@@ -7,7 +7,6 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -95,21 +94,6 @@ async ngOnInit(): Promise<void>{
       icedula:['', Validators.required],
       femision:['', Validators.required]
     });
-    initUbii(
-      'ubiiboton',
-      {
-        amount_ds: "100.00",
-        amount_bs: "100.00",
-        concept: "COMPRA",
-        principal: "ds",
-        clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-        orderId: '1'
-      },
-      this.callbackFn,
-      {
-        text: 'Pagar'
-      }
-    );
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -143,13 +127,6 @@ async ngOnInit(): Promise<void>{
     
   }
 
-  callbackFn(answer) {
-    if (answer.error) {
-      console.log('a');
-      console.log(answer.data);
-    }
-    console.log(answer);
-  }
 async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
