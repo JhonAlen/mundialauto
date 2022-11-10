@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 //import { initUbii } from '@ubiipagos/boton-ubii';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
@@ -199,6 +200,21 @@ export class CollectionDetailComponent implements OnInit {
         this.detail_form.get('xestatusgeneral').disable();
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
+        initUbii(
+          'ubiiboton',
+          {
+            amount_ds: response.data.mprima,
+            amount_bs: "",
+            concept: "COMPRA",
+            principal: "ds",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            orderId: this.code
+          },
+          this.callbackFn,
+          {
+            text: 'Pagar con Ubii Pagos'
+          }
+        );
       }
     },
     (err) => {
@@ -243,17 +259,12 @@ export class CollectionDetailComponent implements OnInit {
     this.paymentGridApi = event.api;
   }
 
-  initUbii (ubiiboton){
-    ubiiboton = {
-      amount_ds: "11.13",
-      amount_bs: "10000.00",
-      concept: "Pago de viaje",
-      principal: "ds",
-      clientId:"11111111-aaaa-2222-bbbb-333333",
-      orderId: "1",
+  callbackFn(answer) {
+    if (answer.error) {
+      console.log('a');
+      console.log(answer.data);
     }
-    ubiiboton();
-    console.log(ubiiboton)
+    console.log(answer);
   }
 
   onSubmit(form){
