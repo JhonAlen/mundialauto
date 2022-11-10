@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-import { initUbii } from '@ubiipagos/boton-ubii';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
