@@ -535,7 +535,8 @@ async getmetodologia(){
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
-        location.reload()
+        this.router.navigate([`administration/collection-detail/${response.data.crecibo}`]);
+        //location.reload()
       }
     },
     (err) => {
