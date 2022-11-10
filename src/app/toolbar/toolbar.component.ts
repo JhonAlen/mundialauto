@@ -102,6 +102,3 @@ export class ToolbarComponent implements OnInit {
   logOut(){ this.authenticationService.logout();}
 
 }
-
-export class NgbdDropdownBasic {
-}
