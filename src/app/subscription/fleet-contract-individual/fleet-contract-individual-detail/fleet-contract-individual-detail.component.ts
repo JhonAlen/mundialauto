@@ -91,7 +91,9 @@ async ngOnInit(): Promise<void>{
       pblindaje:[''],
       tarifas:[''],
       cestado:['', Validators.required],
-      cciudad:['', Validators.required]
+      cciudad:['', Validators.required],
+      icedula:['', Validators.required],
+      femision:['', Validators.required]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -395,13 +397,28 @@ async getmetodologia(){
     }
   }
   years(){
-   if(this.search_form.get('cano').value < 2007){
+  const now = new Date();
+  const currentYear = now.getFullYear();
+    
+  if(this.search_form.get('cano').value < 2007){
     // this.search_form.get('cano').setValue(2007);
    }
-   if(this.search_form.get('cano').value > 2023){
-     this.search_form.get('cano').setValue(2022);
+   if(this.search_form.get('cano').value > currentYear + 1){
+     this.search_form.get('cano').setValue(currentYear);
    }
 
+ }
+ femisio(){
+  const date = new Date();
+  const currentDayOfMonth = date.getDate();
+ 
+  if(this.search_form.get('femision').value > (currentDayOfMonth + 5)){
+    this.search_form.get('femision').setValue(currentDayOfMonth + 4);
+  }
+  if(this.search_form.get('femision').value < (currentDayOfMonth + 5)){
+    this.search_form.get('femision').setValue(currentDayOfMonth - 4);
+  }
+ 
  }
   frecuencias(){
 
@@ -456,6 +473,7 @@ async getmetodologia(){
         xversion: this.search_form.get('xversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
+        femision: form.femision,
         xtelefono_prop: form.xtelefono_prop,
         xdireccionfiscal: form.xdireccionfiscal,
         xserialmotor: form.xserialmotor,
@@ -486,6 +504,7 @@ async getmetodologia(){
         cciudad: this.search_form.get('cciudad').value,
         cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
+        icedula: this.search_form.get('icedula').value,
         accessory:{
           create: this.accessoryList
         }

@@ -18,6 +18,22 @@
              <div class="card-header company-card-header"><h5 class="card-title">Datos Personales</h5></div>
               <div class="card-body">
                 <div class="row">
+                  <div class="col-md-2 mb-4 pb-2">
+                    <div class="form-outline">
+                      <label class="form-label required" for="form3Examplev2"></label>
+                      <select formControlName="icedula" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('icedula').errors } " >
+                        <option value="V">V</option>
+                        <option value="P">P</option>
+                        <option value="E">E</option>
+                        <option value="J">J</option>
+                        <option value="O">O</option>
+                        <option value="G">G</option>
+                      </select>                      
+                      <div *ngIf="submitted && search_form.get('icedula').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('icedula').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev2">Identificación</label>
@@ -212,7 +228,7 @@
                         <option value="Rustico">Rustico</option>
                         <option value="Pick-UP">Pick-UP</option>
                         <option value="Carga">Carga</option>
-                        <option value="Motocicleta">Motocicleta</option>
+                        <option value="Motos">Motos</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
@@ -394,16 +410,16 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                 <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev5">Fecha de emisión</label>
-                    <input type="date" formControlName="femision" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('femision').errors }" />
+                    <input type="date" formControlName="femision" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('femision').errors }" change="femisio()" />
                     <div *ngIf="submitted && search_form.get('femision').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('femision').errors.required">Se requiere completar el campo</div>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-2 mb-4 pb-2">
+              <!--  <div class="col-md-2 mb-4 pb-2">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev4">Fecha desde (Poliza)</label>
                     <input type="date" formControlName="fdesde_pol" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fdesde_pol').errors }" />
@@ -440,7 +456,7 @@
                   </div>
                 </div> -->
                 <div class="button">
-                  <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Subscribir</button>
+                  <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
                 </div>
               </div> 
             </div>

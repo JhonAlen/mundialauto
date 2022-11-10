@@ -297,6 +297,8 @@ import { PaymentRecordIndexComponent } from './administration/payment-record/pay
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component';
 import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 import {CdkMenuModule} from '@angular/cdk/menu';
+import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
+import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -577,7 +579,9 @@ export function HttpLoaderFactory(http: HttpClient){
     FleetContractIndividualAccessoryAmountComponent,
     PaymentRecordIndexComponent,
     PaymentRecordDetailComponent,
-    BillLoadingComponent
+    BillLoadingComponent,
+    FleetContractBrokerIndexComponent,
+    FleetContractBrokerDetailComponent
   ],
   imports: [
     BrowserModule,
