@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -52,7 +52,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
               private modalService : NgbModal,
               private webService: WebServiceConnectionService) { }
 
-  async ngOnInit(): Promise<void>{
+async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
       xnombre: ['', Validators.required],
       xapellido: ['', Validators.required],
@@ -62,7 +62,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       xmodelo: ['', Validators.required],
       xversion: [''],
       xrif_cliente:['', Validators.required],
-      email: [''],
+      email: ['', Validators.required],
       xtelefono_prop:[''],
       xdireccionfiscal: ['', Validators.required],
       xserialmotor: ['', Validators.required],
@@ -91,8 +91,25 @@ export class FleetContractIndividualDetailComponent implements OnInit {
       pblindaje:[''],
       tarifas:[''],
       cestado:['', Validators.required],
-      cciudad:['', Validators.required]
+      cciudad:['', Validators.required],
+      icedula:['', Validators.required],
+      femision:['', Validators.required]
     });
+    initUbii(
+      'ubiiboton',
+      {
+        amount_ds: "100.00",
+        amount_bs: "100.00",
+        concept: "COMPRA",
+        principal: "ds",
+        clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+        orderId: '1'
+      },
+      this.callbackFn,
+      {
+        text: 'Pagar'
+      }
+    );
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -122,10 +139,18 @@ export class FleetContractIndividualDetailComponent implements OnInit {
         this.alert.type = 'danger';
         this.alert.show = true;
       });
-    } 
+    }
+    
   }
 
-  async initializeDropdownDataRequest(){
+  callbackFn(answer) {
+    if (answer.error) {
+      console.log('a');
+      console.log(answer.data);
+    }
+    console.log(answer);
+  }
+async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
     this.getColor();
@@ -320,7 +345,6 @@ async getmetodologia(){
       }
       },);
   }  
-  
   addAccessory(){
     let accessory;
     const modalRef = this.modalService.open(FleetContractIndividualAccessorysComponent, {size: 'xl'});
@@ -332,7 +356,6 @@ async getmetodologia(){
       }
     });
   }
-
   generateTarifa(){
     let params =  {
       xtipo: this.search_form.get('xtipo').value,  
@@ -345,9 +368,12 @@ async getmetodologia(){
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
+        this.search_form.get('pcasco').disable();
         this.search_form.get('pmotin').setValue(response.data.ptarifa);
+        this.search_form.get('pmotin').disable();
         for(let i = 0; i < response.data.ptarifa.length; i++){
           this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
+          this.search_form.get('pcatastrofico').disable();
           this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
         }
       }
@@ -363,7 +389,6 @@ async getmetodologia(){
       this.alert.show = true;
     });
   }
-
   changeDivision(form){
     if(form.ifraccionamiento == true){
       this.cuotas = true;
@@ -371,7 +396,6 @@ async getmetodologia(){
       this.cuotas = false;
     }
   }
-
   calculation(){
     let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
     this.search_form.get('mprima_casco').setValue(calculo);
@@ -383,14 +407,12 @@ async getmetodologia(){
     let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
     this.search_form.get('mmotin').setValue(motin);
   }
-
   data(){
     let division = this.search_form.get('pdescuento').value / 100
     let multiplicacion = this.search_form.get('mprima_casco').value * division
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
-
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
       this.cobertura = false;
@@ -399,9 +421,28 @@ async getmetodologia(){
     }
   }
   years(){
-   if(this.search_form.get('cano').value < 2007){
+  const now = new Date();
+  const currentYear = now.getFullYear();
+    
+  if(this.search_form.get('cano').value < 2007){
     // this.search_form.get('cano').setValue(2007);
    }
+   if(this.search_form.get('cano').value > currentYear + 1){
+     this.search_form.get('cano').setValue(currentYear);
+   }
+
+ }
+ femisio(){
+  const date = new Date();
+  const currentDayOfMonth = date.getDate();
+ 
+  if(this.search_form.get('femision').value > (currentDayOfMonth + 5)){
+    this.search_form.get('femision').setValue(currentDayOfMonth + 4);
+  }
+  if(this.search_form.get('femision').value < (currentDayOfMonth + 5)){
+    this.search_form.get('femision').setValue(currentDayOfMonth - 4);
+  }
+ 
  }
   frecuencias(){
 
@@ -421,7 +462,6 @@ async getmetodologia(){
     this.search_form.get('ncuotas').setValue(1);}
 
   }
-
   Validation(){
     let params =  {
       xdocidentidad: this.search_form.get('xrif_cliente').value
@@ -430,8 +470,8 @@ async getmetodologia(){
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
-        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocelular);
-        this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocasa);
+        this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocasa);
+        this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocelular);
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
@@ -457,6 +497,7 @@ async getmetodologia(){
         xversion: this.search_form.get('xversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
+        femision: form.femision,
         xtelefono_prop: form.xtelefono_prop,
         xdireccionfiscal: form.xdireccionfiscal,
         xserialmotor: form.xserialmotor,
@@ -487,13 +528,14 @@ async getmetodologia(){
         cciudad: this.search_form.get('cciudad').value,
         cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
+        icedula: this.search_form.get('icedula').value,
         accessory:{
           create: this.accessoryList
         }
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
       if(response.data.status){
-        this.router.navigate([`subscription/fleet-contract-management-index`]);
+        location.reload()
       }
     },
     (err) => {

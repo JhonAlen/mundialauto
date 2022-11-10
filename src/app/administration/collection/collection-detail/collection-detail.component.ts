@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-import { initUbii } from '@ubiipagos/boton-ubii';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
