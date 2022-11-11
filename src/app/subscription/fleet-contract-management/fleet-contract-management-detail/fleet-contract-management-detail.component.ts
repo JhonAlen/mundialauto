@@ -343,34 +343,34 @@ export class FleetContractManagementDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe((response: any) => {
       this.cuadro = true;
-      this.xnombrecliente = response.data.xnombrecliente;
-      this.xdocidentidadcliente = response.data.xdocidentidadcliente;
-      this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
-      if (response.data.xtelefonocliente) {
-        this.xtelefonocliente = response.data.xtelefonocliente;
-      } else {
-        this.xtelefonocliente = ' ';
-      }
-      if (response.data.xemailcliente) {
-        this.xemailcliente = response.data.xemailcliente;
-      } else {
-        this.xemailcliente = ' ';
-      }
-      if (response.data.xrepresentantecliente) {
-        this.xrepresentantecliente = response.data.xrepresentantecliente;
-      } else {
-        this.xrepresentantecliente = ' ';
-      }
-      this.serviceList = response.data.services;
-      this.coverageList = response.data.realCoverages;
-      this.mprimatotal = response.data.mprimatotal;
-      this.mprimaprorratatotal = response.data.mprimaprorratatotal;
-      if (response.data.xpoliza){
-        this.xpoliza = response.data.xpoliza;
-      } else {
-        this.xpoliza = ''
-      }
       if(response.data.status){
+        this.xnombrecliente = response.data.xnombrecliente;
+        this.xdocidentidadcliente = response.data.xdocidentidadcliente;
+        this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
+        if (response.data.xtelefonocliente) {
+          this.xtelefonocliente = response.data.xtelefonocliente;
+        } else {
+          this.xtelefonocliente = ' ';
+        }
+        if (response.data.xemailcliente) {
+          this.xemailcliente = response.data.xemailcliente;
+        } else {
+          this.xemailcliente = ' ';
+        }
+        if (response.data.xrepresentantecliente) {
+          this.xrepresentantecliente = response.data.xrepresentantecliente;
+        } else {
+          this.xrepresentantecliente = ' ';
+        }
+        this.serviceList = response.data.services;
+        this.coverageList = response.data.realCoverages;
+        this.mprimatotal = response.data.mprimatotal;
+        this.mprimaprorratatotal = response.data.mprimaprorratatotal;
+        if (response.data.xpoliza){
+          this.xpoliza = response.data.xpoliza;
+        } else {
+          this.xpoliza = ''
+        }
         this.ccontratoflota = response.data.ccontratoflota;
         this.ccarga = response.data.ccarga;
         this.xtituloreporte = response.data.xtituloreporte;
