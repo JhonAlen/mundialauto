@@ -43,6 +43,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   accessoryList: any[] = [];
   descuento: boolean = false;
   cobertura: boolean = false;
+  plan: boolean = false
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -93,7 +94,8 @@ async ngOnInit(): Promise<void>{
       cestado:['', Validators.required],
       cciudad:['', Validators.required],
       icedula:['', Validators.required],
-      femision:['', Validators.required]
+      femision:['', Validators.required],
+      ivigencia:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -389,6 +391,13 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
+ 
+ functio () {
+  if (this.search_form.get('cplan').value == '11'){
+    this.plan = true;
+  }else{
+    this.plan = false;}
+ }
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
       this.cobertura = false;
@@ -440,8 +449,10 @@ async getmetodologia(){
   }
   Validation(){
     let params =  {
-      xdocidentidad: this.search_form.get('xrif_cliente').value
+      xdocidentidad: this.search_form.get('xrif_cliente').value,
+      
     };
+ 
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
@@ -505,6 +516,7 @@ async getmetodologia(){
         cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
         icedula: this.search_form.get('icedula').value,
+        ivigencia: this.search_form.get('ivigencia').value,
         accessory:{
           create: this.accessoryList
         }
