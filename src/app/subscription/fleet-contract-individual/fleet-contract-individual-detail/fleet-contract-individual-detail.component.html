@@ -228,6 +228,9 @@
                         <option value="Rustico">Rustico</option>
                         <option value="Pick-UP">Pick-UP</option>
                         <option value="Carga">Carga</option>
+                        <option value="Carga 5-8">Carga 1</option>
+                        <option value="Carga 8-12">Carga 2</option>
+                        <option value="Carga M-12">Remolque</option>
                         <option value="Motos">Motos</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
@@ -399,7 +402,7 @@
             <div class="cards">
               <div class="card-header company-card-header"><h5 class="card-title">Detalles del recibo</h5></div>
               <div class="row" style="padding: 10px;">
-                <div class="col-md-4 mb-4 pb-2">
+                <div class="col-md-4 mb-4 pb-2" *ngIf="!plan">
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
                     <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="frecuencias()" >
@@ -474,9 +477,9 @@
                 <div class="button">
                   <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
                 </div>
-                <div class="button">
+                <!-- <div class="button">
                   <button id="ubiiboton"></button>
-                </div>  
+                </div>   -->
               </div> 
             </div>
           </div>

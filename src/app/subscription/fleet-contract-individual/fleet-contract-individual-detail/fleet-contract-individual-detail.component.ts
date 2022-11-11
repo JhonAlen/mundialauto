@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-import { initUbii } from '@ubiipagos/boton-ubii-dc';
+// import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -75,7 +75,7 @@ async ngOnInit(): Promise<void>{
       xcobertura: ['', Validators.required],
       xtipo: ['', Validators.required],
       ncapacidad_p: ['', Validators.required],
-      cmetodologiapago: ['', Validators.required],
+      cmetodologiapago: [''],
       msuma_aseg:[''],
       pcasco:[''],
       mprima_casco:[''],
@@ -97,21 +97,21 @@ async ngOnInit(): Promise<void>{
       femision:['', Validators.required],
       ivigencia:['']
     });
-    initUbii(
-      'ubiiboton',
-      {
-        amount_ds: "100.00",
-        amount_bs: "100.00",
-        concept: "COMPRA",
-        principal: "ds",
-        clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-        orderId: '1'
-      },
-      this.callbackFn,
-      {
-        text: 'Pagar'
-      }
-    );
+    // initUbii(
+    //   'ubiiboton',
+    //   {
+    //     amount_ds: "100.00",
+    //     amount_bs: "100.00",
+    //     concept: "COMPRA",
+    //     principal: "ds",
+    //     clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+    //     orderId: '1'
+    //   },
+    //   this.callbackFn,
+    //   {
+    //     text: 'Pagar'
+    //   }
+    // );
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });

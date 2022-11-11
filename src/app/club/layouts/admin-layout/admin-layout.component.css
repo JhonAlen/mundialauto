@@ -1,78 +1,69 @@
-
-
 mat-toolbar {
-    background: #ffc802;
-    color: white;
-  }
-  
-  mat-sidenav {
-    width: 200px;
-    border-right: none;
-    background: whitesmoke;
-    color: white;
-    padding: 16px;
-    text-align: center;
-    box-shadow: 2px 2px 5px #999;
+  background: #004a9f;
+  color: white;
+}
 
+mat-sidenav {
+  margin: 16px;
+  width: 200px;
+  border-right: none;
+  background: #002b5c;
+  color: white;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+}
 
-  }
-  
-  .content {
-    height: calc(100vh - 0px);
-    /* margin: 0px 0px 14px 40px; */
-    margin-left: 32px;
-    overflow: auto;
-  }
-  
-  mat-sidenav-container {
-    height: calc(100vh - 0px);
-    background-color: #ffff;
-  }
-  
-  .menu-button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    font-size: 1rem;
-    margin-top: 20px;
-    background-color: transparent;
+.content {
+  height: calc(100vh - 130px);
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
 
-  } 
-    mat-icon {
-      margin-right: 8px;
-      background-color: transparent;
-    }
-    .mat-icon-button{
-      background-color: transparent;
+  padding: 16px;
 
-    }
-  .logo{
-    width: 90%;
-  }
-  .avatar {
-    margin-top: 16px;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-  }
-  
-  .name {
-    margin-top: 8px;
-    font-weight: normal;
-  }
-  
-  .designation {
-    margin-top: 2px;
-    font-size: 0.7rem;
-  }
-  
-  mat-divider {
-    margin-top: 16px;
-    margin-bottom: 16px;
-  }
-  
+  overflow: auto;
+}
 
+mat-sidenav-container {
+  height: calc(100vh - 65px);
+}
+
+.menu-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem; }
+
+  mat-icon {
+    margin-right: 8px;
+ 
+}
+
+.avatar {
+  margin-top: 16px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.name {
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+.designation {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: lightgrey;
+}
+
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
   
 html,
 body {
