@@ -185,6 +185,7 @@ import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
+import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 
 const routes: Routes = [
  
@@ -456,6 +457,7 @@ const routes: Routes = [
   { path: 'administration/payment-record-index', component: PaymentRecordIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail/:id', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/bill-loading', component: BillLoadingComponent, canActivate: [AuthGuard] },
  
 ];
 

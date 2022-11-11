@@ -164,6 +164,15 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bcorredor" class="form-check-input" (change)="checkBroker($event)" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bcorredor').errors }">
+                                    <label>Corredor</label>
+                                    <div *ngIf="submitted && detail_form.get('bcorredor').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bcorredor').errors.required">{{ "SECURITY.USERS.REQUIREDPROVIDER" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group form-check">
                                     <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">
                                     <label>{{ "SECURITY.USERS.ACTIVE" | translate }}</label>
                                     <div *ngIf="submitted && detail_form.get('bactivo').errors"  class="invalid-feedback">
@@ -207,6 +216,37 @@
                                     <label>{{ "SECURITY.USERS.BUSINESSNAME" | translate }}</label>
                                     <input type="text" formControlName="xrazonsocial" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xrazonsocial').errors }">
                                     <div *ngIf="submitted && detail_form.get('xrazonsocial').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5 mb-5">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header company-card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                Corredores
+                            </div>
+                            <div class="col-6">
+                                <button [disabled]="loading || loading_cancel || !editStatus || !detail_form.get('bcorredor').value" class="btn company-detail-button float-right mr-1" type="button" (click)="searchBroker()" *ngIf="canEdit || canCreate">
+                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                    Buscar Corredor
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "SECURITY.USERS.NAME" | translate }}</label>
+                                    <input type="text" formControlName="xcorredor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xcorredor').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xcorredor').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
