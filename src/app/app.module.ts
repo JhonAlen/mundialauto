@@ -300,6 +300,7 @@ import {CdkMenuModule} from '@angular/cdk/menu';
 import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
 import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 import { UserBrokersComponent } from './pop-up/user-brokers/user-brokers.component';
+import { BillLoadingServiceOrderComponent } from './pop-up/bill-loading-service-order/bill-loading-service-order.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -583,7 +584,8 @@ export function HttpLoaderFactory(http: HttpClient){
     BillLoadingComponent,
     FleetContractBrokerIndexComponent,
     FleetContractBrokerDetailComponent,
-    UserBrokersComponent
+    UserBrokersComponent,
+    BillLoadingServiceOrderComponent
   ],
   imports: [
     BrowserModule,
