@@ -200,11 +200,12 @@ export class CollectionDetailComponent implements OnInit {
         this.detail_form.get('xestatusgeneral').disable();
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
+        let prima = this.detail_form.get('mprima').value.split(" ");
         initUbii(
           'ubiiboton',
           {
-            amount_ds: response.data.mprima,
-            amount_bs: "",
+            amount_ds: prima[0],
+            amount_bs: "0.00",
             concept: "COMPRA",
             principal: "ds",
             clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
