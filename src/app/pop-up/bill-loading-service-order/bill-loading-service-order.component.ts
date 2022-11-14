@@ -15,6 +15,8 @@ import { environment } from '@environments/environment';
 export class BillLoadingServiceOrderComponent implements OnInit {
 
   @Input() public orden;
+  private serviceOrderGridApi;
+  private acceptedServiceOrderGridApi;
   sub;
   currentUser;
   popup_form: UntypedFormGroup;
@@ -32,6 +34,7 @@ export class BillLoadingServiceOrderComponent implements OnInit {
   serviceOrder: any[] = [];
   taxList: any[] = [];
   code;
+  acceptedServiceOrderList;
   alert = { show : false, type : "", message : "" }
 
   constructor(public activeModal: NgbActiveModal,
@@ -44,14 +47,12 @@ export class BillLoadingServiceOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      cnotificacion: [''],
       corden: [''],
-      cservicio: [''],
-      cservicioadicional: [''],
-      cproveedor: [''],
-      xproveedor: [''],
-      ccontratoflota: [''],
-      xtiposervicio: [''],
+      xservicio: [''],
+      xcliente: [''],
+      xnombre: [''],
+      mtotal: [''],
+      mmontototal: [''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -79,6 +80,93 @@ export class BillLoadingServiceOrderComponent implements OnInit {
         this.alert.show = true;
       });
     }
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      ccompania: this.currentUser.data.ccompania,
+      cpais: this.currentUser.data.cpais,
+      cproveedor: this.orden.cproveedor,
+      ccliente: this.orden.ccliente
+    }
+    this.http.post(`${environment.apiUrl}/api/administration/service-order`, params, options).subscribe((response: any) => {
+      this.serviceOrderList = [];
+      if(response.data.list){
+        for(let i = 0; i < response.data.list.length; i++){
+          let xservicio;
+          if(response.data.list[i].xservicio){
+            xservicio = response.data.list[i].xservicio
+          }else{
+            xservicio = response.data.list[i].xservicioadicional
+          }
+          this.serviceOrderList.push({ 
+            corden: response.data.list[i].corden, 
+            xservicio: xservicio,
+            xcliente: response.data.list[i].xcliente,
+            xnombre: response.data.list[i].xnombre,
+            mtotal: response.data.list[i].mtotal,
+            mmontototal: response.data.list[i].mmontototal
+          });
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.SERVICEORDER.SERVICEORDERNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+
+    // Pasar valores a la lista
+    let arrayPerform = this.serviceOrderList;
+    arrayPerform = arrayPerform.filter((obj) => !obj.corden);
+    for(let i = 0; i < arrayPerform.length; i ++){
+      arrayPerform[i].cgrid = i;
+      arrayPerform[i].corden;
+    }
+    
+      arrayPerform = this.serviceOrderList;
+      this.acceptedServiceOrderList = arrayPerform;
+      console.log(this.acceptedServiceOrderList)
+    this.canSave = true;
+  }
+
+  serviceOrderRowClicked(event: any){
+    let eventObj = event.data;
+    console.log(eventObj.corden)
+    this.serviceOrderList = this.serviceOrderList.filter((obj) => obj.corden != eventObj.corden)
+    console.log(this.serviceOrderList)
+    this.acceptedServiceOrderGridApi.setRowData(this.serviceOrderList);
+    console.log(this.acceptedServiceOrderGridApi)
+    this.acceptedServiceOrderList.push(eventObj);
+    console.log(this.acceptedServiceOrderList.length)
+    for(let i = 0; i < this.acceptedServiceOrderList.length; i++){
+      this.acceptedServiceOrderList[i].cgrid = i;
+    }
+    console.log(this.acceptedServiceOrderList)
+    this.acceptedServiceOrderGridApi.setRowData(this.acceptedServiceOrderList);
+    this.showEditButton = true;
+    this.canEdit = true;
+    this.canSave = true;
+}
+
+  acceptedReplacementRowClicked(event: any){
+    // let eventObj = event.data;
+    // eventObj.bpagar = false;
+    // this.acceptedServiceOrderList = this.acceptedServiceOrderList.filter((obj) => obj.crepuestocotizacion != eventObj.crepuestocotizacion)
+    // this.serviceOrderGridApi.setRowData(this.acceptedServiceOrderList);
+    // this.acceptedServiceOrderList.push(eventObj);
+    // for(let i = 0; i < this.acceptedServiceOrderList.length; i++){
+    //   this.acceptedServiceOrderList[i].cgrid = i;
+    //   this.acceptedServiceOrderList[i].baceptacion = false;
+    // }
+    // this.acceptedServiceOrderGridApi.setRowData(this.acceptedServiceOrderList);
+    // this.canCreate = false;
+    // this.canEdit = false;
+    // this.canSave = true;
   }
 
   onSubmit(form){
