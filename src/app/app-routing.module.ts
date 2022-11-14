@@ -186,6 +186,8 @@ import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent
 import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
 import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
+import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
+
 
 const routes: Routes = [
  
@@ -458,7 +460,7 @@ const routes: Routes = [
   { path: 'administration/payment-record-detail', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail/:id', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/bill-loading', component: BillLoadingComponent, canActivate: [AuthGuard] },
- 
+  { path: 'subscription/fleet-contract-broker-detail', component: FleetContractBrokerDetailComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-import { initUbii } from '@ubiipagos/boton-ubii-dc';
+// import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -43,6 +43,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   accessoryList: any[] = [];
   descuento: boolean = false;
   cobertura: boolean = false;
+  plan: boolean = false
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -58,9 +59,9 @@ async ngOnInit(): Promise<void>{
       xapellido: ['', Validators.required],
       cano: ['', Validators.required],
       xcolor: ['', Validators.required],
-      xmarca: ['', Validators.required],
-      xmodelo: ['', Validators.required],
-      xversion: [''],
+      cmarca: ['', Validators.required],
+      cmodelo: ['', Validators.required],
+      cversion: [''],
       xrif_cliente:['', Validators.required],
       email: ['', Validators.required],
       xtelefono_prop:[''],
@@ -74,7 +75,7 @@ async ngOnInit(): Promise<void>{
       xcobertura: ['', Validators.required],
       xtipo: ['', Validators.required],
       ncapacidad_p: ['', Validators.required],
-      cmetodologiapago: ['', Validators.required],
+      cmetodologiapago: [''],
       msuma_aseg:[''],
       pcasco:[''],
       mprima_casco:[''],
@@ -93,23 +94,24 @@ async ngOnInit(): Promise<void>{
       cestado:['', Validators.required],
       cciudad:['', Validators.required],
       icedula:['', Validators.required],
-      femision:['', Validators.required]
+      femision:['', Validators.required],
+      ivigencia:['']
     });
-    initUbii(
-      'ubiiboton',
-      {
-        amount_ds: "100.00",
-        amount_bs: "100.00",
-        concept: "COMPRA",
-        principal: "ds",
-        clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-        orderId: '1'
-      },
-      this.callbackFn,
-      {
-        text: 'Pagar'
-      }
-    );
+    // initUbii(
+    //   'ubiiboton',
+    //   {
+    //     amount_ds: "100.00",
+    //     amount_bs: "100.00",
+    //     concept: "COMPRA",
+    //     principal: "ds",
+    //     clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+    //     orderId: '1'
+    //   },
+    //   this.callbackFn,
+    //   {
+    //     text: 'Pagar'
+    //   }
+    // );
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -214,7 +216,7 @@ async getCity(){
 async getModeloData(){
     let params = {
       cpais: this.currentUser.data.cpais,
-      xmarca: this.search_form.get('xmarca').value
+      cmarca: this.search_form.get('cmarca').value
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -236,7 +238,8 @@ async getModeloData(){
 async getVersionData(){
     let params = {
       cpais: 58,
-      xmodelo: this.search_form.get('xmodelo').value
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value
     };
 
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
@@ -359,8 +362,8 @@ async getmetodologia(){
   generateTarifa(){
     let params =  {
       xtipo: this.search_form.get('xtipo').value,  
-      xmarca: this.search_form.get('xmarca').value,
-      xmodelo: this.search_form.get('xmodelo').value,
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value,
       cano: this.search_form.get('cano').value,
       xcobertura: this.search_form.get('xcobertura').value,
       
@@ -413,6 +416,13 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
+ 
+ functio () {
+  if (this.search_form.get('cplan').value == '11'){
+    this.plan = true;
+  }else{
+    this.plan = false;}
+ }
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
       this.cobertura = false;
@@ -464,8 +474,10 @@ async getmetodologia(){
   }
   Validation(){
     let params =  {
-      xdocidentidad: this.search_form.get('xrif_cliente').value
+      xdocidentidad: this.search_form.get('xrif_cliente').value,
+      
     };
+ 
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
@@ -492,9 +504,9 @@ async getmetodologia(){
         xapellido: form.xapellido,
         cano:form.cano,
         xcolor:this.search_form.get('xcolor').value,      
-        xmarca: this.search_form.get('xmarca').value,
-        xmodelo: this.search_form.get('xmodelo').value,
-        xversion: this.search_form.get('xversion').value,
+        cmarca: this.search_form.get('cmarca').value,
+        cmodelo: this.search_form.get('cmodelo').value,
+        cversion: this.search_form.get('cversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
         femision: form.femision,
@@ -529,6 +541,7 @@ async getmetodologia(){
         cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
         icedula: this.search_form.get('icedula').value,
+        ivigencia: this.search_form.get('ivigencia').value,
         accessory:{
           create: this.accessoryList
         }
