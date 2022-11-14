@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BillLoadingServiceOrderComponent } from '@app/pop-up/bill-loading-service-order/bill-loading-service-order.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -55,7 +55,8 @@ export class BillLoadingComponent implements OnInit {
       ncontrol: [''],
       mmontofactura: [''],
       xobservacion: [''],
-      cproveedor: ['']
+      cproveedor: [''],
+      cpagador: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -122,7 +123,6 @@ export class BillLoadingComponent implements OnInit {
     let params = {
       cproveedor: this.bill_form.get('cproveedor').value
     }
-    console.log(params)
     this.http.post(`${environment.apiUrl}/api/administration/change-provider`, params, options).subscribe((response: any) => {
       if(response.data.status){
         this.bill_form.get('xrazonsocial').setValue(response.data.xrazonsocial);
@@ -176,7 +176,27 @@ export class BillLoadingComponent implements OnInit {
   }
 
   addServiceOrder(){
+    let orden = { cproveedor: this.bill_form.get('cproveedor').value, ccliente: this.bill_form.get('cpagador').value };
+    const modalRef = this.modalService.open(BillLoadingServiceOrderComponent, { size: 'xl' });
+    modalRef.componentInstance.orden = orden;
+    modalRef.result.then((result: any) => { 
+      this.serviceOrderList = [];
+      if(result){
+        this.serviceOrderList.push(result)
+        console.log(this.serviceOrderList)
+        // for(let i = 0; i < this.serviceOrderList.length; i++){
 
+        //   this.serviceOrderList.push({
+        //     cgrid: this.serviceOrderList.length,
+        //     edit: true,
+        //     corden: result.corden,
+        //     xservicio: result.xservicio,
+        //     mtotal: result.mtotal,
+        //     mmontototal: result.mmontototal
+        //   });
+        // }
+      }
+    });
   }
 
   onServiceOrderGridReady(event){

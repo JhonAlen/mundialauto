@@ -110,7 +110,6 @@ export class ModelIndexComponent implements OnInit {
       for (let i = 0; i < request.data.list.length; i++) {
         this.modelList.push({
           cmodelo: request.data.list[i].cmodelo,
-          casociado: request.data.list[i].casociado,
           xmodelo: request.data.list[i].xmodelo,
           xmarca: request.data.list[i].xmarca,
           xactivo: request.data.list[i].bactivo ? this.translate.instant("DROPDOWN.YES") : this.translate.instant("DROPDOWN.NO")
