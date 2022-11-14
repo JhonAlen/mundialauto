@@ -59,9 +59,9 @@ async ngOnInit(): Promise<void>{
       xapellido: ['', Validators.required],
       cano: ['', Validators.required],
       xcolor: ['', Validators.required],
-      xmarca: ['', Validators.required],
-      xmodelo: ['', Validators.required],
-      xversion: [''],
+      cmarca: ['', Validators.required],
+      cmodelo: ['', Validators.required],
+      cversion: [''],
       xrif_cliente:['', Validators.required],
       email: ['', Validators.required],
       xtelefono_prop:[''],
@@ -216,7 +216,7 @@ async getCity(){
 async getModeloData(){
     let params = {
       cpais: this.currentUser.data.cpais,
-      xmarca: this.search_form.get('xmarca').value
+      cmarca: this.search_form.get('cmarca').value
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -238,7 +238,8 @@ async getModeloData(){
 async getVersionData(){
     let params = {
       cpais: 58,
-      xmodelo: this.search_form.get('xmodelo').value
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value
     };
 
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
@@ -361,8 +362,8 @@ async getmetodologia(){
   generateTarifa(){
     let params =  {
       xtipo: this.search_form.get('xtipo').value,  
-      xmarca: this.search_form.get('xmarca').value,
-      xmodelo: this.search_form.get('xmodelo').value,
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value,
       cano: this.search_form.get('cano').value,
       xcobertura: this.search_form.get('xcobertura').value,
       
@@ -503,9 +504,9 @@ async getmetodologia(){
         xapellido: form.xapellido,
         cano:form.cano,
         xcolor:this.search_form.get('xcolor').value,      
-        xmarca: this.search_form.get('xmarca').value,
-        xmodelo: this.search_form.get('xmodelo').value,
-        xversion: this.search_form.get('xversion').value,
+        cmarca: this.search_form.get('cmarca').value,
+        cmodelo: this.search_form.get('cmodelo').value,
+        cversion: this.search_form.get('cversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
         femision: form.femision,
