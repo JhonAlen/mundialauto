@@ -1100,7 +1100,7 @@ export class WebServiceConnectionService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     try {
-      let response = await this.http.post(`${environment.apiUrl}/api/brand/search`, params, options).toPromise();
+      let response = await this.http.post(`${environment.apiUrl}/api/valrep/brand`, params, options).toPromise();
       return response;
     }
     catch (err) {
@@ -3396,7 +3396,7 @@ export class WebServiceConnectionService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     try {
-      let response = await this.http.post(`${environment.apiUrl}/api/model/search`, params, options).toPromise();
+      let response = await this.http.post(`${environment.apiUrl}/api/valrep/model`, params, options).toPromise();
       return response;
     }
     catch (err) {

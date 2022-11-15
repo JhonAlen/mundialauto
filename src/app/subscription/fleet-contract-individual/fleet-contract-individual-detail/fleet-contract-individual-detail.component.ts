@@ -75,6 +75,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   fhasta_rec: Date;
   femision: Date;
   plan: boolean = false
+  ano;
 
   fnacimientopropietario: string
   fnacimientopropietario2: string;
@@ -321,10 +322,12 @@ async getVersionData(){
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
             id: response.data.list[i].cversion,
-            value: response.data.list[i].Expr1,
+            value: response.data.list[i].xversion,
+            cano: response.data.list[i].cano, 
+            control: response.data.list[i].control,
+            npasajero: response.data.list[i].npasajero
           });
         }
-        
       }
       },);
   }
@@ -489,20 +492,10 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
-  search(){
-    let params =  {
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value,
-      cversion: this.search_form.get('cversion').value,
-      
-    };
- 
-    this.http.post(`${environment.apiUrl}/api/valrep/search-data-version`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.search_form.get('cano').setValue(response.data.cano);
-        this.search_form.get('ncapacidad_p').setValue(response.data.npasajero);
-      } 
-    },);
+  searchVersion(){
+    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    this.search_form.get('cano').setValue(version.cano);
+    this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
 
  functio () {
