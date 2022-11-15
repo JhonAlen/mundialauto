@@ -32,7 +32,8 @@ mat-sidenav-container {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  font-size: 1rem; }
+  font-size: 1rem;
+  background: unset; }
 
   mat-icon {
     margin-right: 8px;
@@ -77,4 +78,10 @@ h3,
 h4,
 p {
     margin: 0;
+}
+
+
+body{
+  background: linear-gradient(to bottom, #2e34be 0%,#70a8ff 100%);
+
 }

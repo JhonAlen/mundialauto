@@ -53,65 +53,65 @@ export class FleetContractBrokerDetailComponent implements OnInit {
               private modalService : NgbModal,
               private webService: WebServiceConnectionService) { }
 
-async ngOnInit(): Promise<void>{
-    this.search_form = this.formBuilder.group({
-      xnombre: ['', Validators.required],
-      xapellido: ['', Validators.required],
-      cano: ['', Validators.required],
-      xcolor: ['', Validators.required],
-      xmarca: ['', Validators.required],
-      xmodelo: ['', Validators.required],
-      xversion: [''],
-      xrif_cliente:['', Validators.required],
-      email: ['', Validators.required],
-      xtelefono_prop:[''],
-      xdireccionfiscal: ['', Validators.required],
-      xserialmotor: ['', Validators.required],
-      xserialcarroceria: ['', Validators.required],
-      xplaca: ['', Validators.required],
-      xtelefono_emp: ['', Validators.required],
-      cplan: ['', Validators.required],
-      ccorredor:['', Validators.required],
-      xcobertura: ['', Validators.required],
-      xtipo: ['', Validators.required],
-      ncapacidad_p: ['', Validators.required],
-      cmetodologiapago: [''],
-      msuma_aseg:[''],
-      pcasco:[''],
-      mprima_casco:[''],
-      mcatastrofico:[''],
-      msuma_blindaje:[''],
-      mprima_blindaje:[''],
-      pdescuento:[''],
-      ifraccionamiento:[false],
-      ncuotas:[''],
-      mprima_bruta:[''],
-      pcatastrofico:[''],
-      pmotin:[''],
-      mmotin:[''],
-      pblindaje:[''],
-      tarifas:[''],
-      cestado:['', Validators.required],
-      cciudad:['', Validators.required],
-      icedula:['', Validators.required],
-      femision:['', Validators.required],
-      ivigencia:['']
-    });
-    // initUbii(
-    //   'ubiiboton',
-    //   {
-    //     amount_ds: "100.00",
-    //     amount_bs: "100.00",
-    //     concept: "COMPRA",
-    //     principal: "ds",
-    //     clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-    //     orderId: '1'
-    //   },
-    //   this.callbackFn,
-    //   {
-    //     text: 'Pagar'
-    //   }
-    // );
+              async ngOnInit(): Promise<void>{
+                this.search_form = this.formBuilder.group({
+                  xnombre: ['', Validators.required],
+                  xapellido: ['', Validators.required],
+                  cano: ['', Validators.required],
+                  xcolor: ['', Validators.required],
+                  cmarca: ['', Validators.required],
+                  cmodelo: ['', Validators.required],
+                  cversion: [''],
+                  xrif_cliente:['', Validators.required],
+                  email: ['', Validators.required],
+                  xtelefono_prop:[''],
+                  xdireccionfiscal: ['', Validators.required],
+                  xserialmotor: ['', Validators.required],
+                  xserialcarroceria: ['', Validators.required],
+                  xplaca: ['', Validators.required],
+                  xtelefono_emp: ['', Validators.required],
+                  cplan: ['', Validators.required],
+                  ccorredor:['', Validators.required],
+                  xcobertura: ['', Validators.required],
+                  xtipo: ['', Validators.required],
+                  ncapacidad_p: ['', Validators.required],
+                  cmetodologiapago: [''],
+                  msuma_aseg:[''],
+                  pcasco:[''],
+                  mprima_casco:[''],
+                  mcatastrofico:[''],
+                  msuma_blindaje:[''],
+                  mprima_blindaje:[''],
+                  pdescuento:[''],
+                  ifraccionamiento:[false],
+                  ncuotas:[''],
+                  mprima_bruta:[''],
+                  pcatastrofico:[''],
+                  pmotin:[''],
+                  mmotin:[''],
+                  pblindaje:[''],
+                  tarifas:[''],
+                  cestado:['', Validators.required],
+                  cciudad:['', Validators.required],
+                  icedula:['', Validators.required],
+                  femision:['', Validators.required],
+                  ivigencia:['']
+                });
+                // initUbii(
+                //   'ubiiboton',
+                //   {
+                //     amount_ds: "100.00",
+                //     amount_bs: "100.00",
+                //     concept: "COMPRA",
+                //     principal: "ds",
+                //     clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+                //     orderId: '1'
+                //   },
+                //   this.callbackFn,
+                //   {
+                //     text: 'Pagar'
+                //   }
+                // );
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -216,7 +216,7 @@ async getCity(){
 async getModeloData(){
     let params = {
       cpais: this.currentUser.data.cpais,
-      xmarca: this.search_form.get('xmarca').value
+      cmarca: this.search_form.get('cmarca').value
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -238,16 +238,17 @@ async getModeloData(){
 async getVersionData(){
     let params = {
       cpais: 58,
-      xmodelo: this.search_form.get('xmodelo').value
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value
     };
 
-    this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
+    this.http.post(`${environment.apiUrl}/api/version/version`, params).subscribe((response : any) => {
       if(response.data.status){
         this.versionList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
             id: response.data.list[i].cversion,
-            value: response.data.list[i].xversion,
+            value: response.data.list[i].expre1,
           });
         }
         
@@ -361,8 +362,8 @@ async getmetodologia(){
   generateTarifa(){
     let params =  {
       xtipo: this.search_form.get('xtipo').value,  
-      xmarca: this.search_form.get('xmarca').value,
-      xmodelo: this.search_form.get('xmodelo').value,
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value,
       cano: this.search_form.get('cano').value,
       xcobertura: this.search_form.get('xcobertura').value,
       
@@ -415,7 +416,22 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
+  search(){
+    let params =  {
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value,
+   
+      
+    };
  
+    this.http.post(`${environment.apiUrl}/api/valrep/search-data-version`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('cano').setValue(response.data.cano);
+        this.search_form.get('ncapacidad_p').setValue(response.data.npasajero);
+      } 
+    },);
+  }
+
  functio () {
   if (this.search_form.get('cplan').value == '11'){
     this.plan = true;
@@ -503,9 +519,9 @@ async getmetodologia(){
         xapellido: form.xapellido,
         cano:form.cano,
         xcolor:this.search_form.get('xcolor').value,      
-        xmarca: this.search_form.get('xmarca').value,
-        xmodelo: this.search_form.get('xmodelo').value,
-        xversion: this.search_form.get('xversion').value,
+        cmarca: this.search_form.get('cmarca').value,
+        cmodelo: this.search_form.get('cmodelo').value,
+        cversion: this.search_form.get('cversion').value,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
         femision: form.femision,
