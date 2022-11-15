@@ -911,36 +911,36 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [80, '*'],
+            widths: [80, 280, '*', '*'],
             body: [
-              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 50, 24, 50, 24, '*', '*'],
+            widths: [24, 134, 50, 24, 50, 24, '*', '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
             ]
           }
         },
@@ -956,18 +956,18 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadopropietario, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.xestadopropietario, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1213,36 +1213,36 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [80, '*'],
+            widths: [80, 280, '*', '*'],
             body: [
-              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 50, 24, 50, 24, '*', '*'],
+            widths: [24, 134, 50, 24, 50, 24, '*', '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1258,18 +1258,18 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadopropietario, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.xestadopropietario, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
