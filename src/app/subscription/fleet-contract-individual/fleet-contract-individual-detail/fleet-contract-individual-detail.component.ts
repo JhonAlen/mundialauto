@@ -25,6 +25,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   search_form : UntypedFormGroup;
   loading: boolean = false;
   submitted: boolean = false;
+  clear: boolean = true;
   alert = { show: false, type: "", message: "" };
   marcaList: any[] = [];
   modeloList: any[] = [];
@@ -537,11 +538,13 @@ async getmetodologia(){
   }
 
   getPaymentMethodology(value: any) {
-    throw new Error('Method not implemented.');
+    return "Anual";
   }
 
-  onSubmit(form){
+  async onSubmit(form){
+    this.clear = false;
     this.submitted = true;
+    this.search_form.disable();
     this.loading = true;
     if (this.search_form.invalid) {
       this.loading = false;
@@ -595,23 +598,16 @@ async getmetodologia(){
     };
     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe(async (response : any) => {
       if(response.data.status){
-        console.log(response.data);
         this.xpoliza = response.data.xpoliza;
+        this.xrecibo = response.data.xrecibo;
         this.fsuscripcion = response.data.fsuscripcion;
         this.fdesde_pol = response.data.fdesde_pol;
         this.fhasta_pol = response.data.fhasta_pol;
         this.fhasta_rec = response.data.fhasta_rec;
         this.fdesde_rec = response.data.fdesde_rec;
         this.femision = response.data.femision;
-        await this.getFleetContractDetail(response.data.ccontratoflota).then(() => {
-          console.log('lol');
-          this.createPDF();
-        }
-          
-        );
-        console.log("termino :O");
-        //this.router.navigate([`administration/collection-detail/${response.data.crecibo}`]);
-        //location.reload()
+        await this.getFleetContractDetail(response.data.ccontratoflota);
+        this.loading = false;
       }
     },
     (err) => {
@@ -624,42 +620,6 @@ async getmetodologia(){
       this.alert.show = true;
       this.loading = false;
     })
-  }
-
-  async getOwnerDetail(cpropietario: any) {
-    console.log('O');
-    
-  }
-
-  async getVehicleDetail(cvehiculopropietario: any) {
-    console.log('V');
-  }
-
-  async getClientDetail(ccliente) {
-    console.log("C");
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params =  {
-      cpais: this.currentUser.data.cpais,  
-      ccompania: this.currentUser.data.ccompania,
-      ccliente: ccliente
-    };
-    this.http.post(`${environment.apiUrl}/api/v2/client/production/detail`, params, options).subscribe((response: any) => {
-      if(response.data.status){
-
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-      this.loading = false;
-    })
-
   }
 
   async getFleetContractDetail(ccontratoflota) {
@@ -670,10 +630,9 @@ async getmetodologia(){
       ccompania: this.currentUser.data.ccompania,
       ccontratoflota: ccontratoflota
     };
-    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe((response: any) => {
+    await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
       if(response.data.status){
         this.ccarga = response.data.ccarga;
-        this.xrecibo = response.data.xrecibo;
         this.xpoliza = response.data.xpoliza;
         this.xtituloreporte = response.data.xtituloreporte;
         this.xanexo = response.data.xanexo;
@@ -738,8 +697,6 @@ async getmetodologia(){
         this.ncapacidadpasajerosvehiculo = response.data.ncapacidadpasajerosvehiculo;
         this.xplancoberturas = response.data.xplancoberturas;
         this.xplanservicios = response.data.xplanservicios;
-        //this. = response.data.;
-
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
         if(response.data.fnacimientopropietario){
@@ -749,12 +706,12 @@ async getmetodologia(){
           let yyyy = dateFormat.getFullYear();
           this.fnacimientopropietario = dd + '-' + mm + '-' + yyyy;
         } else {
-          this.fnacimientopropietario = ' '
+          this.fnacimientopropietario = ''
         }
         this.serviceList = response.data.services;
         this.coverageList = response.data.realCoverages;
-        console.log("Contrato");
-        return 1;
+        await window.alert(`Se ha generado exitósamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}`);
+        this.createPDF();
       }
     },
     (err) => {
@@ -766,53 +723,23 @@ async getmetodologia(){
       this.alert.message = message;
       this.alert.type = 'danger';
       this.alert.show = true;
-      return 0;
     });
   }
 
-  getMonthAsString(month) {
-    month = month + 1;
-    if (month == 1) {
-      return 'Enero'
-    }
-    if (month == 2) {
-      return 'Febrero'
-    }
-    if (month == 3) {
-      return 'Marzo'
-    }
-    if (month == 4) {
-      return 'Abril'
-    }
-    if (month == 5) {
-      return 'Mayo'
-    }
-    if (month == 6) {
-      return 'Junio'
-    }
-    if (month == 7) {
-      return 'Julio'
-    }
-    if (month == 8) {
-      return 'Agosto'
-    }
-    if (month == 9) {
-      return 'Septiembre'
-    }
-    if (month == 10) {
-      return 'Octubre'
-    }
-    if (month == 11) {
-      return 'Noviembre'
-    }
-    if (month == 12) {
-      return 'Diciembre'
-    }
+  onClearForm() {
+    this.search_form.reset();
+    this.search_form.enable();
+    this.clear = true;
   }
 
   changeDateFormat(date) {
-    let dateArray = date.substring(0,10).split("-");
-    return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0];
+    if (date) {
+      let dateArray = date.substring(0,10).split("-");
+      return dateArray[2] + '-' + dateArray[1] + '-' + dateArray[0];
+    }
+    else {
+      return ' ';
+    }
   }
 
   buildAccesoriesBody() {
@@ -835,49 +762,57 @@ async getmetodologia(){
 
   buildAnnexesBody() {
     let body = []
-    this.annexList.forEach(function(row) {
-      let dataRow = [];
-      dataRow.push({text: row.xanexo, border: [true, false, true, false]});
-      body.push(dataRow);
-    })
+    if (this.annexList.length > 0) {
+      this.annexList.forEach(function(row) {
+        let dataRow = [];
+        dataRow.push({text: row.xanexo, border: [true, false, true, false]});
+        body.push(dataRow);
+      })
+    } else {
+      let dataRow = []
+        dataRow.push({text: ' ', border: [true, false, true, false]});
+        body.push(dataRow);
+    }
     return body;
   }
 
   buildCoverageBody2() {
     let body = [];
-    this.coverageList.forEach(function(row) {
-      if (row.ititulo == 'C') {
-        let dataRow = [];
-        dataRow.push({text: row.xcobertura, margin: [10, 0, 0, 0], border: [true, false, false, true]});
-        //Se utiliza el formato DE (alemania) ya que es el que coloca '.' para representar miles, y ',' para los decimales fuente: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
-        dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.msumaasegurada)}`, alignment: 'right', border:[true, false, false, true]});
-        if (row.mtasa) {
-          dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mtasa)}`, alignment: 'right', border:[true, false, false, true]});
-        } else {
-          dataRow.push({text: ` `, alignment: 'right', border: [true, false, true, true]});
+    if (this.coverageList.length > 0){
+      this.coverageList.forEach(function(row) {
+        if (row.ititulo == 'C') {
+          let dataRow = [];
+          dataRow.push({text: row.xcobertura, margin: [10, 0, 0, 0], border: [true, false, false, true]});
+          //Se utiliza el formato DE (alemania) ya que es el que coloca '.' para representar miles, y ',' para los decimales fuente: https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat
+          dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.msumaasegurada)}`, alignment: 'right', border:[true, false, false, true]});
+          if (row.mtasa) {
+            dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mtasa)}`, alignment: 'right', border:[true, false, false, true]});
+          } else {
+            dataRow.push({text: ` `, alignment: 'right', border: [true, false, true, true]});
+          }
+          if (row.pdescuento) {
+            dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.pdescuento)} %`, alignment: 'right', border:[true, false, false, true]});
+          } else {
+            dataRow.push({text: ` `, alignment: 'right', border: [true, false, true, true]});
+          }
+          if(row.mprima){
+            dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mprima)}`, fillColor: '#f2f2f2', alignment: 'right', border:[true, false, true, true]});
+          } else {
+            dataRow.push({text: ` `,fillColor: '#f2f2f2', alignment: 'right', border: [true, false, true, true]});
+          }
+          body.push(dataRow);
         }
-        if (row.pdescuento) {
-          dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.pdescuento)} %`, alignment: 'right', border:[true, false, false, true]});
-        } else {
-          dataRow.push({text: ` `, alignment: 'right', border: [true, false, true, true]});
+        if (row.ititulo == 'T') {
+          let dataRow = [];
+          dataRow.push({text: row.xcobertura, decoration: 'underline', margin: [2, 0, 0, 0], border: [true, false, false, true]});
+          dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
+          dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
+          dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
+          dataRow.push({text: ` `, fillColor: '#f2f2f2', border:[true, false, true, true]});
+          body.push(dataRow);
         }
-        if(row.mprima){
-          dataRow.push({text: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(row.mprima)}`, fillColor: '#f2f2f2', alignment: 'right', border:[true, false, true, true]});
-        } else {
-          dataRow.push({text: ` `,fillColor: '#f2f2f2', alignment: 'right', border: [true, false, true, true]});
-        }
-        body.push(dataRow);
-      }
-      if (row.ititulo == 'T') {
-        let dataRow = [];
-        dataRow.push({text: row.xcobertura, decoration: 'underline', margin: [2, 0, 0, 0], border: [true, false, false, true]});
-        dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
-        dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
-        dataRow.push({text: ` `, fillColor: '#d9d9d9', border:[true, false, false, true]});
-        dataRow.push({text: ` `, fillColor: '#f2f2f2', border:[true, false, true, true]});
-        body.push(dataRow);
-      }
-    });
+      });
+    }
     return body;
   }
 
