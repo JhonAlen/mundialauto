@@ -343,34 +343,34 @@ export class FleetContractManagementDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe((response: any) => {
       this.cuadro = true;
-      this.xnombrecliente = response.data.xnombrecliente;
-      this.xdocidentidadcliente = response.data.xdocidentidadcliente;
-      this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
-      if (response.data.xtelefonocliente) {
-        this.xtelefonocliente = response.data.xtelefonocliente;
-      } else {
-        this.xtelefonocliente = ' ';
-      }
-      if (response.data.xemailcliente) {
-        this.xemailcliente = response.data.xemailcliente;
-      } else {
-        this.xemailcliente = ' ';
-      }
-      if (response.data.xrepresentantecliente) {
-        this.xrepresentantecliente = response.data.xrepresentantecliente;
-      } else {
-        this.xrepresentantecliente = ' ';
-      }
-      this.serviceList = response.data.services;
-      this.coverageList = response.data.realCoverages;
-      this.mprimatotal = response.data.mprimatotal;
-      this.mprimaprorratatotal = response.data.mprimaprorratatotal;
-      if (response.data.xpoliza){
-        this.xpoliza = response.data.xpoliza;
-      } else {
-        this.xpoliza = ''
-      }
       if(response.data.status){
+        this.xnombrecliente = response.data.xnombrecliente;
+        this.xdocidentidadcliente = response.data.xdocidentidadcliente;
+        this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
+        if (response.data.xtelefonocliente) {
+          this.xtelefonocliente = response.data.xtelefonocliente;
+        } else {
+          this.xtelefonocliente = ' ';
+        }
+        if (response.data.xemailcliente) {
+          this.xemailcliente = response.data.xemailcliente;
+        } else {
+          this.xemailcliente = ' ';
+        }
+        if (response.data.xrepresentantecliente) {
+          this.xrepresentantecliente = response.data.xrepresentantecliente;
+        } else {
+          this.xrepresentantecliente = ' ';
+        }
+        this.serviceList = response.data.services;
+        this.coverageList = response.data.realCoverages;
+        this.mprimatotal = response.data.mprimatotal;
+        this.mprimaprorratatotal = response.data.mprimaprorratatotal;
+        if (response.data.xpoliza){
+          this.xpoliza = response.data.xpoliza;
+        } else {
+          this.xpoliza = ''
+        }
         this.ccontratoflota = response.data.ccontratoflota;
         this.ccarga = response.data.ccarga;
         this.xtituloreporte = response.data.xtituloreporte;
@@ -1694,36 +1694,36 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [80, '*'],
+            widths: [80, 280, 24, '*'],
             body: [
-              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 50, 24, 50, 24, '*', '*'],
+            widths: [24, 134, 50, 24, 50, 24, '*', '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1739,18 +1739,18 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xdireccionpropietario').value, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xdireccionpropietario').value, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1996,36 +1996,36 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [80, '*'],
+            widths: [80, 280, 24, '*'],
             body: [
-              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, true, false]}]
+              [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 50, 24, 50, 24, '*', '*'],
+            widths: [24, 134, 50, 24, 50, 24, '*', '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, true]}, {text: this.xestadocliente, border: [false, false, false, true]}, {text: 'Ciudad:', bold: true, border: [false, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
             ]
           }
         },
@@ -2041,18 +2041,18 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, '*'],
+            widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xdireccionpropietario').value, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xdireccionpropietario').value, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, true, false]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [24, 70, 24, 40, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Estado:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, false, false]}, {text: 'Ciudad:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
             ]
           }
         },
@@ -2199,6 +2199,15 @@ export class FleetContractManagementDetailComponent implements OnInit {
             widths: ['*'],
             body: [
               [{text: ' ', border: [true, false, true, true]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
         }

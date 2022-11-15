@@ -476,11 +476,12 @@
                   </div>
                 </div> -->
                 <div class="button">
-                  <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
-                </div>
-                <!-- <div class="button">
-                  <button id="ubiiboton"></button>
-                </div>   -->
+                  <button [disabled]="loading || !clear" type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Emitir Póliza-Recibo
+                  </button>
+                  <button type="button" class="btn btn-light btn-lg" style="background-color: red;" (click)="onClearForm()">Limpiar Formulario</button>
+                </div> 
               </div> 
             </div>
           </div>
