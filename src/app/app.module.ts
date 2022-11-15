@@ -301,6 +301,8 @@ import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract
 import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 import { UserBrokersComponent } from './pop-up/user-brokers/user-brokers.component';
 import { BillLoadingServiceOrderComponent } from './pop-up/bill-loading-service-order/bill-loading-service-order.component';
+import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
+import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -585,7 +587,9 @@ export function HttpLoaderFactory(http: HttpClient){
     FleetContractBrokerIndexComponent,
     FleetContractBrokerDetailComponent,
     UserBrokersComponent,
-    BillLoadingServiceOrderComponent
+    BillLoadingServiceOrderComponent,
+    BrandModelVersionIndexComponent,
+    BrandModelVersionDetailComponent
   ],
   imports: [
     BrowserModule,
