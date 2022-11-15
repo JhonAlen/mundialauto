@@ -239,7 +239,7 @@ async getVersionData(){
     let params = {
       cpais: 58,
       cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value
+      cmodelo: this.search_form.get('cmodelo').value,
     };
 
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
@@ -248,7 +248,7 @@ async getVersionData(){
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
             id: response.data.list[i].cversion,
-            value: response.data.list[i].xversion,
+            value: response.data.list[i].Expr1,
           });
         }
         
@@ -416,7 +416,22 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
+  search(){
+    let params =  {
+      cmarca: this.search_form.get('cmarca').value,
+      cmodelo: this.search_form.get('cmodelo').value,
+      cversion: this.search_form.get('cversion').value,
+      
+    };
  
+    this.http.post(`${environment.apiUrl}/api/valrep/search-data-version`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('cano').setValue(response.data.cano);
+        this.search_form.get('ncapacidad_p').setValue(response.data.npasajero);
+      } 
+    },);
+  }
+
  functio () {
   if (this.search_form.get('cplan').value == '11'){
     this.plan = true;
