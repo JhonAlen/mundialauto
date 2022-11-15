@@ -2201,6 +2201,15 @@ export class FleetContractManagementDetailComponent implements OnInit {
               [{text: ' ', border: [true, false, true, true]}]
             ]
           }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
+            ]
+          }
         }
       ], 
       styles: {
