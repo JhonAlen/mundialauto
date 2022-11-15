@@ -185,6 +185,11 @@ import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-
 import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
 import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
+import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
+import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
+import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
+import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component'
+
 
 const routes: Routes = [
  
@@ -456,7 +461,11 @@ const routes: Routes = [
   { path: 'administration/payment-record-index', component: PaymentRecordIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/payment-record-detail/:id', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
- 
+  { path: 'administration/bill-loading', component: BillLoadingComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/fleet-contract-broker-detail', component: FleetContractBrokerDetailComponent, canActivate: [AuthGuard] },
+  { path: 'tables/brand-model-version-index', component: BrandModelVersionIndexComponent, canActivate: [AuthGuard] },
+  { path: 'tables/brand-model-version-detail', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'tables/brand-model-version-detail/:id', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

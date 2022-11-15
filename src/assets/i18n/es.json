@@ -737,6 +737,9 @@
         },
         "SERVICESINSURERS": {
             "SERVICESINSURERS": "Servicios de Aseguradoras"
+        },
+        "BRAND-MODEL-VERSION": {
+            "BRAND-MODEL-VERSION": "Marca - Modelo - Versión"
         }
     },
     "CONFIGURATION": {
@@ -2221,6 +2224,9 @@
         },
         "PAYMENT-RECORD": {
             "PAYMENT-RECORD": "Registros de Pagos"
+        },
+        "BILL-LOADING": {
+            "BILL-LOADING": "Registro de Facturas"
         }
     },
     "REPORTS": {

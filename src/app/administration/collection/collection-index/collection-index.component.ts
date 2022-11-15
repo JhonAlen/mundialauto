@@ -81,7 +81,8 @@ export class CollectionIndexComponent implements OnInit {
     let options = { headers: headers };
     let params = {
       ccompania: this.currentUser.data.ccompania,
-      xplaca: form.xplaca
+      xplaca: form.xplaca,
+      ccorredor: this.currentUser.data.ccorredor
     }
     this.http.post(`${environment.apiUrl}/api/administration-collection/search`, params, options).subscribe((response : any) => {
       if(response.data.list){
