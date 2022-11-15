@@ -1694,7 +1694,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1712,7 +1712,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [80, 280, '*', '*'],
+            widths: [80, 280, 24, '*'],
             body: [
               [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1739,7 +1739,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xdireccionpropietario').value, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, true, false]}]
             ]
@@ -1996,7 +1996,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -2014,7 +2014,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [80, 280, '*', '*'],
+            widths: [80, 280, 24, '*'],
             body: [
               [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -2041,7 +2041,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xdireccionpropietario').value, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xestadopropietario').value, border: [false, false, true, false]}]
             ]

@@ -955,7 +955,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -973,7 +973,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [80, 280, '*', '*'],
+            widths: [80, 280, 24, '*'],
             body: [
               [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1000,7 +1000,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadopropietario, border: [false, false, true, false]}]
             ]
@@ -1257,7 +1257,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1275,7 +1275,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [80, 280, '*', '*'],
+            widths: [80, 280, 24, '*'],
             body: [
               [{text: 'DIRECCIÓN DE COBRO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1293,7 +1293,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'ASEGURADO:', bold: true, border: [true, false, false, false]}, {text: `${this.xnombrepropietario} ${this.xapellidopropietario}`, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadpropietario, border: [false, false, true, false]}]
             ]
@@ -1302,7 +1302,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [60, 300, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadopropietario, border: [false, false, true, false]}]
             ]
