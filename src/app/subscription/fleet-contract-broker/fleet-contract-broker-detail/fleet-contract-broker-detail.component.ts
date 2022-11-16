@@ -95,7 +95,8 @@ export class FleetContractBrokerDetailComponent implements OnInit {
                   cciudad:['', Validators.required],
                   icedula:['', Validators.required],
                   femision:['', Validators.required],
-                  ivigencia:['']
+                  ivigencia:[''],
+                  xcorredor: ['']
                 });
                 // initUbii(
                 //   'ubiiboton',
@@ -142,6 +143,15 @@ export class FleetContractBrokerDetailComponent implements OnInit {
         this.alert.show = true;
       });
     }
+    let params =  {
+      ccorredor: this.currentUser.data.ccorredor
+    };
+    this.http.post(`${environment.apiUrl}/api/broker/search-broker-individual`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('xcorredor').setValue(response.data.xcorredor);
+        this.search_form.get('xcorredor').disable();
+      } 
+    },);
     
   }
 
@@ -178,6 +188,7 @@ async initializeDropdownDataRequest(){
             id: request.data.list[i].cmarca, 
             value: request.data.list[i].xmarca });
         }
+        this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
   }
 async getState(){
@@ -193,6 +204,7 @@ async getState(){
             value: response.data.list[i].xestado,
           });
         }
+        this.StateList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   } 
@@ -210,6 +222,7 @@ async getCity(){
             value: response.data.list[i].xciudad,
           });
         }
+        this.CityList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   } 
@@ -233,6 +246,7 @@ async getModeloData(){
            id: request.data.list[i].cmodelo, 
            value: request.data.list[i].xmodelo });
       }
+      this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
 async getVersionData(){
@@ -242,16 +256,19 @@ async getVersionData(){
       cmodelo: this.search_form.get('cmodelo').value
     };
 
-    this.http.post(`${environment.apiUrl}/api/version/version`, params).subscribe((response : any) => {
+    this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
       if(response.data.status){
         this.versionList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ 
             id: response.data.list[i].cversion,
-            value: response.data.list[i].expre1,
+            value: response.data.list[i].xversion,
+            cano: response.data.list[i].cano, 
+            control: response.data.list[i].control,
+            npasajero: response.data.list[i].npasajero
           });
         }
-        
+        this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }
@@ -267,7 +284,6 @@ async getCorredorData() {
           this.corredorList.push({ 
             id: response.data.list[i].ccorredor,
             value: response.data.list[i].xcorredor,
-
           });
         }
       }
@@ -291,6 +307,7 @@ async getPlanData(){
           value: response.data.list[i].xplan,
         });
       }
+      this.planList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
     },);
   }
@@ -310,6 +327,7 @@ async getColor(){
             value: response.data.list[i].xcolor,
           });
         }
+        this.colorList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }
@@ -328,6 +346,7 @@ async getCobertura(){
             value: response.data.list[i].xcobertura,
           });
         }
+        this.coberturaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }
@@ -345,6 +364,7 @@ async getmetodologia(){
             value: response.data.list[i].xmetodologiapago,
           });
         }
+        this.metodologiaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }  
@@ -416,20 +436,10 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
-  search(){
-    let params =  {
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value,
-   
-      
-    };
- 
-    this.http.post(`${environment.apiUrl}/api/valrep/search-data-version`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.search_form.get('cano').setValue(response.data.cano);
-        this.search_form.get('ncapacidad_p').setValue(response.data.npasajero);
-      } 
-    },);
+  searchVersion(){
+    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    this.search_form.get('cano').setValue(version.cano);
+    this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
 
  functio () {
@@ -510,10 +520,11 @@ async getmetodologia(){
    onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    if (this.search_form.invalid) {
-      this.loading = false;
-      return;
-    }
+    // if (this.search_form.invalid) {
+    //   this.loading = false;
+    //   return;
+    // }
+    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     let params = {
         xnombre: form.xnombre,
         xapellido: form.xapellido,
@@ -521,7 +532,7 @@ async getmetodologia(){
         xcolor:this.search_form.get('xcolor').value,      
         cmarca: this.search_form.get('cmarca').value,
         cmodelo: this.search_form.get('cmodelo').value,
-        cversion: this.search_form.get('cversion').value,
+        cversion: version.id,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
         femision: form.femision,
@@ -532,7 +543,7 @@ async getmetodologia(){
         xplaca: form.xplaca,
         xtelefono_emp: form.xtelefono_emp,
         cplan:this.search_form.get('cplan').value,
-        ccorredor:  this.search_form.get('ccorredor').value,
+        ccorredor:  this.currentUser.data.ccorredor,
         xcedula: form.xrif_cliente,
         xcobertura: this.search_form.get('xcobertura').value,
         xtipo: this.search_form.get('xtipo').value,
