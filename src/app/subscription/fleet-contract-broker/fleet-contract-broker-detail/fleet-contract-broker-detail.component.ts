@@ -58,7 +58,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
                   xnombre: ['', Validators.required],
                   xapellido: ['', Validators.required],
                   cano: ['', Validators.required],
-                  xcolor: ['', Validators.required],
+                  ccolor: ['', Validators.required],
                   cmarca: ['', Validators.required],
                   cmodelo: ['', Validators.required],
                   cversion: [''],
@@ -96,7 +96,8 @@ export class FleetContractBrokerDetailComponent implements OnInit {
                   icedula:['', Validators.required],
                   femision:['', Validators.required],
                   ivigencia:[''],
-                  xcorredor: ['']
+                  xcorredor: [''],
+                  ncobro:['']
                 });
                 // initUbii(
                 //   'ubiiboton',
@@ -448,6 +449,21 @@ async getmetodologia(){
   }else{
     this.plan = false;}
  }
+
+ calculatetotal(){
+   let params = {
+    cplan: this.search_form.get('cplan').value,
+    ivigencia: this.search_form.get('ivigencia').value
+  }
+
+     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('ncobro').setValue(response.data.mprima);
+        this.search_form.get('ncobro').disable();
+      }
+      },);
+ }
+
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
       this.cobertura = false;
@@ -455,6 +471,7 @@ async getmetodologia(){
       this.cobertura = true;
     }
   }
+
   years(){
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -479,24 +496,7 @@ async getmetodologia(){
   }
  
  }
-  frecuencias(){
 
-    if(this.search_form.get('cmetodologiapago').value == 2){
-    this.search_form.get('ncuotas').setValue(4);}
-  
-    if(this.search_form.get('cmetodologiapago').value == 1){
-    this.search_form.get('ncuotas').setValue(12);}
-      
-    if(this.search_form.get('cmetodologiapago').value == 4)
-    this.search_form.get('ncuotas').setValue(2);
-      
-    if(this.search_form.get('cmetodologiapago').value == 3){
-    this.search_form.get('ncuotas').setValue(1);}
-      
-    if(this.search_form.get('cmetodologiapago').value == 5){
-    this.search_form.get('ncuotas').setValue(1);}
-
-  }
   Validation(){
     let params =  {
       xdocidentidad: this.search_form.get('xrif_cliente').value,
@@ -512,6 +512,8 @@ async getmetodologia(){
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+        this.search_form.get('cestado').setValue(response.data.cestado);
+        this.search_form.get('cciudad').setValue(response.data.cciudad);
 
       } 
     },);
@@ -529,7 +531,7 @@ async getmetodologia(){
         xnombre: form.xnombre,
         xapellido: form.xapellido,
         cano:form.cano,
-        xcolor:this.search_form.get('xcolor').value,      
+        ccolor:this.search_form.get('ccolor').value,      
         cmarca: this.search_form.get('cmarca').value,
         cmodelo: this.search_form.get('cmodelo').value,
         cversion: version.id,
@@ -568,6 +570,7 @@ async getmetodologia(){
         pblindaje: form.pblindaje,
         icedula: this.search_form.get('icedula').value,
         ivigencia: this.search_form.get('ivigencia').value,
+        ncobro: form.ncobro,
         accessory:{
           create: this.accessoryList
         }
