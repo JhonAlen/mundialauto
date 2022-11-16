@@ -195,11 +195,11 @@
                     <div class="col-md-3 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label required" for="form3Examplev3">Color</label>
-                        <select formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors } ">
-                          <option *ngFor="let color of colorList" value="{{ color.value }}">{{ color.value }}</option>
+                        <select formControlName="ccolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccolor').errors } ">
+                          <option *ngFor="let color of colorList" value="{{ color.id }}">{{ color.value }}</option>
                         </select>
-                        <div *ngIf="submitted && search_form.get('xcolor').errors" class="invalid-feedback">
-                          <div *ngIf="search_form.get('xcolor').errors.required">Se requiere completar el campo</div>
+                        <div *ngIf="submitted && search_form.get('ccolor').errors" class="invalid-feedback">
+                          <div *ngIf="search_form.get('ccolor').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -427,7 +427,7 @@
                   <div class="col-md-3 mb-4 pb-2" *ngIf="plan">
                     <div class="form-outline">
                       <label class="form-label " for="form3Examplev5">Vigencia</label>
-                      <select formControlName="ivigencia" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ivigencia').errors }" >
+                      <select formControlName="ivigencia" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ivigencia').errors }" (change)="calculatetotal()">
                         <option value="1">Anual</option>
                         <option value="2">3 Días</option>
                         <option value="3">5 Días</option>
@@ -449,16 +449,16 @@
                       </div>
                     </div>
                   </div>
-                <!--  <div class="col-md-2 mb-4 pb-2">
+                <div class="col-md-2 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev4">Fecha desde (Poliza)</label>
-                      <input type="date" formControlName="fdesde_pol" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fdesde_pol').errors }" />
-                      <div *ngIf="submitted && search_form.get('fdesde_pol').errors" class="invalid-feedback">
-                        <div *ngIf="search_form.get('fdesde_pol').errors.required">Se requiere completar el campo</div>
+                      <label class="form-label disable" for="form3Examplev4">Monto de Cobro</label>
+                      <input type="number" formControlName="ncobro" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
+                      <div *ngIf="submitted && search_form.get('ncobro').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('ncobro').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                              <!--    <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Fecha hasta (Poliza)</label>
                       <input type="date" formControlName="fhasta_pol" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fhasta_pol').errors }" />
