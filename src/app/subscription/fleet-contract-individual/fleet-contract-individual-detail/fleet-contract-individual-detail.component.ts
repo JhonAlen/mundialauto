@@ -568,6 +568,8 @@ async getmetodologia(){
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+        this.search_form.get('cestado').setValue(response.data.cestado);
+        this.search_form.get('cciudad').setValue(response.data.cciudad);
 
       } 
     },);
