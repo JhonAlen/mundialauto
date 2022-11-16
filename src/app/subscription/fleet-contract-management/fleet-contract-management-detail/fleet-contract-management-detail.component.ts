@@ -1784,9 +1784,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [30, 80, 30, 80, 30, 45, 30, 30, 35, '*'],
+            widths: [30, 100, 30, 100, 35, '*'],
             body: [
-              [{text: 'MARCA:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('xmarca').value, border: [false, false, false, true]}, {text: 'MODELO:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xmodelo').value, border: [false, false, false, true]}, {text: 'TIPO:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xtipovehiculo').value, border: [false, false, false, true]}, {text: 'AÑO:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('fano').value, border: [false, false, false, true]}, {text: 'COLOR:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xcolor').value, border: [false, false, true, true]}]
+              [{text: 'MARCA:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('xmarca').value, border: [false, false, false, true]}, {text: 'MODELO:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xmodelo').value, border: [false, false, false, true]}, {text: 'VERSIÓN:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xversion').value, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1804,7 +1804,16 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xuso').value, border: [false, false, false, false]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xserialcarroceria').value, border: [false, false, false, false]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xserialmotor').value, border: [false, false, false, false]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, true, false]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('xuso').value, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialcarroceria').value, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialmotor').value, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [20, 45, 30, 50, 50, 140, '*'],
+            body: [
+              [{text: 'TIPO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xtipovehiculo').value, border: [false, false, false, false]}, {text: 'AÑO:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('fano').value, border: [false, false, false, false]}, {text: 'COLOR:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xcolor').value, border: [false, false, false, false]}, {text: ' ', border: [false, false, true, false]}]
             ]
           }
         },
