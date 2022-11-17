@@ -230,7 +230,6 @@ async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
     this.getColor();
-    this.getCobertura();
     this.getmetodologia();
     this.getState()
 
@@ -372,7 +371,7 @@ async getPlanData(){
           value: response.data.list[i].xplan,
         });
       }
-      this.planList.sort((a, b) => a.value > b.value ? 1 : -1)
+       this.planList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
     },);
   }
@@ -396,25 +395,7 @@ async getColor(){
       }
       },);
   }
-async getCobertura(){
-    let params =  {
-      cpais: this.currentUser.data.cpais,  
-      ccompania: this.currentUser.data.ccompania,
 
-    };
-    this.http.post(`${environment.apiUrl}/api/valrep/coverage`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.coberturaList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.coberturaList.push({ 
-            id: response.data.list[i].ccobertura,
-            value: response.data.list[i].xcobertura,
-          });
-        }
-        this.coberturaList.sort((a, b) => a.value > b.value ? 1 : -1)
-      }
-      },);
-  }
 async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
