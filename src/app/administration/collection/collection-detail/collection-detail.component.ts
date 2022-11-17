@@ -261,8 +261,47 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   callbackFn(answer) {
-    if (answer.error) {
-      console.log('a');
+    console.log(answer);
+    if(answer.data.R == 0){
+      console.log('entro');
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let ctipopago;
+      if(answer.data.method == "ZELLE"){
+        ctipopago = 4;
+      }
+      if(answer.data.method == "P2C") {
+        ctipopago = 3;
+      }
+      let paymentData = {
+        crecibo: answer.data.orderID,
+        ctipopago: ctipopago,
+        xreferencia: answer.data.ref,
+        fcobro: answer.data.date,
+        mprima_pagada: answer.data.m
+      }
+      let params = {
+        paymentData: paymentData
+      }
+      this.http.post(`${environment.apiUrl}/api/administration-collection/ubii/update`, params, options).subscribe((response: any) => {
+        if (response.data.status) {
+          console.log('200');
+        }
+      },
+      (err) => {
+        let code = 1;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.RECEIPTNOTFOUND"; }
+        //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+        this.loading = false;
+      });
+    }
+    if (answer.data.R == 1) {
+      window.alert(`No se pudo procesar el pago ${answer.data.codS}, intente nuevamente`)
       console.log(answer.data);
     }
     console.log(answer);
