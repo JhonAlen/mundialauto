@@ -261,11 +261,7 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   callbackFn(answer) {
-    console.log(answer);
-    if(answer.data.R == 0){
-      console.log('entro');
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
+    if(answer.data.R == 1){
       let ctipopago;
       if(answer.data.method == "ZELLE"){
         ctipopago = 4;
@@ -280,28 +276,32 @@ export class CollectionDetailComponent implements OnInit {
         fcobro: answer.data.date,
         mprima_pagada: answer.data.m
       }
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
       let params = {
         paymentData: paymentData
       }
-      this.http.post(`${environment.apiUrl}/api/administration-collection/ubii/update`, params, options).subscribe((response: any) => {
+      let url = `${environment.apiUrl}/api/administration-collection/ubii/update`;
+      this.http.post(url, params, options).subscribe((response: any) => {
         if (response.data.status) {
           console.log('200');
         }
       },
       (err) => {
-        let code = 1;
+        let code = err.error.data.code;
         let message;
         if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.RECEIPTNOTFOUND"; }
-        //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        else if(code == 401){
+          let condition = err.error.data.condition;
+          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
         this.alert.message = message;
         this.alert.type = 'danger';
         this.alert.show = true;
-        this.loading = false;
       });
     }
-    if (answer.data.R == 1) {
-      window.alert(`No se pudo procesar el pago ${answer.data.codS}, intente nuevamente`)
+    if (answer.data.R == 0) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
       console.log(answer.data);
     }
     console.log(answer);
