@@ -188,8 +188,9 @@ import { PaymentRecordDetailComponent } from './administration/payment-record/pa
 import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
-import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component'
-
+import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
+import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
+import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
 
 const routes: Routes = [
  
@@ -466,6 +467,9 @@ const routes: Routes = [
   { path: 'tables/brand-model-version-index', component: BrandModelVersionIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/brand-model-version-detail', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/brand-model-version-detail/:id', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/exchange-rate-index', component: ExchangeRateIndexComponent, canActivate: [AuthGuard] },
+  { path: 'administration/exchange-rate-detail', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/exchange-rate-detail/:id', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({

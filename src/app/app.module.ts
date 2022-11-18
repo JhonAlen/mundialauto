@@ -303,6 +303,8 @@ import { UserBrokersComponent } from './pop-up/user-brokers/user-brokers.compone
 import { BillLoadingServiceOrderComponent } from './pop-up/bill-loading-service-order/bill-loading-service-order.component';
 import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
 import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
+import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
+import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -589,7 +591,9 @@ export function HttpLoaderFactory(http: HttpClient){
     UserBrokersComponent,
     BillLoadingServiceOrderComponent,
     BrandModelVersionIndexComponent,
-    BrandModelVersionDetailComponent
+    BrandModelVersionDetailComponent,
+    ExchangeRateIndexComponent,
+    ExchangeRateDetailComponent
   ],
   imports: [
     BrowserModule,
