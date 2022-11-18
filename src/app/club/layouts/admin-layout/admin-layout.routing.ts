@@ -5,6 +5,6 @@ import { FleetContractBrokerDetailComponent } from '@app/subscription/fleet-cont
 export const AdminLayoutRoutes: Routes = [
    
     { path: 'subscription/fleet-contract-broker-detail',  component: FleetContractBrokerDetailComponent },
-    { path: 'administration/collection-index', component: CollectionIndexComponent},
+    //{ path: 'administration/collection-index', component: CollectionIndexComponent},
 
 ];
