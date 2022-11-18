@@ -10,6 +10,8 @@ import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
+import { DateSelectionModelChange } from '@angular/material/datepicker';
+import { borderTopRightRadius } from 'html2canvas/dist/types/css/property-descriptors/border-radius';
 
 @Component({
   selector: 'app-collection-detail',
@@ -33,13 +35,18 @@ export class CollectionDetailComponent implements OnInit {
   loading: boolean = false;
   loading_cancel: boolean = false;
   submitted: boolean = false;
+  pagoUbii: boolean = false;
   alert = { show: false, type: "", message: "" };
   paymentList: any[] = [];
   closeResult = '';
+  ctipopago: number;
+  xreferencia: string;
+  mprima_pagada: number;
+  fcobro: Date;
 
   constructor(private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
-              private http: HttpClient,
+              public http: HttpClient,
               private router: Router,
               private translate: TranslateService,
               private activatedRoute: ActivatedRoute,
@@ -213,7 +220,7 @@ export class CollectionDetailComponent implements OnInit {
           },
           this.callbackFn,
           {
-            text: 'Pagar con Ubii Pagos'
+            text: 'Pagar con Ubii Pagos '
           }
         );
       }
@@ -262,19 +269,40 @@ export class CollectionDetailComponent implements OnInit {
 
   callbackFn(answer) {
     if(answer.data.R == 1){
-      let ctipopago;
       if(answer.data.method == "ZELLE"){
-        ctipopago = 4;
+        this.ctipopago = 4;
       }
       if(answer.data.method == "P2C") {
-        ctipopago = 3;
+        this.ctipopago = 3;
       }
+      this.xreferencia = answer.data.ref,
+      this.fcobro = answer.data.date,
+      this.mprima_pagada = answer.data.m
+      this.pagoUbii = true;
+      this.showSaveButton = true
+      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`)
+    }
+    if (answer.data.R == 0) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
+      console.log(answer.data);
+    }
+    console.log(answer);
+  }
+
+  onSubmit(form){
+    this.submitted = true;
+    this.loading = true;
+    if(this.detail_form.invalid){
+      this.loading = false;
+      return;
+    }
+    if(this.pagoUbii) {
       let paymentData = {
-        crecibo: answer.data.orderID,
-        ctipopago: ctipopago,
-        xreferencia: answer.data.ref,
-        fcobro: answer.data.date,
-        mprima_pagada: answer.data.m
+        crecibo: this.code,
+        ctipopago: this.ctipopago,
+        xreferencia: this.xreferencia,
+        fcobro: this.fcobro,
+        mprima_pagada: this.mprima_pagada
       }
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -300,65 +328,53 @@ export class CollectionDetailComponent implements OnInit {
         this.alert.show = true;
       });
     }
-    if (answer.data.R == 0) {
-      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
-      console.log(answer.data);
-    }
-    console.log(answer);
-  }
+    else {
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params;
+      let url;
+      let dateFormat = new Date(form.fcreacion).toUTCString();
+      let fajusteDateFormat = new Date(form.fajuste).toUTCString();
 
-  onSubmit(form){
-    this.submitted = true;
-    this.loading = true;
-    if(this.detail_form.invalid){
-      this.loading = false;
-      return;
-    }
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params;
-    let url;
-    let dateFormat = new Date(form.fcreacion).toUTCString();
-    let fajusteDateFormat = new Date(form.fajuste).toUTCString();
-
-    if(this.code){
-      params = {
-        ccompania: this.currentUser.data.ccompania,
-        cpais: this.currentUser.data.cpais,
-        crecibo: this.code,
-        pago: this.paymentList
-      };
-      url = `${environment.apiUrl}/api/administration-collection/update`;
-    } 
-    this.http.post(url, params, options).subscribe((response: any) => {
-      if(response.data.status){
-        if(this.code){
-          //this.returnIndex();
-          this.router.navigate([`/administration/collection-index`]);
+      if(this.code){
+        params = {
+          ccompania: this.currentUser.data.ccompania,
+          cpais: this.currentUser.data.cpais,
+          crecibo: this.code,
+          pago: this.paymentList
+        };
+        url = `${environment.apiUrl}/api/administration-collection/update`;
+      } 
+      this.http.post(url, params, options).subscribe((response: any) => {
+        if(response.data.status){
+          if(this.code){
+            //this.returnIndex();
+            this.router.navigate([`/administration/collection-index`]);
+          }else{
+            this.router.navigate([`/administration/collection-detail/${response.data.crecibo}`]);
+          }
         }else{
-          this.router.navigate([`/administration/collection-detail/${response.data.crecibo}`]);
+          let condition = response.data.condition;
+          if(condition == "service-order-already-exist"){
+            this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
+            this.alert.type = 'danger';
+            this.alert.show = true;
+          }
         }
-      }else{
-        let condition = response.data.condition;
-        if(condition == "service-order-already-exist"){
-          this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
-          this.alert.type = 'danger';
-          this.alert.show = true;
-        }
-      }
-      this.loading = false;
-    },
-    (err) => {
-      let code = 1;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
-      //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-      this.loading = false;
-    });
+        this.loading = false;
+      },
+      (err) => {
+        let code = 1;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
+        //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+        this.loading = false;
+      });
+    }
   }
  
 /*  open() {
