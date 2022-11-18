@@ -1,4 +1,4 @@
-<app-toolbar></app-toolbar>
+
 <div class="container">
   <div class="row mt-5" *ngIf="alert.show">
       <div class="col-sm-12 col-md-6 mx-auto">
@@ -166,8 +166,8 @@
                     <div class="col-md-4 mb-4 pb-2">
                       <div class="form-outline form-white">
                         <label class="form-label " for="form3Examplea7">Versión</label>
-                        <select formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }"  (change)="search()">
-                          <option *ngFor="let version of versionList" value="{{ version.id }}">{{ version.value }}</option>
+                        <select formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }"  (change)="searchVersion()">
+                          <option *ngFor="let version of versionList" value="{{ version.control }}">{{ version.value }}</option>
                         </select>
                         <div *ngIf="submitted && search_form.get('cversion').errors" class="invalid-feedback">
                           <div *ngIf="search_form.get('cversion').errors.required">Se requiere completar el campo</div>
@@ -278,14 +278,12 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 mb-4 pb-2 mb-md-0 pb-md-0">
+                  <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev5">Corredor</label>
-                      <select formControlName="ccorredor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccorredor').errors } ">
-                        <option *ngFor="let corredor of corredorList" value="{{ corredor.id }}">{{ corredor.value }}</option>
-                      </select>
-                      <div *ngIf="submitted && search_form.get('ccorredor').errors" class="invalid-feedback">
-                        <div *ngIf="search_form.get('ccorredor').errors.required">Se requiere completar el campo</div>
+                      <label class="form-label required" for="form3Examplev2">Corredor</label>
+                      <input type="text" formControlName="xcorredor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcorredor').errors }"/>
+                      <div *ngIf="submitted && search_form.get('xcorredor').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('xcorredor').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>

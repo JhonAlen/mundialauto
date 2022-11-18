@@ -79,6 +79,7 @@ export class BrandModelVersionIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.brandList.push({ id: response.data.list[i].cmarca, value: response.data.list[i].xmarca });
         }
+        this.brandList.sort((a, b) => a.value > b.value ? 1 : -1);
       }
       this.loading = false;
     },(err) => {
@@ -101,6 +102,7 @@ export class BrandModelVersionIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.modelList.push({ id: response.data.list[i].cmodelo, value: response.data.list[i].xmodelo });
         }
+        this.modelList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       this.loading = false;
     },(err) => {
@@ -123,6 +125,7 @@ export class BrandModelVersionIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.versionList.push({ id: response.data.list[i].cversion, value: response.data.list[i].xversion });
         }
+        this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       this.loading = false;
     },(err) => {
@@ -165,11 +168,11 @@ export class BrandModelVersionIndexComponent implements OnInit {
             cano: response.data.list[i].cano,
           });
         }
+        this.vehicleList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       this.loading = false;
     },(err) => {
       let code = err.error.data.code;
-      console.log(err.error.data.code)
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
       else if(code == 404){ message = "No se encontraron contratos pendientes"; }

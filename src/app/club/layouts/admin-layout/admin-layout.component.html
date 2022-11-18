@@ -11,32 +11,31 @@
       <mat-sidenav-container>
         <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
           <img class="logo logocompany" >
-      
           <mat-divider></mat-divider>
       
-           <!-- <button mat-button class="menu-button" routerLink="/dashboard">
-            <mat-icon>home</mat-icon>
-            <span>Inicio</span>
+            <button mat-button class="menu-button" routerLink="/subscription/fleet-contract-broker-detail">
+            <mat-icon>assignment</mat-icon>
+            <span style="color: white;">Emitir Polizas</span>
           </button>
-          <button mat-button class="menu-button" routerLink="/vehicle">
-            <mat-icon>time_to_leave</mat-icon>
-            <span>Vehiculos</span>
+          <button mat-button class="menu-button" routerLink="/administration/collection-index">
+            <mat-icon>credit_card</mat-icon>
+            <span style="color: white;">Gestión de Cobro</span>
           </button>
-          <button mat-button class="menu-button" routerLink="/notifications">
+         <!-- <button mat-button class="menu-button" routerLink="/notifications">
             <mat-icon>notification_important</mat-icon>
             <span>Notificaciones</span>
           </button>  -->
-          <button *ngIf="auth" mat-button class="menu-button"  (click)="logOut()" routerLink="/inicio">
-            <mat-icon>exit_to_app</mat-icon>
-            <span>Salir</span>
+          <button mat-button class="menu-button" (click)="logOut()" >
+            <mat-icon style="color: white;">exit_to_app</mat-icon>
+            <span style="color: white;">Salir</span>
           </button>
 
         </mat-sidenav>
-        <mat-sidenav-content>
+         <mat-sidenav-content>
           <div class="content mat-elevation-z8">
             <app-fleet-contract-broker-detail></app-fleet-contract-broker-detail>
           </div>
-        </mat-sidenav-content>
+        </mat-sidenav-content> 
       </mat-sidenav-container> 
 </body>
 

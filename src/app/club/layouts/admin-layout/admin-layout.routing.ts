@@ -1,14 +1,10 @@
 import { Routes } from '@angular/router';
-
-import { DashboardComponent } from '../../dashboard/dashboard.component';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
-import { VehicleComponent }  from '../../vehicle/vehicle.component'
-import { NotificationsComponent } from '../../notifications/notifications.component';
+import { CollectionIndexComponent } from '@app/administration/collection/collection-index/collection-index.component';
+import { FleetContractBrokerDetailComponent } from '@app/subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component'
 
 export const AdminLayoutRoutes: Routes = [
    
-    { path: 'dashboard',      component: DashboardComponent },
-    { path: 'user-profile',   component: UserProfileComponent },
-    { path: 'vehicle',     component: VehicleComponent },
-    { path: 'notifications',  component: NotificationsComponent },
+    { path: 'subscription/fleet-contract-broker-detail',  component: FleetContractBrokerDetailComponent },
+    { path: 'administration/collection-index', component: CollectionIndexComponent},
+
 ];

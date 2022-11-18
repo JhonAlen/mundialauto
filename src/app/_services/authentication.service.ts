@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
+import { Router} from '@angular/router';
 import { environment } from '@environments/environment';
 import { Envuser } from '@app/_models/envuser.model';
 
@@ -14,7 +14,9 @@ export class AuthenticationService {
   private currentUserSubject : BehaviorSubject<Envuser>;
   public currentUser : Observable<Envuser>;
 
-  constructor(private http : HttpClient) {
+
+  constructor(private http : HttpClient
+              ,private router : Router) {
     this.currentUserSubject = new BehaviorSubject<Envuser>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
@@ -38,10 +40,6 @@ export class AuthenticationService {
         this.currentUserSubject.next(user);
         
       }
-      else if(user.data.cusuario == 121){
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-      }
       return user;
     }));
   }
@@ -49,6 +47,6 @@ export class AuthenticationService {
   logout(){
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
-    location.reload();
+    this.router.navigate(['/inicio'])
   }
 }

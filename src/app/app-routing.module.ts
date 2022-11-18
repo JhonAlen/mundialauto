@@ -200,7 +200,7 @@ const routes: Routes = [
   { path: 'planes', component: PlanesComponent},
   { path: 'service', component: ServicesComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'dasboard', component: DashboardComponent},
+  { path: 'dasboard', component: DashboardComponent },
   { path: 'sign-in', component: SignInComponent },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },

@@ -252,6 +252,7 @@ async initializeDropdownDataRequest(){
             id: request.data.list[i].cmarca, 
             value: request.data.list[i].xmarca });
         }
+        this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
   }
 async getState(){
@@ -267,6 +268,7 @@ async getState(){
             value: response.data.list[i].xestado,
           });
         }
+        this.StateList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   } 
@@ -283,6 +285,7 @@ async getCity(){
             id: response.data.list[i].cciudad,
             value: response.data.list[i].xciudad,
           });
+          this.CityList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
       }
       },);
@@ -307,6 +310,7 @@ async getModeloData(){
            id: request.data.list[i].cmodelo, 
            value: request.data.list[i].xmodelo });
       }
+      this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
 async getVersionData(){
@@ -328,6 +332,7 @@ async getVersionData(){
             npasajero: response.data.list[i].npasajero
           });
         }
+        this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }
@@ -343,9 +348,9 @@ async getCorredorData() {
           this.corredorList.push({ 
             id: response.data.list[i].ccorredor,
             value: response.data.list[i].xcorredor,
-
           });
         }
+        this.corredorList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
     }, );
   
@@ -367,6 +372,7 @@ async getPlanData(){
           value: response.data.list[i].xplan,
         });
       }
+      this.planList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
     },);
   }
@@ -386,6 +392,7 @@ async getColor(){
             value: response.data.list[i].xcolor,
           });
         }
+        this.colorList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }
@@ -404,6 +411,7 @@ async getCobertura(){
             value: response.data.list[i].xcobertura,
           });
         }
+        this.coberturaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }
@@ -421,6 +429,7 @@ async getmetodologia(){
             value: response.data.list[i].xmetodologiapago,
           });
         }
+        this.metodologiaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
   }  
@@ -568,6 +577,8 @@ async getmetodologia(){
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+        this.search_form.get('cestado').setValue(response.data.cestado);
+        this.search_form.get('cciudad').setValue(response.data.cciudad);
 
       } 
     },);
@@ -586,6 +597,7 @@ async getmetodologia(){
       this.loading = false;
       return;
     }
+    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     let params = {
         xnombre: form.xnombre,
         xapellido: form.xapellido,
@@ -593,7 +605,7 @@ async getmetodologia(){
         xcolor:this.search_form.get('xcolor').value,      
         cmarca: this.search_form.get('cmarca').value,
         cmodelo: this.search_form.get('cmodelo').value,
-        cversion: this.search_form.get('cversion').value,
+        cversion: version.id,
         xrif_cliente: form.xrif_cliente,
         email: form.email,
         femision: form.femision,
