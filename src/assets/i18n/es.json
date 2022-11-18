@@ -2227,6 +2227,9 @@
         },
         "BILL-LOADING": {
             "BILL-LOADING": "Registro de Facturas"
+        },
+        "EXCHANGE-RATE": {
+            "EXCHANGE-RATE": "Tasas de Cambio"
         }
     },
     "REPORTS": {
