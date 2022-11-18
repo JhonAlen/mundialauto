@@ -261,8 +261,47 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   callbackFn(answer) {
-    if (answer.error) {
-      console.log('a');
+    if(answer.data.R == 1){
+      let ctipopago;
+      if(answer.data.method == "ZELLE"){
+        ctipopago = 4;
+      }
+      if(answer.data.method == "P2C") {
+        ctipopago = 3;
+      }
+      let paymentData = {
+        crecibo: answer.data.orderID,
+        ctipopago: ctipopago,
+        xreferencia: answer.data.ref,
+        fcobro: answer.data.date,
+        mprima_pagada: answer.data.m
+      }
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        paymentData: paymentData
+      }
+      let url = `${environment.apiUrl}/api/administration-collection/ubii/update`;
+      this.http.post(url, params, options).subscribe((response: any) => {
+        if (response.data.status) {
+          console.log('200');
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 401){
+          let condition = err.error.data.condition;
+          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
+    if (answer.data.R == 0) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
       console.log(answer.data);
     }
     console.log(answer);
