@@ -14,7 +14,7 @@
                             Ingrese Tasa de Cambio
                         </div>
                         <div class="col-6">
-                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "ADMINISTRATION.COLLECTION.SAVE" | translate }}
                             </button>

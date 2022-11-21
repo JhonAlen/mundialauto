@@ -39,6 +39,7 @@ export class ExchangeRateDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
+      ctasa: [''],
       mtasa_cambio: [''],
       fingreso: ['']
     })
@@ -54,6 +55,7 @@ export class ExchangeRateDetailComponent implements OnInit {
         if(response.data.status){
           this.canCreate = response.data.bcrear;
           this.canDetail = response.data.bdetalle;
+          this.initializeDetailModule();
         }
       },
       (err) => {
@@ -68,6 +70,56 @@ export class ExchangeRateDetailComponent implements OnInit {
         this.alert.type = 'danger';
         this.alert.show = true;
       });
+    }
+  }
+
+  initializeDetailModule(){
+    this.sub = this.activatedRoute.paramMap.subscribe(params => {
+      this.code = params.get('id');
+      if(this.code){
+        if(!this.canDetail){
+          this.router.navigate([`/permission-error`]);
+          return;
+        }
+        this.detailExchangeRate();
+      }else{
+        if(!this.canCreate){
+          this.router.navigate([`/permission-error`]);
+          return;
+        }
+      }
+    });
+  }
+
+  detailExchangeRate(){
+    if(this.code){
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cpais: this.currentUser.data.cpais,
+        ccompania: this.currentUser.data.ccompania,
+        ctasa: this.code
+      };
+      this.http.post(`${environment.apiUrl}/api/administration/detail-exchange-rate`, params, options).subscribe((response: any) => {
+        if(response.data.status){
+          this.detail_form.get('ctasa').setValue(response.data.ctasa);
+          this.detail_form.get('mtasa_cambio').setValue(response.data.mtasa_cambio);
+          this.detail_form.get('mtasa_cambio').disable();
+          this.detail_form.get('fingreso').setValue(new Date(response.data.fingreso).toISOString().substring(0, 10));
+          this.detail_form.get('fingreso').disable();
+        }
+        this.showSaveButton = false;
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      })
     }
   }
 
