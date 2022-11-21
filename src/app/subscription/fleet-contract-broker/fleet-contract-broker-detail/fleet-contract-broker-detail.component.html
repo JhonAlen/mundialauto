@@ -23,7 +23,7 @@
                   <div class="row">
                     <div class="col-md-2 mb-4 pb-2">
                       <div class="form-outline">
-                        <label class="form-label required" for="form3Examplev2"></label>
+                        <label class="form-label required" for="form3Examplev2">Tipo Doc.</label>
                         <select formControlName="icedula" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('icedula').errors } " >
                           <option value="V">V</option>
                           <option value="P">P</option>
@@ -456,39 +456,15 @@
                       </div>
                     </div>
                   </div>
-                              <!--    <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
-                    <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev5">Fecha hasta (Poliza)</label>
-                      <input type="date" formControlName="fhasta_pol" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fhasta_pol').errors }" />
-                      <div *ngIf="submitted && search_form.get('fhasta_pol').errors" class="invalid-feedback">
-                        <div *ngIf="search_form.get('fhasta_pol').errors.required">Se requiere completar el campo</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2 mb-4 pb-2">
-                    <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev4">Fecha desde (Recibo)</label>
-                      <input type="date" formControlName="fdesde_rec" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fdesde_rec').errors }" />
-                      <div *ngIf="submitted && search_form.get('fdesde_rec').errors" class="invalid-feedback">
-                        <div *ngIf="search_form.get('fdesde_rec').errors.required">Se requiere completar el campo</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
-                    <div class="form-outline">
-                      <label class="form-label required" for="form3Examplev5">Fecha hasta (Recibo)</label>
-                      <input type="date" formControlName="fhasta_rec" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fhasta_rec').errors }"/>                       
-                      <div *ngIf="submitted && search_form.get('fhasta_rec').errors"  class="invalid-feedback">
-                        <div *ngIf="search_form.get('fhasta_rec').errors.required">Se requiere completar el campo</div>
-                      </div>
-                    </div>
-                  </div> -->
+ 
                   <div class="button">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
                   </div>
-                  <!-- <div class="button">
-                    <button id="ubiiboton"></button>
-                  </div>   -->
+                  <div class="col-sm-12 mt-2">
+                    <div style="width: 220px;height: 48px;margin-top: 10px;margin-left: 100px;" class="button">
+                        <button id="ubiiboton"></button>
+                    </div> 
+                </div>
                 </div> 
               </div>
               </div>

@@ -584,8 +584,9 @@ async getmetodologia(){
     },);
   }
 
-  getPaymentMethodology(value: any) {
-    return "Anual";
+  getPaymentMethodology(cmetodologiapago) {
+    let xmetodologiapago = this.metodologiaList.find(element => element.id === parseInt(cmetodologiapago));
+    return xmetodologiapago.value
   }
 
   async onSubmit(form){
