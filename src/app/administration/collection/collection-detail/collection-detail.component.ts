@@ -274,14 +274,18 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   async callbackFn(answer) {
-    let ctipopago;
-    if(answer.data.method == "ZELLE"){
-      ctipopago = 4;
-    }
-    if(answer.data.method == "P2C") {
-      ctipopago = 3;
-    }
     if(answer.data.R == 0){
+      let ctipopago;
+      if(answer.data.method == "ZELLE"){
+        ctipopago = 4;
+      }
+      if(answer.data.method == "P2C") {
+        ctipopago = 3;
+      }
+      let datetimeformat = answer.data.date.split(' ');
+      let dateformat = datetimeformat[0].split('/');
+      let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
+      console.log(fcobro)
       await window.alert(`Se ha procesado exitosamente el pago de la póliza`);
       const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
         "method": "POST",
@@ -296,7 +300,7 @@ export class CollectionDetailComponent implements OnInit {
             crecibo: answer.data.orderID,
             ctipopago: ctipopago,
             xreferencia: answer.data.ref,
-            fcobro: answer.data.date,
+            fcobro: fcobro,
             mprima_pagada: answer.data.m
           }
         })
