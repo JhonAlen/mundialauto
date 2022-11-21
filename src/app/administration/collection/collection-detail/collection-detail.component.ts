@@ -134,6 +134,12 @@ export class CollectionDetailComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
 
+        /*if (response.data.xestatusgeneral == "PENDIENTE") {
+          this.verifyReceipt();
+        } else {
+          this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
+          this.detail_form.get('xestatusgeneral').disable();
+        }*/
 
         if(response.data.ccliente){
           this.detail_form.get('ccliente').setValue(response.data.ccliente);
@@ -267,26 +273,82 @@ export class CollectionDetailComponent implements OnInit {
     this.paymentGridApi = event.api;
   }
 
-  callbackFn(answer) {
-    if(answer.data.R == 1){
-      if(answer.data.method == "ZELLE"){
-        this.ctipopago = 4;
-      }
-      if(answer.data.method == "P2C") {
-        this.ctipopago = 3;
-      }
-      this.xreferencia = answer.data.ref,
-      this.fcobro = answer.data.date,
-      this.mprima_pagada = answer.data.m
-      this.pagoUbii = true;
-      this.showSaveButton = true
-      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`)
+  async callbackFn(answer) {
+    let ctipopago;
+    if(answer.data.method == "ZELLE"){
+      ctipopago = 4;
     }
-    if (answer.data.R == 0) {
-      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
-      console.log(answer.data);
+    if(answer.data.method == "P2C") {
+      ctipopago = 3;
     }
-    console.log(answer);
+    if(answer.data.R == 0){
+      await window.alert(`Se ha procesado exitosamente el pago de la póliza`);
+      const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
+        "method": "POST",
+        "headers": {
+          "CONTENT-TYPE": "Application/json",
+          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
+          "X-CLIENT-CHANNEL": "BTN-API",
+          "Authorization": "SKDJK23J4KJ2352304923059"
+        },
+        "body": JSON.stringify({
+          paymentData: {
+            crecibo: answer.data.orderID,
+            ctipopago: ctipopago,
+            xreferencia: answer.data.ref,
+            fcobro: answer.data.date,
+            mprima_pagada: answer.data.m
+          }
+        })
+
+      });
+      location.reload();
+    }
+
+    if (answer.data.R == 1) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`);
+    }
+  }
+
+  async verifyReceipt() {
+    const response = await fetch(`https://botonc.ubiipagos.com/get_check_order?order=${this.code}`, {
+      "method": "GET",
+      "headers": {
+        "CONTENT-TYPE": "Application/json",
+        "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
+        "X-CLIENT-CHANNEL": "BTN-API"
+      }
+    });
+  
+    if (response.ok) {
+      const result = await response.json();
+      if (result.ref){
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        let paymentData = {
+          xreferencia: result.ref,
+          ftransaccion: result.date,
+          crecibo: this.code
+        }
+        let params = {
+          paymentData: paymentData
+        }
+        let url = `${environment.apiUrl}/api/administration-collection/ubii/update`;
+        this.http.post(url, params, options).subscribe((response: any) => {
+          console.log('a');
+        }, 
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        });
+      }
+      console.log(result);
+    }
   }
 
   onSubmit(form){
