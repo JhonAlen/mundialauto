@@ -53,10 +53,10 @@
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <ag-grid-angular style="width: 100%; height: 400px;text-align: center;" class="ag-theme-alpine" [rowData]="rateList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
+                        <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="rateList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
                             <ag-grid-column headerName="Código" field="ctasa" [width]="100" [sortable]="true" style="text-align: center;"></ag-grid-column>
-                            <ag-grid-column headerName="Monto de Tasa" field="mtasa_cambio" [width]="600" [sortable]="true" style="text-align: center;"></ag-grid-column>
-                            <ag-grid-column headerName="Fecha de Ingreso" field="fingreso" [width]="600" [sortable]="true" style="text-align: center;"></ag-grid-column>
+                            <ag-grid-column headerName="Monto de Tasa" field="mtasa_cambio" [width]="550" [sortable]="true" style="text-align: center;"></ag-grid-column>
+                            <ag-grid-column headerName="Fecha de Ingreso" field="fingreso" [width]="550" [sortable]="true" style="text-align: center;"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>

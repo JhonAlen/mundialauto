@@ -47,7 +47,7 @@ export class BillLoadingServiceOrderComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      corden: [''],
+      //corden: [''],
       xservicio: [''],
       xcliente: [''],
       xnombre: [''],
@@ -89,8 +89,8 @@ export class BillLoadingServiceOrderComponent implements OnInit {
       ccliente: this.orden.ccliente
     }
     this.http.post(`${environment.apiUrl}/api/administration/service-order`, params, options).subscribe((response: any) => {
-      this.serviceOrderList = [];
       if(response.data.list){
+        this.serviceOrderList = [];
         for(let i = 0; i < response.data.list.length; i++){
           let xservicio;
           if(response.data.list[i].xservicio){
@@ -98,14 +98,39 @@ export class BillLoadingServiceOrderComponent implements OnInit {
           }else{
             xservicio = response.data.list[i].xservicioadicional
           }
+          let mtotal;
+          if(response.data.list[i].mtotal){
+            mtotal = response.data.list[i].mtotal
+          }else{
+            mtotal = 0;
+          }
+          let mmontototal;
+          if(response.data.list[i].mmontototal){
+            mmontototal = response.data.list[i].mmontototal
+          }else{
+            mmontototal = 0;
+          }
           this.serviceOrderList.push({ 
             corden: response.data.list[i].corden, 
             xservicio: xservicio,
             xcliente: response.data.list[i].xcliente,
             xnombre: response.data.list[i].xnombre,
-            mtotal: response.data.list[i].mtotal,
-            mmontototal: response.data.list[i].mmontototal
+            mtotal: mtotal,
+            mmontototal: mmontototal
           });
+        }
+        if(this.serviceOrderList){
+          // Pasar valores a la lista
+          let arrayPerform = this.serviceOrderList;
+          arrayPerform = arrayPerform.filter((obj) => !obj.corden);
+          for(let i = 0; i < arrayPerform.length; i ++){
+            arrayPerform[i].cgrid = i;
+            //arrayPerform[i].corden;
+          }
+          arrayPerform = this.serviceOrderList;
+          this.acceptedServiceOrderList = arrayPerform;
+          console.log(this.acceptedServiceOrderList)
+          this.canSave = true;
         }
       }
     },
@@ -119,55 +144,38 @@ export class BillLoadingServiceOrderComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
-
-    // Pasar valores a la lista
-    let arrayPerform = this.serviceOrderList;
-    arrayPerform = arrayPerform.filter((obj) => !obj.corden);
-    for(let i = 0; i < arrayPerform.length; i ++){
-      arrayPerform[i].cgrid = i;
-      arrayPerform[i].corden;
-    }
-    
-      arrayPerform = this.serviceOrderList;
-      this.acceptedServiceOrderList = arrayPerform;
-      console.log(this.acceptedServiceOrderList)
-    this.canSave = true;
   }
 
   serviceOrderRowClicked(event: any){
     let eventObj = event.data;
-    console.log(eventObj.corden)
     this.serviceOrderList = this.serviceOrderList.filter((obj) => obj.corden != eventObj.corden)
-    console.log(this.serviceOrderList)
-    this.acceptedServiceOrderGridApi.setRowData(this.serviceOrderList);
-    console.log(this.acceptedServiceOrderGridApi)
+    this.serviceOrderGridApi.setRowData(this.serviceOrderList);
+    this.acceptedServiceOrderList = [];
     this.acceptedServiceOrderList.push(eventObj);
-    console.log(this.acceptedServiceOrderList.length)
+    //console.log(this.acceptedServiceOrderList.length)
     for(let i = 0; i < this.acceptedServiceOrderList.length; i++){
       this.acceptedServiceOrderList[i].cgrid = i;
+      this.acceptedServiceOrderList[i].corden;
+      this.acceptedServiceOrderList[i].xservicio; 
+      this.acceptedServiceOrderList[i].xcliente; 
+      this.acceptedServiceOrderList[i].xnombre; 
+      this.acceptedServiceOrderList[i].mtotal; 
+      this.acceptedServiceOrderList[i].mmontototal; 
     }
-    console.log(this.acceptedServiceOrderList)
     this.acceptedServiceOrderGridApi.setRowData(this.acceptedServiceOrderList);
     this.showEditButton = true;
     this.canEdit = true;
     this.canSave = true;
 }
 
-  acceptedReplacementRowClicked(event: any){
-    // let eventObj = event.data;
-    // eventObj.bpagar = false;
-    // this.acceptedServiceOrderList = this.acceptedServiceOrderList.filter((obj) => obj.crepuestocotizacion != eventObj.crepuestocotizacion)
-    // this.serviceOrderGridApi.setRowData(this.acceptedServiceOrderList);
-    // this.acceptedServiceOrderList.push(eventObj);
-    // for(let i = 0; i < this.acceptedServiceOrderList.length; i++){
-    //   this.acceptedServiceOrderList[i].cgrid = i;
-    //   this.acceptedServiceOrderList[i].baceptacion = false;
-    // }
-    // this.acceptedServiceOrderGridApi.setRowData(this.acceptedServiceOrderList);
-    // this.canCreate = false;
-    // this.canEdit = false;
-    // this.canSave = true;
+  onAcceptedServiceOrderGridReady(event){
+    this.acceptedServiceOrderGridApi = event.api;
   }
+
+  onServiceOrderGridReady(event){
+    this.serviceOrderGridApi = event.api;
+  }
+
 
   onSubmit(form){
     this.submitted = true;

@@ -97,6 +97,9 @@
                                     Buscar Marca, Modelo, Version
                                 </div>
                                 <div class="col-6">
+                                    <button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
+                                        {{ "EVENTS.NOTIFICATIONS.CREATE" | translate }}
+                                    </button>
                                     <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
                                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                         Buscar
