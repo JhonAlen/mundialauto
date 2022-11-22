@@ -419,19 +419,23 @@ async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
+      
     };
-    this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.metodologiaList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.metodologiaList.push({ 
-            id: response.data.list[i].cmetodologiapago,
-            value: response.data.list[i].xmetodologiapago,
-          });
+
+   
+      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
+        if(response.data.status){
+          this.metodologiaList = [];
+          for(let i = 0; i > response.data.list.length; i++){
+            this.metodologiaList.push({ 
+              id: response.data.list[i].cmetodologiapago,
+              value: response.data.list[i].xmetodologiapago,
+            });
+          }
+          this.metodologiaList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
-        this.metodologiaList.sort((a, b) => a.value > b.value ? 1 : -1)
-      }
-      },);
+        },);
+
   }  
   addAccessory(){
     let accessory;

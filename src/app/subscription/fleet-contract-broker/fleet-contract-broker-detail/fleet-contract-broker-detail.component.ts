@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
-// import { initUbii } from '@ubiipagos/boton-ubii-dc';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
   selector: 'app-fleet-contract-broker-detail',
@@ -43,7 +43,14 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   accessoryList: any[] = [];
   descuento: boolean = false;
   cobertura: boolean = false;
-  plan: boolean = false
+  plan: boolean = false;
+  closeResult = '';
+  code;
+  sub;
+  ctipopago: number;
+  xreferencia: string;
+  mprima_pagada: number;
+  fcobro: Date;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -152,17 +159,14 @@ export class FleetContractBrokerDetailComponent implements OnInit {
         this.search_form.get('xcorredor').setValue(response.data.xcorredor);
         this.search_form.get('xcorredor').disable();
       } 
+
+
+      
     },);
     
   }
 
-  callbackFn(answer) {
-    if (answer.error) {
-      console.log('a');
-      console.log(answer.data);
-    }
-    console.log(answer);
-  }
+ 
 async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getCorredorData();
@@ -359,7 +363,7 @@ async getmetodologia(){
     this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
       if(response.data.status){
         this.metodologiaList = [];
-        for(let i = 0; i < response.data.list.length; i++){
+        for(let i = 6; i < response.data.list.length; i++){
           this.metodologiaList.push({ 
             id: response.data.list[i].cmetodologiapago,
             value: response.data.list[i].xmetodologiapago,
@@ -460,6 +464,22 @@ async getmetodologia(){
       if(response.data.status){
         this.search_form.get('ncobro').setValue(response.data.mprima);
         this.search_form.get('ncobro').disable();
+        let prima = this.search_form.get('ncobro').value.split(" ");
+        initUbii(
+          'ubiiboton',
+          {
+            amount_ds: prima[0],
+            amount_bs: "0.00",
+            concept: "COMPRA",
+            principal: "ds",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            orderId: this.code
+          },
+          this.callbackFn,
+          {
+            text: 'Pagar con Ubii Pagos '
+          }
+        );
       }
       },);
  }
@@ -519,6 +539,27 @@ async getmetodologia(){
     },);
   }
 
+
+  callbackFn(answer) {
+    if(answer.data.R == 1){
+      if(answer.data.method == "ZELLE"){
+        this.ctipopago = 4;
+      }
+      if(answer.data.method == "P2C") {
+        this.ctipopago = 3;
+      }
+      this.xreferencia = answer.data.ref,
+      this.fcobro = answer.data.date,
+      this.mprima_pagada = answer.data.m
+      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`)
+    }
+    if (answer.data.R == 0) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
+      console.log(answer.data);
+    }
+    console.log(answer);
+  }
+
    onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -571,6 +612,11 @@ async getmetodologia(){
         icedula: this.search_form.get('icedula').value,
         ivigencia: this.search_form.get('ivigencia').value,
         ncobro: form.ncobro,
+        crecibo: this.code,
+        ctipopago: this.ctipopago,
+        xreferencia: this.xreferencia,
+        fcobro: this.fcobro,
+        mprima_pagada: this.mprima_pagada,
         accessory:{
           create: this.accessoryList
         }
