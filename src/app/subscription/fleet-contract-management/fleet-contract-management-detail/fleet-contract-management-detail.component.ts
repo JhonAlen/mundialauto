@@ -199,6 +199,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       ccobertura: [''],
       xanexo: [''],
       xobservaciones: [''],
+      xtransmision: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -611,6 +612,9 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('cmetodologiapago').disable();
         this.detail_form.get('ctiporecibo').setValue(response.data.ctiporecibo);
         this.detail_form.get('ctiporecibo').disable();
+        this.detail_form.get('xtransmision').setValue(response.data.xtransmision);
+        this.detail_form.get('xtransmision').disable();
+        console.log(this.detail_form.get('xtransmision').value)
         //this.searchTotalAmountDataRequest();
         this.accesoriesList = [];
         if(response.data.accesories){
@@ -1795,7 +1799,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.detail_form.get('ncapacidadpasajerosvehiculo').value, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xplaca').value, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('ncapacidadpasajerosvehiculo').value, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xplaca').value, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xtransmision').value, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1804,7 +1808,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('xuso').value, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialcarroceria').value, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialmotor').value, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('xtipovehiculo').value, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialcarroceria').value, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialmotor').value, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
             ]
           }
         },
