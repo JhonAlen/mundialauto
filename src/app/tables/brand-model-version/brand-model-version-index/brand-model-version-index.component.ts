@@ -189,6 +189,11 @@ export class BrandModelVersionIndexComponent implements OnInit {
   }
 
   rowClicked(event: any){
-    this.router.navigate([`tables/brand-model-version-detail`]);
+    let list = {
+      cmarca: event.data.cmarca,
+      cmodelo: event.data.cmodelo,
+      cversion: event.data.cversion
+    }
+    this.router.navigate([`tables/brand-model-version-detail`], { state: list});
   }
 }
