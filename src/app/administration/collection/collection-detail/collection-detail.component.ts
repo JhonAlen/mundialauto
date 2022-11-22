@@ -285,7 +285,7 @@ export class CollectionDetailComponent implements OnInit {
       let datetimeformat = answer.data.date.split(' ');
       let dateformat = datetimeformat[0].split('/');
       let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
-      console.log(fcobro)
+      
       await window.alert(`Se ha procesado exitosamente el pago de la póliza`);
       const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
         "method": "POST",
@@ -314,47 +314,6 @@ export class CollectionDetailComponent implements OnInit {
     }
   }
 
-  async verifyReceipt() {
-    const response = await fetch(`https://botonc.ubiipagos.com/get_check_order?order=${this.code}`, {
-      "method": "GET",
-      "headers": {
-        "CONTENT-TYPE": "Application/json",
-        "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
-        "X-CLIENT-CHANNEL": "BTN-API"
-      }
-    });
-  
-    if (response.ok) {
-      const result = await response.json();
-      if (result.ref){
-        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        let options = { headers: headers };
-        let paymentData = {
-          xreferencia: result.ref,
-          ftransaccion: result.date,
-          crecibo: this.code
-        }
-        let params = {
-          paymentData: paymentData
-        }
-        let url = `${environment.apiUrl}/api/administration-collection/ubii/update`;
-        this.http.post(url, params, options).subscribe((response: any) => {
-          console.log('a');
-        }, 
-        (err) => {
-          let code = err.error.data.code;
-          let message;
-          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-          if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-          this.alert.message = message;
-          this.alert.type = 'danger';
-          this.alert.show = true;
-        });
-      }
-      console.log(result);
-    }
-  }
-
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -362,85 +321,52 @@ export class CollectionDetailComponent implements OnInit {
       this.loading = false;
       return;
     }
-    if(this.pagoUbii) {
-      let paymentData = {
-        crecibo: this.code,
-        ctipopago: this.ctipopago,
-        xreferencia: this.xreferencia,
-        fcobro: this.fcobro,
-        mprima_pagada: this.mprima_pagada
-      }
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        paymentData: paymentData
-      }
-      let url = `${environment.apiUrl}/api/administration-collection/ubii/update`;
-      this.http.post(url, params, options).subscribe((response: any) => {
-        if (response.data.status) {
-          console.log('200');
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 401){
-          let condition = err.error.data.condition;
-          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
-        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
-    }
-    else {
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params;
-      let url;
-      let dateFormat = new Date(form.fcreacion).toUTCString();
-      let fajusteDateFormat = new Date(form.fajuste).toUTCString();
 
-      if(this.code){
-        params = {
-          ccompania: this.currentUser.data.ccompania,
-          cpais: this.currentUser.data.cpais,
-          crecibo: this.code,
-          pago: this.paymentList
-        };
-        url = `${environment.apiUrl}/api/administration-collection/update`;
-      } 
-      this.http.post(url, params, options).subscribe((response: any) => {
-        if(response.data.status){
-          if(this.code){
-            //this.returnIndex();
-            this.router.navigate([`/administration/collection-index`]);
-          }else{
-            this.router.navigate([`/administration/collection-detail/${response.data.crecibo}`]);
-          }
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params;
+    let url;
+    let dateFormat = new Date(form.fcreacion).toUTCString();
+    let fajusteDateFormat = new Date(form.fajuste).toUTCString();
+
+    if(this.code){
+      params = {
+        ccompania: this.currentUser.data.ccompania,
+        cpais: this.currentUser.data.cpais,
+        crecibo: this.code,
+        pago: this.paymentList
+      };
+      url = `${environment.apiUrl}/api/administration-collection/update`;
+    } 
+    this.http.post(url, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        if(this.code){
+          //this.returnIndex();
+          this.router.navigate([`/administration/collection-index`]);
         }else{
-          let condition = response.data.condition;
-          if(condition == "service-order-already-exist"){
-            this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
-            this.alert.type = 'danger';
-            this.alert.show = true;
-          }
+          this.router.navigate([`/administration/collection-detail/${response.data.crecibo}`]);
         }
-        this.loading = false;
-      },
-      (err) => {
-        let code = 1;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
-        //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-        this.loading = false;
-      });
-    }
+      }else{
+        let condition = response.data.condition;
+        if(condition == "service-order-already-exist"){
+          this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        }
+      }
+      this.loading = false;
+    },
+    (err) => {
+      let code = 1;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
+      //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+      this.loading = false;
+    });
   }
  
 /*  open() {
