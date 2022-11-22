@@ -28,16 +28,11 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   modeloList: any[] = [];
   coberturaList: any[] = [];
   versionList: any[] = [];
-  corredorList: any[] = [];
   planList: any[] = [];
   StateList: any[] = [];
   CityList:  any[] = [];
   colorList:any[] = [];
   metodologiaList:any[] = [];
-  canCreate: boolean = false;
-  canDetail: boolean = false;
-  canEdit: boolean = false;
-  canDelete: boolean = false;
   status: boolean = true;
   cuotas: boolean = false;
   accessoryList: any[] = [];
@@ -45,12 +40,12 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   cobertura: boolean = false;
   plan: boolean = false;
   closeResult = '';
-  code;
-  sub;
   ctipopago: number;
   xreferencia: string;
   mprima_pagada: number;
   fcobro: Date;
+  guardado: boolean = false;
+  bpago: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -78,7 +73,6 @@ export class FleetContractBrokerDetailComponent implements OnInit {
                   xplaca: ['', Validators.required],
                   xtelefono_emp: ['', Validators.required],
                   cplan: ['', Validators.required],
-                  ccorredor:['', Validators.required],
                   xcobertura: ['', Validators.required],
                   xtipo: ['', Validators.required],
                   ncapacidad_p: ['', Validators.required],
@@ -104,23 +98,26 @@ export class FleetContractBrokerDetailComponent implements OnInit {
                   femision:['', Validators.required],
                   ivigencia:[''],
                   ncobro:[''],
-                  xcorredor: ['']
+                  corden:['']
                 });
-                // initUbii(
-                //   'ubiiboton',
-                //   {
-                //     amount_ds: "100.00",
-                //     amount_bs: "100.00",
-                //     concept: "COMPRA",
-                //     principal: "ds",
-                //     clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-                //     orderId: '1'
-                //   },
-                //   this.callbackFn,
-                //   {
-                //     text: 'Pagar'
-                //   }
-                // );
+                let prima = this.search_form.get('ncobro').value.split(" ");
+                let orden = this.search_form.get('corden').value.split(" ");
+                initUbii(
+                  'ubiiboton',
+                  {
+                    amount_ds: prima[0],
+                    amount_bs: "0.00",
+                    concept: "COMPRA",
+                    principal: "ds",
+                    clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+                    orderId: orden[0],
+                  },
+                  this.callbackFn,
+                  {
+                    text: 'Pagar'
+                  }
+                );
+
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -131,10 +128,6 @@ export class FleetContractBrokerDetailComponent implements OnInit {
       }
       this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
         if(response.data.status){
-          this.canCreate = response.data.bcrear;
-          this.canDetail = response.data.bdetalle;
-          this.canEdit = response.data.beditar;
-          this.canDelete = response.data.beliminar;
           this.initializeDropdownDataRequest();
         }
       },
@@ -151,25 +144,13 @@ export class FleetContractBrokerDetailComponent implements OnInit {
         this.alert.show = true;
       });
     }
-    let params =  {
-      ccorredor: this.currentUser.data.ccorredor
-    };
-    this.http.post(`${environment.apiUrl}/api/broker/search-broker-individual`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.search_form.get('xcorredor').setValue(response.data.xcorredor);
-        this.search_form.get('xcorredor').disable();
-      } 
 
-
-      
-    },);
     
   }
 
  
 async initializeDropdownDataRequest(){
     this.getPlanData();
-    this.getCorredorData();
     this.getColor();
     this.getCobertura();
     this.getmetodologia();
@@ -276,24 +257,6 @@ async getVersionData(){
         this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
       },);
-  }
-async getCorredorData() {
-   let params={
-    cpais: this.currentUser.data.cpais,
-    ccompania: this.currentUser.data.ccompania,
-    };
-    this.http.post(`${environment.apiUrl}/api/valrep/broker`, params).subscribe((response : any) => {
-      if(response.data.status){
-        this.corredorList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.corredorList.push({ 
-            id: response.data.list[i].ccorredor,
-            value: response.data.list[i].xcorredor,
-          });
-        }
-      }
-    }, );
-  
   }
 async getPlanData(){
   let params =  {
@@ -464,22 +427,6 @@ async getmetodologia(){
       if(response.data.status){
         this.search_form.get('ncobro').setValue(response.data.mprima);
         this.search_form.get('ncobro').disable();
-        let prima = this.search_form.get('ncobro').value.split(" ");
-        initUbii(
-          'ubiiboton',
-          {
-            amount_ds: prima[0],
-            amount_bs: "0.00",
-            concept: "COMPRA",
-            principal: "ds",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-            orderId: this.code
-          },
-          this.callbackFn,
-          {
-            text: 'Pagar con Ubii Pagos '
-          }
-        );
       }
       },);
  }
@@ -563,10 +510,7 @@ async getmetodologia(){
    onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    // if (this.search_form.invalid) {
-    //   this.loading = false;
-    //   return;
-    // }
+
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     let params = {
         xnombre: form.xnombre,
@@ -612,7 +556,6 @@ async getmetodologia(){
         icedula: this.search_form.get('icedula').value,
         ivigencia: this.search_form.get('ivigencia').value,
         ncobro: form.ncobro,
-        crecibo: this.code,
         ctipopago: this.ctipopago,
         xreferencia: this.xreferencia,
         fcobro: this.fcobro,
@@ -621,10 +564,7 @@ async getmetodologia(){
           create: this.accessoryList
         }
       };
-     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
-      if(response.data.status){
-        location.reload()
-      }
+     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
     },
     (err) => {
       let code = err.error.data.code;
