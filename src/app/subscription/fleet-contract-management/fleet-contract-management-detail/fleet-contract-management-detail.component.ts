@@ -2223,6 +2223,97 @@ export class FleetContractManagementDetailComponent implements OnInit {
               [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
+        },
+        {
+          pageBreak: 'before',
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'AFILIACIÓN AL CLUB DE MIEMBROS DE ARYSAUTOS\n', alignment: 'center', bold: true, border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'Con la compra de la póliza RCV, adquiere una membresía por el vehículo asegurado suscrita por ARYSAUTOS, C.A. sociedad mercantil domiciliada en Valencia,\n' + 
+                      'Estado Carabobo e inscrita en el Registro Mercantil Segundo de la circunscripción judicial del Estado Carabobo bajo el número 73 tomo 7-A, por lo que está\n' +
+                      'AFILIADO al club de miembros de en el cual tendrá acceso a los siguientes SERVICIOS con disponibilidad a nivel nacional las 24/7, los 365 días del\n' +
+                      'año de manera rápida y segura para responder a todas tus requerimientos e inquietudes.', border:[false, false, false, false]
+              }]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: '\nLOS SERVICIOS\n', bold: true, border: [false, false, false, false]}],
+              [{text: 'Los costos de los servicios serán asumidos o no por el afiliado de acuerdo al plan contratado', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [100, '*', 100],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Servicios del Club', fillColor: '#D4D3D3', bold: true}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mecánica Ligera', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Taller', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Grúa sin cobertura', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Asistencia legal telefónica', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mantenimiento correctivo', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mantenimiento preventivo', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Casa de repuesto', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mecánica general', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Centro de atención 24/7', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Red de proveedores certificados', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Acompañamiento', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Asistencia en siniestros', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Asistencia vial telefónica', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Búsqueda y ubicación de repuestos', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          ul: [
+            'Debe llamar al: 0500-2797288 / 0414-4128237 / 0241-8200184. En caso de tener inconvenientes con la línea 0500 puede comunicarse con el número telefónico\n' +
+            '0241-8200184',
+            'Dar aviso a la brevedad posible, plazo máximo de acuerdo a las condiciones de la Póliza.',
+            'Una vez contactado con la central del Call Center se le tomarán los detalles del siniestro (es importante que el mismo conductor realice la llamada) y de\n' +
+            'acuerdo al tipo de siniestro o daño se le indicaran los pasos a seguir.',
+            'Permanezca en el lugar del accidente y comuníquese inmediatamente con las autoridades de tránsito.',
+            'Si intervino una autoridad competente (Tránsito Terrestre, Guardia Nacional Bolivariana, Policía Nacional Bolivariana),es necesario que solicite las\n' + 
+            'experticias y a su vez las Actuaciones de Tránsito con el respectivo croquis, verifíquelas antes de firmarlas, ya que se requiere disponer de todos los \n' + 
+            'detalles del accidente, los datos de los vehículos y personas involucradas. Sin estos datos, no se podrá culminar la Notificación',
+            'No suministre información que puede afectarlo.'
+          ]
         }
       ], 
       styles: {

@@ -43,7 +43,7 @@ export class SignInComponent implements OnInit {
     this.authenticationService.login(form.xemail, form.xcontrasena).pipe(first()).subscribe((data : any) => {
       this.loading = false;
       if(data.data.ccorredor == null ){ this.router.navigate(['/home']).then(() =>{ window.location.reload(); });}
-      else if(data.data.ccorredor == 223){ this.router.navigate(['/subscription/fleet-contract-broker-detail']).then(() =>{ window.location.reload(); }); }
+      else if(data.data.ccorredor){ this.router.navigate(['/subscription/fleet-contract-broker-detail']).then(() =>{ window.location.reload(); }); }
     },
     
     (err) => {
