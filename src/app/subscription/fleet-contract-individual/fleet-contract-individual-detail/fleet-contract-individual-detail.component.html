@@ -164,7 +164,7 @@
                   </div>
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline form-white">
-                      <label class="form-label " for="form3Examplea7">Versión</label>
+                      <label class="form-label required" for="form3Examplea7">Versión</label>
                       <select formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }"  (change)="searchVersion()">
                         <option></option>
                         <option *ngFor="let version of versionList" value="{{ version.control }}">{{ version.value }}</option>
@@ -413,6 +413,7 @@
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
                     <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                      <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
@@ -424,6 +425,7 @@
                   <div class="form-outline">
                     <label class="form-label " for="form3Examplev5">Vigencia</label>
                     <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                     <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
