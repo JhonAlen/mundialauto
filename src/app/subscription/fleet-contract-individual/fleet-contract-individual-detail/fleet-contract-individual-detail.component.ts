@@ -142,7 +142,7 @@ async ngOnInit(): Promise<void>{
       xcolor: ['', Validators.required],
       cmarca: ['', Validators.required],
       cmodelo: ['', Validators.required],
-      cversion: [''],
+      cversion: ['', Validators.required],
       xrif_cliente:['', Validators.required],
       email: ['', Validators.required],
       xtelefono_prop:[''],
