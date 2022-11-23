@@ -419,12 +419,8 @@
                   <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                     <div class="form-outline">
                       <label class="form-label required">Frecuencia de Pago</label>
-                      <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="frecuencias()" >
-                        <option value="1">MENSUAL</option>
-                        <option value="2">TRIMESTRAL</option>
-                        <option value="3">CUATRIMESTRAL</option>
-                        <option value="4">SEMESTRAL</option>
-                        <option value="5">ANUAL</option>
+                      <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                        <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id }}">{{ metodologia.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div>
@@ -454,6 +450,13 @@
                       <div *ngIf="submitted && search_form.get('femision').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('femision').errors.required">Se requiere completar el campo</div>
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                    <div class="form-outline">
+                      <label class="form-label required" for="form3Examplev5">Fecha de inicio</label>
+                      <input type="number" formControlName="ncobro" class="form-control form-control-lg" disabled [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }"  />
+
                     </div>
                   </div>
  

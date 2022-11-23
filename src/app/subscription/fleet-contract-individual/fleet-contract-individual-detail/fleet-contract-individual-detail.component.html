@@ -412,12 +412,8 @@
                 <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="frecuencias()" >
-                      <option value="1">MENSUAL</option>
-                      <option value="2">TRIMESTRAL</option>
-                      <option value="3">CUATRIMESTRAL</option>
-                      <option value="4">SEMESTRAL</option>
-                      <option value="5">ANUAL</option>
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                      <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div>
@@ -428,12 +424,7 @@
                   <div class="form-outline">
                     <label class="form-label " for="form3Examplev5">Vigencia</label>
                     <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
-                      <option value="5">Anual</option>
-                      <option value="6">3 Días</option>
-                      <option value="7">5 Días</option>
-                      <option value="8">7 Días</option>
-                      <option value="9">15 Días</option>
-                      <option value="10">30 Días</option>
+                      <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div>
