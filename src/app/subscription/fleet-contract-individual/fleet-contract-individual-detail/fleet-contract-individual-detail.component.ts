@@ -421,17 +421,19 @@ async getmetodologia(){
       ccompania: this.currentUser.data.ccompania,
       
     };
-
+    console.log(this.search_form.get('cplan').value)
    
       this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) => {
         if(response.data.status){
           this.metodologiaList = [];
-          for(let i = 0; i > response.data.list.length; i++){
-            this.metodologiaList.push({ 
+          
+          for(let i = 0; i < response.data.list.length; i++){
+            this.metodologiaList.push( { 
               id: response.data.list[i].cmetodologiapago,
               value: response.data.list[i].xmetodologiapago,
             });
           }
+
           this.metodologiaList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
         },);
@@ -481,13 +483,7 @@ async getmetodologia(){
       this.alert.show = true;
     });
   }
-  changeDivision(form){
-    if(form.ifraccionamiento == true){
-      this.cuotas = true;
-    }else{
-      this.cuotas = false;
-    }
-  }
+
   calculation(){
     let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
     this.search_form.get('mprima_casco').setValue(calculo);
@@ -514,14 +510,56 @@ async getmetodologia(){
  functio () {
   if (this.search_form.get('cplan').value == '11'){
     this.plan = true;
+
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+      
+    };
+    console.log(this.search_form.get('cplan').value)
+   
+      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
+        if(response.data.status){
+          this.metodologiaList = [];
+            for(let i = 4; i < response.data.list.length; i++){
+              this.metodologiaList.push( { 
+                id: response.data.list[i].cmetodologiapago,
+                value: response.data.list[i].xmetodologiapago,
+              });
+            }
+            console.log(this.metodologiaList)
+        }
+      })
   }else{
-    this.plan = false;}
+    this.plan = false;
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+      
+    };
+    console.log(this.search_form.get('cplan').value)
+   
+      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
+        if(response.data.status){
+          this.metodologiaList = [];
+            for(let i = 4; i < response.data.list.length; i--){
+              this.metodologiaList.push( { 
+                id: response.data.list[i].cmetodologiapago,
+                value: response.data.list[i].xmetodologiapago,
+              });
+            }
+            console.log(this.metodologiaList)
+        }
+      })
+  
+  }
  }
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
       this.cobertura = false;
     }else{
       this.cobertura = true;
+
     }
   }
   years(){
@@ -536,36 +574,7 @@ async getmetodologia(){
    }
 
  }
- femisio(){
-  const date = new Date();
-  const currentDayOfMonth = date.getDate();
- 
-  if(this.search_form.get('femision').value > (currentDayOfMonth + 5)){
-    this.search_form.get('femision').setValue(currentDayOfMonth + 4);
-  }
-  if(this.search_form.get('femision').value < (currentDayOfMonth + 5)){
-    this.search_form.get('femision').setValue(currentDayOfMonth - 4);
-  }
- 
- }
-  frecuencias(){
 
-    if(this.search_form.get('cmetodologiapago').value == 2){
-    this.search_form.get('ncuotas').setValue(4);}
-  
-    if(this.search_form.get('cmetodologiapago').value == 1){
-    this.search_form.get('ncuotas').setValue(12);}
-      
-    if(this.search_form.get('cmetodologiapago').value == 4)
-    this.search_form.get('ncuotas').setValue(2);
-      
-    if(this.search_form.get('cmetodologiapago').value == 3){
-    this.search_form.get('ncuotas').setValue(1);}
-      
-    if(this.search_form.get('cmetodologiapago').value == 5){
-    this.search_form.get('ncuotas').setValue(1);}
-
-  }
   Validation(){
     let params =  {
       xdocidentidad: this.search_form.get('xrif_cliente').value,
@@ -765,7 +774,8 @@ async getmetodologia(){
         this.serviceList = response.data.services;
         this.coverageList = response.data.realCoverages;
         await window.alert(`Se ha generado exitósamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}`);
-        this.createPDF();
+        try {this.createPDF()}
+        catch(err) {console.log(err.message)};
       }
     },
     (err) => {
