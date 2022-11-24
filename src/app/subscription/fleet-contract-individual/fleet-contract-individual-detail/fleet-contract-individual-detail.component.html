@@ -92,6 +92,7 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Estado</label>
                       <select formControlName="cestado" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cestado').errors } " (change)="getCity()">
+                        <option></option>
                         <option *ngFor="let estado of StateList" value="{{ estado.id }}">{{ estado.value }}</option>
                       </select>                     
                       <div *ngIf="submitted && search_form.get('cestado').errors" class="invalid-feedback">
@@ -103,6 +104,7 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Ciudad</label>
                           <select formControlName="cciudad" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cciudad').errors } " >
+                           
                             <option *ngFor="let ciudad of CityList" value="{{ ciudad.id }}">{{ ciudad.value }}</option>
                           </select>                     
                           <div *ngIf="submitted && search_form.get('cciudad').errors" class="invalid-feedback">
@@ -140,6 +142,7 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev2">Marca</label>
                       <select formControlName="cmarca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors } " (change)="getModeloData()">
+                        <option></option>
                         <option *ngFor="let marca of marcaList" value="{{ marca.id }}">{{ marca.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cmarca').errors" class="invalid-feedback">
@@ -151,6 +154,7 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev4">Modelo</label>
                       <select formControlName="cmodelo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }" (change)="getVersionData()">
+                        <option></option>
                         <option *ngFor="let modelo of modeloList" value="{{ modelo.id }}">{{ modelo.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cmodelo').errors" class="invalid-feedback">
@@ -160,8 +164,9 @@
                   </div>
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline form-white">
-                      <label class="form-label " for="form3Examplea7">Versión</label>
+                      <label class="form-label required" for="form3Examplea7">Versión</label>
                       <select formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }"  (change)="searchVersion()">
+                        <option></option>
                         <option *ngFor="let version of versionList" value="{{ version.control }}">{{ version.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cversion').errors" class="invalid-feedback">
@@ -191,6 +196,7 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Color</label>
                       <select formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors } ">
+                        <option></option>
                         <option *ngFor="let color of colorList" value="{{ color.value }}">{{ color.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xcolor').errors" class="invalid-feedback">
@@ -403,11 +409,12 @@
             <div class="cards">
               <div class="card-header company-card-header"><h5 class="card-title">Detalles del recibo</h5></div>
               <div class="row" style="padding: 10px;">
-                <div class="col-md-4 mb-4 pb-2" *ngIf="!plan">
+                <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="frecuencias()" >
-                      <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id}}">{{ metodologia.value }}</option>
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                      <option></option>
+                      <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div>
@@ -417,16 +424,12 @@
                 <div class="col-md-3 mb-4 pb-2" *ngIf="plan">
                   <div class="form-outline">
                     <label class="form-label " for="form3Examplev5">Vigencia</label>
-                    <select formControlName="ivigencia" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ivigencia').errors }" >
-                      <option value="1">Anual</option>
-                      <option value="2">3 Días</option>
-                      <option value="3">5 Días</option>
-                      <option value="4">7 Días</option>
-                      <option value="5">15 Días</option>
-                      <option value="6">30 Días</option>
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                     <option></option>
+                      <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
-                    <div *ngIf="submitted && search_form.get('ivigencia').errors" class="invalid-feedback">
-                      <div *ngIf="search_form.get('ivigencia').errors.required">Se requiere completar el campo</div>
+                    <div *ngIf="submitted && search_form.get('cmetodologiapago').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('cmetodologiapago').errors.required">Se requiere completar el campo</div>
                     </div>
                   </div>
                 </div>
