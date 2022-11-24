@@ -4,9 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillLoadingServiceOrderComponent } from '@app/pop-up/bill-loading-service-order/bill-loading-service-order.component';
+import { BillLoadingSettlementComponent } from '@app/pop-up/bill-loading-settlement/bill-loading-settlement.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-bill-loading',
@@ -15,6 +17,8 @@ import { environment } from '@environments/environment';
 })
 export class BillLoadingComponent implements OnInit {
 
+  private serviceOrderGridApi;
+  private settlementGridApi;
   sub;
   currentUser;
   bill_form: UntypedFormGroup;
@@ -24,6 +28,7 @@ export class BillLoadingComponent implements OnInit {
   alert = { show: false, type: "", message: "" };
   providerList: any[] = [];
   paymasterList: any[] = [];
+  settlementList: any[] = [];
   serviceOrderList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
@@ -32,9 +37,16 @@ export class BillLoadingComponent implements OnInit {
   code;
   showSaveButton: boolean = false;
   showEditButton: boolean = false;
+  showSaveButtonSettlement: boolean = false;
   editStatus: boolean = false;
   cfiniquito;
   corden;
+  sumatoriaCotizacion: number;
+  sumatoriaGrua: number;
+  sumatoriaFiniquito;
+  sum1;
+  sum2;
+  sum3;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -56,8 +68,15 @@ export class BillLoadingComponent implements OnInit {
       mmontofactura: [''],
       xobservacion: [''],
       cproveedor: [''],
-      cpagador: ['']
+      cpagador: [''],
+      msumatoriagrua: [''],
+      msumatoriacotizacion: [''],
+      msumatoriafiniquito: [''],
+      cfactura: ['']
     });
+    this.bill_form.get('msumatoriagrua').disable();
+    this.bill_form.get('msumatoriacotizacion').disable();
+    this.bill_form.get('msumatoriafiniquito').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -88,6 +107,14 @@ export class BillLoadingComponent implements OnInit {
         this.alert.show = true;
       });
     }
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params;
+    this.http.post(`${environment.apiUrl}/api/administration/code-bill-loading`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.bill_form.get('cfactura').setValue(response.data.cfactura)
+      }
+    })
   }
 
   initializeDetailModule(){
@@ -144,7 +171,7 @@ export class BillLoadingComponent implements OnInit {
   }
 
   changePaymaster(){
-    if(this.bill_form.get('xtipopagador').value == "cliente"){
+    if(this.bill_form.get('xtipopagador').value == "CLIENTE"){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
       let params = {
@@ -175,36 +202,180 @@ export class BillLoadingComponent implements OnInit {
     }
   }
 
+  changeStatus(){
+    if(this.bill_form.get('cpagador').value){
+      if(this.paymasterList[0].value == 'ArysAutos C.A'){
+        this.showEditButton = false;
+        this.showSaveButton = false;
+      }else{
+        this.showEditButton = true
+        this.showSaveButton = true;
+      }
+    }
+  }
+
   addServiceOrder(){
     let orden = { cproveedor: this.bill_form.get('cproveedor').value, ccliente: this.bill_form.get('cpagador').value };
     const modalRef = this.modalService.open(BillLoadingServiceOrderComponent, { size: 'xl' });
     modalRef.componentInstance.orden = orden;
     modalRef.result.then((result: any) => { 
       this.serviceOrderList = [];
+      this.sumatoriaCotizacion = 0;
+      this.sumatoriaGrua = 0;
+      this.sum1 = 0
+      this.sum2 = 0;
       if(result){
-        this.serviceOrderList.push(result)
-        console.log(this.serviceOrderList)
-        // for(let i = 0; i < this.serviceOrderList.length; i++){
-
-        //   this.serviceOrderList.push({
-        //     cgrid: this.serviceOrderList.length,
-        //     edit: true,
-        //     corden: result.corden,
-        //     xservicio: result.xservicio,
-        //     mtotal: result.mtotal,
-        //     mmontototal: result.mmontototal
-        //   });
-        // }
+        for(let i = 0; i < result.length; i++){
+          this.serviceOrderList.push({
+            create: true,
+            corden: result[i].corden,
+            xservicio: result[i].xservicio,
+            mmontototal: result[i].mmontototal,
+            xmonedagrua: result[i].xmonedagrua,
+            mtotal: result[i].mtotal,
+            xmonedacoti: result[i].xmonedacoti
+          })
+          this.sumatoriaCotizacion += result[i].mtotal;
+          this.sumatoriaGrua += result[i].mmontototal;
+          this.sum1 = this.sumatoriaCotizacion + ' ' + result[i].xmonedacoti
+          this.sum2 = this.sumatoriaGrua + ' ' + result[i].xmonedagrua
+        }
+        if(this.sumatoriaCotizacion){
+          this.funtion();
+        }else if(this.sumatoriaGrua){
+          this.funtion();
+        }
       }
     });
   }
 
+  funtion(){
+    if(this.sumatoriaGrua){
+      this.bill_form.get('msumatoriagrua').setValue(this.sum2)
+      this.bill_form.get('msumatoriagrua').disable();
+    }else{
+      this.bill_form.get('msumatoriagrua').setValue(0)
+      this.bill_form.get('msumatoriagrua').disable();
+    }
+
+    if(this.sumatoriaCotizacion){
+      this.bill_form.get('msumatoriacotizacion').setValue(this.sum1)
+      this.bill_form.get('msumatoriacotizacion').disable();
+    }else{
+      this.bill_form.get('msumatoriacotizacion').setValue(0)
+      this.bill_form.get('msumatoriacotizacion').disable();
+    }
+
+    if(this.sumatoriaFiniquito){
+      this.bill_form.get('msumatoriafiniquito').setValue(this.sum3)
+      this.bill_form.get('msumatoriafiniquito').disable();
+    }else{
+      this.bill_form.get('msumatoriafiniquito').setValue(0)
+      this.bill_form.get('msumatoriafiniquito').disable();
+    }
+  }
+
   onServiceOrderGridReady(event){
-
+    this.serviceOrderGridApi = event.api;
   }
 
-  serviceOrderRowClicked(event){
-    
+  addSettlement(){
+    let finiquito = {ccliente: this.bill_form.get('cpagador').value};
+    const modalRef = this.modalService.open(BillLoadingSettlementComponent, { size: 'xl' });
+    modalRef.componentInstance.finiquito = finiquito;
+    modalRef.result.then((result: any) => { 
+      this.settlementList = [];
+      this.sumatoriaFiniquito = 0;
+      this.sum3 = 0
+      if(result){
+        for(let i = 0; i < result.length; i++){
+          this.settlementList.push({
+            create: true,
+            cfiniquito: result[i].cfiniquito,
+            xdanos: result[i].xdanos,
+            mmontofiniquito: result[i].mmontofiniquito,
+            xmoneda: result[i].xmoneda,
+          })
+          this.sumatoriaFiniquito += result[i].mmontofiniquito;
+          this.sum3 = this.sumatoriaFiniquito + ' ' + result[i].xmoneda
+        }
+        if(this.sumatoriaFiniquito){
+          this.funtion();
+        }
+      }
+    });
   }
 
+  onSettlementGridReady(event){
+    this.settlementGridApi = event.api;
+  }
+
+  onSubmit(form){
+    this.submitted = true;
+    this.loading = true;
+
+    let params;
+    let url;
+
+    let serviceOrderFilter = this.serviceOrderList.filter((row) => { return row.create; });
+    let settlementFilter = this.settlementList.filter((row) => { return row.create; });
+
+    params = {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+      cusuario: this.currentUser.data.cusuario,
+      cfactura: this.bill_form.get('cfactura').value,
+      cproveedor: this.bill_form.get('cproveedor').value,
+      xtipopagador: this.bill_form.get('xtipopagador').value,
+      cpagador: this.bill_form.get('cpagador').value,
+      ffactura: form.ffactura,
+      frecepcion: form.frecepcion,
+      fvencimiento: form.fvencimiento,
+      nfactura: form.nfactura,
+      ncontrol: form.ncontrol,
+      mmontofactura: form.mmontofactura,
+      xobservacion: form.xobservacion,
+      serviceorder: {
+        create: serviceOrderFilter
+      },
+      settlement:{
+        create: settlementFilter
+      }
+    },
+    url = `${environment.apiUrl}/api/administration/create-bill-loading`;
+    this.sendFormData(params, url);
+  
+    this.loading = false;
+    return;
+  }
+
+  sendFormData(params, url){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    this.http.post(url, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        if(this.code){
+
+        }else{
+          if (window.confirm("¡Se ha registrado la factura exitosamente!... ¿Desea registrar el Pago?")) {
+            this.router.navigate([`/administration/payment-record-index`]);
+          }else{
+            location.reload();
+          }
+        }
+      }
+      this.loading = false;
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.NOTIFICATIONS.NOTIFICATIONNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+      this.loading = false;
+    });
+  }
 }
