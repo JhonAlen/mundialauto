@@ -306,6 +306,7 @@ import { BrandModelVersionDetailComponent } from './tables/brand-model-version/b
 import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
 import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
 import { BillLoadingSettlementComponent } from './pop-up/bill-loading-settlement/bill-loading-settlement.component';
+import { AdministrationBillLoadingComponent } from './pop-up/administration-bill-loading/administration-bill-loading.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -595,7 +596,8 @@ export function HttpLoaderFactory(http: HttpClient){
     BrandModelVersionDetailComponent,
     ExchangeRateIndexComponent,
     ExchangeRateDetailComponent,
-    BillLoadingSettlementComponent
+    BillLoadingSettlementComponent,
+    AdministrationBillLoadingComponent
   ],
   imports: [
     BrowserModule,

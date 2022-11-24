@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BillLoadingServiceOrderComponent } from '@app/pop-up/bill-loading-service-order/bill-loading-service-order.component';
 import { BillLoadingSettlementComponent } from '@app/pop-up/bill-loading-settlement/bill-loading-settlement.component';
+import { AdministrationBillLoadingComponent } from '@app/pop-up/administration-bill-loading/administration-bill-loading.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -19,6 +20,7 @@ export class BillLoadingComponent implements OnInit {
 
   private serviceOrderGridApi;
   private settlementGridApi;
+  private billGridApi;
   sub;
   currentUser;
   bill_form: UntypedFormGroup;
@@ -29,6 +31,7 @@ export class BillLoadingComponent implements OnInit {
   providerList: any[] = [];
   paymasterList: any[] = [];
   settlementList: any[] = [];
+  billList: any[] = [];
   serviceOrderList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
@@ -44,6 +47,7 @@ export class BillLoadingComponent implements OnInit {
   sumatoriaCotizacion: number;
   sumatoriaGrua: number;
   sumatoriaFiniquito;
+  coinList: any[] = [];
   sum1;
   sum2;
   sum3;
@@ -72,7 +76,10 @@ export class BillLoadingComponent implements OnInit {
       msumatoriagrua: [''],
       msumatoriacotizacion: [''],
       msumatoriafiniquito: [''],
-      cfactura: ['']
+      cfactura: [''],
+      xrutaarchivo: [''],
+      cmoneda: [''],
+      xmoneda: [''],
     });
     this.bill_form.get('msumatoriagrua').disable();
     this.bill_form.get('msumatoriacotizacion').disable();
@@ -131,6 +138,7 @@ export class BillLoadingComponent implements OnInit {
           this.providerList.push({ id: response.data.list[i].cproveedor, value: response.data.list[i].xnombre});
         }
       }
+      this.searchCoin();
     },
     (err) => {
       let code = err.error.data.code;
@@ -200,6 +208,31 @@ export class BillLoadingComponent implements OnInit {
       this.paymasterList = [];
       this.paymasterList.push({ id: 0, value: "ArysAutos C.A"});
     }
+  }
+
+  searchCoin(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpais: this.currentUser.data.cpais
+    };
+    this.http.post(`${environment.apiUrl}/api/valrep/coin`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.coinList.push({ id: response.data.list[i].cmoneda, value: response.data.list[i].xmoneda });
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.COINNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   changeStatus(){
@@ -310,6 +343,26 @@ export class BillLoadingComponent implements OnInit {
     this.settlementGridApi = event.api;
   }
 
+  addBillLoading(){
+    let bill = { cfactura: this.bill_form.get('cfactura').value};
+    const modalRef = this.modalService.open(AdministrationBillLoadingComponent);
+    modalRef.componentInstance.bill = bill;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        this.billList.push({
+          cgrid: this.billList.length,
+          create: true,
+          xrutaarchivo: result.xrutaarchivo
+        });
+        this.billGridApi.setRowData(this.billList);
+      }
+    });
+  }
+
+  onBillGridReady(event){
+    this.billGridApi = event.api;
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -335,6 +388,8 @@ export class BillLoadingComponent implements OnInit {
       ncontrol: form.ncontrol,
       mmontofactura: form.mmontofactura,
       xobservacion: form.xobservacion,
+      xrutaarchivo: this.billList[0].xrutaarchivo,
+      cmoneda: form.cmoneda,
       serviceorder: {
         create: serviceOrderFilter
       },

@@ -9,7 +9,7 @@
         <div class="col-sm-12">
             <div class="parent">
                 <div class="div1"> 
-                    <div class="card" style="margin-left: -161px;">
+                    <div class="card" style="margin-left: -93px;">
                         <div class="card-header company-card-header">
                             <div class="row">
                                 <div class="col-6" style="font-weight: bolder;">
@@ -129,7 +129,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Monto Factura</label>
                                                 <input type="number" formControlName="mmontofactura" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('mmontofactura').errors }" cols="30" rows="2">
@@ -138,7 +138,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div style="width: 150px">
+                                            <div class="form-group">
+                                                <label>{{ "EVENTS.SERVICEORDER.COIN" | translate }}</label>
+                                                <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('cmoneda').errors }">
+                                                    <option></option>
+                                                    <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
+                                                </select>
+                                                <div *ngIf="submitted && bill_form.get('cmoneda').errors"  class="invalid-feedback">
+                                                    <div *ngIf="bill_form.get('cmoneda').errors.required">{{ "THIRDPARTIES.OWNERS.REQUIREDCOIN" | translate }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
                                             <div class="form-group">
                                                 <label>Observación</label>
                                                 <textarea type="text" formControlName="xobservacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xobservacion').errors }" cols="30" rows="2"></textarea>
@@ -149,6 +161,28 @@
                                         </div>
                                     </div>
                             </form>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-left: -93px; margin-top: 23px;">
+                        <div class="card-header company-card-header">
+                            <div class="row">
+                                <div class="col-6">
+                                    Cargar Factura
+                                </div>
+                                <div class="col-6">
+                                    <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addBillLoading()" *ngIf="showEditButton">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Añadir Factura
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <ag-grid-angular #agGrid style="width: 100%; height: 161px;" class="ag-theme-alpine" [rowData]="billList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onBillGridReady($event)">
+                                    <ag-grid-column headerName="Ruta" field="xrutaarchivo" [width]="650" [sortable]="true"></ag-grid-column>
+                                </ag-grid-angular>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -172,7 +206,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="container">
-                                    <ag-grid-angular #agGrid style="width: 100%; height: 250px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
+                                    <ag-grid-angular #agGrid style="width: 100%; height: 274px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
                                         <ag-grid-column headerName="Codigo" field="corden" [width]="100" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Servicio" field="xservicio" [width]="180" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Monto grúa" field="mmontototal" [width]="130" [sortable]="true"></ag-grid-column>
@@ -220,7 +254,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="container">
-                                    <ag-grid-angular #agGrid style="width: 100%; height: 250px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onSettlementGridReady($event)">
+                                    <ag-grid-angular #agGrid style="width: 100%; height: 270px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onSettlementGridReady($event)">
                                         <ag-grid-column headerName="Codigo" field="cfiniquito" [width]="100" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Servicio" field="xdanos" [width]="200" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Monto grúa" field="mmontofiniquito" [width]="130" [sortable]="true"></ag-grid-column>
