@@ -43,6 +43,9 @@ export class CollectionDetailComponent implements OnInit {
   xreferencia: string;
   mprima_pagada: number;
   fcobro: Date;
+  ctasacambio: number;
+  mtasacambio: number;
+  ftasacambio: Date;
 
   constructor(private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
@@ -126,6 +129,15 @@ export class CollectionDetailComponent implements OnInit {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
+
+    this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
+      if (response.data.status) {
+        this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
+        this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
+        this.ftasacambio = response.data.tasaCambio.fingreso;
+      }
+    })
+
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
@@ -214,11 +226,16 @@ export class CollectionDetailComponent implements OnInit {
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
         let prima = this.detail_form.get('mprima').value.split(" ");
+        console.log(parseFloat(prima[0]));
+        console.log(this.mtasacambio);
+        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100 );       
+        console.log(`${prima_bs}`)
+      
         initUbii(
           'ubiiboton',
           {
             amount_ds: prima[0],
-            amount_bs: "0.00",
+            amount_bs: prima_bs,
             concept: "COMPRA",
             principal: "ds",
             clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
