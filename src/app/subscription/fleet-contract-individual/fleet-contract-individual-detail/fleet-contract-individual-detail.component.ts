@@ -34,6 +34,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
+  CountryList: any[] = [];
   StateList: any[] = [];
   CityList:  any[] = [];
   colorList:any[] = [];
@@ -176,7 +177,8 @@ async ngOnInit(): Promise<void>{
       cciudad:['', Validators.required],
       icedula:['', Validators.required],
       femision:['', Validators.required],
-      ivigencia:['']
+      ivigencia:[''],
+      cpais:[''],
     });
     // initUbii(
     //   'ubiiboton',
@@ -232,7 +234,7 @@ async initializeDropdownDataRequest(){
     this.getColor();
     this.getCobertura();
     this.getmetodologia();
-    this.getState()
+    this.getCountry()
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -255,9 +257,26 @@ async initializeDropdownDataRequest(){
         this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
   }
+  async getCountry(){
+    let params =  {
+      cusuario: this.currentUser.data.cusuario
+     };
+    this.http.post(`${environment.apiUrl}/api/valrep/country`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.CountryList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.CountryList.push({ 
+            id: response.data.list[i].cpais,
+            value: response.data.list[i].xpais,
+          });
+        }
+        this.CountryList.sort((a, b) => a.value > b.value ? 1 : -1)
+      }
+      },);
+  } 
 async getState(){
     let params =  {
-      cpais: this.currentUser.data.cpais,  
+      cpais: this.search_form.get('cpais').value 
     };
     this.http.post(`${environment.apiUrl}/api/valrep/state`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -274,7 +293,7 @@ async getState(){
   } 
 async getCity(){
     let params =  {
-      cpais: this.currentUser.data.cpais,  
+      cpais: this.search_form.get('cpais').value,  
       cestado: this.search_form.get('cestado').value
     };
     this.http.post(`${environment.apiUrl}/api/valrep/city`, params).subscribe((response: any) => {
@@ -516,7 +535,7 @@ async getmetodologia(){
       ccompania: this.currentUser.data.ccompania,
       
     };
-    console.log(this.search_form.get('cplan').value)
+
    
       this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
         if(response.data.status){
@@ -527,7 +546,7 @@ async getmetodologia(){
                 value: response.data.list[i].xmetodologiapago,
               });
             }
-            console.log(this.metodologiaList)
+  
         }
       })
   }else{
@@ -537,7 +556,7 @@ async getmetodologia(){
       ccompania: this.currentUser.data.ccompania,
       
     };
-    console.log(this.search_form.get('cplan').value)
+
    
       this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
         if(response.data.status){
@@ -548,7 +567,7 @@ async getmetodologia(){
                 value: response.data.list[i].xmetodologiapago,
               });
             }
-            console.log(this.metodologiaList)
+
         }
       })
   
@@ -649,9 +668,9 @@ async getmetodologia(){
         pcatastrofico: form.pcatastrofico,
         pmotin:form.pmotin,
         mmotin:form.mmotin,
+        cpais: this.search_form.get('cpais').value,
         cestado: this.search_form.get('cestado').value,
         cciudad: this.search_form.get('cciudad').value,
-        cpais:this.currentUser.data.cpais,
         pblindaje: form.pblindaje,
         icedula: this.search_form.get('icedula').value,
         ivigencia: this.search_form.get('ivigencia').value,
