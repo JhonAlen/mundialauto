@@ -59,8 +59,8 @@ export class CollectionDetailComponent implements OnInit {
     this.detail_form = this.formBuilder.group({
       xnombrepropietario: [''],
       xapellidopropietario: [''],
-      fdesde_pol: [''],
-      fhasta_pol: [''],
+      fdesde_rec: [''],
+      fhasta_rec: [''],
       xdocidentidadpropietario: [''],
       xvehiculo: [''],
       xplaca: [''],
@@ -192,10 +192,10 @@ export class CollectionDetailComponent implements OnInit {
           this.detail_form.get('xtelefono').setValue('');
           this.detail_form.get('xtelefono').disable();
         }
-        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString().substring(0, 10));
-        this.detail_form.get('fdesde_pol').disable();
-        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol).toISOString().substring(0, 10));
-        this.detail_form.get('fhasta_pol').disable();
+        this.detail_form.get('fdesde_rec').setValue(new Date(response.data.fdesde_rec).toISOString().substring(0, 10));
+        this.detail_form.get('fdesde_rec').disable();
+        this.detail_form.get('fhasta_rec').setValue(new Date(response.data.fhasta_rec).toISOString().substring(0, 10));
+        this.detail_form.get('fhasta_rec').disable();
 
         if(response.data.xdocidentidadpropietario){
           this.detail_form.get('xdocidentidadpropietario').setValue(response.data.xdocidentidadpropietario);
