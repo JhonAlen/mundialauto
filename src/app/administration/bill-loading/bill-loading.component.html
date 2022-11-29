@@ -56,28 +56,59 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-4">
-                                            <div class="form-outline">
-                                            <label class="form-label" for="form3Examplev5">Tipo de Pagador</label>
-                                            <select formControlName="xtipopagador" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xtipopagador').errors }" (change)="changePaymaster()">
-                                                <option value="CLIENTE">CLIENTE</option>
-                                                <option value="EMPRESA">EMPRESA</option>
-                                            </select>
-                                            <div *ngIf="submitted && bill_form.get('xtipopagador').errors" class="invalid-feedback">
-                                                <div *ngIf="bill_form.get('xtipopagador').errors.required">Se requiere completar el campo</div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-4">
                                             <div class="form-group">
-                                                <label>Pagador</label>
-                                                <select formControlName="cpagador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('cpagador').errors }" (change)="changeStatus()">
-                                                    <option></option>
-                                                    <option *ngFor="let paymaster of paymasterList" value="{{ paymaster.id }}">{{ paymaster.value }}</option>
-                                                </select>
-                                                <div *ngIf="submitted && bill_form.get('cpagador').errors"  class="invalid-feedback">
+                                                <label>Tipo de Pagador</label>
+                                                <input type="text" formControlName="xtipopagador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xtipopagador').errors }" cols="30" rows="2">
+                                                <div *ngIf="submitted && bill_form.get('xtipopagador').errors"  class="invalid-feedback">
+                                                    <div *ngIf="bill_form.get('xtipopagador').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <div class="form-outline">
+                                            <label class="form-label" for="form3Examplev5">Pagador</label>
+                                            <select formControlName="xpagador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xpagador').errors }" (change)="changePaymaster()">
+                                                <option value="ARYSAUTO">ARYSAUTO C.A.</option>
+                                                <option value="MUNDIAL">LA MUNDIAL DE SEGUROS</option>
+                                            </select>
+                                            <div *ngIf="submitted && bill_form.get('xpagador').errors" class="invalid-feedback">
+                                                <div *ngIf="bill_form.get('xpagador').errors.required">Se requiere completar el campo</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-12 col-md-4">
+                                            <div class="form-group">
+                                                <label>Recibidor</label>
+                                                <select formControlName="crecibidor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('crecibidor').errors }" (change)="changeStatus()">
+                                                    <option></option>
+                                                    <option *ngFor="let paymaster of paymasterList" value="{{ paymaster.id }}">{{ paymaster.value }}</option>
+                                                </select>
+                                                <div *ngIf="submitted && bill_form.get('crecibidor').errors"  class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="ng-autocomplete">
+                                            <ng-autocomplete
+                                              [data]="paymasterList"
+                                              [searchKeyword]="keyword"
+                                              placeholder="Seleccionar"
+                                              (selected)='selectEvent($event)'
+                                              (inputChanged)='onChangeSearch($event)'
+                                              (inputFocused)='onFocused($event)'
+                                              historyIdentifier="paymasterList"
+                                              [itemTemplate]="itemTemplate"
+                                              [notFoundTemplate]="notFoundTemplate">
+                                            </ng-autocomplete>
+                                          
+                                            <ng-template #itemTemplate let-item>
+                                              <a [innerHTML]="item.id"></a>
+                                              <a *ngFor="let paymaster of paymasterList" [innerHTML]="paymaster.value"></a>
+                                            </ng-template>
+                                          
+                                            <ng-template #notFoundTemplate let-notFound>
+                                              <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                          </div>
                                     </div>
                                     <hr style="margin: 2rem 0;">
                                     <div class="row" style="margin-top: 42px;">

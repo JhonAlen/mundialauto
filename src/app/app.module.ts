@@ -307,6 +307,7 @@ import { ExchangeRateIndexComponent } from './administration/exchange-rate/excha
 import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
 import { BillLoadingSettlementComponent } from './pop-up/bill-loading-settlement/bill-loading-settlement.component';
 import { AdministrationBillLoadingComponent } from './pop-up/administration-bill-loading/administration-bill-loading.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -620,6 +621,7 @@ export function HttpLoaderFactory(http: HttpClient){
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
+    AutocompleteLibModule,
     TranslateModule.forRoot({
       loader:{
         provide: TranslateLoader,

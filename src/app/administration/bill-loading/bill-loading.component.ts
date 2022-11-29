@@ -9,7 +9,10 @@ import { AdministrationBillLoadingComponent } from '@app/pop-up/administration-b
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
-import { runInThisContext } from 'vm';
+
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-bill-loading',
@@ -51,6 +54,8 @@ export class BillLoadingComponent implements OnInit {
   sum1;
   sum2;
   sum3;
+  pagador: any[] = [];
+  keyword = 'name';
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -72,7 +77,8 @@ export class BillLoadingComponent implements OnInit {
       mmontofactura: [''],
       xobservacion: [''],
       cproveedor: [''],
-      cpagador: [''],
+      crecibidor: [''],
+      xpagador: [''],
       msumatoriagrua: [''],
       msumatoriacotizacion: [''],
       msumatoriafiniquito: [''],
@@ -84,6 +90,7 @@ export class BillLoadingComponent implements OnInit {
     this.bill_form.get('msumatoriagrua').disable();
     this.bill_form.get('msumatoriacotizacion').disable();
     this.bill_form.get('msumatoriafiniquito').disable();
+    this.bill_form.get('xtipopagador').setValue('CLIENTE')
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -179,35 +186,46 @@ export class BillLoadingComponent implements OnInit {
   }
 
   changePaymaster(){
-    if(this.bill_form.get('xtipopagador').value == "CLIENTE"){
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        ccompania: this.currentUser.data.ccompania,
-        cpais: this.currentUser.data.cpais,
-      }
-      this.http.post(`${environment.apiUrl}/api/valrep/client`, params, options).subscribe((response: any) => {
-        this.paymasterList = [];
-        if(response.data.list){
-          for(let i = 0; i < response.data.list.length; i++){
-            this.paymasterList.push({ id: response.data.list[i].ccliente, value: response.data.list[i].xcliente});
-          }
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.SERVICEORDER.SERVICEORDERNOTFOUND"; }
-        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
-    }else{
-      this.paymasterList = [];
-      this.paymasterList.push({ id: 0, value: "ArysAutos C.A"});
+    this.keyword = 'name';
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      ccompania: this.currentUser.data.ccompania,
+      cpais: this.currentUser.data.cpais,
     }
+    this.http.post(`${environment.apiUrl}/api/valrep/client`, params, options).subscribe((response: any) => {
+      this.paymasterList = [];
+      if(response.data.list){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.paymasterList.push({ id: response.data.list[i].ccliente, value: response.data.list[i].xcliente});
+        }
+      }
+      console.log(this.keyword)
+      console.log(this.paymasterList)
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.SERVICEORDER.SERVICEORDERNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  selectEvent(event) {
+    console.log(event.value)
+  }
+
+  onChangeSearch(search: string) {
+    // fetch remote data from here
+    // And reassign the 'data' which is binded to 'data' property.
+  }
+
+  onFocused(e) {
+    // do something
   }
 
   searchCoin(){
@@ -236,7 +254,7 @@ export class BillLoadingComponent implements OnInit {
   }
 
   changeStatus(){
-    if(this.bill_form.get('cpagador').value){
+    if(this.bill_form.get('crecibidor').value){
       if(this.paymasterList[0].value == 'ArysAutos C.A'){
         this.showEditButton = false;
         this.showSaveButton = false;
@@ -248,7 +266,7 @@ export class BillLoadingComponent implements OnInit {
   }
 
   addServiceOrder(){
-    let orden = { cproveedor: this.bill_form.get('cproveedor').value, ccliente: this.bill_form.get('cpagador').value };
+    let orden = { cproveedor: this.bill_form.get('cproveedor').value, ccliente: this.bill_form.get('crecibidor').value };
     const modalRef = this.modalService.open(BillLoadingServiceOrderComponent, { size: 'xl' });
     modalRef.componentInstance.orden = orden;
     modalRef.result.then((result: any) => { 
@@ -313,7 +331,7 @@ export class BillLoadingComponent implements OnInit {
   }
 
   addSettlement(){
-    let finiquito = {ccliente: this.bill_form.get('cpagador').value};
+    let finiquito = {ccliente: this.bill_form.get('crecibidor').value};
     const modalRef = this.modalService.open(BillLoadingSettlementComponent, { size: 'xl' });
     modalRef.componentInstance.finiquito = finiquito;
     modalRef.result.then((result: any) => { 
@@ -380,7 +398,8 @@ export class BillLoadingComponent implements OnInit {
       cfactura: this.bill_form.get('cfactura').value,
       cproveedor: this.bill_form.get('cproveedor').value,
       xtipopagador: this.bill_form.get('xtipopagador').value,
-      cpagador: this.bill_form.get('cpagador').value,
+      xpagador: this.bill_form.get('xpagador').value,
+      crecibidor: this.bill_form.get('crecibidor').value,
       ffactura: form.ffactura,
       frecepcion: form.frecepcion,
       fvencimiento: form.fvencimiento,
