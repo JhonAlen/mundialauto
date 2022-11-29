@@ -7,6 +7,8 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
+import { Console } from 'console';
+import { SetValueModel } from 'ag-grid-enterprise/dist/lib/setFilter/setValueModel';
 
 
 @Component({
@@ -24,6 +26,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   labelPosition: 'before' | 'after' = 'after';
   disabled = false;
   currentUser;
+
   search_form : UntypedFormGroup;
   loading: boolean = false;
   submitted: boolean = false;
@@ -61,8 +64,8 @@ export class FleetContractBrokerDetailComponent implements OnInit {
               private webService: WebServiceConnectionService) { 
 
               }
-
               async ngOnInit() {
+              
                 this.search_form = this.formBuilder.group({
                   icedula:['', Validators.required],
                   xrif_cliente:['', Validators.required],
@@ -90,27 +93,15 @@ export class FleetContractBrokerDetailComponent implements OnInit {
                   cmetodologiapago: [''],
                   femision:['', Validators.required],
                   ncobro:[''],
-                  corden:['']
-                });
-
-                // let prima = this.search_form.get('ncobro').value;
-                // console.log(prima)
-                // let orden = this.search_form.get('corden').value.split(" ");
-                // initUbii(
-                //   'ubiiboton',
-                //   {
-                //     amount_ds: "12,87" ,
-                //     amount_bs: "0.00",
-                //     concept: "COMPRA",
-                //     principal: "ds",
-                //     clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-                //     orderId: "UB-125447",
-                //   },
-                //   this.callbackFn,
-                //   {
-                //     text: 'Pagar'
-                //   }
-                // );
+                  ccodigo_ubii:[''],
+                  ctipopago:[''],
+                  xreferencia:[''],
+                  fcobro:[''],
+                  mprima_pagada:['']
+                })
+                
+                 ;
+                ;
 
 
     this.currentUser = this.authenticationService.currentUserValue;
@@ -144,7 +135,7 @@ async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getColor();
     this.getCobertura();
-    this.getCountry()
+    this.getCountry();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -166,8 +157,6 @@ async initializeDropdownDataRequest(){
         }
         this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
-
-
   }
 async getCountry(){
     let params =  {
@@ -340,14 +329,12 @@ async getmetodologia(){
       }
       },);
   }  
-
   searchVersion(){
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     this.search_form.get('cano').setValue(version.cano);
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
-
-  functio () {
+  functio(){
     if (this.search_form.get('cplan').value == '11'){
       this.plan = true;
   
@@ -390,43 +377,40 @@ async getmetodologia(){
         })
     
     }
-   }
-
-  calculatetotal(){
+  }
+  OperationUbii(){
    let params = {
     cplan: this.search_form.get('cplan').value,
     cmetodologiapago: this.search_form.get('cmetodologiapago').value
   }
-
      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('ncobro').setValue(response.data.mprima);
-        response.data.ccubi
+        response.data.ccubii
       }
+     let prima =  this.search_form.get('ncobro').value.split(" ");
+     let orden : string = "UB_" + response.data.ccubii
+
+     initUbii(
+       'ubiiboton',
+       {
+         amount_ds: prima[0],
+         amount_bs:  "0.00",
+         concept: "COMPRA",
+         principal: "ds",
+         clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+         orderId: orden
+       },
+       
+       this.callbackFn,
+       {
+         text: 'Pagar'
+       },
+
+
+     );
       },);
-
-      let prima = this.search_form.get('ncobro').value;
-     // let prima = this.search_form.get('ncobro').value
-      console.log(prima.split(""))
-      let orden = this.search_form.get('corden').value.split(" ");
-      initUbii(
-        'ubiiboton',
-        {
-          amount_ds: prima ,
-          amount_bs: "0.00",
-          concept: "COMPRA",
-          principal: "ds",
-          clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-          orderId: "UB-125447",
-        },
-        this.callbackFn,
-        {
-          text: 'Pagar'
-        }
-      );
-
   }
-
   years(){
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -436,7 +420,6 @@ async getmetodologia(){
    }
 
   }
-
   femisio(){
   const date = new Date();
   const currentDayOfMonth = date.getDate();
@@ -449,7 +432,6 @@ async getmetodologia(){
   }
  
   }
-
   Validation(){
     let params =  {
       xdocidentidad: this.search_form.get('xrif_cliente').value,
@@ -471,33 +453,25 @@ async getmetodologia(){
       } 
     },);
   }
-
   callbackFn(answer) {
-     let ctipopago = 0
-     let xreferencia =  ''
-     let fcobro =  ''
-     let mprima_pagada =  ''
+
+//    this.ctipopago = answer.data.method;
+//   this.xreferencia = answer.data.ref,
+//   this.fcobro = answer.data.date,
+//   this.mprima_pagada = answer.data.m]
+
     if(answer.data.R == 0){
-      console.log(answer);
-      if(answer.data.method == "ZELLE"){
-        ctipopago = 4
-        console.log(ctipopago)
-      }
-      if(answer.data.method == "P2C") {
-        ctipopago = 3
-        console.log(ctipopago)
-      }
-      xreferencia = answer.data.ref,
-      fcobro = answer.data.date,
-      mprima_pagada = answer.data.m
-      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`)
+      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`) 
+       this.search_form.get('mprima_pagada').setValue( answer.data.m);
+
+
+
     }
     if (answer.data.R == 1) {
       window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
     }
-    console.log(answer);
+  
   }
-
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -529,10 +503,10 @@ async getmetodologia(){
         cmetodologiapago: form.cmetodologiapago,
         femision: form.femision,
         ncobro: form.ncobro,
-        corden:form.corden,
+        ccodigo_ubii:form.ccodigo_ubii,
         ccorredor:  this.currentUser.data.ccorredor,
         xcedula: form.xrif_cliente,
-       // ctipopago: this.ctipopago,
+        ctipopago: this.ctipopago,
         xreferencia: this.xreferencia,
         fcobro: this.fcobro,
         mprima_pagada: this.mprima_pagada,
@@ -551,3 +525,5 @@ async getmetodologia(){
     })
   }
 }
+
+

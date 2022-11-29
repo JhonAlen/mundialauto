@@ -3,8 +3,7 @@
   <div class="row mt-5" *ngIf="alert.show">
       <div class="col-sm-12 col-md-6 mx-auto">
           <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
-      </div>
-  </div>
+     </div>
 </div>
 <section>
   <div class="container py-5 h-100 ">
@@ -268,7 +267,6 @@
                         </div>
                       </div>
                     </div>
-                    <div><button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="generateTarifa()" *ngIf="cobertura">Calcular Tarifas</button></div>
                   </div>
                 </div>
               </div>
@@ -314,7 +312,7 @@
                   <div class="col-md-3 mb-4 pb-2" *ngIf="plan">
                     <div class="form-outline">
                       <label class="form-label " for="form3Examplev5">Vigencia</label>
-                      <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="calculatetotal()" >
+                      <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="OperationUbii()" >
                        <option></option>
                         <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                       </select>
@@ -335,11 +333,9 @@
                   <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Monto Total</label>
-                      <input type="number" formControlName="ncobro" class="form-control form-control-lg" disabled [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }"  />
-
+                      <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }"  />
                     </div>
                   </div>
- 
                   <div class="button">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
                   </div>
