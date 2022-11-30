@@ -9,6 +9,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { Console } from 'console';
 import { SetValueModel } from 'ag-grid-enterprise/dist/lib/setFilter/setValueModel';
+import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
+
 
 
 @Component({
@@ -54,6 +56,11 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   fcobro: Date;
   guardado: boolean = false;
   bpago: boolean = false;
+  pagos: boolean = false;
+  bpagarubii: boolean = false;
+  bemitir: boolean = false;
+  bpagomanual: boolean = false;
+  paymentList: any[] = [];
 
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -61,76 +68,86 @@ export class FleetContractBrokerDetailComponent implements OnInit {
               private authenticationService : AuthenticationService,
               private router: Router,
               private http: HttpClient,
-              private webService: WebServiceConnectionService) { 
+              private webService: WebServiceConnectionService,
+              private modalService : NgbModal) { 
 
               }
               async ngOnInit() {
               
-                this.search_form = this.formBuilder.group({
-                  icedula:['', Validators.required],
-                  xrif_cliente:['', Validators.required],
-                  xnombre: ['', Validators.required],                  
-                  xapellido: ['', Validators.required],
-                  xtelefono_emp: ['', Validators.required],
-                  xtelefono_prop:[''],
-                  email: ['', Validators.required],
-                  cpais:['', Validators.required],
-                  cestado:['', Validators.required],
-                  cciudad:['', Validators.required],
-                  xdireccionfiscal: ['', Validators.required],
-                  xplaca: ['', Validators.required],
-                  cmarca: ['', Validators.required],                  
-                  cmodelo: ['', Validators.required],
-                  cversion: ['', Validators.required],
-                  cano: ['', Validators.required],
-                  ncapacidad_p: ['', Validators.required],
-                  ccolor: ['', Validators.required],
-                  xserialcarroceria: ['', Validators.required],
-                  xserialmotor: ['', Validators.required],
-                  xcobertura: ['', Validators.required],
-                  xtipo: ['', Validators.required],
-                  cplan: ['', Validators.required],
-                  cmetodologiapago: [''],
-                  femision:['', Validators.required],
-                  ncobro:[''],
-                  ccodigo_ubii:[''],
-                  ctipopago:[''],
-                  xreferencia:[''],
-                  fcobro:[''],
-                  mprima_pagada:['']
-                })
-                
-                 ;
-                ;
+this.search_form = this.formBuilder.group({
+  icedula:['', Validators.required],
+  xrif_cliente:['', Validators.required],
+  xnombre: ['', Validators.required],                  
+  xapellido: ['', Validators.required],
+  xtelefono_emp: ['', Validators.required],
+  xtelefono_prop:[''],
+  email: ['', Validators.required],
+  cpais:['', Validators.required],
+  cestado:['', Validators.required],
+  cciudad:['', Validators.required],
+  xdireccionfiscal: ['', Validators.required],
+  xplaca: ['', Validators.required],
+  cmarca: ['', Validators.required],                  
+  cmodelo: ['', Validators.required],
+  cversion: ['', Validators.required],
+  cano: ['', Validators.required],
+  ncapacidad_p: ['', Validators.required],
+  ccolor: ['', Validators.required],
+  xserialcarroceria: ['', Validators.required],
+  xserialmotor: ['', Validators.required],
+  xcobertura: ['', Validators.required],
+  xtipo: ['', Validators.required],
+  cplan: ['', Validators.required],
+  cmetodologiapago: [''],
+  femision:['', Validators.required],
+  ncobro:[''],
+  ccodigo_ubii:[''],
+  ctipopago:[''],
+  xreferencia:[''],
+  fcobro:[''],
+  mprima_pagada:[''],
+  xpago: ['']
+})
+
+ ;
+;
 
 
-    this.currentUser = this.authenticationService.currentUserValue;
-    if(this.currentUser){
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        cusuario: this.currentUser.data.cusuario,
-        cmodulo: 112
+  this.currentUser = this.authenticationService.currentUserValue;
+  if(this.currentUser){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cusuario: this.currentUser.data.cusuario,
+      cmodulo: 112
+    }
+    this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.initializeDropdownDataRequest();
       }
-      this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
-        if(response.data.status){
-          this.initializeDropdownDataRequest();
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 401){
-          let condition = err.error.data.condition;
-          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
-        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
-    }  
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 401){
+        let condition = err.error.data.condition;
+        if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+      }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }  
+
+  if(this.currentUser.data.crol == 16){
+    this.bemitir = true;
+  }else{
+    this.bemitir = false;
   }
+
+}
+
 async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getColor();
@@ -401,7 +418,6 @@ async getmetodologia(){
          clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
          orderId: orden
        },
-       
        this.callbackFn,
        {
          text: 'Pagar'
@@ -453,8 +469,38 @@ async getmetodologia(){
       } 
     },);
   }
-  callbackFn(answer) {
 
+  resultTypePayment(){
+    if(this.search_form.get('xpago').value == 'PASARELA'){
+      this.bpagarubii = true;
+    }else if(this.search_form.get('xpago').value == 'MANUAL'){
+      this.bpagomanual = true;
+    }
+  }
+
+  addPayment(){
+    let payment = {mprima: this.search_form.get('ncobro').value };
+    const modalRef = this.modalService.open(AdministrationPaymentComponent);
+    modalRef.componentInstance.payment = payment;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        this.paymentList.push({
+          cgrid: this.paymentList.length,
+          edit: true,
+          ctipopago: result.ctipopago,
+          xreferencia: result.xreferencia,
+          fcobro: result.fcobro,
+          cbanco: result.cbanco,
+          mprima_pagada: result.mprima_pagada
+        });
+        if(this.paymentList){
+          this.bemitir = true
+        }
+      }
+    });
+  }
+
+  callbackFn(answer) {
 //    this.ctipopago = answer.data.method;
 //   this.xreferencia = answer.data.ref,
 //   this.fcobro = answer.data.date,
@@ -472,6 +518,7 @@ async getmetodologia(){
     }
   
   }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -510,19 +557,21 @@ async getmetodologia(){
         xreferencia: this.xreferencia,
         fcobro: this.fcobro,
         mprima_pagada: this.mprima_pagada,
+        xpago: this.search_form.get('xpago').value
       };
-     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-      this.loading = false;
-    })
+      console.log(params)
+    //  this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+    // },
+    // (err) => {
+    //   let code = err.error.data.code;
+    //   let message;
+    //   if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    //   else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    //   this.alert.message = message;
+    //   this.alert.type = 'danger';
+    //   this.alert.show = true;
+    //   this.loading = false;
+    // })
   }
 }
 

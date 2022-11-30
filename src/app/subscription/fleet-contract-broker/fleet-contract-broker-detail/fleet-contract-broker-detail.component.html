@@ -297,6 +297,18 @@
                 <div >
                 <div class="card-header company-card-header"><h5 class="card-title">Detalles del recibo</h5></div>
                 <div class="row" style="padding: 10px;">
+                  <div class="col-md-3 mb-4 pb-2">
+                    <div class="form-outline">
+                      <label class="form-label required" for="form3Examplev5">Modalidad de Pagos</label>
+                      <select formControlName="xpago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xpago').errors }" (change)="resultTypePayment()">
+                        <option value="PASARELA">Pasarela de Pago</option>
+                        <option value="MANUAL">Pago Manual</option>
+                      </select>
+                      <div *ngIf="submitted && search_form.get('xpago').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('xpago').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
                   <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                     <div class="form-outline">
                       <label class="form-label required">Frecuencia de Pago</label>
@@ -333,13 +345,16 @@
                   <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Monto Total</label>
-                      <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }"  />
+                      <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
                     </div>
                   </div>
-                  <div class="button">
+                  <div class="button" *ngIf="bemitir">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
                   </div>
-                  <div class="col-sm-12 mt-2">
+                  <div class="button" *ngIf="bpagomanual">
+                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
+                  </div>
+                  <div class="col-sm-12 mt-2" *ngIf="bpagarubii">
                     <div class="button">
                         <button id="ubiiboton"></button>
                     </div> 
