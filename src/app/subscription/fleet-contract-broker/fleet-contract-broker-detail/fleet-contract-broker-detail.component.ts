@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { Console } from 'console';
 import { SetValueModel } from 'ag-grid-enterprise/dist/lib/setFilter/setValueModel';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -19,16 +19,13 @@ import { AdministrationPaymentComponent } from '@app/pop-up/administration-payme
   styleUrls: ['./fleet-contract-broker-detail.component.css']
 })
 
-
 export class FleetContractBrokerDetailComponent implements OnInit {
-
-
+ 
   checked = false;
   indeterminate = false;
   labelPosition: 'before' | 'after' = 'after';
   disabled = false;
   currentUser;
-
   search_form : UntypedFormGroup;
   loading: boolean = false;
   submitted: boolean = false;
@@ -44,10 +41,6 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   colorList:any[] = [];
   metodologiaList:any[] = [];
   status: boolean = true;
-  cuotas: boolean = false;
-  accessoryList: any[] = [];
-  descuento: boolean = false;
-  cobertura: boolean = false;
   plan: boolean = false;
   closeResult = '';
   ctipopago : number;
@@ -153,6 +146,7 @@ async initializeDropdownDataRequest(){
     this.getColor();
     this.getCobertura();
     this.getCountry();
+
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -500,23 +494,19 @@ async getmetodologia(){
     });
   }
 
-  callbackFn(answer) {
+
 //    this.ctipopago = answer.data.method;
 //   this.xreferencia = answer.data.ref,
 //   this.fcobro = answer.data.date,
 //   this.mprima_pagada = answer.data.m]
+  callbackFn(answer) {
 
     if(answer.data.R == 0){
       window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`) 
-       this.search_form.get('mprima_pagada').setValue( answer.data.m);
-
-
-
     }
     if (answer.data.R == 1) {
       window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
     }
-  
   }
 
   onSubmit(form){
