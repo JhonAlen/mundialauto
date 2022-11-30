@@ -8,15 +8,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
 
 @Component({
-  selector: 'app-bill-loading-service-order',
-  templateUrl: './bill-loading-service-order.component.html',
-  styleUrls: ['./bill-loading-service-order.component.css']
+  selector: 'app-bill-loading-settlement',
+  templateUrl: './bill-loading-settlement.component.html',
+  styleUrls: ['./bill-loading-settlement.component.css']
 })
-export class BillLoadingServiceOrderComponent implements OnInit {
+export class BillLoadingSettlementComponent implements OnInit {
 
-  @Input() public orden;
-  private serviceOrderGridApi;
-  private acceptedAccesoryGridApi;
+  @Input() public finiquito;
+  private settlementGridApi;
+  private acceptedSettlementGridApi;
   currentUser;
   submitted: boolean = false;
   popup_form: UntypedFormGroup;
@@ -33,9 +33,9 @@ export class BillLoadingServiceOrderComponent implements OnInit {
   showEditButton: boolean = false;
   accesoryList: any[] = [];
   acceptedReplacementList: any[] = [];
-  serviceOrderList: any[] = [];
+  settlementList: any[] = [];
   code;
-  acceptedServiceOrderList;
+  acceptedSettlementList;
   accessoryListResult: any[] = [];
   alert = { show : false, type : "", message : "" }
 
@@ -87,16 +87,14 @@ export class BillLoadingServiceOrderComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cproveedor: this.orden.cproveedor,
-      ccliente: this.orden.ccliente,
-      cpais: this.currentUser.data.cpais,
+      ccliente: this.finiquito.ccliente,
       ccompania: this.currentUser.data.ccompania,
     };
-    this.http.post(`${environment.apiUrl}/api/administration/service-order`, params, options).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/administration/settlement`, params, options).subscribe((response: any) => {
       if(response.data.list){
-        this.serviceOrderList = [];
+        this.settlementList = [];
         for(let i = 0; i < response.data.list.length; i++){
-          this.serviceOrderList.push({ corden: response.data.list[i].corden, xcliente: response.data.list[i].xcliente, xservicio: response.data.list[i].xservicio, mtotal: response.data.list[i].mtotal, mmontototal: response.data.list[i].mmontototal, xmonedagrua: response.data.list[i].xmonedagrua, xmonedacoti: response.data.list[i].xmonedacoti});
+          this.settlementList.push({ cfiniquito: response.data.list[i].cfiniquito, xcliente: response.data.list[i].xcliente, xdanos: response.data.list[i].xdanos, mmontofiniquito: response.data.list[i].mmontofiniquito, xmoneda: response.data.list[i].xmoneda});
         }
       }
     },
@@ -112,43 +110,43 @@ export class BillLoadingServiceOrderComponent implements OnInit {
     });
 
     // Pasar valores a la lista
-    let arrayPerform = this.serviceOrderList;
-    arrayPerform = arrayPerform.filter((obj) => !obj.corden);
+    let arrayPerform = this.settlementList;
+    arrayPerform = arrayPerform.filter((obj) => !obj.cfiniquito);
     for(let i = 0; i < arrayPerform.length; i ++){
       arrayPerform[i].cgrid = i;
     }
     
-      arrayPerform = this.serviceOrderList;
-      this.acceptedServiceOrderList = arrayPerform;
+      arrayPerform = this.settlementList;
+      this.acceptedSettlementList = arrayPerform;
     
     this.canSave = true;
   }
 
-  serviceOrderRowClicked(event: any){
+  settlementRowClicked(event: any){
       let eventObj = event.data;
-      this.serviceOrderList = this.serviceOrderList.filter((obj) => obj.corden != eventObj.corden)
-      this.serviceOrderGridApi.setRowData(this.serviceOrderList);
-      this.acceptedServiceOrderList.push(eventObj);
-      for(let i = 0; i < this.acceptedServiceOrderList.length; i++){
-        this.acceptedServiceOrderList[i].cgrid = i;
-        this.acceptedServiceOrderList[i].corden;
-        this.acceptedServiceOrderList[i].xaccesorio;
-        this.acceptedServiceOrderList[i].mmontomax;
-        this.acceptedServiceOrderList[i].ptasa;
+      this.settlementList = this.settlementList.filter((obj) => obj.cfiniquito != eventObj.cfiniquito)
+      this.settlementGridApi.setRowData(this.settlementList);
+      this.acceptedSettlementList.push(eventObj);
+      for(let i = 0; i < this.acceptedSettlementList.length; i++){
+        this.acceptedSettlementList[i].cgrid = i;
+        this.acceptedSettlementList[i].cfiniquito;
+        this.acceptedSettlementList[i].xaccesorio;
+        this.acceptedSettlementList[i].mmontomax;
+        this.acceptedSettlementList[i].ptasa;
       }
-      this.acceptedAccesoryGridApi.setRowData(this.acceptedServiceOrderList);
+      this.acceptedSettlementGridApi.setRowData(this.acceptedSettlementList);
       this.canSave = true;
-      if(this.acceptedServiceOrderList){
+      if(this.acceptedSettlementList){
         this.showSaveButton = true
       }
   }
 
-  onServiceOrderGridReady(event){
-    this.serviceOrderGridApi = event.api;
+  onSettlementGridReady(event){
+    this.settlementGridApi = event.api;
   }
 
-  onAcceptedServiceOrderGridReady(event){
-    this.acceptedAccesoryGridApi = event.api;
+  onAcceptedSettlementGridReady(event){
+    this.acceptedSettlementGridApi = event.api;
   }
 
   onSubmit(form){
@@ -156,10 +154,8 @@ export class BillLoadingServiceOrderComponent implements OnInit {
     this.submitted = true;
     this.loading = true;
 
-    this.orden = this.acceptedServiceOrderList
+    this.finiquito = this.acceptedSettlementList
 
-    this.activeModal.close(this.acceptedServiceOrderList);
+    this.activeModal.close(this.acceptedSettlementList);
   }
-
-
 }

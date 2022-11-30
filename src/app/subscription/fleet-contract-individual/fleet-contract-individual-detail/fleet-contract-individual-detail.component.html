@@ -11,7 +11,7 @@
     <div class="row d-flex justify-content-center align-items-center h-100">
       <div class="col-12">
         <!-- formulario de busqueda y -->
-        <form [formGroup]="search_form">
+        <form [formGroup]="search_form"> 
           <div class="row g-0">
             <!-- Datos personales -->
             <div class="card">
@@ -90,6 +90,18 @@
                   </div>
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
+                      <label class="form-label required" for="form3Examplev3">País</label>
+                      <select formControlName="cpais" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cpais').errors }" (change)="getState()">
+                        <option></option>
+                        <option *ngFor="let country of CountryList" value="{{ country.id }}">{{ country.value }}</option>
+                      </select>                     
+                      <div *ngIf="submitted && search_form.get('cpais').errors" class="invalid-feedback">
+                        <div *ngIf="search_form.get('cpais').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div> 
+                  <div class="col-md-4 mb-4 pb-2">
+                    <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Estado</label>
                       <select formControlName="cestado" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cestado').errors } " (change)="getCity()">
                         <option></option>
@@ -104,7 +116,7 @@
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Ciudad</label>
                           <select formControlName="cciudad" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cciudad').errors } " >
-                           
+                            <option></option>
                             <option *ngFor="let ciudad of CityList" value="{{ ciudad.id }}">{{ ciudad.value }}</option>
                           </select>                     
                           <div *ngIf="submitted && search_form.get('cciudad').errors" class="invalid-feedback">
@@ -112,7 +124,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="mb-4 pb-2">
+                  <div class="col-md-8 mb-4 pb-2">
                     <div class="form-outline form-white">
                       <label class="form-label required" for="form3Examplea2">Dirección Fiscal</label>
                       <input type="text" formControlName="xdireccionfiscal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xdireccionfiscal').errors }" />
