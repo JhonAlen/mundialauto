@@ -9,11 +9,17 @@
         <div class="col-sm-12">
             <div class="parent">
                 <div class="div1"> 
-                    <div class="card" style="margin-left: -161px;">
+                    <div class="card" style="margin-left: -93px;">
                         <div class="card-header company-card-header">
                             <div class="row">
-                                <div class="col-6" style="margin-left: 268px; font-weight: bolder;">
+                                <div class="col-6" style="font-weight: bolder;">
                                     Carga de Facturas
+                                </div>
+                                <div class="col-6">
+                                    <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(bill_form.value)"  *ngIf="showSaveButton">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Guardar
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -50,28 +56,59 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-4">
-                                            <div class="form-outline">
-                                            <label class="form-label" for="form3Examplev5">Tipo de Pagador</label>
-                                            <select formControlName="xtipopagador" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xtipopagador').errors }" (change)="changePaymaster()">
-                                                <option value="cliente">CLIENTE</option>
-                                                <option value="empresa">EMPRESA</option>
-                                            </select>
-                                            <div *ngIf="submitted && bill_form.get('xtipopagador').errors" class="invalid-feedback">
-                                                <div *ngIf="bill_form.get('xtipopagador').errors.required">Se requiere completar el campo</div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12 col-md-4">
                                             <div class="form-group">
-                                                <label>Pagador</label>
-                                                <select formControlName="cpagador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('cpagador').errors }">
-                                                    <option></option>
-                                                    <option *ngFor="let paymaster of paymasterList" value="{{ paymaster.id }}">{{ paymaster.value }}</option>
-                                                </select>
-                                                <div *ngIf="submitted && bill_form.get('cpagador').errors"  class="invalid-feedback">
+                                                <label>Tipo de Pagador</label>
+                                                <input type="text" formControlName="xtipopagador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xtipopagador').errors }" cols="30" rows="2">
+                                                <div *ngIf="submitted && bill_form.get('xtipopagador').errors"  class="invalid-feedback">
+                                                    <div *ngIf="bill_form.get('xtipopagador').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <div class="form-outline">
+                                            <label class="form-label" for="form3Examplev5">Pagador</label>
+                                            <select formControlName="xpagador" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xpagador').errors }" (change)="changePaymaster()">
+                                                <option value="ARYSAUTO">ARYSAUTO C.A.</option>
+                                                <option value="MUNDIAL">LA MUNDIAL DE SEGUROS</option>
+                                            </select>
+                                            <div *ngIf="submitted && bill_form.get('xpagador').errors" class="invalid-feedback">
+                                                <div *ngIf="bill_form.get('xpagador').errors.required">Se requiere completar el campo</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="col-sm-12 col-md-4">
+                                            <div class="form-group">
+                                                <label>Recibidor</label>
+                                                <select formControlName="crecibidor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('crecibidor').errors }" (change)="changeStatus()">
+                                                    <option></option>
+                                                    <option *ngFor="let paymaster of paymasterList" value="{{ paymaster.id }}">{{ paymaster.value }}</option>
+                                                </select>
+                                                <div *ngIf="submitted && bill_form.get('crecibidor').errors"  class="invalid-feedback">
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        <div class="ng-autocomplete">
+                                            <ng-autocomplete
+                                              [data]="paymasterList"
+                                              [searchKeyword]="keyword"
+                                              placeholder="Seleccionar"
+                                              (selected)='selectEvent($event)'
+                                              (inputChanged)='onChangeSearch($event)'
+                                              (inputFocused)='onFocused($event)'
+                                              historyIdentifier="paymasterList"
+                                              [itemTemplate]="itemTemplate"
+                                              [notFoundTemplate]="notFoundTemplate">
+                                            </ng-autocomplete>
+                                          
+                                            <ng-template #itemTemplate let-item>
+                                              <a [innerHTML]="item.id"></a>
+                                              <a *ngFor="let paymaster of paymasterList" [innerHTML]="paymaster.value"></a>
+                                            </ng-template>
+                                          
+                                            <ng-template #notFoundTemplate let-notFound>
+                                              <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                          </div>
                                     </div>
                                     <hr style="margin: 2rem 0;">
                                     <div class="row" style="margin-top: 42px;">
@@ -123,7 +160,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <label>Monto Factura</label>
                                                 <input type="number" formControlName="mmontofactura" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('mmontofactura').errors }" cols="30" rows="2">
@@ -132,7 +169,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div style="width: 150px">
+                                            <div class="form-group">
+                                                <label>{{ "EVENTS.SERVICEORDER.COIN" | translate }}</label>
+                                                <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('cmoneda').errors }">
+                                                    <option></option>
+                                                    <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
+                                                </select>
+                                                <div *ngIf="submitted && bill_form.get('cmoneda').errors"  class="invalid-feedback">
+                                                    <div *ngIf="bill_form.get('cmoneda').errors.required">{{ "THIRDPARTIES.OWNERS.REQUIREDCOIN" | translate }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
                                             <div class="form-group">
                                                 <label>Observación</label>
                                                 <textarea type="text" formControlName="xobservacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('xobservacion').errors }" cols="30" rows="2"></textarea>
@@ -143,6 +192,28 @@
                                         </div>
                                     </div>
                             </form>
+                        </div>
+                    </div>
+                    <div class="card" style="margin-left: -93px; margin-top: 23px;">
+                        <div class="card-header company-card-header">
+                            <div class="row">
+                                <div class="col-6">
+                                    Cargar Factura
+                                </div>
+                                <div class="col-6">
+                                    <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addBillLoading()" *ngIf="showEditButton">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Añadir Factura
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <ag-grid-angular #agGrid style="width: 100%; height: 161px;" class="ag-theme-alpine" [rowData]="billList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onBillGridReady($event)">
+                                    <ag-grid-column headerName="Ruta" field="xrutaarchivo" [width]="650" [sortable]="true"></ag-grid-column>
+                                </ag-grid-angular>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -157,7 +228,7 @@
                                         Lista de Ordenes de Servicios 
                                     </div>
                                     <div class="col-6">
-                                        <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addServiceOrder()">
+                                        <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addServiceOrder()" *ngIf="showEditButton">
                                             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                             Añadir Ordenes
                                         </button>
@@ -166,26 +237,72 @@
                             </div>
                             <div class="card-body">
                                 <div class="container">
-                                    <ag-grid-angular #agGrid style="width: 100%; height: 330px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="serviceOrderRowClicked($event)" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
+                                    <ag-grid-angular #agGrid style="width: 100%; height: 274px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onServiceOrderGridReady($event)">
                                         <ag-grid-column headerName="Codigo" field="corden" [width]="100" [sortable]="true"></ag-grid-column>
-                                        <ag-grid-column headerName="Servicio" field="xservicio" [width]="120" [sortable]="true"></ag-grid-column>
+                                        <ag-grid-column headerName="Servicio" field="xservicio" [width]="180" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Monto grúa" field="mmontototal" [width]="130" [sortable]="true"></ag-grid-column>
+                                        <ag-grid-column headerName="Moneda grúa" field="xmonedagrua" [width]="180" [sortable]="true"></ag-grid-column>
                                         <ag-grid-column headerName="Monto Cotizacion" field="mtotal" [width]="130" [sortable]="true"></ag-grid-column>
+                                        <ag-grid-column headerName="Moneda Cotizacion" field="xmonedacoti" [width]="180" [sortable]="true"></ag-grid-column>
                                     </ag-grid-angular>
                                 </div>
+                                <br>
+                                <form [formGroup]="bill_form" class="parent">
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            <label style="font-weight: bolder;text-align: center;">Sumatoria de Grúa</label>
+                                            <input type="text" formControlName="msumatoriagrua" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('msumatoriagrua').errors }" style="text-align: center;">
+                                            <div *ngIf="submitted && bill_form.get('msumatoriagrua').errors"  class="invalid-feedback">
+                                                <div *ngIf="bill_form.get('msumatoriagrua').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            <label style="font-weight: bolder;text-align: center;">Sumatoria de cotizacion</label>
+                                            <input type="text" formControlName="msumatoriacotizacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('msumatoriacotizacion').errors }" style="text-align: center;">
+                                            <div *ngIf="submitted && bill_form.get('msumatoriacotizacion').errors"  class="invalid-feedback">
+                                                <div *ngIf="bill_form.get('msumatoriacotizacion').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="card" style="margin-left: 65px;margin-top: 26px;">
+                        <div class="card" style="margin-left: 65px; margin-top: 23px;">
                             <div class="card-header company-card-header">
                                 <div class="row">
-                                    <div class="col-6" style="margin-left: 250px; font-weight: bolder;">
+                                    <div class="col-6" style="font-weight: bolder;">
                                         Lista de Finiquitos
+                                    </div>
+                                    <div class="col-6">
+                                        <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addSettlement()" *ngIf="showEditButton">
+                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                            Añadir Finiquitos
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form [formGroup]="bill_form">
-                
+                                <div class="container">
+                                    <ag-grid-angular #agGrid style="width: 100%; height: 270px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onSettlementGridReady($event)">
+                                        <ag-grid-column headerName="Codigo" field="cfiniquito" [width]="100" [sortable]="true"></ag-grid-column>
+                                        <ag-grid-column headerName="Servicio" field="xdanos" [width]="200" [sortable]="true"></ag-grid-column>
+                                        <ag-grid-column headerName="Monto grúa" field="mmontofiniquito" [width]="130" [sortable]="true"></ag-grid-column>
+                                        <ag-grid-column headerName="Moneda grúa" field="xmoneda" [width]="130" [sortable]="true"></ag-grid-column>
+                                    </ag-grid-angular>
+                                </div>
+                                <br>
+                                <form [formGroup]="bill_form" class="parent">
+                                    <div class="col-sm-10" style="margin-left: 277px;">
+                                        <div class="form-group">
+                                            <label style="font-weight: bolder;text-align: center;">Sumatoria de Finiquitos</label>
+                                            <input type="text" formControlName="msumatoriafiniquito" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('msumatoriafiniquito').errors }" style="text-align: center;">
+                                            <div *ngIf="submitted && bill_form.get('msumatoriafiniquito').errors"  class="invalid-feedback">
+                                                <div *ngIf="bill_form.get('msumatoriafiniquito').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>

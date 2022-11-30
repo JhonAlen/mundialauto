@@ -24,23 +24,25 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>Orden de Servicio</label>
-                                    <select formControlName="corden" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('corden').errors }">
-                                        <option></option>
-                                        <option *ngFor="let danos of danosList" value="{{ danos.corden }}">{{ danos.xdanos }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && search_form.get('corden').errors"  class="invalid-feedback">
+                                    <label>Fecha de Factura</label>
+                                    <input type="date" formControlName="ffactura" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ffactura').errors }">
+                                    <div *ngIf="submitted && search_form.get('ffactura').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>Finiquito</label>
-                                    <select formControlName="cfiniquito" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cfiniquito').errors }">
-                                        <option></option>
-                                        <option *ngFor="let settlement of settlements" value="{{ settlement.id }}">{{ settlement.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && search_form.get('cfiniquito').errors"  class="invalid-feedback">
+                                    <label>Fecha de Recepcion</label>
+                                    <input type="date" formControlName="frecepcion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('frecepcion').errors }">
+                                    <div *ngIf="submitted && search_form.get('frecepcion').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Fecha de Vencimiento</label>
+                                    <input type="date" formControlName="fvencimiento" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fvencimiento').errors }">
+                                    <div *ngIf="submitted && search_form.get('fvencimiento').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
@@ -67,12 +69,15 @@
                                 <div class="row">
                                     <div class="container">
                                         <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="serviceOrderList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                                            <ag-grid-column headerName="Codigo" field="corden" [width]="70" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Servicio" field="xservicio" [width]="173" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Observacion" field="xobservacion" [width]="173" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Monto Grúa" field="mmontototal" [width]="120" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Monto Cotización" field="mtotal" [width]="120" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Moneda" field="xmoneda" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Codigo" field="cfactura" [width]="70" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Cliente" field="xcliente" [width]="173" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Proveedor" field="xnombre" [width]="173" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Monto de Factura" field="mmontofactura" [width]="120" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="N° de Control" field="ncontrol" [width]="120" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="N° de Factura" field="nfactura" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Fecha de Factura" field="ffactura" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Fecha de Recepción" field="frecepcion" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Fecha de Vencimiento" field="fvencimiento" [width]="100" [sortable]="true"></ag-grid-column>
                                         </ag-grid-angular>
                                     </div>
                                 </div>
@@ -94,12 +99,15 @@
                                 <div class="row">
                                     <div class="container">
                                         <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="settlementList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                                            <ag-grid-column headerName="Codigo" field="cfiniquito" [width]="70" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Daño" field="xdanos" [width]="173" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Observacion" field="xobservacion" [width]="173" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Causa" field="xcausafiniquito" [width]="120" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Monto" field="mmontofiniquito" [width]="120" [sortable]="true"></ag-grid-column>
-                                            <ag-grid-column headerName="Moneda" field="xmoneda" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Codigo" field="cfactura" [width]="70" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Cliente" field="xcliente" [width]="173" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Proveedor" field="xnombre" [width]="173" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Monto de Factura" field="mmontofactura" [width]="120" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="N° de Control" field="ncontrol" [width]="120" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="N° de Factura" field="nfactura" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Fecha de Factura" field="ffactura" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Fecha de Recepción" field="frecepcion" [width]="100" [sortable]="true"></ag-grid-column>
+                                            <ag-grid-column headerName="Fecha de Vencimiento" field="fvencimiento" [width]="100" [sortable]="true"></ag-grid-column>
                                         </ag-grid-angular>
                                     </div>
                                 </div>

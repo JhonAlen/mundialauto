@@ -131,26 +131,30 @@ export class AdministrationPaymentComponent implements OnInit {
     });
 
     // Buscar prima
-
-    this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
-      if(response.data.status){
-        //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
-        this.popup_form.get('mprima').setValue(response.data.mprima);
-        this.popup_form.get('mprima').disable();
-        this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
-        this.popup_form.get('mprima_pagada').disable();
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
+    if(this.payment.mprima){
+      this.popup_form.get('mprima').setValue(this.payment.mprima);
+      this.popup_form.get('mprima').disable();
+    }else{
+      this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
+        if(response.data.status){
+          //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
+          this.popup_form.get('mprima').setValue(response.data.mprima);
+          this.popup_form.get('mprima').disable();
+          this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
+          this.popup_form.get('mprima_pagada').disable();
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+      });
+    }
 
     this.canSave = true;
     this.showSaveButton = true;
@@ -193,7 +197,13 @@ export class AdministrationPaymentComponent implements OnInit {
    }
    this.payment.xreferencia = form.xreferencia;
    this.payment.fcobro = form.fcobro;
-   this.payment.mprima_pagada = this.popup_form.get('mprima_pagada').value;
+
+   if(this.popup_form.get('mprima_pagada').value){
+    this.payment.mprima_pagada = this.popup_form.get('mprima_pagada').value;
+   }else{
+    this.payment.mprima_pagada = this.popup_form.get('mprima').value;
+   }
+   
 
    this.activeModal.close(this.payment);
   }
