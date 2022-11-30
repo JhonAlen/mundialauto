@@ -178,7 +178,7 @@ async ngOnInit(): Promise<void>{
       icedula:['', Validators.required],
       femision:['', Validators.required],
       ivigencia:[''],
-      cpais:[''],
+      cpais:['', Validators.required],
     });
     // initUbii(
     //   'ubiiboton',
@@ -533,10 +533,7 @@ async getmetodologia(){
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
-      
     };
-
-   
       this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
         if(response.data.status){
           this.metodologiaList = [];
@@ -549,15 +546,33 @@ async getmetodologia(){
   
         }
       })
-  }else{
+  }
+  else if (this.search_form.get('cplan').value == '12'){
+    this.plan = true;
+
+    let params =  {
+      cpais: this.currentUser.data.cpais,  
+      ccompania: this.currentUser.data.ccompania,
+    };
+      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
+        if(response.data.status){
+          this.metodologiaList = [];
+            for(let i = 4; i < response.data.list.length; i++){
+              this.metodologiaList.push( { 
+                id: response.data.list[i].cmetodologiapago,
+                value: response.data.list[i].xmetodologiapago,
+              });
+            }
+  
+        }
+      })
+  } 
+  else{
     this.plan = false;
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
-      
-    };
-
-   
+    };  
       this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
         if(response.data.status){
           this.metodologiaList = [];
