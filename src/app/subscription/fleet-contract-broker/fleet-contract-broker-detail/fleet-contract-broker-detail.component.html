@@ -193,7 +193,7 @@
                     <div class="col-md-4 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label required">Año del automovil</label>
-                        <input type="number" formControlName="cano" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" (change)="years()" />
+                        <input type="number" formControlName="cano" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" (change)="validatecarstopyear()" />
                         <div *ngIf="submitted && search_form.get('cano').errors" class="invalid-feedback">
                           <div *ngIf="search_form.get('cano').errors.required">Se requiere completar el campo</div>
                         </div>
@@ -281,7 +281,7 @@
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev4">Plan de RCV</label>
-                      <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" (change)="functio()">
+                      <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" (change)="ValidationPlan()">
                         <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cplan').errors" class="invalid-feedback">
@@ -348,20 +348,15 @@
                       <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
                     </div>
                   </div>
-                  <div class="button" *ngIf="bemitir">
-                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
-                  </div>
+
                   <div class="button" *ngIf="bpagomanual">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
                   </div>
                   <div class="col-sm-12 mt-2" *ngIf="bpagarubii">
                     <div class="button">
-                        <button id="ubiiboton"></button>
+                        <button id="ubiiboton" (click)="onSubmit(search_form.value)"></button>
                     </div> 
                 </div>
-
-
-
                 </div> 
               </div>
               </div>
