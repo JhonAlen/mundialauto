@@ -6,11 +6,8 @@ import { WebServiceConnectionService } from '@services/web-service-connection.se
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
-
-import { SetValueModel } from 'ag-grid-enterprise/dist/lib/setFilter/setValueModel';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
 
 
 @Component({
@@ -20,7 +17,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 
 export class FleetContractBrokerDetailComponent implements OnInit {
- 
   checked = false;
   indeterminate = false;
   labelPosition: 'before' | 'after' = 'after';
@@ -55,7 +51,6 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   bpagomanual: boolean = false;
   paymentList: any[] = [];
 
-
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
@@ -65,8 +60,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
               private modalService : NgbModal) { 
 
               }
-              async ngOnInit() {
-              
+              async ngOnInit() {           
 this.search_form = this.formBuilder.group({
   icedula:['', Validators.required],
   xrif_cliente:['', Validators.required],
@@ -104,7 +98,6 @@ this.search_form = this.formBuilder.group({
 
  ;
 ;
-
   this.currentUser = this.authenticationService.currentUserValue;
   if(this.currentUser){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -137,9 +130,7 @@ this.search_form = this.formBuilder.group({
   }else{
     this.bemitir = false;
   }
-
 }
-
 async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getColor();
@@ -344,7 +335,7 @@ async getmetodologia(){
     this.search_form.get('cano').setValue(version.cano);
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
-  functio(){
+  ValidationPlan(){
     if (this.search_form.get('cplan').value == '11'){
       this.plan = true;
       let params =  {
@@ -436,7 +427,7 @@ async getmetodologia(){
      );
       },);
   }
-  years(){
+  validatecarstopyear(){
   const now = new Date();
   const currentYear = now.getFullYear();
     
@@ -478,15 +469,14 @@ async getmetodologia(){
       } 
     },);
   }
-
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
       this.bpagarubii = true;
     }else if(this.search_form.get('xpago').value == 'MANUAL'){
       this.bpagomanual = true;
     }
-  }
 
+  }
   addPayment(){
     let payment = {mprima: this.search_form.get('ncobro').value };
     const modalRef = this.modalService.open(AdministrationPaymentComponent);
@@ -508,8 +498,6 @@ async getmetodologia(){
       }
     });
   }
-
-
 //    this.ctipopago = answer.data.method;
 //   this.xreferencia = answer.data.ref,
 //   this.fcobro = answer.data.date,
@@ -519,7 +507,7 @@ async getmetodologia(){
     if(answer.data.R == 0){
       window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`) 
     
-      const response = await fetch(`${environment.apiUrl}/api/create/Contract-Broker`, {
+      const response = await fetch(`${environment.apiUrl}/api/`, {
         "method": "POST",
         "headers": {
           "CONTENT-TYPE": "Application/json",
@@ -584,18 +572,18 @@ async getmetodologia(){
         xpago: this.search_form.get('xpago').value
       };
       console.log(params)
-    //  this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
-    // },
-    // (err) => {
-    //   let code = err.error.data.code;
-    //   let message;
-    //   if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-    //   else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-    //   this.alert.message = message;
-    //   this.alert.type = 'danger';
-    //   this.alert.show = true;
-    //   this.loading = false;
-    // })
+     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+      this.loading = false;
+    })
   }
 }
 
