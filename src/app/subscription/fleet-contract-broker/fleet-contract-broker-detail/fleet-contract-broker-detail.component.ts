@@ -398,7 +398,9 @@ async getmetodologia(){
   OperationUbii(){
    let params = {
     cplan: this.search_form.get('cplan').value,
-    cmetodologiapago: this.search_form.get('cmetodologiapago').value
+    cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+    xtipo: this.search_form.get('xtipo').value,
+
   }
      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -569,9 +571,12 @@ async getmetodologia(){
         xreferencia: this.xreferencia,
         fcobro: this.fcobro,
         mprima_pagada: this.mprima_pagada,
-        xpago: this.search_form.get('xpago').value
+        xpago: this.search_form.get('xpago').value,
+        payment:{
+          add:this.paymentList
+        }
       };
-      console.log(params)
+ 
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
     },
     (err) => {
