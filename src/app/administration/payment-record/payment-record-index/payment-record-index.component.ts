@@ -36,7 +36,9 @@ export class PaymentRecordIndexComponent implements OnInit {
       corden: [''],
       cfiniquito: [''],
       xdanos: [''],
-      
+      ffactura: [''],
+      frecepcion: [''],
+      fvencimiento: [''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -137,65 +139,40 @@ export class PaymentRecordIndexComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      corden: this.search_form.get('corden').value,
-      cfiniquito: this.search_form.get('cfiniquito').value,
-      ccompania: this.currentUser.data.ccompania
+      ffactura: form.ffactura,
+      frecepcion: form.frecepcion,
+      fvencimiento: form.fvencimiento
     }
     this.http.post(`${environment.apiUrl}/api/administration/search`, params, options).subscribe((response : any) => {
       if(response.data.list){
         this.serviceOrderList = [];
         for(let i = 0; i < response.data.list.length; i++){
-          let xservicio;
-          let xmoneda;
-          let mmontototal;
-          let mtotal;
-          if(response.data.list[i].xservicio){
-            xservicio = response.data.list[i].xservicio
-          }else{
-            xservicio = response.data.list[i].xservicioadicional
-          }
-          if(response.data.list[i].xmoneda){
-            xmoneda = response.data.list[i].xmoneda
-          }else{
-            xmoneda = response.data.list[i].xmonedacotizacion
-          }
-          if(response.data.list[i].mmontototal){
-            mmontototal = response.data.list[i].mmontototal
-          }else{
-            mmontototal = 0
-          }
-          if(response.data.list[i].mtotal){
-            mtotal = response.data.list[i].mtotal
-          }else{
-            mtotal = 0
-          }
           this.serviceOrderList.push({ 
-            corden: response.data.list[i].corden,
-            xservicio: xservicio,
-            xmoneda: xmoneda,
-            xdanos: response.data.list[i].xdanos,
-            xobservacion: response.data.list[i].xobservacion,
-            mmontototal: mmontototal,
-            mtotal: mtotal
+            cfactura: response.data.list[i].cfactura,
+            xcliente: response.data.list[i].xcliente,
+            xnombre: response.data.list[i].xnombre,
+            mmontofactura: response.data.list[i].mmontofactura,
+            ncontrol: response.data.list[i].ncontrol,
+            nfactura: response.data.list[i].nfactura,
+            ffactura: response.data.list[i].ffactura,
+            frecepcion: response.data.list[i].frecepcion,
+            fvencimiento: response.data.list[i].fvencimiento,
           });
         }
       }
       if(response.data.settlementList){
         this.settlementList = [];
         for(let i = 0; i < response.data.settlementList.length; i++){
-          let mmontofiniquito;
-          if(response.data.settlementList[i].mmontofiniquito){
-            mmontofiniquito = response.data.settlementList[i].mmontofiniquito
-          }else{
-            mmontofiniquito = 0
-          }
           this.settlementList.push({ 
-            cfiniquito: response.data.settlementList[i].cfiniquito,
-            xmoneda: response.data.settlementList[i].xmoneda,
-            xdanos: response.data.settlementList[i].xdanos,
-            xobservacion: response.data.settlementList[i].xobservacion,
-            mmontofiniquito: mmontofiniquito,
-            xcausafiniquito: response.data.settlementList[i].xcausafiniquito
+            cfactura: response.data.settlementList[i].cfactura,
+            xcliente: response.data.settlementList[i].xcliente,
+            xnombre: response.data.settlementList[i].xnombre,
+            mmontofactura: response.data.settlementList[i].mmontofactura,
+            ncontrol: response.data.settlementList[i].ncontrol,
+            nfactura: response.data.settlementList[i].nfactura,
+            ffactura: response.data.settlementList[i].ffactura,
+            frecepcion: response.data.settlementList[i].frecepcion,
+            fvencimiento: response.data.settlementList[i].fvencimiento,
           });
         }
       }
