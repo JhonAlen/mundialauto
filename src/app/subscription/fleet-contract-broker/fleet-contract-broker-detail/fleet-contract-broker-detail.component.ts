@@ -403,7 +403,7 @@ async getmetodologia(){
      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('ncobro').setValue(response.data.mprima);
-        response.data.ccubii
+        this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii)
       }
      let prima =  this.search_form.get('ncobro').value.split(" ");
      let orden : string = "UB_" + response.data.ccubii
