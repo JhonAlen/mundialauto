@@ -207,9 +207,9 @@
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Color</label>
-                      <select formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors } ">
+                      <select formControlName="ccolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccolor').errors } ">
                         <option></option>
-                        <option *ngFor="let color of colorList" value="{{ color.value }}">{{ color.value }}</option>
+                        <option *ngFor="let color of colorList" value="{{ color.id }}">{{ color.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xcolor').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xcolor').errors.required">Se requiere completar el campo</div>
@@ -240,8 +240,6 @@
                       <label class="form-label required" for="form3Examplev4">Cobertura</label>
                       <select formControlName="xcobertura" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcobertura').errors } " (change)="funcion()">
                         <option value="RCV">RCV</option>
-                        <option value="AMPLIA">AMPLIA</option>
-                        <option value="PERDIDA TOTAL">PERDIDA TOTAL</option>
                       </select>                         
                       <div *ngIf="submitted && search_form.get('xcobertura').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('xcobertura').errors.required">Se requiere completar el campo</div>
@@ -490,6 +488,14 @@
                     </div>
                   </div>
                 </div> -->
+                <div class="button" *ngIf="bpagomanual">
+                  <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
+                </div>
+                <div class="col-sm-12 mt-2" *ngIf="bpagarubii">
+                  <div class="button">
+                      <button id="ubiiboton" (click)="onSubmit(search_form.value)"></button>
+                  </div> 
+              </div>
                 <div class="button">
                   <button [disabled]="loading || !clear" type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
