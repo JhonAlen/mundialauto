@@ -10,6 +10,8 @@ import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-co
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
+import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
+
 // import { initUbii } from '@ubiipagos/boton-ubii-dc';
 
 @Component({
@@ -77,10 +79,15 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   femision: Date;
   plan: boolean = false
   ano;
-
+  bpago: boolean = false;
+  pagos: boolean = false;
+  bpagarubii: boolean = false;
+  bemitir: boolean = true;
+  bpagomanual: boolean = false;
+  paymentList: any[] = [];
   fnacimientopropietario: string
   fnacimientopropietario2: string;
-  
+
 
   serviceList: any[] = [];
   coverageList: any[] = [];
@@ -224,9 +231,14 @@ async ngOnInit(): Promise<void>{
         this.alert.type = 'danger';
         this.alert.show = true;
       });
-    }
     
+    
+    
+    }
+
+
   }
+
 
 async initializeDropdownDataRequest(){
     this.getPlanData();
@@ -596,6 +608,35 @@ async getmetodologia(){
 
     }
   }
+  resultTypePayment(){
+    if(this.search_form.get('xpago').value == 'PASARELA'){
+      this.bpagarubii = true;
+    }else if(this.search_form.get('xpago').value == 'MANUAL'){
+      this.bpagomanual = true;
+    }
+
+  }
+  addPayment(){
+    let payment = {mprima: this.search_form.get('ncobro').value };
+    const modalRef = this.modalService.open(AdministrationPaymentComponent);
+    modalRef.componentInstance.payment = payment;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        this.paymentList.push({
+          cgrid: this.paymentList.length,
+          edit: true,
+          ctipopago: result.ctipopago,
+          xreferencia: result.xreferencia,
+          fcobro: result.fcobro,
+          cbanco: result.cbanco,
+          mprima_pagada: result.mprima_pagada
+        });
+        if(this.paymentList){
+          this.bemitir = true
+        }
+      }
+    });
+  }
   years(){
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -650,7 +691,7 @@ async getmetodologia(){
         xnombre: form.xnombre,
         xapellido: form.xapellido,
         cano:form.cano,
-        xcolor:this.search_form.get('xcolor').value,      
+        ccolor:this.search_form.get('ccolor').value,      
         cmarca: this.search_form.get('cmarca').value,
         cmodelo: this.search_form.get('cmodelo').value,
         cversion: version.id,
@@ -691,6 +732,9 @@ async getmetodologia(){
         ivigencia: this.search_form.get('ivigencia').value,
         accessory:{
           create: this.accessoryList
+        },
+        payment:{
+          add:this.paymentList
         }
       };
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe(async (response : any) => {
