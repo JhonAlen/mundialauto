@@ -474,8 +474,10 @@ async getmetodologia(){
   }
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
+      this.bpagomanual = false;
       this.bpagarubii = true;
     }else if(this.search_form.get('xpago').value == 'MANUAL'){
+      this.bpagarubii = false;
       this.bpagomanual = true;
     }
 
@@ -507,10 +509,21 @@ async getmetodologia(){
 //   this.mprima_pagada = answer.data.m]
   async callbackFn(answer) {
 
-    if(answer.data.R == 0){
-      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`) 
+    //this.generatePolicyPDF();
     
-      const response = await fetch(`${environment.apiUrl}/api/`, {
+    if(answer.data.R == 0){
+      let ctipopago;
+      if(answer.data.method == "ZELLE"){
+        ctipopago = 4;
+      }
+      if(answer.data.method == "P2C") {
+        ctipopago = 3;
+      }
+      let datetimeformat = answer.data.date.split(' ');
+      let dateformat = datetimeformat[0].split('/');
+      let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
+       
+      const response = await fetch(`${environment.apiUrl}/api/fleet-contract-management/ubii/update`, {
         "method": "POST",
         "headers": {
           "CONTENT-TYPE": "Application/json",
@@ -520,17 +533,17 @@ async getmetodologia(){
         },
         "body": JSON.stringify({
           paymentData: {
-            crecibo: answer.data.orderID,
-            ctipopago: answer.data.method,
+            orderId: answer.data.orderID,
+            ctipopago: ctipopago,
             xreferencia: answer.data.ref,
-            fcobro: answer.data.date,
+            fcobro: fcobro,
             mprima_pagada: answer.data.m
           }
         }) });
-      
+        window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`)
     }
     if (answer.data.R == 1) {
-      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
+      window.alert(`No se pudo procesar el pago de ${answer.data.M}, intente nuevamente`)
     }
   }
 
@@ -590,6 +603,10 @@ async getmetodologia(){
       this.alert.show = true;
       this.loading = false;
     })
+  }
+
+  async generatePolicyPDF() {
+    console.log('PDF');
   }
 }
 
