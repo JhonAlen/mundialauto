@@ -395,13 +395,11 @@ async getmetodologia(){
     
     }
   }
-
   OperationUbii(){
    let params = {
     cplan: this.search_form.get('cplan').value,
     cmetodologiapago: this.search_form.get('cmetodologiapago').value,
     xtipo: this.search_form.get('xtipo').value,
-
   }
      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
       if(response.data.status){
@@ -410,7 +408,7 @@ async getmetodologia(){
       }
      let prima =  this.search_form.get('ncobro').value.split(" ");
      let orden : string = "UB_" + response.data.ccubii
-
+    console.log(prima)
      initUbii(
        'ubiiboton',
        {
@@ -425,7 +423,6 @@ async getmetodologia(){
        {
          text: 'Pagar'
        },
-
 
      );
       },);
@@ -457,7 +454,7 @@ async getmetodologia(){
       
     };
  
-    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validationexistingcustomer`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
@@ -475,8 +472,10 @@ async getmetodologia(){
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
       this.bpagarubii = true;
+      this.bpagomanual = false;
     }else if(this.search_form.get('xpago').value == 'MANUAL'){
       this.bpagomanual = true;
+      this.bpagarubii = false;
     }
 
   }
@@ -508,7 +507,7 @@ async getmetodologia(){
   async callbackFn(answer) {
 
     if(answer.data.R == 0){
-      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`) 
+      confirm(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`) == true
     
       const response = await fetch(`${environment.apiUrl}/api/`, {
         "method": "POST",
@@ -534,62 +533,159 @@ async getmetodologia(){
     }
   }
 
+ DownloadData(){
+  let validation =  {
+    ccodigo_ubii: this.search_form.get('ccodigo_ubii').value
+  };
+  this.http.post(`${environment.apiUrl}/api/fleet-contract-management/contractvalidationpaid`, validation).subscribe((response: any) => {
+   
+   if(response.data.cestatusgeneral== 7){
+
+   }
+   else if(response.data.cestatusgeneral== 13){
+
+   }
+   (err) => {
+    let code = err.error.data.code;
+    let message;
+    if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    else if(code == 404){  message = "No se encuentra el recibo del cliente"; }
+
+    this.alert.message = message;
+    this.alert.type = 'danger';
+    this.alert.show = true;
+    this.loading = false;
+  }
+   
+  },);
+
+ }
+
+
   onSubmit(form){
-    this.submitted = true;
-    this.loading = true;
-    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
-    let params = {
-        icedula: this.search_form.get('icedula').value,
-        xrif_cliente: form.xrif_cliente,
-        xnombre: form.xnombre,
-        xapellido: form.xapellido,
-        xtelefono_emp: form.xtelefono_emp,
-        xtelefono_prop: form.xtelefono_prop,
-        email: form.email,
-        cpais:this.search_form.get('cpais').value,
-        cestado: this.search_form.get('cestado').value,
-        cciudad: this.search_form.get('cciudad').value,
-        xdireccionfiscal: form.xdireccionfiscal,
-        xplaca: form.xplaca,
-        cmarca: this.search_form.get('cmarca').value,
-        cmodelo: this.search_form.get('cmodelo').value,
-        cversion: version.id,
-        cano:form.cano,
-        ncapacidad_p: form.ncapacidad_p,
-        ccolor:this.search_form.get('ccolor').value,    
-        xserialcarroceria: form.xserialcarroceria,
-        xserialmotor: form.xserialmotor,  
-        xcobertura: this.search_form.get('xcobertura').value,
-        xtipo: this.search_form.get('xtipo').value,
-        cplan:this.search_form.get('cplan').value,
-        cmetodologiapago: form.cmetodologiapago,
-        femision: form.femision,
-        ncobro: form.ncobro,
-        ccodigo_ubii:form.ccodigo_ubii,
-        ccorredor:  this.currentUser.data.ccorredor,
-        xcedula: form.xrif_cliente,
-        ctipopago: this.ctipopago,
-        xreferencia: this.xreferencia,
-        fcobro: this.fcobro,
-        mprima_pagada: this.mprima_pagada,
-        xpago: this.search_form.get('xpago').value,
-        payment:{
-          add:this.paymentList
+
+        this.submitted = true;
+        this.loading = true;
+        let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+        let params = {
+            icedula: this.search_form.get('icedula').value,
+            xrif_cliente: form.xrif_cliente,
+            xnombre: form.xnombre,
+            xapellido: form.xapellido,
+            xtelefono_emp: form.xtelefono_emp,
+            xtelefono_prop: form.xtelefono_prop,
+            email: form.email,
+            cpais:this.search_form.get('cpais').value,
+            cestado: this.search_form.get('cestado').value,
+            cciudad: this.search_form.get('cciudad').value,
+            xdireccionfiscal: form.xdireccionfiscal,
+            xplaca: form.xplaca,
+            cmarca: this.search_form.get('cmarca').value,
+            cmodelo: this.search_form.get('cmodelo').value,
+            cversion: version.id,
+            cano:form.cano,
+            ncapacidad_p: form.ncapacidad_p,
+            ccolor:this.search_form.get('ccolor').value,    
+            xserialcarroceria: form.xserialcarroceria,
+            xserialmotor: form.xserialmotor,  
+            xcobertura: this.search_form.get('xcobertura').value,
+            xtipo: this.search_form.get('xtipo').value,
+            cplan:this.search_form.get('cplan').value,
+            cmetodologiapago: form.cmetodologiapago,
+            femision: form.femision,
+            ncobro: form.ncobro,
+            ccodigo_ubii:form.ccodigo_ubii,
+            ccorredor:  this.currentUser.data.ccorredor,
+            xcedula: form.xrif_cliente,
+            ctipopago: this.ctipopago,
+            xreferencia: this.xreferencia,
+            fcobro: this.fcobro,
+            mprima_pagada: this.mprima_pagada,
+            xpago: this.search_form.get('xpago').value,
+            payment:{
+              add:this.paymentList
+            }
+          };
+    
+         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          else if(code == 404){  message = "No se encuentra el recibo del cliente"; }
+
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+          this.loading = false;
         }
-      };
- 
-     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-      this.loading = false;
-    })
+        )
+
+
+      
+
+
+
+
+/////////////////////////////////////////////////////////////////////
+    // this.submitted = true;
+    // this.loading = true;
+    // let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    // let params = {
+    //     icedula: this.search_form.get('icedula').value,
+    //     xrif_cliente: form.xrif_cliente,
+    //     xnombre: form.xnombre,
+    //     xapellido: form.xapellido,
+    //     xtelefono_emp: form.xtelefono_emp,
+    //     xtelefono_prop: form.xtelefono_prop,
+    //     email: form.email,
+    //     cpais:this.search_form.get('cpais').value,
+    //     cestado: this.search_form.get('cestado').value,
+    //     cciudad: this.search_form.get('cciudad').value,
+    //     xdireccionfiscal: form.xdireccionfiscal,
+    //     xplaca: form.xplaca,
+    //     cmarca: this.search_form.get('cmarca').value,
+    //     cmodelo: this.search_form.get('cmodelo').value,
+    //     cversion: version.id,
+    //     cano:form.cano,
+    //     ncapacidad_p: form.ncapacidad_p,
+    //     ccolor:this.search_form.get('ccolor').value,    
+    //     xserialcarroceria: form.xserialcarroceria,
+    //     xserialmotor: form.xserialmotor,  
+    //     xcobertura: this.search_form.get('xcobertura').value,
+    //     xtipo: this.search_form.get('xtipo').value,
+    //     cplan:this.search_form.get('cplan').value,
+    //     cmetodologiapago: form.cmetodologiapago,
+    //     femision: form.femision,
+    //     ncobro: form.ncobro,
+    //     ccodigo_ubii:form.ccodigo_ubii,
+    //     ccorredor:  this.currentUser.data.ccorredor,
+    //     xcedula: form.xrif_cliente,
+    //     ctipopago: this.ctipopago,
+    //     xreferencia: this.xreferencia,
+    //     fcobro: this.fcobro,
+    //     mprima_pagada: this.mprima_pagada,
+    //     xpago: this.search_form.get('xpago').value,
+    //     payment:{
+    //       add:this.paymentList
+    //     }
+    //   };
+
+    //  this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+    // },
+    // (err) => {
+    //   let code = err.error.data.code;
+    //   let message;
+    //   if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    //   else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    //   this.alert.message = message;
+    //   this.alert.type = 'danger';
+    //   this.alert.show = true;
+    //   this.loading = false;
+    // })
   }
 }
 

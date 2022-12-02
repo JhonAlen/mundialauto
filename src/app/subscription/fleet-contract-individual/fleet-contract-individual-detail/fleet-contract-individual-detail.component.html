@@ -207,9 +207,9 @@
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Color</label>
-                      <select formControlName="ccolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccolor').errors } ">
+                      <select formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors } ">
                         <option></option>
-                        <option *ngFor="let color of colorList" value="{{ color.id }}">{{ color.value }}</option>
+                        <option *ngFor="let color of colorList" value="{{ color.value }}">{{ color.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xcolor').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xcolor').errors.required">Se requiere completar el campo</div>

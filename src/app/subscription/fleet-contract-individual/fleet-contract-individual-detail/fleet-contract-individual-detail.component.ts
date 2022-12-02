@@ -669,7 +669,7 @@ async getmetodologia(){
       
     };
  
-    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validationexistingcustomer`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
