@@ -395,6 +395,7 @@ async getmetodologia(){
     
     }
   }
+
   OperationUbii(){
    let params = {
     cplan: this.search_form.get('cplan').value,

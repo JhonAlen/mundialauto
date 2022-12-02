@@ -422,7 +422,7 @@
                 <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }">
                       <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
