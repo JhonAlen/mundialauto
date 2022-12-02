@@ -26,7 +26,7 @@
                         <div class="card-body">
                             <form [formGroup]="bill_form">
                                     <div class="row">
-                                        <div class="col-sm-12 col-md-4">
+                                        <!-- <div class="col-sm-12 col-md-4">
                                             <div class="form-group">
                                                 <label>Proveedor</label>
                                                 <select formControlName="cproveedor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('cproveedor').errors }" (change)="changeInfo()">
@@ -36,7 +36,24 @@
                                                 <div *ngIf="submitted && bill_form.get('cproveedor').errors"  class="invalid-feedback">
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
+                                        <div class="col-sm-12 col-md-4">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev5">Recibidor</label>
+                                                <ng-autocomplete  [data]="providerList" [searchKeyword]="keyword" 
+                                                                placeholder="Seleccionar Beneficiario" 
+                                                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                                </ng-autocomplete>
+                                            
+                                                <ng-template #itemTemplate let-item>
+                                                    <a [innerHTML]="item.value" value="{{ item.id }}" (change)="changeInfo()"></a>
+                                                </ng-template>
+                                            
+                                                <ng-template #notFoundTemplate let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div> 
                                         <div class="col-sm-12 col-md-4">
                                             <div class="form-group">
                                                 <label>Razón Social</label>
@@ -76,39 +93,23 @@
                                             </div>
                                             </div>
                                         </div>
-                                        <!-- <div class="col-sm-12 col-md-4">
-                                            <div class="form-group">
-                                                <label>Recibidor</label>
-                                                <select formControlName="crecibidor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('crecibidor').errors }" (change)="changeStatus()">
-                                                    <option></option>
-                                                    <option *ngFor="let paymaster of paymasterList" value="{{ paymaster.id }}">{{ paymaster.value }}</option>
-                                                </select>
-                                                <div *ngIf="submitted && bill_form.get('crecibidor').errors"  class="invalid-feedback">
-                                                </div>
+                                        <div class="col-sm-12 col-md-4">
+                                            <div class="form-outline">
+                                                <label class="form-label" for="form3Examplev5">Recibidor</label>
+                                                <ng-autocomplete  [data]="paymasterList" [searchKeyword]="keyword" 
+                                                                placeholder="Seleccionar Beneficiario" (selected)='selectEvent($event)' 
+                                                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" (change)="changeStatus()">                                 
+                                                </ng-autocomplete>
+                                            
+                                                <ng-template #itemTemplate let-item>
+                                                    <a [innerHTML]="item.value" value="{{ item.id }}"></a>
+                                                </ng-template>
+                                            
+                                                <ng-template #notFoundTemplate let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
                                             </div>
-                                        </div> -->
-                                        <div class="ng-autocomplete">
-                                            <ng-autocomplete
-                                              [data]="paymasterList"
-                                              [searchKeyword]="keyword"
-                                              placeholder="Seleccionar"
-                                              (selected)='selectEvent($event)'
-                                              (inputChanged)='onChangeSearch($event)'
-                                              (inputFocused)='onFocused($event)'
-                                              historyIdentifier="paymasterList"
-                                              [itemTemplate]="itemTemplate"
-                                              [notFoundTemplate]="notFoundTemplate">
-                                            </ng-autocomplete>
-                                          
-                                            <ng-template #itemTemplate let-item>
-                                              <a [innerHTML]="item.id"></a>
-                                              <a *ngFor="let paymaster of paymasterList" [innerHTML]="paymaster.value"></a>
-                                            </ng-template>
-                                          
-                                            <ng-template #notFoundTemplate let-notFound>
-                                              <div [innerHTML]="notFound"></div>
-                                            </ng-template>
-                                          </div>
+                                        </div> 
                                     </div>
                                     <hr style="margin: 2rem 0;">
                                     <div class="row" style="margin-top: 42px;">

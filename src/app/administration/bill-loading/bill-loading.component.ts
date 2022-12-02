@@ -56,6 +56,10 @@ export class BillLoadingComponent implements OnInit {
   sum3;
   pagador: any[] = [];
   keyword = 'name';
+  titles;
+  filteredTitles;
+  model;
+
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -140,6 +144,7 @@ export class BillLoadingComponent implements OnInit {
     }
     this.http.post(`${environment.apiUrl}/api/valrep/provider-bill`, params, options).subscribe((response: any) => {
       this.providerList = [];
+      this.keyword = 'value'
       if(response.data.list){
         for(let i = 0; i < response.data.list.length; i++){
           this.providerList.push({ id: response.data.list[i].cproveedor, value: response.data.list[i].xnombre});
@@ -159,7 +164,13 @@ export class BillLoadingComponent implements OnInit {
     });
   }
 
+  // prueba(event){
+  //   this.bill_form.get('cproveedor').setValue(event.id)
+  //   this.changeInfo();
+  // }
+
   changeInfo(){
+    console.log(this.bill_form.get('cproveedor').value)
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -186,7 +197,7 @@ export class BillLoadingComponent implements OnInit {
   }
 
   changePaymaster(){
-    this.keyword = 'name';
+    this.keyword = 'value';
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -200,8 +211,6 @@ export class BillLoadingComponent implements OnInit {
           this.paymasterList.push({ id: response.data.list[i].ccliente, value: response.data.list[i].xcliente});
         }
       }
-      console.log(this.keyword)
-      console.log(this.paymasterList)
     },
     (err) => {
       let code = err.error.data.code;
@@ -216,17 +225,18 @@ export class BillLoadingComponent implements OnInit {
   }
 
   selectEvent(event) {
-    console.log(event.value)
+    this.bill_form.get('crecibidor').setValue(event.id)
+    this.bill_form.get('cproveedor').setValue(event.id)
   }
 
-  onChangeSearch(search: string) {
-    // fetch remote data from here
-    // And reassign the 'data' which is binded to 'data' property.
-  }
+  // onChangeSearch(search: string) {
+  //   // fetch remote data from here
+  //   // And reassign the 'data' which is binded to 'data' property.
+  // }
 
-  onFocused(e) {
-    // do something
-  }
+  // onFocused(e) {
+  //   // do something
+  // }
 
   searchCoin(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -254,6 +264,8 @@ export class BillLoadingComponent implements OnInit {
   }
 
   changeStatus(){
+    console.log(this.bill_form.get('crecibidor').value)
+    console.log(this.bill_form.get('cproveedor').value)
     if(this.bill_form.get('crecibidor').value){
       if(this.paymasterList[0].value == 'ArysAutos C.A'){
         this.showEditButton = false;

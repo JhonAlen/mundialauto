@@ -5,7 +5,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridModule } from 'ag-grid-angular';
 import { JwtInterceptor } from '@app/_helpers/jwt.interceptor';
@@ -619,6 +619,7 @@ export function HttpLoaderFactory(http: HttpClient){
     MatToolbarModule,
     RouterModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     NgbModule,
     AutocompleteLibModule,
