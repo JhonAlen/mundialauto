@@ -93,7 +93,8 @@ this.search_form = this.formBuilder.group({
   xreferencia:[''],
   fcobro:[''],
   mprima_pagada:[''],
-  xpago: ['']
+  xpago: [''],
+  xcolor: ['']
 })
 
  ;

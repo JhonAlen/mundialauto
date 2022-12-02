@@ -207,9 +207,9 @@
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev3">Color</label>
-                      <select formControlName="ccolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccolor').errors } ">
+                      <select formControlName="xcolor" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcolor').errors } ">
                         <option></option>
-                        <option *ngFor="let color of colorList" value="{{ color.id }}">{{ color.value }}</option>
+                        <option *ngFor="let color of colorList" value="{{ color.value }}">{{ color.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('xcolor').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xcolor').errors.required">Se requiere completar el campo</div>
@@ -422,7 +422,7 @@
                 <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="OperationUbii()">
                       <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
@@ -431,10 +431,22 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-3 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label required" for="form3Examplev5">Modalidad de Pagos</label>
+                    <select formControlName="xpago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xpago').errors }" (change)="resultTypePayment()">
+                      <option value="PASARELA">Pasarela de Pago</option>
+                      <option value="MANUAL">Pago Manual</option>
+                    </select>
+                    <div *ngIf="submitted && search_form.get('xpago').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('xpago').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-md-3 mb-4 pb-2" *ngIf="plan">
                   <div class="form-outline">
                     <label class="form-label " for="form3Examplev5">Vigencia</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="OperationUbii()">
                      <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
