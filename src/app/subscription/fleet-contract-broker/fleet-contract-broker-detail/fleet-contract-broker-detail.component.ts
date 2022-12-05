@@ -657,6 +657,7 @@ async getmetodologia(){
  onSubmit(form){
   this.submitted = true;
   this.loading = true;
+
   let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
   let params = {
       icedula: this.search_form.get('icedula').value,
