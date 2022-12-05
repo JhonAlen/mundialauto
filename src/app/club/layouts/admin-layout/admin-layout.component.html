@@ -17,9 +17,9 @@
             <mat-icon>assignment</mat-icon>
             <span style="color: white;">Emitir Polizas</span>
           </button>
-          <button mat-button class="menu-button" routerLink="/administration/collection-index">
+          <button mat-button class="menu-button" routerLink="/subscription/fleet-contract-broker-index">
             <mat-icon>credit_card</mat-icon>
-            <span style="color: white;">Gestión de Cobro</span>
+            <span style="color: white;">Gestión de Ventas</span>
           </button>
          <!-- <button mat-button class="menu-button" routerLink="/notifications">
             <mat-icon>notification_important</mat-icon>
@@ -33,7 +33,7 @@
         </mat-sidenav>
          <mat-sidenav-content>
           <div class="content mat-elevation-z8">
-            <app-fleet-contract-broker-detail></app-fleet-contract-broker-detail>
+            <router-outlet></router-outlet>
           </div>
         </mat-sidenav-content> 
       </mat-sidenav-container> 

@@ -558,14 +558,9 @@ async getmetodologia(){
          this.search_form.get('ncobro').setValue(response.data.mprima);
        }
 
-<<<<<<< HEAD
- functio(){
-  console.log(this.search_form.get('cplan').value)
-=======
        },);
    }
  functio () {
->>>>>>> ff4abf0a6f736321ce4d0014681d6b87107df455
   if (this.search_form.get('cplan').value == '11'){
     this.plan = true;
 
@@ -763,7 +758,7 @@ async getmetodologia(){
       
     };
  
-    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validationexistingcustomer`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
