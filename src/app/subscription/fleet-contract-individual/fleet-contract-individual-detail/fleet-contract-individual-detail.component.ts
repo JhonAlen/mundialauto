@@ -628,15 +628,8 @@ async getmetodologia(){
     }else if(this.search_form.get('xpago').value == 'MANUAL'){
       this.bpagomanual = true;
     }
-    if(this.search_form.get('xpago').value == 'MANUAL'){
-      return this.hola();
-    }
   }
-
-  hola(){
-    console.log('hola')
-  }
-
+  
   addPayment(){
     let payment = {mprima: this.search_form.get('ncobro').value };
     const modalRef = this.modalService.open(AdministrationPaymentComponent);
@@ -783,7 +776,6 @@ async getmetodologia(){
       this.loading = false;
       return;
     }
-    console.log('holaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     let params = {
         xnombre: form.xnombre,
@@ -828,14 +820,11 @@ async getmetodologia(){
         pblindaje: form.pblindaje,
         icedula: this.search_form.get('icedula').value,
         ivigencia: this.search_form.get('ivigencia').value,
+        payment: this.paymentList,
         accessory:{
           create: this.accessoryList
-        },
-        payment:{
-          create:this.paymentList
         }
       };
-      console.log(params)
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe(async (response : any) => {
       if(response.data.status){
         this.xpoliza = response.data.xpoliza;
