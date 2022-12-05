@@ -348,9 +348,15 @@
                       <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
                     </div>
                   </div>
+<<<<<<< HEAD
                   <!-- <div class="button" *ngIf="bemitir">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
                   </div> -->
+=======
+                  <div class="button" *ngIf="bemitir">
+                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="verifyPayment()">Emitir Poliza</button>
+                  </div>
+>>>>>>> ff4abf0a6f736321ce4d0014681d6b87107df455
                   <div class="button" *ngIf="bpagomanual">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
                   </div>
