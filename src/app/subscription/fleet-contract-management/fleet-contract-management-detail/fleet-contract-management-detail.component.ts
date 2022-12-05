@@ -2239,10 +2239,46 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [100, '*'],
+            body: [
+              [{text: 'Datos del afiliado', bold: true, border: [true, true, false, true]}, {text: ' ', border: [false, true, true, true]}],
+              [{text: 'Nombres y Apellidos', border: [true, false, true, true]}, {text: this.xnombrecliente, border: [false, false, true, true]}],
+              [{text: 'Tipo y número de documento de identidad', border: [true, false, true, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}],
+              [{text: 'Dirección', border: [true, false, true, true]}, [{text: this.xdireccionfiscalcliente, border: [false, false, true, true]}]],
+              [{text: 'Número de Teléfono', border: [true, false, true, true]}, [{text: this.xtelefonocliente, border: [false, false, true, true]}]],
+              [{text: 'Datos del vehículo', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, true, true]}],
+              [{text: 'Placa', border: [true, false, true, true]}, [{text: this.detail_form.get('xplaca').value, border: [false, false, true, true]}]],
+              [{text: 'Marca - Modelo - Versión', border: [true, false, true, true]}, {text: `${this.detail_form.get('xmarca').value} - ${this.detail_form.get('xmodelo').value} - ${this.detail_form.get('xversion').value}`}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
               [{text: 'Con la compra de la póliza RCV, adquiere una membresía por el vehículo asegurado suscrita por ARYSAUTOS, C.A. sociedad mercantil domiciliada en Valencia,\n' + 
                       'Estado Carabobo e inscrita en el Registro Mercantil Segundo de la circunscripción judicial del Estado Carabobo bajo el número 73 tomo 7-A, por lo que está\n' +
-                      'AFILIADO al club de miembros de en el cual tendrá acceso a los siguientes SERVICIOS con disponibilidad a nivel nacional las 24/7, los 365 días del\n' +
-                      'año de manera rápida y segura para responder a todas tus requerimientos e inquietudes.', border:[false, false, false, false]
+                      'AFILIADO al club de miembros de en el cual tendrá acceso a los siguientes SERVICIOS con disponibilidad a nivel nacional las 24/7, los 365 días del año de\n' +
+                      'manera rápida y segura para responder a todas tus requerimientos e inquietudes.', border:[false, false, false, false]
               }]
             ]
           }
@@ -2306,12 +2342,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
             'Debe llamar al: 0500-2797288 / 0414-4128237 / 0241-8200184. En caso de tener inconvenientes con la línea 0500 puede comunicarse con el número telefónico\n' +
             '0241-8200184',
             'Dar aviso a la brevedad posible, plazo máximo de acuerdo a las condiciones de la Póliza.',
-            'Una vez contactado con la central del Call Center se le tomarán los detalles del siniestro (es importante que el mismo conductor realice la llamada) y de\n' +
-            'acuerdo al tipo de siniestro o daño se le indicaran los pasos a seguir.',
+            'Una vez contactado con la central del Call Center se le tomarán los detalles del siniestro (es importante que el mismo conductor realice la llamada) y de acuerdo\n' +
+            'al tipo de siniestro o daño se le indicaran los pasos a seguir.',
             'Permanezca en el lugar del accidente y comuníquese inmediatamente con las autoridades de tránsito.',
-            'Si intervino una autoridad competente (Tránsito Terrestre, Guardia Nacional Bolivariana, Policía Nacional Bolivariana),es necesario que solicite las\n' + 
-            'experticias y a su vez las Actuaciones de Tránsito con el respectivo croquis, verifíquelas antes de firmarlas, ya que se requiere disponer de todos los \n' + 
-            'detalles del accidente, los datos de los vehículos y personas involucradas. Sin estos datos, no se podrá culminar la Notificación',
+            'Si intervino una autoridad competente (Tránsito Terrestre, Guardia Nacional Bolivariana, Policía Nacional Bolivariana),es necesario que solicite las experticias y\n' + 
+            'a su vez las Actuaciones de Tránsito con el respectivo croquis, verifíquelas antes de firmarlas, ya que se requiere disponer de todos los detalles del accidente,\n' + 
+            'los datos de los vehículos y personas involucradas. Sin estos datos, no se podrá culminar la Notificación',
             'No suministre información que puede afectarlo.'
           ]
         }
