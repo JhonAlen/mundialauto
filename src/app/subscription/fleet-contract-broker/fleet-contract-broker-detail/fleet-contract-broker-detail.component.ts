@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { initUbii } from '@ubiipagos/boton-ubii-dc';
+import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -52,6 +52,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   bpagomanual: boolean = false;
   paymentList: any[] = [];
   cordenUbii: number;
+  ccontratoflota: number;
 
   //Variables del PDF
   ccontratoflora: number;
@@ -585,8 +586,6 @@ async getmetodologia(){
 //   this.fcobro = answer.data.date,
 //   this.mprima_pagada = answer.data.m]
   async callbackFn(answer) {
-
-    this.generatePolicyPDF();
     
     if(answer.data.R == 0){
       let ctipopago;
@@ -617,7 +616,9 @@ async getmetodologia(){
             mprima_pagada: answer.data.m
           }
         }) });
-        window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`)
+        await window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`);
+        console.log(this.ccontratoflota);
+        this.getFleetContractDetail(this.ccontratoflota);
     }
     if (answer.data.R == 1) {
       window.alert(`No se pudo procesar el pago de ${answer.data.M}, intente nuevamente`)
@@ -667,19 +668,46 @@ async getmetodologia(){
           add:this.paymentList
         }
       };
- 
-     this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-      this.loading = false;
-    })
+      if (!this.validateForm(this.search_form)) {
+        closeUbii();
+        console.log('entro');
+      } else {
+        this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+          if (response.data.status) {
+            this.ccontratoflota = response.data.ccontratoflota;
+            this.fdesde_pol = response.data.fdesde_pol;
+            this.fhasta_pol = response.data.fhasta_pol;
+            this.fdesde_rec = response.data.fdesde_rec;
+            this.fhasta_rec = response.data.fhasta_rec;
+            this.xrecibo = response.data.xrecibo;
+            this.fsuscripcion = response.data.fsuscripcion;
+            this.femision = response.data.femision;
+          } else {
+            closeUbii()
+          }
+        },
+        (err) => {
+          closeUbii();
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+          this.loading = false;
+        })
+      }
+    
+  }
+
+  validateForm(form) {
+    console.log(form);
+    if (form.invalid){
+      console.log('xD');
+      return false;
+    }
+    return true;
   }
 
   verifyPayment() {
@@ -688,10 +716,6 @@ async getmetodologia(){
     } else {
       window.alert('Primero Debe de pagar para poder generar el reporte de la póliza.')
     }
-  }
-
-  async generatePolicyPDF() {
-    console.log('PDF');
   }
 
   async getFleetContractDetail(ccontratoflota) {
@@ -704,6 +728,7 @@ async getmetodologia(){
     };
     await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
       if(response.data.status){
+        console.log(response.data);
         this.ccarga = response.data.ccarga;
         this.xpoliza = response.data.xpoliza;
         this.xtituloreporte = response.data.xtituloreporte;
