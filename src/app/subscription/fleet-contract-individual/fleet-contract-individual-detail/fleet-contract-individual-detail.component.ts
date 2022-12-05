@@ -195,7 +195,8 @@ async ngOnInit(): Promise<void>{
       fcobro:[''],
       mprima_pagada:[''],
       cbanco: [''],
-      xcedula: ['']
+      xcedula: [''],
+      binternacional: ['']
     });
     // initUbii(
     //   'ubiiboton',
@@ -411,6 +412,8 @@ async getPlanData(){
         this.planList.push({ 
           id: response.data.list[i].cplan,
           value: response.data.list[i].xplan,
+          control: response.data.list[i].control,
+          binternacional: response.data.list[i].binternacional
         });
       }
       this.planList.sort((a, b) => a.value > b.value ? 1 : -1)
@@ -548,70 +551,48 @@ async getmetodologia(){
   }
 
  functio(){
-  console.log(this.search_form.get('cplan').value)
-  if (this.search_form.get('cplan').value == '11'){
-    this.plan = true;
+  let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+  this.search_form.get('binternacional').setValue(metodologiaPago.binternacional);
 
-    let params =  {
-      cpais: this.currentUser.data.cpais,  
-      ccompania: this.currentUser.data.ccompania,
-    };
-      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
-        if(response.data.status){
-          this.metodologiaList = [];
-            for(let i = 4; i < response.data.list.length; i++){
-              this.metodologiaList.push( { 
-                id: response.data.list[i].cmetodologiapago,
-                value: response.data.list[i].xmetodologiapago,
-              });
-            }
-  
-        }
-      })
-  }
-  else if (this.search_form.get('cplan').value == '12'){
-    this.plan = true;
-
-    let params =  {
-      cpais: this.currentUser.data.cpais,  
-      ccompania: this.currentUser.data.ccompania,
-    };
-      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
-        if(response.data.status){
-          this.metodologiaList = [];
-            for(let i = 4; i < response.data.list.length; i++){
-              this.metodologiaList.push( { 
-                id: response.data.list[i].cmetodologiapago,
-                value: response.data.list[i].xmetodologiapago,
-              });
-            }
-  
-        }
-      })
-  } 
-  else{
-    this.plan = false;
-    let params =  {
-      cpais: this.currentUser.data.cpais,  
-      ccompania: this.currentUser.data.ccompania,
-    };  
-    console.log(params)
-      this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago`, params).subscribe((response: any) =>{
-        console.log(response.data.status)
-        if(response.data.status){
-          this.metodologiaList = [];
-            for(let i = 4; i < response.data.list.length; i--){
-              this.metodologiaList.push( { 
-                id: response.data.list[i].cmetodologiapago,
-                value: response.data.list[i].xmetodologiapago,
-              });
-            }
-            console.log(this.metodologiaList)
-
-        }
-      })
-  
-  }
+    if (this.search_form.get('binternacional').value == 1){
+      this.plan = true;
+      let params =  {
+        cpais: this.currentUser.data.cpais,  
+        ccompania: this.currentUser.data.ccompania,
+        binternacional: this.search_form.get('binternacional').value
+      };
+        this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago-contract`, params).subscribe((response: any) =>{
+          if(response.data.status){
+            this.metodologiaList = [];
+              for(let i = 0; i < response.data.list.length; i++){
+                this.metodologiaList.push( { 
+                  id: response.data.list[i].cmetodologiapago,
+                  value: response.data.list[i].xmetodologiapago,
+                });
+              }
+          }
+        })
+    }  
+    else{
+      this.plan = false;
+      let params =  {
+        cpais: this.currentUser.data.cpais,  
+        ccompania: this.currentUser.data.ccompania,
+        binternacional: this.search_form.get('binternacional').value
+      };
+        this.http.post(`${environment.apiUrl}/api/valrep/metodologia-pago-contract`, params).subscribe((response: any) =>{
+          if(response.data.status){
+            this.metodologiaList = [];
+              for(let i = 0; i < response.data.list.length; i++){
+                this.metodologiaList.push( { 
+                  id: response.data.list[i].cmetodologiapago,
+                  value: response.data.list[i].xmetodologiapago,
+                });
+              }
+          }
+        })
+    
+    }
  }
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
@@ -646,30 +627,23 @@ async getmetodologia(){
           mprima_pagada: result.mprima_pagada
         }
 
-        // this.paymentList.push({
-        //   cgrid: this.paymentList.length,
-        //   edit: true,
-        //   ctipopago: result.ctipopago,
-        //   xreferencia: result.xreferencia,
-        //   fcobro: result.fcobro,
-        //   cbanco: result.cbanco,
-        //   mprima_pagada: result.mprima_pagada
-        // });
         if(this.paymentList){
           this.bemitir = true
         }
+
+        this.onSubmit(this.search_form.value)
       }
     });
   }
 
   OperationUbii(){
+    let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
-     cplan: this.search_form.get('cplan').value,
+     cplan: metodologiaPago.id,
      cmetodologiapago: this.search_form.get('cmetodologiapago').value,
      xtipo: this.search_form.get('xtipo').value,
  
    }
-   console.log(params)
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
        if(response.data.status){
          this.search_form.get('ncobro').setValue(response.data.mprima);
@@ -746,7 +720,7 @@ async getmetodologia(){
       
     };
  
-    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validation`, params).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validationexistingcustomer`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('xnombre').setValue(response.data.xnombre);
         this.search_form.get('xapellido').setValue(response.data.xapellido);
@@ -777,6 +751,7 @@ async getmetodologia(){
       return;
     }
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
         xnombre: form.xnombre,
         xapellido: form.xapellido,
@@ -794,7 +769,7 @@ async getmetodologia(){
         xserialcarroceria: form.xserialcarroceria,
         xplaca: form.xplaca,
         xtelefono_emp: form.xtelefono_emp,
-        cplan:this.search_form.get('cplan').value,
+        cplan: metodologiaPago.id,
         ccorredor:  this.search_form.get('ccorredor').value,
         xcedula: form.xrif_cliente,
         xcobertura: this.search_form.get('xcobertura').value,

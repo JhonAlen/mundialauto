@@ -360,7 +360,6 @@ async getmetodologia(){
                   value: response.data.list[i].xmetodologiapago,
                 });
               }
-              console.log(this.metodologiaList)
           }
         })
     }  
@@ -380,7 +379,6 @@ async getmetodologia(){
                   value: response.data.list[i].xmetodologiapago,
                 });
               }
-              console.log(this.metodologiaList)
           }
         })
     
@@ -567,16 +565,16 @@ async getmetodologia(){
       };
  
      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+      if(response.data.status){
+        window.alert('¡Se ha registrado exitosamente!')
+        location.reload();
+      }
     },
     (err) => {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      else{
-        window.alert('¡Se ha registrado exitosamente!')
-        location.reload();
-      }
       this.alert.message = message;
       this.alert.type = 'danger';
       this.alert.show = true;
