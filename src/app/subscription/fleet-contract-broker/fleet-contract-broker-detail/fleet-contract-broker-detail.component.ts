@@ -54,6 +54,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   cordenUbii: number;
 
   //Variables del PDF
+  ccontratoflora: number;
   ccarga: number;
   xanexo: string;
   xobservaciones: string;
@@ -497,7 +498,7 @@ async getmetodologia(){
          clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
          orderId: orden
        },
-       this.callbackFn,
+       this.callbackFn.bind(this),
        {
          text: 'Pagar'
        },
@@ -585,7 +586,7 @@ async getmetodologia(){
 //   this.mprima_pagada = answer.data.m]
   async callbackFn(answer) {
 
-    //this.generatePolicyPDF();
+    this.generatePolicyPDF();
     
     if(answer.data.R == 0){
       let ctipopago;
