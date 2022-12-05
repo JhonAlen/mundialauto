@@ -43,6 +43,9 @@ export class CollectionDetailComponent implements OnInit {
   xreferencia: string;
   mprima_pagada: number;
   fcobro: Date;
+  ctasacambio: number;
+  mtasacambio: number;
+  ftasacambio: Date;
 
   constructor(private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
@@ -56,8 +59,8 @@ export class CollectionDetailComponent implements OnInit {
     this.detail_form = this.formBuilder.group({
       xnombrepropietario: [''],
       xapellidopropietario: [''],
-      fdesde_pol: [''],
-      fhasta_pol: [''],
+      fdesde_rec: [''],
+      fhasta_rec: [''],
       xdocidentidadpropietario: [''],
       xvehiculo: [''],
       xplaca: [''],
@@ -126,6 +129,15 @@ export class CollectionDetailComponent implements OnInit {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
+
+    this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
+      if (response.data.status) {
+        this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
+        this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
+        this.ftasacambio = response.data.tasaCambio.fingreso;
+      }
+    })
+
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
@@ -134,6 +146,12 @@ export class CollectionDetailComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
 
+        /*if (response.data.xestatusgeneral == "PENDIENTE") {
+          this.verifyReceipt();
+        } else {
+          this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
+          this.detail_form.get('xestatusgeneral').disable();
+        }*/
 
         if(response.data.ccliente){
           this.detail_form.get('ccliente').setValue(response.data.ccliente);
@@ -174,10 +192,10 @@ export class CollectionDetailComponent implements OnInit {
           this.detail_form.get('xtelefono').setValue('');
           this.detail_form.get('xtelefono').disable();
         }
-        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString().substring(0, 10));
-        this.detail_form.get('fdesde_pol').disable();
-        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol).toISOString().substring(0, 10));
-        this.detail_form.get('fhasta_pol').disable();
+        this.detail_form.get('fdesde_rec').setValue(new Date(response.data.fdesde_rec).toISOString().substring(0, 10));
+        this.detail_form.get('fdesde_rec').disable();
+        this.detail_form.get('fhasta_rec').setValue(new Date(response.data.fhasta_rec).toISOString().substring(0, 10));
+        this.detail_form.get('fhasta_rec').disable();
 
         if(response.data.xdocidentidadpropietario){
           this.detail_form.get('xdocidentidadpropietario').setValue(response.data.xdocidentidadpropietario);
@@ -208,11 +226,16 @@ export class CollectionDetailComponent implements OnInit {
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
         let prima = this.detail_form.get('mprima').value.split(" ");
+        console.log(parseFloat(prima[0]));
+        console.log(this.mtasacambio);
+        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100 );       
+        console.log(`${prima_bs}`)
+      
         initUbii(
           'ubiiboton',
           {
             amount_ds: prima[0],
-            amount_bs: "0.00",
+            amount_bs: prima_bs,
             concept: "COMPRA",
             principal: "ds",
             clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
@@ -267,26 +290,45 @@ export class CollectionDetailComponent implements OnInit {
     this.paymentGridApi = event.api;
   }
 
-  callbackFn(answer) {
-    if(answer.data.R == 1){
+  async callbackFn(answer) {
+    if(answer.data.R == 0){
+      let ctipopago;
       if(answer.data.method == "ZELLE"){
-        this.ctipopago = 4;
+        ctipopago = 4;
       }
       if(answer.data.method == "P2C") {
-        this.ctipopago = 3;
+        ctipopago = 3;
       }
-      this.xreferencia = answer.data.ref,
-      this.fcobro = answer.data.date,
-      this.mprima_pagada = answer.data.m
-      this.pagoUbii = true;
-      this.showSaveButton = true
-      window.alert(`Se ha procesado exitosamente el pago de la póliza Presione guardar para registrar el pago en la plataforma.`)
+      let datetimeformat = answer.data.date.split(' ');
+      let dateformat = datetimeformat[0].split('/');
+      let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
+      
+      await window.alert(`Se ha procesado exitosamente el pago de la póliza`);
+      const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
+        "method": "POST",
+        "headers": {
+          "CONTENT-TYPE": "Application/json",
+          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
+          "X-CLIENT-CHANNEL": "BTN-API",
+          "Authorization": "SKDJK23J4KJ2352304923059"
+        },
+        "body": JSON.stringify({
+          paymentData: {
+            crecibo: answer.data.orderID,
+            ctipopago: ctipopago,
+            xreferencia: answer.data.ref,
+            fcobro: fcobro,
+            mprima_pagada: answer.data.m
+          }
+        })
+
+      });
+      location.reload();
     }
-    if (answer.data.R == 0) {
-      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`)
-      console.log(answer.data);
+
+    if (answer.data.R == 1) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`);
     }
-    console.log(answer);
   }
 
   onSubmit(form){
@@ -296,85 +338,52 @@ export class CollectionDetailComponent implements OnInit {
       this.loading = false;
       return;
     }
-    if(this.pagoUbii) {
-      let paymentData = {
-        crecibo: this.code,
-        ctipopago: this.ctipopago,
-        xreferencia: this.xreferencia,
-        fcobro: this.fcobro,
-        mprima_pagada: this.mprima_pagada
-      }
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        paymentData: paymentData
-      }
-      let url = `${environment.apiUrl}/api/administration-collection/ubii/update`;
-      this.http.post(url, params, options).subscribe((response: any) => {
-        if (response.data.status) {
-          console.log('200');
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 401){
-          let condition = err.error.data.condition;
-          if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
-        }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
-    }
-    else {
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params;
-      let url;
-      let dateFormat = new Date(form.fcreacion).toUTCString();
-      let fajusteDateFormat = new Date(form.fajuste).toUTCString();
 
-      if(this.code){
-        params = {
-          ccompania: this.currentUser.data.ccompania,
-          cpais: this.currentUser.data.cpais,
-          crecibo: this.code,
-          pago: this.paymentList
-        };
-        url = `${environment.apiUrl}/api/administration-collection/update`;
-      } 
-      this.http.post(url, params, options).subscribe((response: any) => {
-        if(response.data.status){
-          if(this.code){
-            //this.returnIndex();
-            this.router.navigate([`/administration/collection-index`]);
-          }else{
-            this.router.navigate([`/administration/collection-detail/${response.data.crecibo}`]);
-          }
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params;
+    let url;
+    let dateFormat = new Date(form.fcreacion).toUTCString();
+    let fajusteDateFormat = new Date(form.fajuste).toUTCString();
+
+    if(this.code){
+      params = {
+        ccompania: this.currentUser.data.ccompania,
+        cpais: this.currentUser.data.cpais,
+        crecibo: this.code,
+        pago: this.paymentList
+      };
+      url = `${environment.apiUrl}/api/administration-collection/update`;
+    } 
+    this.http.post(url, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        if(this.code){
+          //this.returnIndex();
+          this.router.navigate([`/administration/collection-index`]);
         }else{
-          let condition = response.data.condition;
-          if(condition == "service-order-already-exist"){
-            this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
-            this.alert.type = 'danger';
-            this.alert.show = true;
-          }
+          this.router.navigate([`/administration/collection-detail/${response.data.crecibo}`]);
         }
-        this.loading = false;
-      },
-      (err) => {
-        let code = 1;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
-        //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-        this.loading = false;
-      });
-    }
+      }else{
+        let condition = response.data.condition;
+        if(condition == "service-order-already-exist"){
+          this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        }
+      }
+      this.loading = false;
+    },
+    (err) => {
+      let code = 1;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.THIRDPARTIES.ASSOCIATENOTFOUND"; }
+      //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+      this.loading = false;
+    });
   }
  
 /*  open() {
