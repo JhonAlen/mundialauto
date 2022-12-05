@@ -41,12 +41,12 @@
                                             <div class="form-outline">
                                                 <label class="form-label" for="form3Examplev5">Recibidor</label>
                                                 <ng-autocomplete  [data]="providerList" [searchKeyword]="keyword" 
-                                                                placeholder="Seleccionar Beneficiario" 
+                                                                placeholder="Seleccionar Beneficiario" (selected)='changeInfo()'
                                                                 [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                                 </ng-autocomplete>
                                             
                                                 <ng-template #itemTemplate let-item>
-                                                    <a [innerHTML]="item.value" value="{{ item.id }}" (change)="changeInfo()"></a>
+                                                    <a [innerHTML]="item.value" value="{{ item.id }}"></a>
                                                 </ng-template>
                                             
                                                 <ng-template #notFoundTemplate let-notFound>
