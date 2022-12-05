@@ -436,7 +436,6 @@ async getmetodologia(){
                   value: response.data.list[i].xmetodologiapago,
                 });
               }
-              console.log(this.metodologiaList)
           }
         })
     }  
@@ -456,7 +455,6 @@ async getmetodologia(){
                   value: response.data.list[i].xmetodologiapago,
                 });
               }
-              console.log(this.metodologiaList)
           }
         })
     
@@ -601,114 +599,6 @@ async getmetodologia(){
     }
   }
 
-
- DownloadData(){
-  let validation =  {
-    ccodigo_ubii: this.search_form.get('ccodigo_ubii').value
-  };
-  this.http.post(`${environment.apiUrl}/api/fleet-contract-management/contractvalidationpaid`, validation).subscribe((response: any) => {
-   
-   if(response.data.cestatusgeneral== 7){
-
-   }
-   else if(response.data.cestatusgeneral== 13){
-
-   }
-   (err) => {
-    let code = err.error.data.code;
-    let message;
-    if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-    else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-    else if(code == 404){  message = "No se encuentra el recibo del cliente"; }
-
-    this.alert.message = message;
-    this.alert.type = 'danger';
-    this.alert.show = true;
-    this.loading = false;
-  }
-   
-  },);
-
- }
-
-
- onSubmit(form){
-  this.submitted = true;
-  this.loading = true;
-
-  let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
-  let params = {
-      icedula: this.search_form.get('icedula').value,
-      xrif_cliente: form.xrif_cliente,
-      xnombre: form.xnombre,
-      xapellido: form.xapellido,
-      xtelefono_emp: form.xtelefono_emp,
-      xtelefono_prop: form.xtelefono_prop,
-      email: form.email,
-      cpais:this.search_form.get('cpais').value,
-      cestado: this.search_form.get('cestado').value,
-      cciudad: this.search_form.get('cciudad').value,
-      xdireccionfiscal: form.xdireccionfiscal,
-      xplaca: form.xplaca,
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value,
-      cversion: version.id,
-      cano:form.cano,
-      ncapacidad_p: form.ncapacidad_p,
-      xcolor:this.search_form.get('xcolor').value,    
-      xserialcarroceria: form.xserialcarroceria,
-      xserialmotor: form.xserialmotor,  
-      xcobertura: this.search_form.get('xcobertura').value,
-      xtipo: this.search_form.get('xtipo').value,
-      cplan:this.search_form.get('cplan').value,
-      cmetodologiapago: form.cmetodologiapago,
-      femision: form.femision,
-      ncobro: form.ncobro,
-      ccodigo_ubii:form.ccodigo_ubii,
-      ccorredor:  this.currentUser.data.ccorredor,
-      xcedula: form.xrif_cliente,
-      ctipopago: this.ctipopago,
-      xreferencia: this.xreferencia,
-      fcobro: this.fcobro,
-      mprima_pagada: this.mprima_pagada,
-      xpago: this.search_form.get('xpago').value,
-      payment:{
-        add:this.paymentList
-      }
-    };
-    if (!this.validateForm(this.search_form)) {
-      closeUbii();
-      console.log('entro');
-    } else {
-      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
-        if (response.data.status) {
-          this.ccontratoflota = response.data.ccontratoflota;
-          this.fdesde_pol = response.data.fdesde_pol;
-          this.fhasta_pol = response.data.fhasta_pol;
-          this.fdesde_rec = response.data.fdesde_rec;
-          this.fhasta_rec = response.data.fhasta_rec;
-          this.xrecibo = response.data.xrecibo;
-          this.fsuscripcion = response.data.fsuscripcion;
-          this.femision = response.data.femision;
-        } else {
-          closeUbii()
-        }
-      },
-      (err) => {
-        closeUbii();
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-        this.loading = false;
-      })
-    }
-  
-}
-
 validateForm(form) {
   console.log(form);
   if (form.invalid){
@@ -725,6 +615,98 @@ verifyPayment() {
     window.alert('Primero Debe de pagar para poder generar el reporte de la póliza.')
   }
 }
+
+onSubmit(form){
+    this.submitted = true;
+    this.loading = true;
+    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    let params = {
+        icedula: this.search_form.get('icedula').value,
+        xrif_cliente: form.xrif_cliente,
+        xnombre: form.xnombre,
+        xapellido: form.xapellido,
+        xtelefono_emp: form.xtelefono_emp,
+        xtelefono_prop: form.xtelefono_prop,
+        email: form.email,
+        cpais:this.search_form.get('cpais').value,
+        cestado: this.search_form.get('cestado').value,
+        cciudad: this.search_form.get('cciudad').value,
+        xdireccionfiscal: form.xdireccionfiscal,
+        xplaca: form.xplaca,
+        cmarca: this.search_form.get('cmarca').value,
+        cmodelo: this.search_form.get('cmodelo').value,
+        cversion: version.id,
+        cano:form.cano,
+        ncapacidad_p: form.ncapacidad_p,
+        ccolor:this.search_form.get('ccolor').value,    
+        xserialcarroceria: form.xserialcarroceria,
+        xserialmotor: form.xserialmotor,  
+        xcobertura: this.search_form.get('xcobertura').value,
+        xtipo: this.search_form.get('xtipo').value,
+        cplan: metodologiaPago.id,
+        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+        femision: form.femision,
+        ncobro: form.ncobro,
+        ccodigo_ubii:form.ccodigo_ubii,
+        ccorredor:  this.currentUser.data.ccorredor,
+        xcedula: form.xrif_cliente,
+        ctipopago: this.ctipopago,
+        xreferencia: this.xreferencia,
+        fcobro: this.fcobro,
+        mprima_pagada: this.mprima_pagada,
+        xpago: this.search_form.get('xpago').value,
+        payment: this.paymentList
+      };
+      if (!this.validateForm(this.search_form)) {
+        closeUbii();
+        console.log('entro');
+      } else {
+        console.log('paso')
+        this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+          if (response.data.status) {
+            this.ccontratoflota = response.data.ccontratoflota;
+            this.fdesde_pol = response.data.fdesde_pol;
+            this.fhasta_pol = response.data.fhasta_pol;
+            this.fdesde_rec = response.data.fdesde_rec;
+            this.fhasta_rec = response.data.fhasta_rec;
+            this.xrecibo = response.data.xrecibo;
+            this.fsuscripcion = response.data.fsuscripcion;
+            this.femision = response.data.femision;
+            window.alert('¡Se ha registrado exitosamente!')
+          } else {
+            closeUbii()
+          }
+        },
+        (err) => {
+          closeUbii();
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+          this.loading = false;
+        })
+      }
+    //  this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
+    //   if(response.data.status){
+    //     window.alert('¡Se ha registrado exitosamente!')
+    //     location.reload();
+    //   }
+    // },
+    // (err) => {
+    //   let code = err.error.data.code;
+    //   let message;
+    //   if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    //   else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    //   this.alert.message = message;
+    //   this.alert.type = 'danger';
+    //   this.alert.show = true;
+    //   this.loading = false;
+    // })
+  }
 
 async getFleetContractDetail(ccontratoflota) {
   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
