@@ -3,7 +3,8 @@
   <div class="row mt-5" *ngIf="alert.show">
       <div class="col-sm-12 col-md-6 mx-auto">
           <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
-     </div>
+      </div>
+   </div>
 </div>
 <section>
   <div class="container py-5 ">
@@ -141,9 +142,9 @@
               </div>
               <!-- Datos del vehiculo -->
               <div class="col-lg-6 bg-indigo ">
-                <div >
-              <div class="card-header company-card-header"><h5 class="card-title">Datos del Vehículo</h5></div>
-                <div class="card-body">
+               <div >
+                 <div class="card-header company-card-header"><h5 class="card-title">Datos del Vehículo</h5></div>
+                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-4 mb-4 pb-2">
                       <div class="form-outline">
@@ -268,21 +269,21 @@
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                 </div>
+               </div>
               </div>
               <!--Detalles del plan -->
               <div >
-                <div >
-              <div class="card-header company-card-header">
-                <h5 class="card-title">Detalles del plan</h5>
-              </div>
+               <div >
+                <div class="card-header company-card-header">
+                  <h5 class="card-title">Detalles del plan</h5>
+                </div>
                 <div class="row" style="padding: 10px;">
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev4">Plan de RCV</label>
                       <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" (change)="ValidationPlan()">
-                        <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
+                        <option *ngFor="let plan of planList" value="{{ plan.control }}">{{ plan.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cplan').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('cplan').errors.required">Se requiere completar el campo</div>
@@ -351,9 +352,9 @@
                       <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
                     </div>
                   </div>
-                  <div class="button" *ngIf="bemitir">
+                  <!-- <div class="button" *ngIf="bemitir">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="verifyPayment()">Emitir Poliza</button>
-                  </div>
+                  </div> -->
                   <div class="button" *ngIf="bpagomanual">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
                   </div>
@@ -363,7 +364,7 @@
                     </div> 
                   </div>
                 </div> 
-              </div>
+               </div>
               </div> 
               <!-- Detalles del recibo -->
               <!-- <div class="col-lg-6 bg-indigo ">
@@ -422,19 +423,16 @@
                     </div>
                   </div>
                   <div class="button" *ngIf="bemitir">
-                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="verifyPayment()">Emitir Poliza</button>
-                  </div>
+                    <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">Emitir Poliza</button>
+                  </div> -->
                   <div class="button" *ngIf="bpagomanual">
                     <button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="addPayment()">Pago Manual</button>
                   </div>
-                  <div class="col-sm-12 mt-2" *ngIf="bpagarubii">
+                  <!-- <div class="col-sm-12 mt-2" *ngIf="bpagarubii">
                     <div class="button">
                         <button id="ubiiboton" (click)="onSubmit(search_form.value)"></button>
                     </div> 
-                  </div>
-                </div> 
-              </div>
-              </div> -->
+                  </div> -->
             </div>
           </div>
         </div>

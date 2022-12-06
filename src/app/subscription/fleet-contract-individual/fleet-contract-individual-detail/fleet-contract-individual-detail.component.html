@@ -279,7 +279,7 @@
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev4">Plan de RCV</label>
                     <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" (change)="functio()">
-                      <option *ngFor="let plan of planList" value="{{ plan.id }}">{{ plan.value }}</option>
+                      <option *ngFor="let plan of planList" value="{{ plan.control }}">{{ plan.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cplan').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('cplan').errors.required">Se requiere completar el campo</div>
@@ -422,7 +422,7 @@
                 <div class="col-md-4 mb-4 pb-2" *ngIf="!plan"><!--- -->
                   <div class="form-outline">
                     <label class="form-label required">Frecuencia de Pago</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }">
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="OperationUbii()">
                       <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
@@ -431,10 +431,22 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-3 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label required" for="form3Examplev5">Modalidad de Pagos</label>
+                    <select formControlName="xpago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xpago').errors }" (change)="resultTypePayment()">
+                      <option value="PASARELA">Pasarela de Pago</option>
+                      <option value="MANUAL">Pago Manual</option>
+                    </select>
+                    <div *ngIf="submitted && search_form.get('xpago').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('xpago').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
                 <div class="col-md-3 mb-4 pb-2" *ngIf="plan">
                   <div class="form-outline">
                     <label class="form-label " for="form3Examplev5">Vigencia</label>
-                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" >
+                    <select formControlName="cmetodologiapago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmetodologiapago').errors }" (change)="OperationUbii()">
                      <option></option>
                       <option *ngFor="let metodologia of metodologiaList" value="{{ metodologia.id  }}">{{ metodologia.value }}</option>
                     </select>
@@ -450,6 +462,12 @@
                     <div *ngIf="submitted && search_form.get('femision').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('femision').errors.required">Se requiere completar el campo</div>
                     </div>
+                  </div>
+                </div>
+                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                  <div class="form-outline">
+                    <label class="form-label required" for="form3Examplev5">Monto Total</label>
+                    <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
                   </div>
                 </div>
               <!--  <div class="col-md-2 mb-4 pb-2">
@@ -497,10 +515,10 @@
                   </div> 
               </div>
                 <div class="button">
-                  <button [disabled]="loading || !clear" type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">
+                  <!-- <button [disabled]="loading || !clear" type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Emitir Póliza-Recibo
-                  </button>
+                  </button> -->
                   <button type="button" class="btn btn-light btn-lg" style="background-color: red;" (click)="onClearForm()">Limpiar Formulario</button>
                 </div> 
               </div> 
