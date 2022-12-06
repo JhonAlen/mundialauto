@@ -53,6 +53,10 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   paymentList: {};
   cordenUbii: number;
   ccontratoflota: number;
+  ctasa_cambio: number;
+  mtasa_cambio: number;
+  fingreso_tasa: Date;
+
 
    //Variables del PDF
    ccontratoflora: number;
@@ -214,6 +218,7 @@ async initializeDropdownDataRequest(){
     this.getColor();
     this.getCobertura();
     this.getCountry();
+    this.getLastExchangeRate();
 
 
     let params = {
@@ -237,6 +242,18 @@ async initializeDropdownDataRequest(){
         this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
   }
+
+async getLastExchangeRate() {
+  let params = {};
+  this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, params).subscribe((response: any) => {
+    if(response.data.status) {
+      this.ctasa_cambio = response.data.tasaCambio.ctasa_cambio;
+      this.mtasa_cambio = response.data.tasaCambio.mtasa_cambio;
+      this.fingreso_tasa = response.data.tasaCambio.fingreso;
+    }
+  },);
+}
+
 async getCountry(){
     let params =  {
       cusuario: this.currentUser.data.cusuario
@@ -436,7 +453,6 @@ async getmetodologia(){
                   value: response.data.list[i].xmetodologiapago,
                 });
               }
-              console.log(this.metodologiaList)
           }
         })
     }  
@@ -456,7 +472,6 @@ async getmetodologia(){
                   value: response.data.list[i].xmetodologiapago,
                 });
               }
-              console.log(this.metodologiaList)
           }
         })
     
@@ -473,23 +488,27 @@ async getmetodologia(){
       if(response.data.status){
         this.search_form.get('ncobro').setValue(response.data.mprima);
 
-        this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii)
+        this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
       }
-     let prima = this.search_form.get('ncobro').value.split(" ")
+     let prima = this.search_form.get('ncobro').value.split(" ");
 
-     let orden : string = "UB_" + response.data.ccubii
+     let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
+      if (((Number(prima_bs)) % 1) == 0) {
+        prima_bs = prima_bs + '.00';
+      }
+     let orden : string = "UB_" + response.data.ccubii;
 
      initUbii(
        'ubiiboton',
        {
          amount_ds: prima[0],
-         amount_bs:  "0.00",
+         amount_bs:  prima_bs,
          concept: "COMPRA",
          principal: "ds",
          clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
          orderId: orden
        },
-       this.callbackFn,
+       this.callbackFn.bind(this),
        {
          text: 'Pagar'
        },
@@ -678,7 +697,6 @@ async getmetodologia(){
     };
     if (!this.validateForm(this.search_form)) {
       closeUbii();
-      console.log('entro');
     } else {
       this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
         if (response.data.status) {
@@ -710,9 +728,7 @@ async getmetodologia(){
 }
 
 validateForm(form) {
-  console.log(form);
   if (form.invalid){
-    console.log('xD');
     return false;
   }
   return true;
@@ -736,7 +752,6 @@ async getFleetContractDetail(ccontratoflota) {
   };
   await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
     if(response.data.status){
-      console.log(response.data);
       this.ccarga = response.data.ccarga;
       this.xpoliza = response.data.xpoliza;
       this.xtituloreporte = response.data.xtituloreporte;
