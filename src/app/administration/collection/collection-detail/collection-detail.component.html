@@ -11,7 +11,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            {{ "ADMINISTRATION.COLLECTION.OWNERINFORMATION" | translate }}
+                            Información del Recibo
                         </div>
                         <div class="col-6">
                             <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
@@ -62,19 +62,19 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.STARDATE" | translate }}</label>
-                                    <input type="date" formControlName="fdesde_pol" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fdesde_pol').errors }">
-                                    <div *ngIf="submitted && detail_form.get('fdesde_pol').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('fdesde_pol').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>Fecha Inicio - Vigencia del Recibo</label>
+                                    <input type="date" formControlName="fdesde_rec" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fdesde_rec').errors }">
+                                    <div *ngIf="submitted && detail_form.get('fdesde_rec').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('fdesde_rec').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.FINALDATE" | translate }}</label>
-                                    <input type="date" formControlName="fhasta_pol" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fhasta_pol').errors }">
-                                    <div *ngIf="submitted && detail_form.get('fhasta_pol').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('fhasta_pol').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>Fecha Fin - Vigencia del Recibo</label>
+                                    <input type="date" formControlName="fhasta_rec" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fhasta_rec').errors }">
+                                    <div *ngIf="submitted && detail_form.get('fhasta_rec').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('fhasta_rec').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>

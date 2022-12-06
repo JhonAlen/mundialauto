@@ -51,7 +51,6 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   bemitir: boolean = false;
   bpagomanual: boolean = false;
   paymentList: {};
-
   cordenUbii: number;
   ccontratoflota: number;
 
@@ -157,7 +156,7 @@ this.search_form = this.formBuilder.group({
   cversion: ['', Validators.required],
   cano: ['', Validators.required],
   ncapacidad_p: ['', Validators.required],
-  ccolor: ['', Validators.required],
+  xcolor: ['', Validators.required],
   xserialcarroceria: ['', Validators.required],
   xserialmotor: ['', Validators.required],
   xcobertura: ['', Validators.required],
@@ -172,7 +171,6 @@ this.search_form = this.formBuilder.group({
   fcobro:[''],
   mprima_pagada:[''],
   xpago: [''],
-  xcolor: [''],
   binternacional: ['']
 })
 
@@ -468,14 +466,15 @@ async getmetodologia(){
     cplan: metodologiaPago.id,
     cmetodologiapago: this.search_form.get('cmetodologiapago').value,
     xtipo: this.search_form.get('xtipo').value,
-
   }
      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('ncobro').setValue(response.data.mprima);
+
         this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii)
       }
-     let prima =  this.search_form.get('ncobro').value.split(" ");
+     let prima = this.search_form.get('ncobro').value.split(" ")
+
      let orden : string = "UB_" + response.data.ccubii
 
      initUbii(
@@ -492,7 +491,6 @@ async getmetodologia(){
        {
          text: 'Pagar'
        },
-
 
      );
       },);
@@ -542,8 +540,10 @@ async getmetodologia(){
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
       this.bpagarubii = true;
+      this.bpagomanual = false;
     }else if(this.search_form.get('xpago').value == 'MANUAL'){
       this.bpagomanual = true;
+      this.bpagarubii = false;
     }
 
   }
@@ -629,7 +629,7 @@ async getmetodologia(){
     }
   }
 
-  onSubmit(form){
+onSubmit(form){
     this.submitted = true;
     this.loading = true;
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
@@ -652,7 +652,7 @@ async getmetodologia(){
         cversion: version.id,
         cano:form.cano,
         ncapacidad_p: form.ncapacidad_p,
-        ccolor:this.search_form.get('ccolor').value,    
+        xcolor:this.search_form.get('xcolor').value,    
         xserialcarroceria: form.xserialcarroceria,
         xserialmotor: form.xserialmotor,  
         xcobertura: this.search_form.get('xcobertura').value,
@@ -671,7 +671,6 @@ async getmetodologia(){
         xpago: this.search_form.get('xpago').value,
         payment: this.paymentList
       };
- 
       if (!this.validateForm(this.search_form)) {
         closeUbii();
         console.log('entro');
@@ -1541,5 +1540,3 @@ async getmetodologia(){
     catch(err){console.log(err.message)}
   }  
 }
-
-

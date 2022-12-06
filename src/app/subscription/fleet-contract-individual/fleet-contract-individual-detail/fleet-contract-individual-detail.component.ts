@@ -549,7 +549,19 @@ async getmetodologia(){
     this.search_form.get('cano').setValue(version.cano);
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
-
+  OperatioValuePlan(){
+    let params = {
+     cplan: this.search_form.get('cplan').value,
+     cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+     xtipo: this.search_form.get('xtipo').value,
+ 
+   }
+      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
+       if(response.data.status){
+         this.search_form.get('ncobro').setValue(response.data.mprima);
+       }
+  });
+}
  functio(){
   let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
   this.search_form.get('binternacional').setValue(metodologiaPago.binternacional);

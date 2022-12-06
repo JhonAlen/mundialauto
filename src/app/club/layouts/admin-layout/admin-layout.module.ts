@@ -14,6 +14,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSelectModule} from '@angular/material/select';
+import { FleetContractBrokerIndexComponent } from './../../../subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
+import { FleetContractBrokerDetailComponent } from './../../../subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 
 
 @NgModule({
@@ -35,6 +37,8 @@ import {MatSelectModule} from '@angular/material/select';
     UserProfileComponent,
     VehicleComponent,
     NotificationsComponent,
+    FleetContractBrokerIndexComponent,
+    FleetContractBrokerDetailComponent,
   ]
 })
 
