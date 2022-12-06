@@ -15,14 +15,11 @@ mat-sidenav {
 .content {
   height: calc(100vh - 130px);
   border-radius: 10px;
-  margin: 16px;
-  margin-left: 32px;
 
-  padding: 16px;
-
-  overflow: auto;
 }
-
+.container{
+  max-width: 94%;
+}
 mat-sidenav-container {
   height: calc(100vh - 65px);
 }
@@ -93,3 +90,5 @@ body{
   background: linear-gradient(to bottom, #2e34be 0%,#70a8ff 100%);
 
 }
+
+

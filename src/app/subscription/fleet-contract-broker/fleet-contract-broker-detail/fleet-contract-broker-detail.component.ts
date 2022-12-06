@@ -29,6 +29,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   alert = { show: false, type: "", message: "" };
   marcaList: any[] = [];
   modeloList: any[] = [];
+  corredorList: any[] = [];
   coberturaList: any[] = [];
   versionList: any[] = [];
   planList: any[] = [];
@@ -212,6 +213,7 @@ async initializeDropdownDataRequest(){
     this.getPlanData();
     this.getColor();
     this.getCobertura();
+    this.getCorredorData();
     this.getCountry();
 
 
@@ -333,6 +335,25 @@ async getVersionData(){
       }
       },);
   }
+async getCorredorData() {
+    let params={
+     cpais: this.currentUser.data.cpais,
+     ccompania: this.currentUser.data.ccompania,
+     };
+     this.http.post(`${environment.apiUrl}/api/valrep/broker`, params).subscribe((response : any) => {
+       if(response.data.status){
+         this.corredorList = [];
+         for(let i = 0; i < response.data.list.length; i++){
+           this.corredorList.push({ 
+             id: response.data.list[i].ccorredor,
+             value: response.data.list[i].xcorredor,
+           });
+         }
+         this.corredorList.sort((a, b) => a.value > b.value ? 1 : -1)
+       }
+     }, );
+   
+ }
 async getPlanData(){
   let params =  {
     cpais: this.currentUser.data.cpais,
@@ -473,39 +494,47 @@ async getmetodologia(){
     }
   }
   OperationUbii(){
-   let params = {
-    cplan: this.search_form.get('cplan').value,
-    cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-    xtipo: this.search_form.get('xtipo').value,
-  }
-     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.search_form.get('ncobro').setValue(response.data.mprima);
-
-        this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii)
+    if (!this.validateForm(this.search_form)) {
+      this.bpagarubii = false
+      this.search_form.get('cmetodologiapago').setValue('');
+      window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
+    } else {
+      this.bpagarubii = true
+                               
+      let params = {
+        cplan: this.search_form.get('cplan').value,
+        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+        xtipo: this.search_form.get('xtipo').value,
       }
-     let prima = this.search_form.get('ncobro').value.split(" ")
+         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
+          if(response.data.status){
+            this.search_form.get('ncobro').setValue(response.data.mprima);
+            this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii)
+          }
+         let prima = this.search_form.get('ncobro').value.split(" ")
+         let orden : string = "UB_" + response.data.ccubii
+         this.cordenUbii = response.data.ccubii
+    
+         initUbii(
+           'ubiiboton',
+           {
+             amount_ds: prima[0],
+             amount_bs:  "0.00",
+             concept: "COMPRA",
+             principal: "ds",
+             clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+             orderId: orden
+           },
+           this.callbackFn.bind(this),
+           {
+             text: 'Pagar'
+           },
+    
+         );
+          },);
+    }
 
-     let orden : string = "UB_" + response.data.ccubii
-     this.cordenUbii = response.data.ccubii
 
-     initUbii(
-       'ubiiboton',
-       {
-         amount_ds: prima[0],
-         amount_bs:  "0.00",
-         concept: "COMPRA",
-         principal: "ds",
-         clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-         orderId: orden
-       },
-       this.callbackFn.bind(this),
-       {
-         text: 'Pagar'
-       },
-
-     );
-      },);
   }
   validatecarstopyear(){
   const now = new Date();
@@ -653,8 +682,8 @@ async getmetodologia(){
 
  }
 
-
  onSubmit(form){
+
   this.submitted = true;
   this.loading = true;
 
@@ -687,7 +716,7 @@ async getmetodologia(){
       femision: form.femision,
       ncobro: form.ncobro,
       ccodigo_ubii:form.ccodigo_ubii,
-      ccorredor:  this.currentUser.data.ccorredor,
+      ccorredor: this.search_form.get('ccorredor').value,
       xcedula: form.xrif_cliente,
       ctipopago: this.ctipopago,
       xreferencia: this.xreferencia,
@@ -734,7 +763,6 @@ async getmetodologia(){
 validateForm(form) {
   console.log(form);
   if (form.invalid){
-    console.log('xD');
     return false;
   }
   return true;

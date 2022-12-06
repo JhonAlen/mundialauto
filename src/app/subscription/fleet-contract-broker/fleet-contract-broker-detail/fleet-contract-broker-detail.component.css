@@ -1,5 +1,6 @@
 .containerr{
     width: 100%;
+    max-width: 95%;
 }
 
 .bread{
@@ -25,7 +26,9 @@ h2{
 .col-lg-4{
     padding: 10px;
 }
-
+.col-lg-6{
+    border-right-style: inset;
+  }
 form{
     padding: 40px;
 }
