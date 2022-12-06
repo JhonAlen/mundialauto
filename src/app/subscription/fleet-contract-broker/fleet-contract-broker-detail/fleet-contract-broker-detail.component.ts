@@ -624,19 +624,15 @@ async getmetodologia(){
             mprima_pagada: answer.data.m
           }
         }) });
-        await window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`);
-        console.log(this.ccontratoflota);
         this.getFleetContractDetail(this.ccontratoflota);
     }
     if (answer.data.R == 1) {
-      window.alert(`No se pudo procesar el pago de ${answer.data.M}, intente nuevamente`)
+      window.alert(`No se pudo procesar el pago. Motivo: ${answer.data.M}, intente nuevamente`);
     }
   }
 
-  validateForm(form) {
-    console.log(form);
+    validateForm(form) {
     if (form.invalid){
-      console.log('xD');
       return false;
     }
     return true;
@@ -650,52 +646,52 @@ async getmetodologia(){
     }
   }
 
-onSubmit(form){
-    this.submitted = true;
-    this.loading = true;
-    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
-    let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
-    let params = {
-        icedula: this.search_form.get('icedula').value,
-        xrif_cliente: form.xrif_cliente,
-        xnombre: form.xnombre,
-        xapellido: form.xapellido,
-        xtelefono_emp: form.xtelefono_emp,
-        xtelefono_prop: form.xtelefono_prop,
-        email: form.email,
-        cpais:this.search_form.get('cpais').value,
-        cestado: this.search_form.get('cestado').value,
-        cciudad: this.search_form.get('cciudad').value,
-        xdireccionfiscal: form.xdireccionfiscal,
-        xplaca: form.xplaca,
-        cmarca: this.search_form.get('cmarca').value,
-        cmodelo: this.search_form.get('cmodelo').value,
-        cversion: version.id,
-        cano:form.cano,
-        ncapacidad_p: form.ncapacidad_p,
-        xcolor:this.search_form.get('xcolor').value,    
-        xserialcarroceria: form.xserialcarroceria,
-        xserialmotor: form.xserialmotor,  
-        xcobertura: this.search_form.get('xcobertura').value,
-        xtipo: this.search_form.get('xtipo').value,
-        cplan: metodologiaPago.id,
-        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-        femision: form.femision,
-        ncobro: form.ncobro,
-        ccodigo_ubii:form.ccodigo_ubii,
-        ccorredor:  this.currentUser.data.ccorredor,
-        xcedula: form.xrif_cliente,
-        ctipopago: this.ctipopago,
-        xreferencia: this.xreferencia,
-        fcobro: this.fcobro,
-        mprima_pagada: this.mprima_pagada,
-        xpago: this.search_form.get('xpago').value,
-        payment: this.paymentList
-      };
-      if (!this.validateForm(this.search_form)) {
-        closeUbii();
-        console.log('entro');
-      } else {
+  async onSubmit(form){
+    if (this.validateForm(this.search_form) == false) {
+      closeUbii();
+      console.log('entro');
+    } else {
+        this.submitted = true;
+        this.loading = true;
+        let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+        let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+        let params = {
+            icedula: this.search_form.get('icedula').value,
+            xrif_cliente: form.xrif_cliente,
+            xnombre: form.xnombre,
+            xapellido: form.xapellido,
+            xtelefono_emp: form.xtelefono_emp,
+            xtelefono_prop: form.xtelefono_prop,
+            email: form.email,
+            cpais:this.search_form.get('cpais').value,
+            cestado: this.search_form.get('cestado').value,
+            cciudad: this.search_form.get('cciudad').value,
+            xdireccionfiscal: form.xdireccionfiscal,
+            xplaca: form.xplaca,
+            cmarca: this.search_form.get('cmarca').value,
+            cmodelo: this.search_form.get('cmodelo').value,
+            cversion: version.id,
+            cano:form.cano,
+            ncapacidad_p: form.ncapacidad_p,
+            xcolor:this.search_form.get('xcolor').value,    
+            xserialcarroceria: form.xserialcarroceria,
+            xserialmotor: form.xserialmotor,  
+            xcobertura: this.search_form.get('xcobertura').value,
+            xtipo: this.search_form.get('xtipo').value,
+            cplan: metodologiaPago.id,
+            cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+            femision: form.femision,
+            ncobro: form.ncobro,
+            ccodigo_ubii:form.ccodigo_ubii,
+            ccorredor:  this.currentUser.data.ccorredor,
+            xcedula: form.xrif_cliente,
+            ctipopago: this.ctipopago,
+            xreferencia: this.xreferencia,
+            fcobro: this.fcobro,
+            mprima_pagada: this.mprima_pagada,
+            xpago: this.search_form.get('xpago').value,
+            payment: this.paymentList
+          };
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
@@ -706,7 +702,7 @@ onSubmit(form){
             this.xrecibo = response.data.xrecibo;
             this.fsuscripcion = response.data.fsuscripcion;
             this.femision = response.data.femision;
-            this.getFleetContractDetail(this.ccontratoflota);
+            //this.getFleetContractDetail(this.ccontratoflota);
           } else {
             closeUbii()
           }
@@ -735,7 +731,6 @@ onSubmit(form){
     };
     await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
       if(response.data.status){
-        console.log(response.data);
         this.ccarga = response.data.ccarga;
         this.xpoliza = response.data.xpoliza;
         this.xtituloreporte = response.data.xtituloreporte;
@@ -814,7 +809,7 @@ onSubmit(form){
         }
         this.serviceList = response.data.services;
         this.coverageList = response.data.realCoverages;
-        await window.alert(`Se ha generado exitósamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}`);
+        await window.alert(`Se ha generado exitósamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}. Presione Aceptar para generar la Póliza en formato PDF`);
         try {this.createPDF()}
         catch(err) {console.log(err.message)};
       }
