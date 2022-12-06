@@ -505,7 +505,9 @@ async getmetodologia(){
       this.search_form.get('cmetodologiapago').setValue('');
       window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
     } else {
-      this.bpagarubii = true
+      if (this.bpagomanual == false) {
+        this.bpagarubii = true
+      }
     
     let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
    let params = {
@@ -590,7 +592,7 @@ async getmetodologia(){
   }
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
-      this.bpagarubii = true;
+      //this.bpagarubii = true;
       this.bpagomanual = false;
     }else if(this.search_form.get('xpago').value == 'MANUAL'){
       this.bpagomanual = true;
@@ -733,7 +735,9 @@ async getmetodologia(){
             this.xrecibo = response.data.xrecibo;
             this.fsuscripcion = response.data.fsuscripcion;
             this.femision = response.data.femision;
-            //this.getFleetContractDetail(this.ccontratoflota);
+            if (this.bpagomanual) {
+              this.getFleetContractDetail(this.ccontratoflota);
+            }
           } else {
             closeUbii()
           }
