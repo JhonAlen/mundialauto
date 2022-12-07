@@ -169,8 +169,8 @@ export class BillLoadingComponent implements OnInit {
   //   this.changeInfo();
   // }
 
-  changeInfo(){
-    console.log(this.bill_form.get('cproveedor').value)
+  changeInfo(event){
+    this.bill_form.get('cproveedor').setValue(event.id)
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -263,9 +263,9 @@ export class BillLoadingComponent implements OnInit {
     });
   }
 
-  changeStatus(){
+  changeStatus(event){
+    this.bill_form.get('crecibidor').setValue(event.id)
     console.log(this.bill_form.get('crecibidor').value)
-    console.log(this.bill_form.get('cproveedor').value)
     if(this.bill_form.get('crecibidor').value){
       if(this.paymasterList[0].value == 'ArysAutos C.A'){
         this.showEditButton = false;
