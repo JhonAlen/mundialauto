@@ -282,6 +282,8 @@ export class CollectionDetailComponent implements OnInit {
             this.showSaveButton= true;
             this.bpago = false;
           }
+
+          this.onSubmit(this.detail_form.value)
       }
     });
   }
