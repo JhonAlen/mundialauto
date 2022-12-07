@@ -155,7 +155,7 @@
                       <label class="form-label required" for="form3Examplev2">Marca</label>
                       <select formControlName="cmarca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors } " (change)="getModeloData()">
                         <option></option>
-                        <option *ngFor="let marca of marcaList" value="{{ marca.id }}">{{ marca.value }}</option>
+                        <option *ngFor="let marca of marcaList" value="{{ marca.control }}">{{ marca.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cmarca').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('cmarca').errors.required">Se requiere completar el campo</div>
@@ -167,7 +167,7 @@
                       <label class="form-label required" for="form3Examplev4">Modelo</label>
                       <select formControlName="cmodelo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }" (change)="getVersionData()">
                         <option></option>
-                        <option *ngFor="let modelo of modeloList" value="{{ modelo.id }}">{{ modelo.value }}</option>
+                        <option *ngFor="let modelo of modeloList" value="{{ modelo.control }}">{{ modelo.value }}</option>
                       </select>
                       <div *ngIf="submitted && search_form.get('cmodelo').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('cmodelo').errors.required">Se requiere completar el campo</div>
@@ -240,6 +240,8 @@
                       <label class="form-label required" for="form3Examplev4">Cobertura</label>
                       <select formControlName="xcobertura" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcobertura').errors } " (change)="funcion()">
                         <option value="RCV">RCV</option>
+                        <option value="AMPLIA">AMPLIA</option>
+                        <option value="PERDIDA">PERDIDA TOTAL</option>
                       </select>                         
                       <div *ngIf="submitted && search_form.get('xcobertura').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('xcobertura').errors.required">Se requiere completar el campo</div>
@@ -431,7 +433,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-3 mb-4 pb-2">
+                <div class="col-md-3 mb-4 pb-2" *ngIf="modalidad">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev5">Modalidad de Pagos</label>
                     <select formControlName="xpago" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xpago').errors }" (change)="resultTypePayment()">
@@ -464,7 +466,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0" *ngIf="montorcv">
                   <div class="form-outline">
                     <label class="form-label required" for="form3Examplev5">Monto Total</label>
                     <input type="number" formControlName="ncobro" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('ncobro').errors }" />
@@ -515,10 +517,10 @@
                   </div> 
               </div>
                 <div class="button">
-                  <!-- <button [disabled]="loading || !clear" type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)">
+                  <button [disabled]="loading || !clear" type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="onSubmit(search_form.value)" *ngIf="bemitir">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Emitir Póliza-Recibo
-                  </button> -->
+                  </button>
                   <button type="button" class="btn btn-light btn-lg" style="background-color: red;" (click)="onClearForm()">Limpiar Formulario</button>
                 </div> 
               </div> 

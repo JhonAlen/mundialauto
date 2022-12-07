@@ -39,9 +39,9 @@
                                         </div> -->
                                         <div class="col-sm-12 col-md-4">
                                             <div class="form-outline">
-                                                <label class="form-label" for="form3Examplev5">Recibidor</label>
+                                                <label class="form-label" for="form3Examplev5">Proveedor</label>
                                                 <ng-autocomplete  [data]="providerList" [searchKeyword]="keyword" 
-                                                                placeholder="Seleccionar Beneficiario" (selected)='changeInfo()'
+                                                                placeholder="Seleccionar Beneficiario" (selected)='changeInfo($event)'
                                                                 [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                                 </ng-autocomplete>
                                             
@@ -97,8 +97,8 @@
                                             <div class="form-outline">
                                                 <label class="form-label" for="form3Examplev5">Recibidor</label>
                                                 <ng-autocomplete  [data]="paymasterList" [searchKeyword]="keyword" 
-                                                                placeholder="Seleccionar Beneficiario" (selected)='selectEvent($event)' 
-                                                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" (change)="changeStatus()">                                 
+                                                                placeholder="Seleccionar Beneficiario" (selected)='changeStatus($event)' 
+                                                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                                 </ng-autocomplete>
                                             
                                                 <ng-template #itemTemplate let-item>
