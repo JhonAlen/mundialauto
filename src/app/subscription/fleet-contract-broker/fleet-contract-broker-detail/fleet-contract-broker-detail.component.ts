@@ -847,6 +847,7 @@ async getmetodologia(){
         this.serviceList = response.data.services;
         this.coverageList = response.data.realCoverages;
         await window.alert(`Se ha generado exitósamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}. Presione Aceptar para generar la Póliza en formato PDF`);
+        
         try {this.createPDF()}
         catch(err) {console.log(err.message)};
       }
