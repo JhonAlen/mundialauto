@@ -952,9 +952,13 @@ async getmetodologia(){
     return body;
   }
 
-  createPDF(){
+  async createPDF(){
     try{
     const pdfDefinition: any = {
+      info: {
+        title: `Póliza - ${this.xnombrecliente}`,
+        subject: `Póliza - ${this.xnombrecliente}`
+      },
       footer: function(currentPage, pageCount) { 
         return {
           table: {
@@ -1589,8 +1593,10 @@ async getmetodologia(){
         }
       }
     }
-    pdfMake.createPdf(pdfDefinition).open();
-    location.reload();}
+    let pdf = pdfMake.createPdf(pdfDefinition);
+    pdf.open();
+    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('El PDF se está Generando'); location.reload()});
+  }
     catch(err){console.log(err.message)}
   }  
 }
