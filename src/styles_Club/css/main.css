@@ -272,7 +272,7 @@ section {
 /*--------------------------------------------------------------
 # Desktop Navigation
 --------------------------------------------------------------*/
-@media (min-width: 1280px) {
+@media (min-width: 373px) {
   .navbar {
     padding: 0;
   }
@@ -401,7 +401,7 @@ section {
   }
 }
 
-@media (min-width: 1280px) and (max-width: 1366px) {
+@media (min-width: 373px) and (max-width: 400px) {
   .navbar .dropdown .dropdown ul {
     left: -90%;
   }
@@ -411,18 +411,18 @@ section {
   }
 }
 
-@media (min-width: 1280px) {
+/* @media (min-width: 373px) {
 
   .mobile-nav-show,
   .mobile-nav-hide {
     display: none;
   }
-}
+} */
 
 /*--------------------------------------------------------------
 # Mobile Navigation
 --------------------------------------------------------------*/
-@media (max-width: 1279px) {
+@media (max-width: 420px) {
   .navbar {
     position: fixed;
     top: 0;
