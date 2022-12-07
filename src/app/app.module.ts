@@ -297,8 +297,8 @@ import { PaymentRecordIndexComponent } from './administration/payment-record/pay
 import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component';
 import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
 import {CdkMenuModule} from '@angular/cdk/menu';
-// import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
-// import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
+import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
+import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
 import { UserBrokersComponent } from './pop-up/user-brokers/user-brokers.component';
 import { BillLoadingServiceOrderComponent } from './pop-up/bill-loading-service-order/bill-loading-service-order.component';
 import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
@@ -589,8 +589,8 @@ export function HttpLoaderFactory(http: HttpClient){
     PaymentRecordIndexComponent,
     PaymentRecordDetailComponent,
     BillLoadingComponent,
-    // FleetContractBrokerIndexComponent,
-    // FleetContractBrokerDetailComponent,
+    FleetContractBrokerIndexComponent,
+    FleetContractBrokerDetailComponent,
     UserBrokersComponent,
     BillLoadingServiceOrderComponent,
     BrandModelVersionIndexComponent,
