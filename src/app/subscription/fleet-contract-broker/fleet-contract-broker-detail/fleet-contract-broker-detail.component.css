@@ -76,12 +76,8 @@ option{
     padding: 29px;
     width: 41%;
 }
-hr{ 
-  
-    border:         none;
-    border-left:    1px solid hsla(200, 10%, 50%,100);
-    height:         100vh;
-    width:          1px;       
+hr{
+    width: 98%;
 }
 .required:after {
     content:" *";
