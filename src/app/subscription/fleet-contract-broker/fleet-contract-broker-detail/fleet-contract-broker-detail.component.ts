@@ -7,6 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
+import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 
@@ -57,6 +58,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   ctasa_cambio: number;
   mtasa_cambio: number;
   fingreso_tasa: Date;
+  accessoryList: any[] = [];
 
 
    //Variables del PDF
@@ -132,6 +134,9 @@ export class FleetContractBrokerDetailComponent implements OnInit {
    detail_form: number;
    xnombrecorredor: string;
    xcolor: string;
+   modalidad: boolean = true;
+   montorcv: boolean = true;
+   cobertura: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -177,7 +182,22 @@ this.search_form = this.formBuilder.group({
   fcobro:[''],
   mprima_pagada:[''],
   xpago: [''],
-  binternacional: ['']
+  binternacional: [''],
+  pcasco:[''],
+  pmotin:[''],
+  mmotin:[''],
+  pcatastrofico:[''],
+  msuma_aseg:[''],
+  mprima_casco:[''],
+  mprima_bruta: [''],
+  mcatastrofico:[''],
+  msuma_blindaje:[''],
+  mprima_blindaje:[''],
+  pdescuento:[''],
+  ifraccionamiento:[false],
+  ncuotas:[''],
+  ivigencia: [''],
+  pblindaje: ['']
 })
 
  ;
@@ -240,7 +260,8 @@ async initializeDropdownDataRequest(){
         for(let i = 0; i < request.data.list.length; i++){
           this.marcaList.push({ 
             id: request.data.list[i].cmarca, 
-            value: request.data.list[i].xmarca });
+            value: request.data.list[i].xmarca,
+            control: request.data.list[i].control });
         }
         this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
@@ -310,9 +331,10 @@ async getCity(){
       },);
   } 
 async getModeloData(){
+  let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let params = {
       cpais: this.currentUser.data.cpais,
-      cmarca: this.search_form.get('cmarca').value
+      cmarca: marca.id
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -327,16 +349,19 @@ async getModeloData(){
       for(let i = 0; i < request.data.list.length; i++){
          this.modeloList.push({ 
            id: request.data.list[i].cmodelo, 
-           value: request.data.list[i].xmodelo });
+           value: request.data.list[i].xmodelo,
+           control: request.data.list[i].control });
       }
       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
 async getVersionData(){
+  let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+  let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params = {
       cpais: 58,
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value
+      cmarca: marca.id,
+      cmodelo: modelo.id,
     };
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
       if(response.data.status){
@@ -449,6 +474,73 @@ async getmetodologia(){
       }
       },);
   }  
+
+  addAccessory(){
+    let accessory;
+    const modalRef = this.modalService.open(FleetContractIndividualAccessorysComponent, {size: 'xl'});
+    modalRef.componentInstance.accessory = accessory;
+    modalRef.result.then((result: any) => { 
+
+      if(result){
+        this.accessoryList = result;
+      }
+    });
+  }
+
+  generateTarifa(){
+    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+    let params =  {
+      xtipo: this.search_form.get('xtipo').value,  
+      xmarca: marca.value,
+      xmodelo: modelo.value,
+      cano: this.search_form.get('cano').value,
+      xcobertura: this.search_form.get('xcobertura').value,
+      
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
+        this.search_form.get('pcasco').disable();
+        this.search_form.get('pmotin').setValue(response.data.ptarifa);
+        this.search_form.get('pmotin').disable();
+        for(let i = 0; i < response.data.ptarifa.length; i++){
+          this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
+          this.search_form.get('pcatastrofico').disable();
+          this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+      else if(code == 500){  message = "Los parametros no coinciden con la busqueda"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  calculation(){
+    let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
+    this.search_form.get('mprima_casco').setValue(calculo);
+    this.search_form.get('mprima_bruta').setValue(calculo);
+
+    let catastrofico = this.search_form.get('msuma_aseg').value * this.search_form.get('pcatastrofico').value / 100;
+    this.search_form.get('mcatastrofico').setValue(catastrofico);
+
+    let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
+    this.search_form.get('mmotin').setValue(motin);
+  }
+  data(){
+    let division = this.search_form.get('pdescuento').value / 100
+    let multiplicacion = this.search_form.get('mprima_casco').value * division
+    let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
+    this.search_form.get('mprima_casco').setValue(calculo_descuento);
+  }
+
   searchVersion(){
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     this.search_form.get('cano').setValue(version.cano);
@@ -500,54 +592,72 @@ async getmetodologia(){
     }
   }
   OperationUbii(){
-   if (!this.validateForm(this.search_form)) {
-      this.bpagarubii = false
-      this.search_form.get('cmetodologiapago').setValue('');
-      window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
-    } else {
-      if (this.bpagomanual == false) {
-        this.bpagarubii = true
+    if(this.search_form.get('xcobertura').value == 'RCV'){
+      if (!this.validateForm(this.search_form)) {
+          this.bpagarubii = false
+          this.search_form.get('cmetodologiapago').setValue('');
+          window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
+        } else {
+          if (this.bpagomanual == false) {
+            this.bpagarubii = true
+          }
+        
+        let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+      let params = {
+        cplan: metodologiaPago.id,
+        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+        xtipo: this.search_form.get('xtipo').value,
       }
-    
-    let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
-   let params = {
-    cplan: metodologiaPago.id,
-    cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-    xtipo: this.search_form.get('xtipo').value,
-  }
-     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.search_form.get('ncobro').setValue(response.data.mprima);
+        this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
+          if(response.data.status){
+            this.search_form.get('ncobro').setValue(response.data.mprima);
 
-        this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
-      }
-     let prima = this.search_form.get('ncobro').value.split(" ");
+            this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
+          }
+        let prima = this.search_form.get('ncobro').value.split(" ");
 
-     let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
-      if (((Number(prima_bs)) % 1) == 0) {
-        prima_bs = prima_bs + '.00';
-      }
-     let orden : string = "UB_" + response.data.ccubii;
+        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
+          if (((Number(prima_bs)) % 1) == 0) {
+            prima_bs = prima_bs + '.00';
+          }
+        let orden : string = "UB_" + response.data.ccubii;
 
-     initUbii(
-       'ubiiboton',
-       {
-         amount_ds: prima[0],
-         amount_bs:  prima_bs,
-         concept: "COMPRA",
-         principal: "ds",
-         clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-         orderId: orden
-       },
-       this.callbackFn.bind(this),
-       {
-         text: 'Pagar'
-       },
+        initUbii(
+          'ubiiboton',
+          {
+            amount_ds: prima[0],
+            amount_bs:  prima_bs,
+            concept: "COMPRA",
+            principal: "ds",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            orderId: orden
+          },
+          this.callbackFn.bind(this),
+          {
+            text: 'Pagar'
+          },
 
-     );
-      },);
+        );
+          },);
+        }
+    }else{
+      this.search_form.get('ncobro').setValue(0);
     }
   }
+
+  years(){
+    const now = new Date();
+    const currentYear = now.getFullYear();
+      
+    if(this.search_form.get('cano').value < 2007){
+      // this.search_form.get('cano').setValue(2007);
+     }
+     if(this.search_form.get('cano').value > currentYear + 1){
+       this.search_form.get('cano').setValue(currentYear);
+     }
+  
+   }
+
   validatecarstopyear(){
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -590,6 +700,19 @@ async getmetodologia(){
       } 
     },);
   }
+  funcion(){
+    if(this.search_form.get('xcobertura').value == 'RCV'){
+      this.cobertura = false;
+      this.modalidad = true;
+      this.montorcv = true;
+      this.bemitir = false;
+    }else{
+      this.cobertura = true;
+      this.modalidad = false;
+      this.montorcv = false;
+      this.bemitir = true;
+    }
+  }
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
       //this.bpagarubii = true;
@@ -615,9 +738,9 @@ async getmetodologia(){
           cbanco: result.cbanco,
           mprima_pagada: result.mprima_pagada
         }
-        if(this.paymentList){
-          this.bemitir = true
-        }
+        // if(this.paymentList){
+        //   this.bemitir = true
+        // }
 
         // window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`);
         // console.log(this.ccontratoflota);
@@ -674,12 +797,16 @@ async getmetodologia(){
   verifyPayment() {
     if (this.cordenUbii > 0) {
   
-    } else {
+    } else if(this.search_form.get('xcobertura').value != 'RCV'){
+      
+    }else{
       window.alert('Primero Debe de pagar para poder generar el reporte de la póliza.')
     }
   }
 
   async onSubmit(form){
+    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     if (this.validateForm(this.search_form) == false) {
       closeUbii();
       console.log('entro');
@@ -702,8 +829,8 @@ async getmetodologia(){
             cciudad: this.search_form.get('cciudad').value,
             xdireccionfiscal: form.xdireccionfiscal,
             xplaca: form.xplaca,
-            cmarca: this.search_form.get('cmarca').value,
-            cmodelo: this.search_form.get('cmodelo').value,
+            cmarca: marca.id,
+            cmodelo: modelo.id,
             cversion: version.id,
             cano:form.cano,
             ncapacidad_p: form.ncapacidad_p,
@@ -724,8 +851,25 @@ async getmetodologia(){
             fcobro: this.fcobro,
             mprima_pagada: this.mprima_pagada,
             xpago: this.search_form.get('xpago').value,
-            payment: this.paymentList
+            payment: this.paymentList,
+            msuma_aseg: form.msuma_aseg,
+            pcasco: form.pcasco,
+            mprima_casco: form.mprima_casco,
+            mcatastrofico: form.mcatastrofico,
+            mprima_blindaje: form.mprima_blindaje,
+            msuma_blindaje: form.msuma_blindaje,
+            pdescuento: form.pdescuento,
+            ifraccionamiento: form.ifraccionamiento,
+            ncuotas: form.ncuotas,
+            mprima_bruta: form.mprima_bruta,
+            pcatastrofico: form.pcatastrofico,
+            pmotin:form.pmotin,
+            mmotin:form.mmotin,
+            pblindaje: form.pblindaje,
+            ivigencia: this.search_form.get('ivigencia').value,
+
           };
+          if(this.search_form.get('xcobertura').value == 'RCV'){
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
@@ -754,6 +898,24 @@ async getmetodologia(){
           this.alert.show = true;
           this.loading = false;
         })
+      }else{
+        this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe(async (response : any) => {
+          if(response.data.status){
+            window.alert('Se ha registrado exitosamente');
+            location.reload();
+          }
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+          this.loading = false;
+        })
+      }
       }
     }
   }
