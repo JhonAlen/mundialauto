@@ -684,6 +684,7 @@ async getmetodologia(){
       closeUbii();
       console.log('entro');
     } else {
+      if (!this.ccontratoflota) {
         this.submitted = true;
         this.loading = true;
         let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
@@ -754,6 +755,7 @@ async getmetodologia(){
           this.loading = false;
         })
       }
+    }
   }
 
   async getFleetContractDetail(ccontratoflota) {
@@ -1587,7 +1589,8 @@ async getmetodologia(){
         }
       }
     }
-    pdfMake.createPdf(pdfDefinition).open();}
+    pdfMake.createPdf(pdfDefinition).open();
+    location.reload();}
     catch(err){console.log(err.message)}
   }  
 }
