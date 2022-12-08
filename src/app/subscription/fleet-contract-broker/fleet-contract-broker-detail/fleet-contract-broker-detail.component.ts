@@ -1884,8 +1884,7 @@ async getmetodologia(){
       }
     }
     let pdf = pdfMake.createPdf(pdfDefinition);
-    pdf.open();
-    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('El PDF se está Generando'); location.reload()});
+    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('Se ha descargado la póliza Exitosamente'); location.reload()});  
   }
     catch(err){console.log(err.message)}
   }  
