@@ -824,7 +824,7 @@ async getmetodologia(){
             xtelefono_emp: form.xtelefono_emp,
             xtelefono_prop: form.xtelefono_prop,
             email: form.email,
-            cpais:this.search_form.get('cpais').value,
+            cpais: this.search_form.get('cpais').value,
             cestado: this.search_form.get('cestado').value,
             cciudad: this.search_form.get('cciudad').value,
             xdireccionfiscal: form.xdireccionfiscal,
@@ -870,6 +870,7 @@ async getmetodologia(){
 
           };
           if(this.search_form.get('xcobertura').value == 'RCV'){
+            console.log(this.search_form.get('cpais').value)
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
@@ -924,7 +925,7 @@ async getmetodologia(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params =  {
-      cpais: this.currentUser.data.cpais,  
+      cpais: this.search_form.get('cpais').value,  
       ccompania: this.currentUser.data.ccompania,
       ccontratoflota: ccontratoflota
     };
