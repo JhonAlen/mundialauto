@@ -990,6 +990,9 @@ async getmetodologia(){
     this.search_form.reset();
     this.search_form.enable();
     this.clear = true;
+    if (this.ccontratoflota) {
+      location.reload()
+    }
   }
 
   changeDateFormat(date) {
@@ -1845,8 +1848,9 @@ async getmetodologia(){
       }
     }
     let pdf = pdfMake.createPdf(pdfDefinition);
+    pdf.download(`Póliza - ${this.xnombrecliente}`);
     pdf.open();
-    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('El PDF se está Generando'); location.reload()});
+    this.search_form.disable()
   }
     catch(err){console.log(err.message)}
   }
