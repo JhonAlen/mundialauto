@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
-import { SignInComponent } from '../sign-in/sign-in.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CssGeneratorService } from '@app/_services/css-generator.service';
 import { AuthenticationService } from '@app/_services/authentication.service';
@@ -97,8 +96,18 @@ export class ToolbarComponent implements OnInit {
     localStorage.setItem('lang', lang.langselect);
   }
 
-  openSignInModal(){ this.modalService.open(SignInComponent); }
+  // openSignInModal(){ this.modalService.open(SignInComponent); }
 
   logOut(){ this.authenticationService.logout();}
 
+}
+
+
+function responsive() {
+  var x = document.getElementById("navbar");
+  if (x.className === "navbar") {
+    x.className += " responsive";
+  } else {
+    x.className = "topnav";
+  }
 }
