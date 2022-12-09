@@ -59,6 +59,8 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   mtasa_cambio: number;
   fingreso_tasa: Date;
   accessoryList: any[] = [];
+  clear: boolean = false;
+  bclear: boolean = false;
 
 
    //Variables del PDF
@@ -694,9 +696,12 @@ async getmetodologia(){
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+        this.CountryList.push({ id: response.data.cpais, value: response.data.xpais});
+        this.StateList.push({ id: response.data.cestado, value: response.data.xestado});
+        this.CityList.push({ id: response.data.cciudad, value: response.data.xciudad});
+        this.search_form.get('cpais').setValue(response.data.cpais);
         this.search_form.get('cestado').setValue(response.data.cestado);
         this.search_form.get('cciudad').setValue(response.data.cciudad);
-
       } 
     },);
   }
@@ -736,14 +741,13 @@ async getmetodologia(){
           xreferencia: result.xreferencia,
           fcobro: result.fcobro,
           cbanco: result.cbanco,
-          mprima_pagada: result.mprima_pagada
+          mprima_pagada: result.mprima_pagada,
+          mprima_bs: result.mprima_bs,
+          xnota: result.xnota,
+          mtasa_cambio: result.mtasa_cambio,
+          ftasa_cambio: result.ftasa_cambio
         }
-        // if(this.paymentList){
-        //   this.bemitir = true
-        // }
-
-        // window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`);
-        // console.log(this.ccontratoflota);
+        console.log(this.paymentList)
         this.onSubmit(this.search_form.value)
       }
     });
@@ -867,6 +871,7 @@ async getmetodologia(){
             mmotin:form.mmotin,
             pblindaje: form.pblindaje,
             ivigencia: this.search_form.get('ivigencia').value,
+            cproductor: this.currentUser.data.ccorredor
 
           };
           if(this.search_form.get('xcobertura').value == 'RCV'){
@@ -918,6 +923,15 @@ async getmetodologia(){
         })
       }
       }
+    }
+  }
+
+  onClearForm() {
+    this.search_form.reset();
+    this.search_form.enable();
+    this.clear = true;
+    if (this.ccontratoflota) {
+      location.reload()
     }
   }
 
@@ -998,6 +1012,7 @@ async getmetodologia(){
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
+        this.xcolor = response.data.xcolor;
         if(response.data.fnacimientopropietario){
           let dateFormat = new Date(response.data.fnacimientopropietario);
           let dd = dateFormat.getDay();
@@ -1009,8 +1024,8 @@ async getmetodologia(){
         }
         this.serviceList = response.data.services;
         this.coverageList = response.data.realCoverages;
-        await window.alert(`Se ha generado exitósamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}. Presione Aceptar para generar la Póliza en formato PDF`);
-        
+        await window.alert(`Se ha generado exitosamente la póliza n° ${this.xpoliza} del cliente ${this.xnombrecliente} para el vehículo de placa ${this.xplaca}. Presione Aceptar para generar la Póliza en formato PDF`);
+        this.clear = true;
         try {this.createPDF()}
         catch(err) {console.log(err.message)};
       }
@@ -1856,8 +1871,7 @@ async getmetodologia(){
         {
           style: 'data',
           ul: [
-            'Debe llamar al: 0500-2797288 / 0414-4128237 / 0241-8200184. En caso de tener inconvenientes con la línea 0500 puede comunicarse con el número telefónico\n' +
-            '0241-8200184',
+            'Debe llamar Venezuela al: 0500-2797288 / 0414-4128237 / 0241-8200184. Si se encuentra en Colombia al celular 3188339485\n',
             'Dar aviso a la brevedad posible, plazo máximo de acuerdo a las condiciones de la Póliza.',
             'Una vez contactado con la central del Call Center se le tomarán los detalles del siniestro (es importante que el mismo conductor realice la llamada) y de acuerdo\n' +
             'al tipo de siniestro o daño se le indicaran los pasos a seguir.',
@@ -1884,8 +1898,9 @@ async getmetodologia(){
         }
       }
     }
-    let pdf = pdfMake.createPdf(pdfDefinition);
-    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('Se ha descargado la póliza Exitosamente'); location.reload()});  
+    // let pdf = pdfMake.createPdf(pdfDefinition);
+    // pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('Se ha descargado la póliza Exitosamente'); location.reload()});  
+    pdfMake.createPdf(pdfDefinition).download(`Póliza - ${this.xnombrecliente} - N° - ${this.xpoliza}`, function() { alert('El PDF se está Generando');});
   }
     catch(err){console.log(err.message)}
   }  

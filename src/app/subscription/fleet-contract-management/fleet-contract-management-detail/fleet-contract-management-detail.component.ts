@@ -338,7 +338,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cpais: this.currentUser.data.cpais,
+      // cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
       ccontratoflota: this.code
     };
@@ -2339,8 +2339,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           ul: [
-            'Debe llamar al: 0500-2797288 / 0414-4128237 / 0241-8200184. En caso de tener inconvenientes con la línea 0500 puede comunicarse con el número telefónico\n' +
-            '0241-8200184',
+            'Debe llamar Venezuela al: 0500-2797288 / 0414-4128237 / 0241-8200184. Si se encuentra en Colombia al celular 3188339485\n',
             'Dar aviso a la brevedad posible, plazo máximo de acuerdo a las condiciones de la Póliza.',
             'Una vez contactado con la central del Call Center se le tomarán los detalles del siniestro (es importante que el mismo conductor realice la llamada) y de acuerdo\n' +
             'al tipo de siniestro o daño se le indicaran los pasos a seguir.',

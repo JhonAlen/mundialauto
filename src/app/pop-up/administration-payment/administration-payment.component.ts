@@ -30,6 +30,9 @@ export class AdministrationPaymentComponent implements OnInit {
   typeOfPayList: any[] = [];
   coinList: any[] = [];
   alert = { show : false, type : "", message : "" }
+  ctasacambio: number;
+  mtasacambio: number;
+  ftasacambio: Date;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -49,6 +52,10 @@ export class AdministrationPaymentComponent implements OnInit {
       xbanco: [''],
       mprima_pagada: [''],
       mprima: [''],
+      mprima_bs: [''],
+      mtasa_cambio: [''],
+      ftasa_cambio: [''],
+      xnota: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -156,6 +163,24 @@ export class AdministrationPaymentComponent implements OnInit {
       });
     }
 
+    //Buscar tasa de cambio
+  
+    this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
+      if (response.data.status) {
+        console.log(response.data.tasaCambio.mtasa_cambio)
+        this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
+        this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
+        this.ftasacambio = response.data.tasaCambio.fingreso;
+
+        let prima = this.popup_form.get('mprima').value * this.mtasacambio
+        let prima_bs = prima.toFixed(2)
+        this.popup_form.get('mprima_bs').setValue(prima_bs)
+        this.popup_form.get('mprima_bs').disable();
+        this.popup_form.get('mtasa_cambio').setValue(response.data.tasaCambio.mtasa_cambio);
+        this.popup_form.get('mtasa_cambio').disable();
+      }
+    })
+
     this.canSave = true;
     this.showSaveButton = true;
   }
@@ -204,6 +229,16 @@ export class AdministrationPaymentComponent implements OnInit {
     this.payment.mprima_pagada = this.popup_form.get('mprima').value;
    }
    
+   this.payment.mprima_bs = this.popup_form.get('mprima_bs').value;
+
+   if(form.xnota){
+    this.payment.xnota = form.xnota;
+   }else{
+    this.payment.xnota = 'Sin nota agregada.'
+   }
+
+   this.payment.mtasa_cambio = this.mtasacambio
+   this.payment.ftasa_cambio = this.ftasacambio
 
    this.activeModal.close(this.payment);
   }

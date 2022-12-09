@@ -489,6 +489,9 @@
                         <button id="ubiiboton" (click)="onSubmit(search_form.value)"></button>
                     </div> 
                   </div>
+                  <div class="button">
+                    <button type="button" class="btn btn-light btn-lg" style="background-color: red;" (click)="onClearForm()" *ngIf="clear">Limpiar Formulario</button>
+                  </div>
                 </div> 
                </div>
               </div> 
