@@ -7,6 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
+import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 
@@ -57,6 +58,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   ctasa_cambio: number;
   mtasa_cambio: number;
   fingreso_tasa: Date;
+  accessoryList: any[] = [];
 
 
    //Variables del PDF
@@ -132,6 +134,9 @@ export class FleetContractBrokerDetailComponent implements OnInit {
    detail_form: number;
    xnombrecorredor: string;
    xcolor: string;
+   modalidad: boolean = true;
+   montorcv: boolean = true;
+   cobertura: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -177,7 +182,22 @@ this.search_form = this.formBuilder.group({
   fcobro:[''],
   mprima_pagada:[''],
   xpago: [''],
-  binternacional: ['']
+  binternacional: [''],
+  pcasco:[''],
+  pmotin:[''],
+  mmotin:[''],
+  pcatastrofico:[''],
+  msuma_aseg:[''],
+  mprima_casco:[''],
+  mprima_bruta: [''],
+  mcatastrofico:[''],
+  msuma_blindaje:[''],
+  mprima_blindaje:[''],
+  pdescuento:[''],
+  ifraccionamiento:[false],
+  ncuotas:[''],
+  ivigencia: [''],
+  pblindaje: ['']
 })
 
  ;
@@ -240,7 +260,8 @@ async initializeDropdownDataRequest(){
         for(let i = 0; i < request.data.list.length; i++){
           this.marcaList.push({ 
             id: request.data.list[i].cmarca, 
-            value: request.data.list[i].xmarca });
+            value: request.data.list[i].xmarca,
+            control: request.data.list[i].control });
         }
         this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
@@ -310,9 +331,10 @@ async getCity(){
       },);
   } 
 async getModeloData(){
+  let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let params = {
       cpais: this.currentUser.data.cpais,
-      cmarca: this.search_form.get('cmarca').value
+      cmarca: marca.id
     };
     let request = await this.webService.searchModel(params);
     if(request.error){
@@ -327,16 +349,19 @@ async getModeloData(){
       for(let i = 0; i < request.data.list.length; i++){
          this.modeloList.push({ 
            id: request.data.list[i].cmodelo, 
-           value: request.data.list[i].xmodelo });
+           value: request.data.list[i].xmodelo,
+           control: request.data.list[i].control });
       }
       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
 async getVersionData(){
+  let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+  let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params = {
       cpais: 58,
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value
+      cmarca: marca.id,
+      cmodelo: modelo.id,
     };
     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
       if(response.data.status){
@@ -449,6 +474,73 @@ async getmetodologia(){
       }
       },);
   }  
+
+  addAccessory(){
+    let accessory;
+    const modalRef = this.modalService.open(FleetContractIndividualAccessorysComponent, {size: 'xl'});
+    modalRef.componentInstance.accessory = accessory;
+    modalRef.result.then((result: any) => { 
+
+      if(result){
+        this.accessoryList = result;
+      }
+    });
+  }
+
+  generateTarifa(){
+    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+    let params =  {
+      xtipo: this.search_form.get('xtipo').value,  
+      xmarca: marca.value,
+      xmodelo: modelo.value,
+      cano: this.search_form.get('cano').value,
+      xcobertura: this.search_form.get('xcobertura').value,
+      
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
+        this.search_form.get('pcasco').disable();
+        this.search_form.get('pmotin').setValue(response.data.ptarifa);
+        this.search_form.get('pmotin').disable();
+        for(let i = 0; i < response.data.ptarifa.length; i++){
+          this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
+          this.search_form.get('pcatastrofico').disable();
+          this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+      else if(code == 500){  message = "Los parametros no coinciden con la busqueda"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  calculation(){
+    let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
+    this.search_form.get('mprima_casco').setValue(calculo);
+    this.search_form.get('mprima_bruta').setValue(calculo);
+
+    let catastrofico = this.search_form.get('msuma_aseg').value * this.search_form.get('pcatastrofico').value / 100;
+    this.search_form.get('mcatastrofico').setValue(catastrofico);
+
+    let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
+    this.search_form.get('mmotin').setValue(motin);
+  }
+  data(){
+    let division = this.search_form.get('pdescuento').value / 100
+    let multiplicacion = this.search_form.get('mprima_casco').value * division
+    let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
+    this.search_form.get('mprima_casco').setValue(calculo_descuento);
+  }
+
   searchVersion(){
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     this.search_form.get('cano').setValue(version.cano);
@@ -500,54 +592,72 @@ async getmetodologia(){
     }
   }
   OperationUbii(){
-   if (!this.validateForm(this.search_form)) {
-      this.bpagarubii = false
-      this.search_form.get('cmetodologiapago').setValue('');
-      window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
-    } else {
-      if (this.bpagomanual == false) {
-        this.bpagarubii = true
+    if(this.search_form.get('xcobertura').value == 'RCV'){
+      if (!this.validateForm(this.search_form)) {
+          this.bpagarubii = false
+          this.search_form.get('cmetodologiapago').setValue('');
+          window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
+        } else {
+          if (this.bpagomanual == false) {
+            this.bpagarubii = true
+          }
+        
+        let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+      let params = {
+        cplan: metodologiaPago.id,
+        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+        xtipo: this.search_form.get('xtipo').value,
       }
-    
-    let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
-   let params = {
-    cplan: metodologiaPago.id,
-    cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-    xtipo: this.search_form.get('xtipo').value,
-  }
-     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.search_form.get('ncobro').setValue(response.data.mprima);
+        this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
+          if(response.data.status){
+            this.search_form.get('ncobro').setValue(response.data.mprima);
 
-        this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
-      }
-     let prima = this.search_form.get('ncobro').value.split(" ");
+            this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
+          }
+        let prima = this.search_form.get('ncobro').value.split(" ");
 
-     let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
-      if (((Number(prima_bs)) % 1) == 0) {
-        prima_bs = prima_bs + '.00';
-      }
-     let orden : string = "UB_" + response.data.ccubii;
+        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
+          if (((Number(prima_bs)) % 1) == 0) {
+            prima_bs = prima_bs + '.00';
+          }
+        let orden : string = "UB_" + response.data.ccubii;
 
-     initUbii(
-       'ubiiboton',
-       {
-         amount_ds: prima[0],
-         amount_bs:  prima_bs,
-         concept: "COMPRA",
-         principal: "ds",
-         clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-         orderId: orden
-       },
-       this.callbackFn.bind(this),
-       {
-         text: 'Pagar'
-       },
+        initUbii(
+          'ubiiboton',
+          {
+            amount_ds: prima[0],
+            amount_bs:  prima_bs,
+            concept: "COMPRA",
+            principal: "ds",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            orderId: orden
+          },
+          this.callbackFn.bind(this),
+          {
+            text: 'Pagar'
+          },
 
-     );
-      },);
+        );
+          },);
+        }
+    }else{
+      this.search_form.get('ncobro').setValue(0);
     }
   }
+
+  years(){
+    const now = new Date();
+    const currentYear = now.getFullYear();
+      
+    if(this.search_form.get('cano').value < 2007){
+      // this.search_form.get('cano').setValue(2007);
+     }
+     if(this.search_form.get('cano').value > currentYear + 1){
+       this.search_form.get('cano').setValue(currentYear);
+     }
+  
+   }
+
   validatecarstopyear(){
   const now = new Date();
   const currentYear = now.getFullYear();
@@ -590,6 +700,19 @@ async getmetodologia(){
       } 
     },);
   }
+  funcion(){
+    if(this.search_form.get('xcobertura').value == 'RCV'){
+      this.cobertura = false;
+      this.modalidad = true;
+      this.montorcv = true;
+      this.bemitir = false;
+    }else{
+      this.cobertura = true;
+      this.modalidad = false;
+      this.montorcv = false;
+      this.bemitir = true;
+    }
+  }
   resultTypePayment(){
     if(this.search_form.get('xpago').value == 'PASARELA'){
       //this.bpagarubii = true;
@@ -615,9 +738,9 @@ async getmetodologia(){
           cbanco: result.cbanco,
           mprima_pagada: result.mprima_pagada
         }
-        if(this.paymentList){
-          this.bemitir = true
-        }
+        // if(this.paymentList){
+        //   this.bemitir = true
+        // }
 
         // window.alert(`Se ha procesado exitosamente el pago de la póliza. Presione "Emitir Póliza" para generar su póliza en formato PDF.`);
         // console.log(this.ccontratoflota);
@@ -674,12 +797,16 @@ async getmetodologia(){
   verifyPayment() {
     if (this.cordenUbii > 0) {
   
-    } else {
+    } else if(this.search_form.get('xcobertura').value != 'RCV'){
+      
+    }else{
       window.alert('Primero Debe de pagar para poder generar el reporte de la póliza.')
     }
   }
 
   async onSubmit(form){
+    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     if (this.validateForm(this.search_form) == false) {
       closeUbii();
       console.log('entro');
@@ -697,13 +824,13 @@ async getmetodologia(){
             xtelefono_emp: form.xtelefono_emp,
             xtelefono_prop: form.xtelefono_prop,
             email: form.email,
-            cpais:this.search_form.get('cpais').value,
+            cpais: this.search_form.get('cpais').value,
             cestado: this.search_form.get('cestado').value,
             cciudad: this.search_form.get('cciudad').value,
             xdireccionfiscal: form.xdireccionfiscal,
             xplaca: form.xplaca,
-            cmarca: this.search_form.get('cmarca').value,
-            cmodelo: this.search_form.get('cmodelo').value,
+            cmarca: marca.id,
+            cmodelo: modelo.id,
             cversion: version.id,
             cano:form.cano,
             ncapacidad_p: form.ncapacidad_p,
@@ -724,8 +851,26 @@ async getmetodologia(){
             fcobro: this.fcobro,
             mprima_pagada: this.mprima_pagada,
             xpago: this.search_form.get('xpago').value,
-            payment: this.paymentList
+            payment: this.paymentList,
+            msuma_aseg: form.msuma_aseg,
+            pcasco: form.pcasco,
+            mprima_casco: form.mprima_casco,
+            mcatastrofico: form.mcatastrofico,
+            mprima_blindaje: form.mprima_blindaje,
+            msuma_blindaje: form.msuma_blindaje,
+            pdescuento: form.pdescuento,
+            ifraccionamiento: form.ifraccionamiento,
+            ncuotas: form.ncuotas,
+            mprima_bruta: form.mprima_bruta,
+            pcatastrofico: form.pcatastrofico,
+            pmotin:form.pmotin,
+            mmotin:form.mmotin,
+            pblindaje: form.pblindaje,
+            ivigencia: this.search_form.get('ivigencia').value,
+
           };
+          if(this.search_form.get('xcobertura').value == 'RCV'){
+            console.log(this.search_form.get('cpais').value)
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
@@ -754,6 +899,24 @@ async getmetodologia(){
           this.alert.show = true;
           this.loading = false;
         })
+      }else{
+        this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`,params).subscribe(async (response : any) => {
+          if(response.data.status){
+            window.alert('Se ha registrado exitosamente');
+            location.reload();
+          }
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+          this.loading = false;
+        })
+      }
       }
     }
   }
@@ -762,7 +925,7 @@ async getmetodologia(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params =  {
-      cpais: this.currentUser.data.cpais,  
+      cpais: this.search_form.get('cpais').value,  
       ccompania: this.currentUser.data.ccompania,
       ccontratoflota: ccontratoflota
     };
@@ -1577,6 +1740,133 @@ async getmetodologia(){
               [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
+        },
+        {
+          pageBreak: 'before',
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'AFILIACIÓN AL CLUB DE MIEMBROS DE ARYSAUTOS\n', alignment: 'center', bold: true, border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [100, '*'],
+            body: [
+              [{text: 'Datos del afiliado', bold: true, border: [true, true, false, true]}, {text: ' ', border: [false, true, true, true]}],
+              [{text: 'Nombres y Apellidos', border: [true, false, true, true]}, {text: this.xnombrecliente, border: [false, false, true, true]}],
+              [{text: 'Tipo y número de documento de identidad', border: [true, false, true, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}],
+              [{text: 'Dirección', border: [true, false, true, true]}, [{text: this.xdireccionfiscalcliente, border: [false, false, true, true]}]],
+              [{text: 'Número de Teléfono', border: [true, false, true, true]}, [{text: this.xtelefonocliente, border: [false, false, true, true]}]],
+              [{text: 'Datos del vehículo', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, true, true]}],
+              [{text: 'Placa', border: [true, false, true, true]}, [{text: this.xplaca, border: [false, false, true, true]}]],
+              [{text: 'Marca - Modelo - Versión', border: [true, false, true, true]}, {text: `${this.xmarca} - ${this.xmodelo} - ${this.xversion}`}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: 'Con la compra de la póliza RCV, adquiere una membresía por el vehículo asegurado suscrita por ARYSAUTOS, C.A. sociedad mercantil domiciliada en Valencia,\n' + 
+                      'Estado Carabobo e inscrita en el Registro Mercantil Segundo de la circunscripción judicial del Estado Carabobo bajo el número 73 tomo 7-A, por lo que está\n' +
+                      'AFILIADO al club de miembros de en el cual tendrá acceso a los siguientes SERVICIOS con disponibilidad a nivel nacional las 24/7, los 365 días del año de\n' +
+                      'manera rápida y segura para responder a todas tus requerimientos e inquietudes.', border:[false, false, false, false]
+              }]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: '\nLOS SERVICIOS\n', bold: true, border: [false, false, false, false]}],
+              [{text: 'Los costos de los servicios serán asumidos o no por el afiliado de acuerdo al plan contratado', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: [100, '*', 100],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Servicios del Club', fillColor: '#D4D3D3', bold: true}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mecánica Ligera', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Taller', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Grúa sin cobertura', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Asistencia legal telefónica', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mantenimiento correctivo', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mantenimiento preventivo', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Casa de repuesto', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Mecánica general', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Centro de atención 24/7', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Red de proveedores certificados', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Acompañamiento', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Asistencia en siniestros', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Asistencia vial telefónica', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+              [{text: ' ', border: [false, false, false, false]}, {text: 'Búsqueda y ubicación de repuestos', border: [true, false, true, true]}, {text: ' ', border: [false, false, false, false]},],
+            ]
+          }
+        },
+        {
+          style: 'data',
+          table: {
+            widths: ['*'],
+            body: [
+              [{text: ' ', border: [false, false, false, false]}],
+              [{text: ' ', border: [false, false, false, false]}]
+            ]
+          }
+        },
+        {
+          style: 'data',
+          ul: [
+            'Debe llamar al: 0500-2797288 / 0414-4128237 / 0241-8200184. En caso de tener inconvenientes con la línea 0500 puede comunicarse con el número telefónico\n' +
+            '0241-8200184',
+            'Dar aviso a la brevedad posible, plazo máximo de acuerdo a las condiciones de la Póliza.',
+            'Una vez contactado con la central del Call Center se le tomarán los detalles del siniestro (es importante que el mismo conductor realice la llamada) y de acuerdo\n' +
+            'al tipo de siniestro o daño se le indicaran los pasos a seguir.',
+            'Permanezca en el lugar del accidente y comuníquese inmediatamente con las autoridades de tránsito.',
+            'Si intervino una autoridad competente (Tránsito Terrestre, Guardia Nacional Bolivariana, Policía Nacional Bolivariana),es necesario que solicite las experticias y\n' + 
+            'a su vez las Actuaciones de Tránsito con el respectivo croquis, verifíquelas antes de firmarlas, ya que se requiere disponer de todos los detalles del accidente,\n' + 
+            'los datos de los vehículos y personas involucradas. Sin estos datos, no se podrá culminar la Notificación',
+            'No suministre información que puede afectarlo.'
+          ]
         }
       ], 
       styles: {
@@ -1595,8 +1885,7 @@ async getmetodologia(){
       }
     }
     let pdf = pdfMake.createPdf(pdfDefinition);
-    pdf.open();
-    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('El PDF se está Generando'); location.reload()});
+    pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('Se ha descargado la póliza Exitosamente'); location.reload()});  
   }
     catch(err){console.log(err.message)}
   }  
