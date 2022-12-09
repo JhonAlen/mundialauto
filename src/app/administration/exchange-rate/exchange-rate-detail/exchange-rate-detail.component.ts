@@ -89,6 +89,7 @@ export class ExchangeRateDetailComponent implements OnInit {
         }
       }
     });
+    this.showSaveButton = true;
   }
 
   detailExchangeRate(){
