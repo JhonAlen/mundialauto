@@ -65,6 +65,7 @@ select{
 
 .card{
     width: 49%;
+    position: initial;
     margin: 6px;
 }
 .cards{
