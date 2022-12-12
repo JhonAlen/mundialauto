@@ -1,45 +1,4 @@
-<!-- <div class="modal-header">
-  <h4 class="modal-title">{{ "SIGNIN.LOGIN" | translate }}</h4>
-  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
-  <form [formGroup]="signin_form" (ngSubmit)="onSubmit(signin_form.value)">
-    <div class="row">
-      <div class="col-12">
-        <div class="form-group">
-          <label>{{ "SIGNIN.EMAIL" | translate }}</label>
-          <input type="email" formControlName="xemail" class="form-control" [ngClass]="{ 'is-invalid' : submitted && signin_form.get('xemail').errors }">
-          <div *ngIf="submitted && signin_form.get('xemail').errors" class="invalid-feedback">
-            <div *ngIf="signin_form.get('xemail').errors.required">{{ "SIGNIN.REQUIRED_EMAIL" | translate }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="form-group">
-          <label>{{ "SIGNIN.PASSWORD" | translate }}</label>
-          <input type="password" formControlName="xcontrasena" class="form-control" [ngClass]="{ 'is-invalid' : submitted && signin_form.get('xcontrasena').errors }">
-          <div *ngIf="submitted && signin_form.get('xcontrasena').errors" class="invalid-feedback">
-            <div *ngIf="signin_form.get('xcontrasena').errors.required">{{ "SIGNIN.REQUIRED_PASSWORD" | translate }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 col-md-6 mt-2">
-        <button [disabled]="loading" class="btn company-detail-button btn-lg btn-block" type="submit">
-          <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-          {{ "SIGNIN.LOGIN" | translate }}
-        </button>
-      </div>
-      <div class="col-sm-12 col-md-6 mt-2">
-        <button type="button" class="btn btn-outline-primary btn-lg btn-block">{{ "SIGNIN.PASSWORD_RECOVERY" | translate }}</button>
-      </div>
-    </div>
-  </form>
-</div> -->
+
 <app-toolbar></app-toolbar>
 <title>Login</title>
 

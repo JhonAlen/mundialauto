@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -15,8 +15,9 @@ import { InicioComponent } from '@app/club/pages-statics/inicio/inicio.component
 })
 
 export class ToolbarComponent implements OnInit {
-
+  isMobile = window.innerWidth <= 1023
   auth : boolean = false;
+  responsive : boolean = false;
   currentUser;
   lang_form : UntypedFormGroup;
   groupList: any[] = [];
@@ -24,7 +25,8 @@ export class ToolbarComponent implements OnInit {
   theme: string = 'light';
   brand: string = "Mundialauto";
 
-  constructor(public translate : TranslateService, 
+  constructor(private el: ElementRef,
+              public translate : TranslateService, 
               private formBuilder : UntypedFormBuilder, 
               private modalService : NgbModal, 
               private authenticationService : AuthenticationService,
@@ -36,8 +38,10 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.onCloseWhenClickingOnMobile()
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
+       this.onCloseWhenClickingOnMobile()
       this.auth = true;
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -64,19 +68,9 @@ export class ToolbarComponent implements OnInit {
         if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
         else if(code == 404){ message = "HTTP.ERROR.TOOLBAR.MODULESNOTFOUND"; }
         else if(code == 500){ message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+     
+     
       });
-      this.cssGenerator.setStyle('.company-bg-navbar', 'background-image', 'linear-gradient(to right, #3c00c7, #6538ca, #835dcc, #9c80cd, #b3a3cd);');
-      this.theme = this.currentUser.data.xtemanav;
-      this.brand = this.currentUser.data.xcompania;
-      this.cssGenerator.setStyle(".company-card-header", "background-color", this.currentUser.data.xcolorprimario);
-      this.cssGenerator.setStyle(".company-detail-button", "background-color", this.currentUser.data.xcolorsegundario);
-      this.cssGenerator.setStyle(".company-detail-button", "border-color", this.currentUser.data.xcolorsegundario);
-      this.cssGenerator.setStyle(".company-detail-button", "color", this.currentUser.data.xcolortexto);
-      this.cssGenerator.setStyle(".company-detail-button:hover", "background-color", this.currentUser.data.xcolorterciario);
-      this.cssGenerator.setStyle(".company-detail-button:hover", "border-color", this.currentUser.data.xcolorterciario);
-      this.cssGenerator.setStyle(".company-detail-button:hover", "color", this.currentUser.data.xcolortexto);
-    }else{
-      this.cssGenerator.setStyle('.company-bg-navbar', 'background-color', 'linear-gradient(to right, #3c00c7, #6538ca, #835dcc, #9c80cd, #b3a3cd);');
     }
     this.lang_form = this.formBuilder.group({
       langselect: ['']
@@ -96,18 +90,16 @@ export class ToolbarComponent implements OnInit {
     localStorage.setItem('lang', lang.langselect);
   }
 
-  // openSignInModal(){ this.modalService.open(SignInComponent); }
-
   logOut(){ this.authenticationService.logout();}
-
-}
-
-
-function responsive() {
-  var x = document.getElementById("navbar");
-  if (x.className === "navbar") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
+ 
+ 
+  onCloseWhenClickingOnMobile() {
+    // just on mobile devices.
+    if (window.innerWidth <= 1023) {
+      this.responsive = true
+    }
   }
+
 }
+
+
