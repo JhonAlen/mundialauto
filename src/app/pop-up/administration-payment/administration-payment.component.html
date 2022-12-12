@@ -61,12 +61,47 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" style="flex-flow: nowrap;width: 53%;">
+                                <div > 
+                                    <div class="col-auto">
+                                        <div class="form-group">
+                                            <label>Monto en Dólares</label>
+                                            <input type="number" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima').errors }">
+                                            <div *ngIf="submitted && popup_form.get('mprima').errors"  class="invalid-feedback">
+                                                <div *ngIf="popup_form.get('mprima').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="col-auto">
+                                        <div class="form-group">
+                                            <label>Monto en Bolívares</label>
+                                            <input type="number" formControlName="mprima_bs" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_bs').errors }">
+                                            <div *ngIf="submitted && popup_form.get('mprima_bs').errors"  class="invalid-feedback">
+                                                <div *ngIf="popup_form.get('mprima_bs').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-left: 88px;">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Tasa de Cambio</label>
+                                        <input type="number" formControlName="mtasa_cambio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mtasa_cambio').errors }">
+                                        <div *ngIf="submitted && popup_form.get('mtasa_cambio').errors"  class="invalid-feedback">
+                                            <div *ngIf="popup_form.get('mtasa_cambio').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.AMOUNT" | translate }}</label>
-                                    <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima').errors }">
-                                    <div *ngIf="submitted && popup_form.get('mprima').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('mprima').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
+                                    <label>Nota</label>
+                                    <textarea type="text" formControlName="xnota" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnota').errors }"></textarea>
+                                    <div *ngIf="submitted && popup_form.get('xnota').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xnota').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
