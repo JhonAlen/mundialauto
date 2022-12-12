@@ -809,7 +809,7 @@ async getmetodologia(){
     this.loading = true;
     if (this.validateForm(this.search_form) == false) {
       closeUbii();
-      console.log('entro');
+     
     } else {
       if (!this.ccontratoflota) {
         this.submitted = true;
@@ -839,6 +839,17 @@ async getmetodologia(){
             xserialmotor: form.xserialmotor,  
             xcobertura: this.search_form.get('xcobertura').value,
             xtipo: this.search_form.get('xtipo').value,
+            msuma_aseg: form.msuma_aseg,
+            pcasco: this.search_form.get('pcasco').value,
+            mprima_casco: form.mprima_casco,
+            mcatastrofico: form.mcatastrofico,
+            msuma_blindaje: form.msuma_blindaje,
+            mprima_blindaje: form.mprima_blindaje,
+            mprima_bruta: form.mprima_bruta,
+            pcatastrofico: this.search_form.get('pcatastrofico').value,
+            pmotin: this.search_form.get('pmotin').value,
+            mmotin: form.mmotin,
+            pblindaje: this.search_form.get('pblindaje').value,
             cplan: metodologiaPago.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,

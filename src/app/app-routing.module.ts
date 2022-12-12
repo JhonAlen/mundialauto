@@ -202,10 +202,8 @@ const routes: Routes = [
   { path: 'service', component: ServicesComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'dasboard', component: DashboardComponent },
-  { path: 'sign-in', component: SignInComponent },
-  {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
-  { path: 'sign-in', component: SignInComponent},
+
   { path: 'change-password/:id', component: ChangePasswordComponent, canActivate: [SessionGuard]  },
   { path: 'permission-error', component: PermissionErrorComponent, canActivate: [AuthGuard]  },
   { path: 'security/user-index', component: UserIndexComponent, canActivate: [AuthGuard] },
@@ -470,6 +468,9 @@ const routes: Routes = [
   { path: 'administration/exchange-rate-index', component: ExchangeRateIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-detail', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-detail/:id', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
+  { path: 'sign-in', component: SignInComponent },
+  {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
+
 ];
 
 @NgModule({

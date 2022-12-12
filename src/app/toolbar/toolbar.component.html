@@ -1,36 +1,96 @@
+<!-- 
+>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> -->
+
+ <header id="header" class="d-flex align-items-center">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between" style="margin-left: -5px;">
+    <a href="inicio" class="image d-flex align-items-center">
+      <img class="logocompany"/>
+    </a>
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    <nav id="navbar" class="navbar">  
+      <ul *ngIf="auth" >
+              <!-- <li class="dropdown" *ngFor="let group of groupList"><a>{{ group.xgrupo | translate }} <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
+                  <a routerLink="{{ module.xruta }}" *ngFor="let module of group.modules">{{ module.xmodulo | translate }}</a>
+                </ul>
+              </li> -->
 
 
-
-<div class="navbar navbar-expand-lg company-bg-navbar" [ngClass]="{ 'navbar-light': theme == 'light', 'navbar-dark': theme == 'dark' }">
-  <a  *ngIf="auth" href="home"><img src="./assets/imagenes/mundial-logo2.png" width="150" height="60"></a>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ol *ngIf="auth" class="navbar-nav mr-auto" style="text-transform: capitalize;">
-      <li class="nav-item dropdown" *ngFor="let group of groupList">
-        
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #fff;font-family: inherit;/* font-weight: bold; */font-size: 15px; text-transform: capitalize;; padding: 7px 12px 9px 12px;">
-          {{ group.xgrupo | translate }}
-        </a>
-        
-        <div class="dropdown-menu scrollable-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" routerLink="{{ module.xruta }}" *ngFor="let module of group.modules" style="color: #4c4c4c;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ module.xmodulo | translate }}</a>
-        </div>
-      </li>
-    </ol>
-    <ul class="navbar-nav ml-auto">
-
+        <li class="dropdown" *ngFor="let group of groupList">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ group.xgrupo | translate }}
+          </a>
+           <ul aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-active classList" routerLink="{{ module.xruta }}" *ngFor="let module of group.modules" style="color: #4c4c4c;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ module.xmodulo | translate }}</a>
+           </ul> 
+        </li>
         <li *ngIf="auth" class="nav-item">
           <a class="nav-link" href="inicio" (click)="logOut()" style="color: #fff;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ "TOOLBAR.LOGOUT" | translate }}</a>
         </li>
         <form [formGroup]="lang_form">
-            <select class="form-control" formControlName="langselect" (change)="changeLanguage(lang_form.value);">
-              <option *ngFor="let lang of translate.getLangs()" value="{{ lang }}">{{ lang }}</option>
-            </select>
-        </form>
-    </ul>
+          <select class="form-control" formControlName="langselect" (change)="changeLanguage(lang_form.value);">
+            <option *ngFor="let lang of translate.getLangs()" value="{{ lang }}">{{ lang }}</option>
+          </select>
+      </form>
+      </ul>
+    </nav>
+  </div>
+</header> 
+
+<!-- <div class="responsive mobile-nav-toggle mobile-nav-show">
+<div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false" style="background-color: #00066f; align-items: center;" >
+  <div class="offcanvas-header">
+    <a href="inicio" class="image d-flex align-items-center">
+     
+    </a>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color: whitesmoke;"></button>
+      
+  </div>
+  <div class="offcanvas-body px-0">
+      <ul *ngIf="auth" class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+          <li class="dropdown" *ngFor="let group of groupList">
+              <a  class="nav-link text-truncate" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false" style=" color: white;">
+                   {{ group.xgrupo | translate }}
+              </a>
+              <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdown">
+                <li><a class="dropdown-item"  routerLink="{{ module.xruta }}" *ngFor="let module of group.modules">{{ module.xmodulo | translate }}</a></li>
+ 
+            </ul>
+          </li>
+      </ul>
   </div>
 </div>
+
+<div class="container-fluid">
+  <div class="row">
+      <div class="col min-vh-100 p-4">
+<button class="btn float-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" style="color: whitesmoke;">
+  <i class="bi bi-justify " data-bs-toggle="offcanvas" data-bs-target="#offcanvas" style="color: whitesmoke;"></i>
+</button>
+</div>
+</div>
+
+</div> -->
+
+
+<!-- <script src="../../styles_Club/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="../../styles_Club/vendor/aos/aos.js"></script>
+
+<script src="../../styles_Club/vendor/glightbox/js/glightbox.min.js"></script>
+
+<script src="../../styles_Club/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+
+<script src="../../styles_Club/vendor/swiper/swiper-bundle.min.js"></script>
+
+<script src="../../styles_Club/vendor/purecounter/purecounter_vanilla.js"></script>
+
+<script src="../../styles_Club/js/main.js"></script>
+ -->
+

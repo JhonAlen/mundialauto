@@ -308,6 +308,8 @@ import { ExchangeRateDetailComponent } from './administration/exchange-rate/exch
 import { BillLoadingSettlementComponent } from './pop-up/bill-loading-settlement/bill-loading-settlement.component';
 import { AdministrationBillLoadingComponent } from './pop-up/administration-bill-loading/administration-bill-loading.component';
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
+import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -598,7 +600,9 @@ export function HttpLoaderFactory(http: HttpClient){
     ExchangeRateIndexComponent,
     ExchangeRateDetailComponent,
     BillLoadingSettlementComponent,
-    AdministrationBillLoadingComponent
+    AdministrationBillLoadingComponent,
+    PolicyQuotationIndexComponent,
+    PolicyQuotationDetailComponent
   ],
   imports: [
     BrowserModule,
