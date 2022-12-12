@@ -33,6 +33,7 @@ export class AdministrationPaymentComponent implements OnInit {
   ctasacambio: number;
   mtasacambio: number;
   ftasacambio: Date;
+  destinationBankList: any[] = [];
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -55,7 +56,8 @@ export class AdministrationPaymentComponent implements OnInit {
       mprima_bs: [''],
       mtasa_cambio: [''],
       ftasa_cambio: [''],
-      xnota: ['']
+      xnota: [''],
+      cbanco_destino: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -181,6 +183,27 @@ export class AdministrationPaymentComponent implements OnInit {
       }
     })
 
+    //Buscar listas de bancos destinos.
+
+    this.http.post(`${environment.apiUrl}/api/valrep/destinationBank`, params, options).subscribe((response : any) => {
+      if(response.data.list){
+        this.destinationBankList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.destinationBankList.push({ id: response.data.list[i].cbanco_destino, value: response.data.list[i].xbanco_destino});
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+
     this.canSave = true;
     this.showSaveButton = true;
   }
@@ -236,6 +259,8 @@ export class AdministrationPaymentComponent implements OnInit {
    }else{
     this.payment.xnota = 'Sin nota agregada.'
    }
+
+   this.payment.cbanco_destino = this.popup_form.get('cbanco_destino').value
 
    this.payment.mtasa_cambio = this.mtasacambio
    this.payment.ftasa_cambio = this.ftasacambio

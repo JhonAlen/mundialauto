@@ -745,9 +745,9 @@ async getmetodologia(){
           mprima_bs: result.mprima_bs,
           xnota: result.xnota,
           mtasa_cambio: result.mtasa_cambio,
-          ftasa_cambio: result.ftasa_cambio
+          ftasa_cambio: result.ftasa_cambio,
+          cbanco_destino: result.cbanco_destino,
         }
-        console.log(this.paymentList)
         this.onSubmit(this.search_form.value)
       }
     });

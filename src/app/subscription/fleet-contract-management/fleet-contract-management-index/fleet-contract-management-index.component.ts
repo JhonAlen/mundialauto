@@ -91,6 +91,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
   t4: string;
   x9: string;
   d9: number;
+  keyword = 'value';
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -142,6 +143,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
 
   initializeDropdownDataRequest(){
     this.chargeList = [];
+    this.keyword;
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -195,13 +197,15 @@ export class FleetContractManagementIndexComponent implements OnInit {
     });*/
   }
   //drop down list con las fechas de carga de una flota matriz y nombre del cliente
-  batchDropdownDataRequest(){
+  batchDropdownDataRequest(event){
     this.receiptStatus = false;
     this.searchStatus = false;
     this.batchList = [];
+    this.keyword;
     this.search_form.get('clote').setValue(undefined);
     this.search_form.get('crecibo').setValue(undefined);
     this.search_form.get('xplaca').setValue(undefined);
+    this.search_form.get('ccarga').setValue(event.id)
     if(this.search_form.get('ccarga').value){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -235,11 +239,13 @@ export class FleetContractManagementIndexComponent implements OnInit {
     }
   }
 
-  receiptDropdownDataRequest(){
+  receiptDropdownDataRequest(event){
     this.searchStatus = false;
     this.receiptStatus = false;
     this.receiptList = [];
+    this.keyword;
     this.search_form.get('crecibo').setValue(undefined);
+    this.search_form.get('clote').setValue(event.id)
     if(this.search_form.get('clote').value){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -275,7 +281,9 @@ export class FleetContractManagementIndexComponent implements OnInit {
     }
   }
 
-  onChangeReceipt() {
+  onChangeReceipt(event) {
+    this.keyword;
+    this.search_form.get('crecibo').setValue(event.id)
     if (this.search_form.get('crecibo').value){
       this.searchStatus = true
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });

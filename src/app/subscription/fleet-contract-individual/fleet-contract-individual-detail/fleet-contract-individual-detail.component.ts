@@ -649,7 +649,12 @@ async getmetodologia(){
           xreferencia: result.xreferencia,
           fcobro: result.fcobro,
           cbanco: result.cbanco,
-          mprima_pagada: result.mprima_pagada
+          mprima_pagada: result.mprima_pagada,
+          mprima_bs: result.mprima_bs,
+          xnota: result.xnota,
+          mtasa_cambio: result.mtasa_cambio,
+          ftasa_cambio: result.ftasa_cambio,
+          cbanco_destino: result.cbanco_destino,
         }
 
         // if(this.paymentList){

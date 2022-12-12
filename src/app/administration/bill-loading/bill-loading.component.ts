@@ -59,6 +59,8 @@ export class BillLoadingComponent implements OnInit {
   titles;
   filteredTitles;
   model;
+  bactivarrecibidor: boolean = false;
+  bfiniquito: boolean = false;
 
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -90,6 +92,7 @@ export class BillLoadingComponent implements OnInit {
       xrutaarchivo: [''],
       cmoneda: [''],
       xmoneda: [''],
+      brecibidor: [false]
     });
     this.bill_form.get('msumatoriagrua').disable();
     this.bill_form.get('msumatoriacotizacion').disable();
@@ -182,7 +185,8 @@ export class BillLoadingComponent implements OnInit {
         this.bill_form.get('xrazonsocial').disable();
         this.bill_form.get('nlimite').setValue(response.data.nlimite);
         this.bill_form.get('nlimite').disable();
-     }
+      }
+      this.changeReceiver();
     },
     (err) => {
       let code = err.error.data.code;
@@ -224,10 +228,10 @@ export class BillLoadingComponent implements OnInit {
     });
   }
 
-  selectEvent(event) {
-    this.bill_form.get('crecibidor').setValue(event.id)
-    this.bill_form.get('cproveedor').setValue(event.id)
-  }
+  // selectEvent(event) {
+  //   this.bill_form.get('crecibidor').setValue(event.id)
+  //   this.bill_form.get('cproveedor').setValue(event.id)
+  // }
 
   // onChangeSearch(search: string) {
   //   // fetch remote data from here
@@ -371,6 +375,19 @@ export class BillLoadingComponent implements OnInit {
 
   onSettlementGridReady(event){
     this.settlementGridApi = event.api;
+  }
+
+  changeReceiver(){
+    //Si brecibidor esta en true se activa el beneficiario
+    if(this.bill_form.get('brecibidor').value == true){
+      this.bactivarrecibidor = true;
+      this.bfiniquito = true;
+    }else{
+      this.bfiniquito = false;
+      this.showEditButton = true;
+      this.showSaveButton = true;
+      this.bill_form.get('crecibidor').setValue(this.bill_form.get('cproveedor').value)
+    }
   }
 
   addBillLoading(){

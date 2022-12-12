@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                             </div>-->
-                            <div class="col-sm-12 col-md-4">
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>Póliza Matriz</label>
                                     <select formControlName="ccarga" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccarga').errors }" (change)="batchDropdownDataRequest()">
@@ -51,8 +51,25 @@
                                     <div *ngIf="submitted && search_form.get('ccarga').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
+                                <div class="form-outline">
+                                    <label class="form-label" for="form3Examplev5">Póliza Matriz</label>
+                                    <ng-autocomplete  [data]="chargeList" [searchKeyword]="keyword" 
+                                                    placeholder="Seleccionar Póliza" (selected)='batchDropdownDataRequest($event)'
+                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    </ng-autocomplete>
+                                
+                                    <ng-template #itemTemplate let-item>
+                                        <a [innerHTML]="item.value" value="{{ item.id }}"></a>
+                                    </ng-template>
+                                
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div> 
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>Lote</label>
                                     <select formControlName="clote" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('clote').errors }" (change)="receiptDropdownDataRequest()">
@@ -62,8 +79,25 @@
                                     <div *ngIf="submitted && search_form.get('clote').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
+                                <div class="form-outline">
+                                    <label class="form-label" for="form3Examplev5">Lote</label>
+                                    <ng-autocomplete  [data]="batchList" [searchKeyword]="keyword" 
+                                                    placeholder="Seleccionar Lote" (selected)='receiptDropdownDataRequest($event)'
+                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    </ng-autocomplete>
+                                
+                                    <ng-template #itemTemplate let-item>
+                                        <a [innerHTML]="item.value" value="{{ item.id }}"></a>
+                                    </ng-template>
+                                
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div> 
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>Recibo</label>
                                     <select formControlName="crecibo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccarga').errors }" (change)="onChangeReceipt()">
@@ -73,7 +107,24 @@
                                     <div *ngIf="submitted && search_form.get('crecibo').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-outline">
+                                    <label class="form-label" for="form3Examplev5">Recibo</label>
+                                    <ng-autocomplete  [data]="receiptList" [searchKeyword]="keyword" 
+                                                    placeholder="Seleccionar Recibo" (selected)='onChangeReceipt($event)'
+                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    </ng-autocomplete>
+                                
+                                    <ng-template #itemTemplate let-item>
+                                        <a [innerHTML]="item.value" value="{{ item.id }}"></a>
+                                    </ng-template>
+                                
+                                    <ng-template #notFoundTemplate let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div> 
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.PLATE" | translate }}</label>

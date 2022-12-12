@@ -41,7 +41,7 @@
                                             <div class="form-outline">
                                                 <label class="form-label" for="form3Examplev5">Proveedor</label>
                                                 <ng-autocomplete  [data]="providerList" [searchKeyword]="keyword" 
-                                                                placeholder="Seleccionar Beneficiario" (selected)='changeInfo($event)'
+                                                                placeholder="Seleccionar Proveedor" (selected)='changeInfo($event)'
                                                                 [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                                 </ng-autocomplete>
                                             
@@ -94,8 +94,21 @@
                                             </div>
                                         </div>
                                         <div class="col-sm-12 col-md-4">
+                                            <div class="form-check form-switch">
+                                                <label style="margin-left: 25px;margin-top: 13px;">Recibidor</label>
+                                                <div class="row">
+                                                  <p class="col-sm-2 col-md-6" style="text-align: right;margin-left: -43px;">Proveedor</p>
+                                                  <input type="checkbox" formControlName="brecibidor" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && bill_form.get('brecibidor').errors }" style="margin-left: 57px;" (change)="changeReceiver()"> 
+                                                  <p class="col-sm-2 col-md-7" style="margin-left: 25px;">Beneficiario</p>
+                                               </div>
+                                                <div *ngIf="submitted && bill_form.get('brecibidor').errors"  class="invalid-feedback">
+                                                    <div *ngIf="bill_form.get('brecibidor').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 col-md-4" *ngIf="bactivarrecibidor">
                                             <div class="form-outline">
-                                                <label class="form-label" for="form3Examplev5">Recibidor</label>
+                                                <label class="form-label" for="form3Examplev5">Beneficiario</label>
                                                 <ng-autocomplete  [data]="paymasterList" [searchKeyword]="keyword" 
                                                                 placeholder="Seleccionar Beneficiario" (selected)='changeStatus($event)' 
                                                                 [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
@@ -270,7 +283,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="card" style="margin-left: 65px; margin-top: 23px;">
+                        <div class="card" style="margin-left: 65px; margin-top: 23px;" *ngIf="bfiniquito">
                             <div class="card-header company-card-header">
                                 <div class="row">
                                     <div class="col-6" style="font-weight: bolder;">

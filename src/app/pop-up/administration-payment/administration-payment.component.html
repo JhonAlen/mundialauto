@@ -45,6 +45,18 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label>Banco Destino</label>
+                                    <select formControlName="cbanco_destino" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cbanco_destino').errors }">
+                                        <option></option>
+                                        <option *ngFor="let destinationBank of destinationBankList" value="{{ destinationBank.id }}">{{ destinationBank.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('cbanco_destino').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('cbanco_destino').errors.required">{{ "ADMINISTRATION.COLLECTION.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
                                     <label>{{ "ADMINISTRATION.COLLECTION.DATEPAY" | translate }}</label>
                                     <input type="date" formControlName="fcobro" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('fcobro').errors }">
                                     <div *ngIf="submitted && popup_form.get('fcobro').errors"  class="invalid-feedback">
