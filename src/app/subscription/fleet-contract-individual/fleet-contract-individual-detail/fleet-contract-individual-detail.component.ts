@@ -241,7 +241,7 @@ async ngOnInit(): Promise<void>{
       if(this.currentUser.data.crol == 18){
         this.bemitir = true;
       }
-      else if(this.currentUser.data.crol == 18){
+      else if(this.currentUser.data.crol == 17){
         this.bemitir = true;
       }else{
         this.bemitir = false;
