@@ -139,9 +139,10 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   xplanservicios: string;
   detail_form: number;
   xnombrecorredor: any;
-  xcolor: any;
+  xcolor: string;
   modalidad: boolean = true;
   montorcv: boolean = true;
+  keyword = 'value';
   
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -333,6 +334,34 @@ async getCity(){
       }
       },);
   } 
+// async getModeloData(event){
+//   this.keyword;
+//   this.search_form.get('cmarca').setValue(event.control)
+//   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+//     let params = {
+//       cpais: this.currentUser.data.cpais,
+//       cmarca: marca.id
+//     };
+//     let request = await this.webService.searchModel(params);
+//     if(request.error){
+//       this.alert.message = request.message;
+//       this.alert.type = 'danger';
+//       this.alert.show = true;
+//       this.loading = false;
+//       return;
+//     }
+//     if(request.data.status){
+//       this.modeloList = [];
+//       for(let i = 0; i < request.data.list.length; i++){
+//          this.modeloList.push({ 
+//            id: request.data.list[i].cmodelo, 
+//            value: request.data.list[i].xmodelo,
+//            control: request.data.list[i].control  });
+//       }
+//       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
+//     }
+//   }
+
 async getModeloData(){
   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let params = {
@@ -358,6 +387,7 @@ async getModeloData(){
       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
     }
   }
+
 async getVersionData(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
@@ -788,8 +818,12 @@ async getmetodologia(){
         this.search_form.get('xtelefono_emp').setValue(response.data.xtelefonocasa);
         this.search_form.get('xtelefono_prop').setValue(response.data.xtelefonocelular);
         this.search_form.get('email').setValue(response.data.xemail);
-        this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
+        this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
+        this.CountryList.push({ id: response.data.cpais, value: response.data.xpais});
+        this.StateList.push({ id: response.data.cestado, value: response.data.xestado});
+        this.CityList.push({ id: response.data.cciudad, value: response.data.xciudad});
+        this.search_form.get('cpais').setValue(response.data.cpais);
         this.search_form.get('cestado').setValue(response.data.cestado);
         this.search_form.get('cciudad').setValue(response.data.cciudad);
 
@@ -814,6 +848,9 @@ async getmetodologia(){
       if (!this.ccontratoflota) {
         this.submitted = true;
         this.loading = true;
+
+        let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+        let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
         let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
         let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
         let params = {
@@ -829,8 +866,8 @@ async getmetodologia(){
             cciudad: this.search_form.get('cciudad').value,
             xdireccionfiscal: form.xdireccionfiscal,
             xplaca: form.xplaca,
-            cmarca: this.search_form.get('cmarca').value,
-            cmodelo: this.search_form.get('cmodelo').value,
+            cmarca: marca.id,
+            cmodelo: modelo.id,
             cversion: version.id,
             cano:form.cano,
             ncapacidad_p: form.ncapacidad_p,
