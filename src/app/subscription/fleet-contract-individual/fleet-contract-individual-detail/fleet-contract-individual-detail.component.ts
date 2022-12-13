@@ -139,7 +139,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   xplanservicios: string;
   detail_form: number;
   xnombrecorredor: any;
-  xcolor: any;
+  xcolor: string;
   modalidad: boolean = true;
   montorcv: boolean = true;
   
@@ -965,6 +965,7 @@ async getmetodologia(){
         this.fano = response.data.fano;
         this.xserialcarroceria = response.data.xserialcarroceria;
         this.xserialmotor = response.data.xserialmotor;
+        this.xcolor = response.data.xcolor;
         this.mpreciovehiculo = response.data.mpreciovehiculo;
         this.ctipovehiculo = response.data.ctipovehiculo;
         this.xtipomodelovehiculo = response.data.xtipomodelovehiculo;

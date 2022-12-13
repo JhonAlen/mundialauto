@@ -28,15 +28,9 @@
 nav{
     margin-top: -54px;
 }
+
+.col-sm-12,
+.col-6,
 .card{
-    position: initial;
-}
-
-.col-sm-12{
     position: static;
 }
-
-.col-6{
-    position: static;
-}
-

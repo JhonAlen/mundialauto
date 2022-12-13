@@ -7,3 +7,7 @@ footer{
 h3,h6{
     color: white;
 }
+
+ng-autocomplete, ng-template {
+    background: fixed;
+}

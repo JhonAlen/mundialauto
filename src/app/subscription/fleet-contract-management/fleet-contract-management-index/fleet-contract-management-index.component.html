@@ -55,18 +55,20 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Póliza Matriz</label>
+                                    <div style="background: fixed">
                                     <ng-autocomplete  [data]="chargeList" [searchKeyword]="keyword" 
                                                     placeholder="Seleccionar Póliza" (selected)='batchDropdownDataRequest($event)'
                                                     [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
-                                    <ng-template #itemTemplate let-item>
+                                    <ng-template #itemTemplate let-item  [ngStyle]="{'background': 'fixed'}">
                                         <a [innerHTML]="item.value" value="{{ item.id }}"></a>
                                     </ng-template>
                                 
-                                    <ng-template #notFoundTemplate let-notFound>
+                                    <ng-template #notFoundTemplate let-notFound  [ngStyle]="{'background': 'fixed'}">
                                         <div [innerHTML]="notFound"></div>
                                     </ng-template>
+                                  </div>
                                 </div>
                             </div> 
                             <!-- <div class="col-sm-12 col-md-4">
