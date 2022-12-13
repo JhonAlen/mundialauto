@@ -237,6 +237,15 @@ async ngOnInit(): Promise<void>{
         this.alert.type = 'danger';
         this.alert.show = true;
       });
+
+      if(this.currentUser.data.crol == 18){
+        this.bemitir = true;
+      }
+      else if(this.currentUser.data.crol == 17){
+        this.bemitir = true;
+      }else{
+        this.bemitir = false;
+      }
     }
   }
 
@@ -650,6 +659,13 @@ async getmetodologia(){
       this.modalidad = true;
       this.montorcv = true;
       this.bemitir = false;
+      if(this.currentUser.data.crol == 18){
+        this.bemitir = true;
+      }
+      else if(this.currentUser.data.crol == 17){
+        this.bemitir = true;
+      }
+      
     }else{
       this.cobertura = true;
       this.modalidad = false;
