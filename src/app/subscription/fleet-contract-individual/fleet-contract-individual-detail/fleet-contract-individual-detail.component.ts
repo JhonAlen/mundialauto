@@ -243,6 +243,8 @@ async ngOnInit(): Promise<void>{
       }
       else if(this.currentUser.data.crol == 17){
         this.bemitir = true;
+      }else if(this.currentUser.data.crol == 3){
+        this.bemitir = true;
       }else{
         this.bemitir = false;
       }
@@ -663,6 +665,8 @@ async getmetodologia(){
         this.bemitir = true;
       }
       else if(this.currentUser.data.crol == 17){
+        this.bemitir = true;
+      }else if(this.currentUser.data.crol == 3){
         this.bemitir = true;
       }
       
