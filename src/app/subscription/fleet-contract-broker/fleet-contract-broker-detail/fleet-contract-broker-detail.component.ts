@@ -616,31 +616,31 @@ async getmetodologia(){
 
             this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
           }
-        let prima = this.search_form.get('ncobro').value.split(" ");
+          let prima = this.search_form.get('ncobro').value.split(" ");
 
-        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
-          if (((Number(prima_bs)) % 1) == 0) {
-            prima_bs = prima_bs + '.00';
-          }
-        let orden : string = "UB_" + response.data.ccubii;
+          let prima_ds: String = String(parseFloat(prima[0]).toFixed(2));
 
-        initUbii(
-          'ubiiboton',
-          {
-            amount_ds: prima[0],
-            amount_bs:  prima_bs,
-            concept: "COMPRA",
-            principal: "ds",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
-            orderId: orden
-          },
-          this.callbackFn.bind(this),
-          {
-            text: 'Pagar'
-          },
+          let prima_bs: String = String( (Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100).toFixed(2) );
 
-        );
-          },);
+          let orden : string = "UB_" + response.data.ccubii;
+
+          initUbii(
+            'ubiiboton',
+            {
+              amount_ds: prima_ds,
+              amount_bs:  prima_bs,
+              concept: "COMPRA",
+              principal: "ds",
+              clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+              orderId: orden
+            },
+            this.callbackFn.bind(this),
+            {
+              text: 'Pagar'
+            },
+
+          );
+        },);
         }
     }else{
       this.search_form.get('ncobro').setValue(0);
