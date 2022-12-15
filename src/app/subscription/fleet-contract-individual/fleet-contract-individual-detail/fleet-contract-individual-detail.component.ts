@@ -13,7 +13,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -931,6 +931,9 @@ async getmetodologia(){
             this.xrecibo = response.data.xrecibo;
             this.fsuscripcion = response.data.fsuscripcion;
             this.femision = response.data.femision;
+            if(this.currentUser.data.crol == 18,this.currentUser.data.crol == 17,this.currentUser.data.crol == 3 ){
+              this.getFleetContractDetail(this.ccontratoflota);
+            }
             if (this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV') {
               this.getFleetContractDetail(this.ccontratoflota);
             }
