@@ -6,9 +6,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> -->
 
- <header id="header" class="d-flex align-items-center">
-  <div class="container-fluid container-xl d-flex align-items-center justify-content-between" style="margin-left: -5px;">
-    <a href="inicio" class="image d-flex align-items-center">
+ <header id="header" class="d-flex align-items-center" style="margin-bottom: -30px;">
+  <div class="container-fluid container-xl d-flex align-items-center justify-content-between" style="margin-left: -10px;">
+    <a href="home" class="image d-flex align-items-center">
       <img class="logocompany"/>
     </a>
       <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
@@ -30,6 +30,8 @@
             <a class="dropdown-active classList" routerLink="{{ module.xruta }}" *ngFor="let module of group.modules" style="color: #4c4c4c;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ module.xmodulo | translate }}</a>
            </ul> 
         </li>
+
+
         <li *ngIf="auth" class="nav-item">
           <a class="nav-link" href="inicio" (click)="logOut()" style="color: #fff;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ "TOOLBAR.LOGOUT" | translate }}</a>
         </li>
@@ -43,54 +45,4 @@
   </div>
 </header> 
 
-<!-- <div class="responsive mobile-nav-toggle mobile-nav-show">
-<div class="offcanvas offcanvas-start w-25" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false" style="background-color: #00066f; align-items: center;" >
-  <div class="offcanvas-header">
-    <a href="inicio" class="image d-flex align-items-center">
-     
-    </a>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" style="background-color: whitesmoke;"></button>
-      
-  </div>
-  <div class="offcanvas-body px-0">
-      <ul *ngIf="auth" class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
-          <li class="dropdown" *ngFor="let group of groupList">
-              <a  class="nav-link text-truncate" class="nav-link dropdown-toggle  text-truncate" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false" style=" color: white;">
-                   {{ group.xgrupo | translate }}
-              </a>
-              <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdown">
-                <li><a class="dropdown-item"  routerLink="{{ module.xruta }}" *ngFor="let module of group.modules">{{ module.xmodulo | translate }}</a></li>
- 
-            </ul>
-          </li>
-      </ul>
-  </div>
-</div>
-
-<div class="container-fluid">
-  <div class="row">
-      <div class="col min-vh-100 p-4">
-<button class="btn float-end" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button" style="color: whitesmoke;">
-  <i class="bi bi-justify " data-bs-toggle="offcanvas" data-bs-target="#offcanvas" style="color: whitesmoke;"></i>
-</button>
-</div>
-</div>
-
-</div> -->
-
-
-<!-- <script src="../../styles_Club/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<script src="../../styles_Club/vendor/aos/aos.js"></script>
-
-<script src="../../styles_Club/vendor/glightbox/js/glightbox.min.js"></script>
-
-<script src="../../styles_Club/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-
-<script src="../../styles_Club/vendor/swiper/swiper-bundle.min.js"></script>
-
-<script src="../../styles_Club/vendor/purecounter/purecounter_vanilla.js"></script>
-
-<script src="../../styles_Club/js/main.js"></script>
- -->
 
