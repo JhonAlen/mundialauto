@@ -114,3 +114,10 @@ footer{
 img::before{
 	background-color: white;
 }
+
+.hero .carousel-item::before {
+	content: "";
+     background-color: rgba(75, 146, 232, 0.333); 
+	position: absolute;
+	inset: 0;
+  }

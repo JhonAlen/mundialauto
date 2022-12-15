@@ -13,7 +13,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -243,9 +243,13 @@ async ngOnInit(): Promise<void>{
       }
       else if(this.currentUser.data.crol == 17){
         this.bemitir = true;
+      }else if(this.currentUser.data.crol == 3){
+        this.bemitir = true;
       }else{
         this.bemitir = false;
       }
+
+      console.log(this.currentUser.data.crol)
     }
   }
 
@@ -262,7 +266,7 @@ async initializeDropdownDataRequest(){
     let params = {
       cpais: this.currentUser.data.cpais,
     };
-
+    this.keyword;
     let request = await this.webService.searchBrand(params);
     if(request.error){
       this.alert.message = request.message;
@@ -343,35 +347,9 @@ async getCity(){
       }
       },);
   } 
-// async getModeloData(event){
-//   this.keyword;
-//   this.search_form.get('cmarca').setValue(event.control)
-//   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
-//     let params = {
-//       cpais: this.currentUser.data.cpais,
-//       cmarca: marca.id
-//     };
-//     let request = await this.webService.searchModel(params);
-//     if(request.error){
-//       this.alert.message = request.message;
-//       this.alert.type = 'danger';
-//       this.alert.show = true;
-//       this.loading = false;
-//       return;
-//     }
-//     if(request.data.status){
-//       this.modeloList = [];
-//       for(let i = 0; i < request.data.list.length; i++){
-//          this.modeloList.push({ 
-//            id: request.data.list[i].cmodelo, 
-//            value: request.data.list[i].xmodelo,
-//            control: request.data.list[i].control  });
-//       }
-//       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
-//     }
-//   }
-
-async getModeloData(){
+async getModeloData(event){
+  this.keyword;
+  this.search_form.get('cmarca').setValue(event.control)
   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -397,31 +375,86 @@ async getModeloData(){
     }
   }
 
-async getVersionData(){
-    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
-    let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
-    let params = {
-      cpais: 58,
-      cmarca: marca.id,
-      cmodelo: modelo.id,
-    };
+// async getModeloData(){
+//   let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+//     let params = {
+//       cpais: this.currentUser.data.cpais,
+//       cmarca: marca.id
+//     };
+//     let request = await this.webService.searchModel(params);
+//     if(request.error){
+//       this.alert.message = request.message;
+//       this.alert.type = 'danger';
+//       this.alert.show = true;
+//       this.loading = false;
+//       return;
+//     }
+//     if(request.data.status){
+//       this.modeloList = [];
+//       for(let i = 0; i < request.data.list.length; i++){
+//          this.modeloList.push({ 
+//            id: request.data.list[i].cmodelo, 
+//            value: request.data.list[i].xmodelo,
+//            control: request.data.list[i].control  });
+//       }
+//       this.modeloList.sort((a, b) => a.value > b.value ? 1 : -1)
+//     }
+//   }
 
-    this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
-      if(response.data.status){
-        this.versionList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.versionList.push({ 
-            id: response.data.list[i].cversion,
-            value: response.data.list[i].xversion,
-            cano: response.data.list[i].cano, 
-            control: response.data.list[i].control,
-            npasajero: response.data.list[i].npasajero
-          });
+// async getVersionData(){
+//     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+//     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+//     let params = {
+//       cpais: 58,
+//       cmarca: marca.id,
+//       cmodelo: modelo.id,
+//     };
+
+//     this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
+//       if(response.data.status){
+//         this.versionList = [];
+//         for(let i = 0; i < response.data.list.length; i++){
+//           this.versionList.push({ 
+//             id: response.data.list[i].cversion,
+//             value: response.data.list[i].xversion,
+//             cano: response.data.list[i].cano, 
+//             control: response.data.list[i].control,
+//             npasajero: response.data.list[i].npasajero
+//           });
+//         }
+//         this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
+//       }
+//       },);
+//   }
+
+async getVersionData(event){
+      this.keyword;
+      this.search_form.get('cmodelo').setValue(event.control)
+      let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+      let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+      let params = {
+        cpais: 58,
+        cmarca: marca.id,
+        cmodelo: modelo.id,
+      };
+  
+      this.http.post(`${environment.apiUrl}/api/valrep/version`, params).subscribe((response : any) => {
+        if(response.data.status){
+          this.versionList = [];
+          for(let i = 0; i < response.data.list.length; i++){
+            this.versionList.push({ 
+              id: response.data.list[i].cversion,
+              value: response.data.list[i].xversion,
+              cano: response.data.list[i].cano, 
+              control: response.data.list[i].control,
+              npasajero: response.data.list[i].npasajero
+            });
+          }
+          this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
         }
-        this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
-      }
-      },);
-  }
+        },);
+    }
+
 async getCorredorData() {
    let params={
     cpais: this.currentUser.data.cpais,
@@ -590,7 +623,8 @@ async getmetodologia(){
     let calculo_descuento = this.search_form.get('mprima_casco').value - multiplicacion
     this.search_form.get('mprima_casco').setValue(calculo_descuento);
   }
-  searchVersion(){
+  searchVersion(event){
+    this.search_form.get('cversion').setValue(event.control)
     let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
     this.search_form.get('cano').setValue(version.cano);
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
@@ -664,7 +698,11 @@ async getmetodologia(){
       }
       else if(this.currentUser.data.crol == 17){
         this.bemitir = true;
+      }else if(this.currentUser.data.crol == 3){
+        this.bemitir = true;
       }
+
+      console.log(this.currentUser.data.crol)
       
     }else{
       this.cobertura = true;
@@ -750,7 +788,7 @@ async getmetodologia(){
             amount_bs:  prima_bs,
             concept: "COMPRA",
             principal: "ds",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
             orderId: orden
           },
           this.callbackFn.bind(this),
@@ -927,6 +965,9 @@ async getmetodologia(){
             this.xrecibo = response.data.xrecibo;
             this.fsuscripcion = response.data.fsuscripcion;
             this.femision = response.data.femision;
+            if(this.currentUser.data.crol == 18,this.currentUser.data.crol == 17,this.currentUser.data.crol == 3 ){
+              this.getFleetContractDetail(this.ccontratoflota);
+            }
             if (this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV') {
               this.getFleetContractDetail(this.ccontratoflota);
             }
