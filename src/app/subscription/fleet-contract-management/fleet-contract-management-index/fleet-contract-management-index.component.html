@@ -11,7 +11,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.SEARCHFLEETCONTRACT" | translate }}
+                            Buscar Póliza
                         </div>
                         <div class="col-6">
                             <!--<button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
@@ -29,29 +29,7 @@
                 </div>
                 <div class="card-body">
                     <form [formGroup]="search_form">
-                        <div class="row"><!--
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.CLIENT" | translate }}</label>
-                                    <select formControlName="ccliente" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccliente').errors }" (change)="chargeDropdownDataRequest()">
-                                        <option></option>
-                                        <option *ngFor="let client of clientList" value="{{ client.id }}">{{ client.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && search_form.get('ccliente').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
-                            </div>-->
-                            <!-- <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>Póliza Matriz</label>
-                                    <select formControlName="ccarga" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ccarga').errors }" (change)="batchDropdownDataRequest()">
-                                        <option></option>
-                                        <option *ngFor="let charge of chargeList" value="{{ charge.id }}">{{ charge.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && search_form.get('ccarga').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
-                            </div> -->
+                        <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Póliza Matriz</label>
@@ -71,17 +49,6 @@
                                   </div>
                                 </div>
                             </div> 
-                            <!-- <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>Lote</label>
-                                    <select formControlName="clote" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('clote').errors }" (change)="receiptDropdownDataRequest()">
-                                        <option></option>
-                                        <option *ngFor="let batch of batchList" value="{{ batch.id }}">{{ batch.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && search_form.get('clote').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
-                            </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Lote</label>
@@ -147,13 +114,13 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            {{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.FLEETCONTRACTSLIST" | translate }}
+                            Información de la Póliza
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <ag-grid-angular style="width: 100%; height: 520px;" class="ag-theme-alpine" [rowData]="fleetContractList" [pagination]="true" [paginationPageSize]="10" rowSelection="single" (rowClicked)="rowClicked($event)">
+                        <ag-grid-angular style="width: 100%; height: 104px;" class="ag-theme-alpine" [rowData]="fleetContractList" [pagination]="false" [paginationPageSize]="1" rowSelection="single" (rowClicked)="rowClicked($event)">
                             <ag-grid-column headerName="N° Recibo" field="crecibo" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="N° Contrato" field="ccontratoflota" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Marca" field="xmarca" [width]="150" [sortable]="true" [resizable]="true"></ag-grid-column>
