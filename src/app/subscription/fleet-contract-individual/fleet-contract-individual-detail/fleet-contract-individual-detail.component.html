@@ -152,7 +152,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-md-4 mb-4 pb-2">
+                  <!-- <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev2">Marca</label>
                       <select formControlName="cmarca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors } " (change)="getModeloData()">
@@ -163,8 +163,28 @@
                         <div *ngIf="search_form.get('cmarca').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-4 mb-4 pb-2">
+                  </div> -->
+                  <div class="col-sm-12 col-md-4">
+                    <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Marca</label>
+                        <div style="background: fixed">
+                        <ng-autocomplete  [data]="marcaList" [searchKeyword]="keyword" 
+                                        placeholder="Seleccionar Marca" (selected)='getModeloData($event)'
+                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                        </ng-autocomplete>
+                    
+                        <ng-template #itemTemplate let-item  [ngStyle]="{'background': 'fixed'}">
+                            <a [innerHTML]="item.value"></a>
+                        </ng-template>
+                    
+                        <ng-template #notFoundTemplate let-notFound  [ngStyle]="{'background': 'fixed'}">
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div> 
+
+                  <!-- <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev4">Modelo</label>
                       <select formControlName="cmodelo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }" (change)="getVersionData()">
@@ -175,8 +195,27 @@
                         <div *ngIf="search_form.get('cmodelo').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-md-4 mb-4 pb-2">
+                  </div> -->
+                  <div class="col-sm-12 col-md-4">
+                    <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Modelo</label>
+                        <div style="background: fixed">
+                        <ng-autocomplete  [data]="modeloList" [searchKeyword]="keyword" 
+                                        placeholder="Seleccionar Modelo" (selected)='getVersionData($event)'
+                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                        </ng-autocomplete>
+                    
+                        <ng-template #itemTemplate let-item  [ngStyle]="{'background': 'fixed'}">
+                            <a [innerHTML]="item.value"></a>
+                        </ng-template>
+                    
+                        <ng-template #notFoundTemplate let-notFound  [ngStyle]="{'background': 'fixed'}">
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div> 
+                  <!-- <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline form-white">
                       <label class="form-label required" for="form3Examplea7">Versión</label>
                       <select formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }"  (change)="searchVersion()">
@@ -187,7 +226,26 @@
                         <div *ngIf="search_form.get('cversion').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
+                  <div class="col-sm-12 col-md-4">
+                    <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Version</label>
+                        <div style="background: fixed">
+                        <ng-autocomplete  [data]="versionList" [searchKeyword]="keyword" 
+                                        placeholder="Seleccionar Version" (selected)='searchVersion($event)'
+                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                        </ng-autocomplete>
+                    
+                        <ng-template #itemTemplate let-item  [ngStyle]="{'background': 'fixed'}">
+                            <a [innerHTML]="item.value"></a>
+                        </ng-template>
+                    
+                        <ng-template #notFoundTemplate let-notFound  [ngStyle]="{'background': 'fixed'}">
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div> 
                   <div class="col-md-4 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required">Año del automovil</label>

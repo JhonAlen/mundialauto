@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-//import { initUbii } from '@ubiipagos/boton-ubii';
+// import { initUbii } from '@ubiipagos/boton-ubii';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -238,7 +238,7 @@ export class CollectionDetailComponent implements OnInit {
             amount_bs: prima_bs,
             concept: "COMPRA",
             principal: "ds",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
             orderId: this.code
           },
           this.callbackFn,
