@@ -775,17 +775,17 @@ async getmetodologia(){
           this.search_form.get('ccodigo_ubii').setValue(response.data.ccubii);
         }
         let prima = this.search_form.get('ncobro').value.split(" ");
-       
-        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100 );
-        if (((Number(prima_bs)) % 1) == 0) {
-          prima_bs = prima_bs + '.00';
-        }
+
+        let prima_ds: String = String(parseFloat(prima[0]).toFixed(2));
+
+        let prima_bs: String = String( (Math.round( ( (parseFloat(prima[0]) * (this.mtasa_cambio) ) + Number.EPSILON ) * 100 ) /100).toFixed(2) );
+
         let orden : string = "UB_" + response.data.ccubii;
        
         initUbii(
           'ubiiboton',
           {
-            amount_ds: prima[0],
+            amount_ds: prima_ds,
             amount_bs:  prima_bs,
             concept: "COMPRA",
             principal: "ds",

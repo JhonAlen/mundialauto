@@ -46,6 +46,7 @@ export class CollectionDetailComponent implements OnInit {
   ctasacambio: number;
   mtasacambio: number;
   ftasacambio: Date;
+  ccodigo_ubii: String;
 
   constructor(private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
@@ -226,20 +227,29 @@ export class CollectionDetailComponent implements OnInit {
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
         let prima = this.detail_form.get('mprima').value.split(" ");
-        console.log(parseFloat(prima[0]));
-        console.log(this.mtasacambio);
-        let prima_bs = String( Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100 );       
-        console.log(`${prima_bs}`)
-      
+
+        let prima_ds: String = String(parseFloat(prima[0]).toFixed(2));
+
+        let prima_bs: String = String( (Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100).toFixed(2) );       
+
+        this.ccodigo_ubii = String(response.data.ccodigo_ubii);
+
+        console.log("amount_ds: " + prima_ds + ` ${typeof prima_ds}`);
+        console.log("amount_bs: " + prima_bs + ` ${typeof prima_bs}`);
+        console.log('concept: COMPRA');
+        console.log("principal: bs");
+        console.log('clientId: 1c134b42-70e1-11ed-ae36-005056967039');
+        console.log('orderId: ' + this.ccodigo_ubii + ` ${typeof this.ccodigo_ubii}`);
+
         initUbii(
           'ubiiboton',
           {
-            amount_ds: prima[0],
+            amount_ds: prima_ds,
             amount_bs: prima_bs,
             concept: "COMPRA",
-            principal: "ds",
+            principal: "bs",
             clientId:"1c134b42-70e1-11ed-ae36-005056967039",
-            orderId: this.code
+            orderId: this.ccodigo_ubii
           },
           this.callbackFn,
           {
@@ -293,6 +303,7 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   async callbackFn(answer) {
+    console.log(answer);
     if(answer.data.R == 0){
       let ctipopago;
       if(answer.data.method == "ZELLE"){
