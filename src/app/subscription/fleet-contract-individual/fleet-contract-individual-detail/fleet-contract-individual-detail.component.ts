@@ -568,6 +568,7 @@ async getmetodologia(){
       if(result){
         this.accessoryList = result;
       }
+      console.log(this.accessoryList)
     });
   }
   generateTarifa(){
@@ -953,7 +954,8 @@ async getmetodologia(){
             fcobro: this.fcobro,
             mprima_pagada: this.mprima_pagada,
             xpago: this.search_form.get('xpago').value,
-            payment: this.paymentList
+            payment: this.paymentList,
+            accessory: this.accessoryList
           };
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
           if (response.data.status) {

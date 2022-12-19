@@ -116,8 +116,6 @@ export class FleetContractIndividualAccessorysComponent implements OnInit {
     
       arrayPerform = this.accesoryList;
       this.acceptedAccesoryList = arrayPerform;
-    
-    this.canSave = true;
   }
 
   accesoryRowClicked(event: any){
@@ -132,8 +130,10 @@ export class FleetContractIndividualAccessorysComponent implements OnInit {
         this.acceptedAccesoryList[i].mmontomax;
         this.acceptedAccesoryList[i].ptasa;
       }
+      if(this.acceptedAccesoryList){
+        window.alert('Recuerda darle click al accesorio seleccionado para establecer suma asegurada.')
+      }
       this.acceptedAccesoryGridApi.setRowData(this.acceptedAccesoryList);
-      this.canSave = true;
   }
 
   accesoryAmountRowClicked(event: any){
@@ -151,6 +151,7 @@ export class FleetContractIndividualAccessorysComponent implements OnInit {
           this.acceptedAccesoryList[i].mprima = result.mprima;
         }
       }
+      this.canSave = true;
     }
     })
   }
@@ -172,6 +173,4 @@ export class FleetContractIndividualAccessorysComponent implements OnInit {
 
     this.activeModal.close(this.acceptedAccesoryList);
   }
-
-
 }
