@@ -93,7 +93,8 @@ export class AdministrationPaymentComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      crecibo: this.payment.crecibo
+      crecibo: this.payment.crecibo,
+      mpima_pagada: this.payment.mpima_pagada
     };
 
     //Buscar listas de bancos.
@@ -147,10 +148,11 @@ export class AdministrationPaymentComponent implements OnInit {
       this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
         if(response.data.status){
           //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
-          this.popup_form.get('mprima').setValue(response.data.mprima);
+          this.popup_form.get('mprima').setValue(response.data.mprima_pagada);
           this.popup_form.get('mprima').disable();
-          this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
-          this.popup_form.get('mprima_pagada').disable();
+          // console.log(response.data.mprima_pagada)
+          // this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
+          // this.popup_form.get('mprima_pagada').disable();
         }
       },
       (err) => {
@@ -169,12 +171,11 @@ export class AdministrationPaymentComponent implements OnInit {
   
     this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
       if (response.data.status) {
-        console.log(response.data.tasaCambio.mtasa_cambio)
         this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
         this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
         this.ftasacambio = response.data.tasaCambio.fingreso;
 
-        let prima = this.popup_form.get('mprima').value * this.mtasacambio
+        let prima = this.popup_form.get('mprima').value * response.data.tasaCambio.mtasa_cambio
         let prima_bs = prima.toFixed(2)
         this.popup_form.get('mprima_bs').setValue(prima_bs)
         this.popup_form.get('mprima_bs').disable();
@@ -245,12 +246,14 @@ export class AdministrationPaymentComponent implements OnInit {
    }
    this.payment.xreferencia = form.xreferencia;
    this.payment.fcobro = form.fcobro;
+   
+   this.payment.mprima_pagada = this.popup_form.get('mprima').value;
 
-   if(this.popup_form.get('mprima_pagada').value){
-    this.payment.mprima_pagada = this.popup_form.get('mprima_pagada').value;
-   }else{
-    this.payment.mprima_pagada = this.popup_form.get('mprima').value;
-   }
+  //  if(this.popup_form.get('mprima_pagada').value){
+  //   this.payment.mprima_pagada = this.popup_form.get('mprima_pagada').value;
+  //  }else{
+  //   this.payment.mprima_pagada = this.popup_form.get('mprima').value;
+  //  }
    
    this.payment.mprima_bs = this.popup_form.get('mprima_bs').value;
 
