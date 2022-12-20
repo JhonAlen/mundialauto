@@ -167,9 +167,10 @@
                   <div class="col-sm-12 col-md-4">
                     <div class="form-outline">
                         <label class="form-label" for="form3Examplev5">Marca</label>
+                        <div >
                         <ng-autocomplete  [data]="marcaList" [searchKeyword]="keyword" 
                                         placeholder="Seleccionar Marca" (selected)='getModeloData($event)'
-                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" class="form-control">                                 
+                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                         </ng-autocomplete>
                     
                         <ng-template #itemTemplate let-item >
@@ -179,6 +180,7 @@
                         <ng-template #notFoundTemplate let-notFound  >
                             <div [innerHTML]="notFound"></div>
                         </ng-template>
+                      </div>
                     </div>
                   </div> 
 

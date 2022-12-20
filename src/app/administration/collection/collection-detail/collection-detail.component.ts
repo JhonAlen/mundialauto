@@ -288,7 +288,11 @@ export class CollectionDetailComponent implements OnInit {
             mprima: result.mprima,
             mprima_bs: result.mprima_bs,
             cbanco: result.cbanco,
-            mprima_pagada: result.mprima_pagada
+            mprima_pagada: result.mprima_pagada,
+            xnota: result.xnota,
+            cbanco_destino: result.cbanco_destino,
+            mtasa_cambio: result.mtasa_cambio,
+            ftasa_cambio: result.ftasa_cambio
           });
   
           if(this.paymentList){

@@ -17,7 +17,7 @@ export class PaymentRecordDetailComponent implements OnInit {
 
   sub;
   currentUser;
-  detail_form: UntypedFormGroup;
+  payment_form: UntypedFormGroup;
   loading: boolean = false;
   loading_cancel: boolean = false;
   submitted: boolean = false;
@@ -49,12 +49,13 @@ export class PaymentRecordDetailComponent implements OnInit {
               }
 
   ngOnInit(): void {
-    this.detail_form = this.formBuilder.group({
-      ccliente: [''],
-      casociado: [''],
-      cagrupador: [''],
-      xcertificadogestion: [''],
-      xcertificadoasociado: [''],
+    this.payment_form = this.formBuilder.group({
+      xcliente: [''],
+      nfactura: [''],
+      ncontrol: [''],
+      ffactura: [''],
+      frecepcion: [''],
+      fvencimiento: [''],
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
