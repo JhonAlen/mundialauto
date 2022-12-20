@@ -13,7 +13,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+//import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -568,6 +568,7 @@ async getmetodologia(){
       if(result){
         this.accessoryList = result;
       }
+      console.log(this.accessoryList)
     });
   }
   generateTarifa(){
@@ -788,7 +789,7 @@ async getmetodologia(){
             amount_bs:  prima_bs,
             concept: "COMPRA",
             principal: "ds",
-            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
             orderId: orden
           },
           this.callbackFn.bind(this),
@@ -1045,7 +1046,8 @@ async getmetodologia(){
             fcobro: this.fcobro,
             mprima_pagada: this.mprima_pagada,
             xpago: this.search_form.get('xpago').value,
-            payment: this.paymentList
+            payment: this.paymentList,
+            accessory: this.accessoryList
           };
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
           if (response.data.status) {

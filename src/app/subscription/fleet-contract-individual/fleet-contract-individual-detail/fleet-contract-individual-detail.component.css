@@ -131,3 +131,6 @@ hr{
     content:" *";
     color: red;
   }
+  .ng-autocomplete {
+    border-radius: 5px;
+}

@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-// import { initUbii } from '@ubiipagos/boton-ubii';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -69,6 +69,7 @@ export class CollectionDetailComponent implements OnInit {
       xmoneda: [''],
       xestatusgeneral: [''],
       mprima: [''],
+      mprima_bs: [''],
       ctipopago: [''],
       xtipopago: [''],
       xreferencia: [''],
@@ -273,7 +274,7 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   addPayment(){
-    let payment = { crecibo: this.code };
+    let payment = { crecibo: this.code , mpima_pagada : this.mprima_pagada };
     const modalRef = this.modalService.open(AdministrationPaymentComponent);
     modalRef.componentInstance.payment = payment;
     modalRef.result.then((result: any) => { 
@@ -284,10 +285,16 @@ export class CollectionDetailComponent implements OnInit {
             ctipopago: result.ctipopago,
             xreferencia: result.xreferencia,
             fcobro: result.fcobro,
+            mprima: result.mprima,
+            mprima_bs: result.mprima_bs,
             cbanco: result.cbanco,
-            mprima_pagada: result.mprima_pagada
+            mprima_pagada: result.mprima_pagada,
+            xnota: result.xnota,
+            cbanco_destino: result.cbanco_destino,
+            mtasa_cambio: result.mtasa_cambio,
+            ftasa_cambio: result.ftasa_cambio
           });
-          
+  
           if(this.paymentList){
             this.showSaveButton= true;
             this.bpago = false;
