@@ -896,9 +896,101 @@ async getmetodologia(){
     this.submitted = true;
     this.search_form.disable();
     this.loading = true;
+    if (!this.ccontratoflota) {
+      this.submitted = true;
+      this.loading = true;
+
+      let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+      let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+      let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+      let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+      let params = {
+          icedula: this.search_form.get('icedula').value,
+          xrif_cliente: form.xrif_cliente,
+          xnombre: form.xnombre,
+          xapellido: form.xapellido,
+          xtelefono_emp: form.xtelefono_emp,
+          xtelefono_prop: form.xtelefono_prop,
+          email: form.email,
+          cpais:this.search_form.get('cpais').value,
+          cestado: this.search_form.get('cestado').value,
+          cciudad: this.search_form.get('cciudad').value,
+          xdireccionfiscal: form.xdireccionfiscal,
+          xplaca: form.xplaca,
+          cmarca: marca.id,
+          cmodelo: modelo.id,
+          cversion: version.id,
+          cano:form.cano,
+          ncapacidad_p: form.ncapacidad_p,
+          xcolor:this.search_form.get('xcolor').value,    
+          xserialcarroceria: form.xserialcarroceria,
+          xserialmotor: form.xserialmotor,  
+          xcobertura: this.search_form.get('xcobertura').value,
+          xtipo: this.search_form.get('xtipo').value,
+          msuma_aseg: form.msuma_aseg,
+          pcasco: this.search_form.get('pcasco').value,
+          mprima_casco: form.mprima_casco,
+          mcatastrofico: form.mcatastrofico,
+          msuma_blindaje: form.msuma_blindaje,
+          mprima_blindaje: form.mprima_blindaje,
+          mprima_bruta: form.mprima_bruta,
+          pcatastrofico: this.search_form.get('pcatastrofico').value,
+          pmotin: this.search_form.get('pmotin').value,
+          mmotin: form.mmotin,
+          pblindaje: this.search_form.get('pblindaje').value,
+          cplan: metodologiaPago.id,
+          cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+          femision: form.femision,
+          ncobro: form.ncobro,
+          ccodigo_ubii:form.ccodigo_ubii,
+          ccorredor:  this.search_form.get('ccorredor').value,
+          xcedula: form.xrif_cliente,
+          ctipopago: this.ctipopago,
+          xreferencia: this.xreferencia,
+          fcobro: this.fcobro,
+          mprima_pagada: this.mprima_pagada,
+          xpago: this.search_form.get('xpago').value,
+          payment: this.paymentList
+        };
+      this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
+        if (response.data.status) {
+          this.ccontratoflota = response.data.ccontratoflota;
+          this.fdesde_pol = response.data.fdesde_pol;
+          this.fhasta_pol = response.data.fhasta_pol;
+          this.fdesde_rec = response.data.fdesde_rec;
+          this.fhasta_rec = response.data.fhasta_rec;
+          this.xrecibo = response.data.xrecibo;
+          this.fsuscripcion = response.data.fsuscripcion;
+          this.femision = response.data.femision;
+          if(this.currentUser.data.crol == 18 || this.currentUser.data.crol == 17 || this.currentUser.data.crol == 3 ){
+            this.getFleetContractDetail(this.ccontratoflota);
+          }
+          if (this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV') {
+            this.getFleetContractDetail(this.ccontratoflota);
+          }
+        }
+      },
+      (err) => {
+        let code = err.error.data.code;
+        let message;
+        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+        this.alert.message = message;
+        this.alert.type = 'danger';
+        this.alert.show = true;
+        this.loading = false;
+      })
+    }
+    this.loading = false;
+  }
+
+  async onSubmitUbii(form) {
+    this.clear = false;
+    this.submitted = true;
+    this.search_form.disable();
+    this.loading = true;
     if (this.validateForm(this.search_form) == false) {
       closeUbii();
-     
     } else {
       if (!this.ccontratoflota) {
         this.submitted = true;
@@ -967,12 +1059,6 @@ async getmetodologia(){
             this.xrecibo = response.data.xrecibo;
             this.fsuscripcion = response.data.fsuscripcion;
             this.femision = response.data.femision;
-            if(this.currentUser.data.crol == 18,this.currentUser.data.crol == 17,this.currentUser.data.crol == 3 ){
-              this.getFleetContractDetail(this.ccontratoflota);
-            }
-            if (this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV') {
-              this.getFleetContractDetail(this.ccontratoflota);
-            }
           } else {
             closeUbii()
           }
@@ -990,7 +1076,7 @@ async getmetodologia(){
         })
       }
     }
-
+    this.loading = false;
   }
 
   async getFleetContractDetail(ccontratoflota) {
