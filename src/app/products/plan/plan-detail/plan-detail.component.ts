@@ -57,6 +57,8 @@ export class PlanDetailComponent implements OnInit {
       ctipoplan: ['', Validators.required],
       xplan: ['', Validators.required],
       mcosto: ['', Validators.required],
+      parys:[''],
+      paseguradora:[''],
       bactivo: [true, Validators.required]
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -156,6 +158,10 @@ export class PlanDetailComponent implements OnInit {
         this.detail_form.get('xplan').disable();
         this.detail_form.get('mcosto').setValue(response.data.mcosto);
         this.detail_form.get('mcosto').disable();
+        // this.detail_form.get('parys').setValue(response.data.parys);
+        // this.detail_form.get('parys').disable();
+        // this.detail_form.get('paseguradora').setValue(response.data.paseguradora);
+        // this.detail_form.get('paseguradora').disable();
         this.detail_form.get('bactivo').setValue(response.data.bactivo);
         this.detail_form.get('bactivo').disable();
         this.paymentMethodologyList = [];

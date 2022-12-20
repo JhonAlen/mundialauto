@@ -167,11 +167,6 @@ export class BillLoadingComponent implements OnInit {
     });
   }
 
-  // prueba(event){
-  //   this.bill_form.get('cproveedor').setValue(event.id)
-  //   this.changeInfo();
-  // }
-
   changeInfo(event){
     this.bill_form.get('cproveedor').setValue(event.id)
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -227,21 +222,7 @@ export class BillLoadingComponent implements OnInit {
       this.alert.show = true;
     });
   }
-
-  // selectEvent(event) {
-  //   this.bill_form.get('crecibidor').setValue(event.id)
-  //   this.bill_form.get('cproveedor').setValue(event.id)
-  // }
-
-  // onChangeSearch(search: string) {
-  //   // fetch remote data from here
-  //   // And reassign the 'data' which is binded to 'data' property.
-  // }
-
-  // onFocused(e) {
-  //   // do something
-  // }
-
+  
   searchCoin(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };

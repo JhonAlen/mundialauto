@@ -93,7 +93,8 @@ export class AdministrationPaymentComponent implements OnInit {
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
-      crecibo: this.payment.crecibo
+      crecibo: this.payment.crecibo,
+      mpima_pagada: this.payment.mpima_pagada
     };
 
     //Buscar listas de bancos.
@@ -147,10 +148,11 @@ export class AdministrationPaymentComponent implements OnInit {
       this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
         if(response.data.status){
           //let prima = `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.mprima)}`;
-          this.popup_form.get('mprima').setValue(response.data.mprima);
+          this.popup_form.get('mprima').setValue(response.data.mprima_pagada);
           this.popup_form.get('mprima').disable();
-          this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
-          this.popup_form.get('mprima_pagada').disable();
+          // console.log(response.data.mprima_pagada)
+          // this.popup_form.get('mprima_pagada').setValue(response.data.mprima_pagada);
+          // this.popup_form.get('mprima_pagada').disable();
         }
       },
       (err) => {
@@ -169,12 +171,11 @@ export class AdministrationPaymentComponent implements OnInit {
   
     this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
       if (response.data.status) {
-        console.log(response.data.tasaCambio.mtasa_cambio)
         this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
         this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
         this.ftasacambio = response.data.tasaCambio.fingreso;
 
-        let prima = this.popup_form.get('mprima').value * this.mtasacambio
+        let prima = this.popup_form.get('mprima').value * response.data.tasaCambio.mtasa_cambio
         let prima_bs = prima.toFixed(2)
         this.popup_form.get('mprima_bs').setValue(prima_bs)
         this.popup_form.get('mprima_bs').disable();
@@ -189,7 +190,10 @@ export class AdministrationPaymentComponent implements OnInit {
       if(response.data.list){
         this.destinationBankList = [];
         for(let i = 0; i < response.data.list.length; i++){
-          this.destinationBankList.push({ id: response.data.list[i].cbanco_destino, value: response.data.list[i].xbanco_destino});
+          this.destinationBankList.push({ 
+            id: response.data.list[i].cbanco_destino, 
+            value: response.data.list[i].xbanco_destino
+          });
         }
       }
     },
@@ -212,8 +216,11 @@ export class AdministrationPaymentComponent implements OnInit {
     if(this.popup_form.get('ctipopago').value == 4 || this.popup_form.get('ctipopago').value == 5){
       this.popup_form.get('cbanco').setValue(0);
       this.popup_form.get('cbanco').disable();
+      this.popup_form.get('cbanco_destino').setValue(0);
+      this.popup_form.get('cbanco_destino').disable();
     }else{
       this.popup_form.get('cbanco').enable();
+      this.popup_form.get('cbanco_destino').enable();
     }
 
     if(this.popup_form.get('ctipopago').value == 5){
@@ -223,6 +230,32 @@ export class AdministrationPaymentComponent implements OnInit {
       this.popup_form.get('xreferencia').setValue('');
       this.popup_form.get('xreferencia').enable();
     }
+
+    if(this.popup_form.get('ctipopago').value == 4){
+      this.popup_form.get('cbanco_destino').enable();
+    }
+
+    this.destinationBank();
+  }
+
+  destinationBank(){
+      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      let options = { headers: headers };
+      let params = {
+        cpais: this.currentUser.data.cpais,
+        ctipopago: this.popup_form.get('ctipopago').value
+      };
+      this.http.post(`${environment.apiUrl}/api/administration/destinationBank`, params, options).subscribe((response : any) => {
+        if(response.data.list){
+          this.destinationBankList = [];
+          for(let i = 0; i < response.data.list.length; i++){
+            this.destinationBankList.push({ 
+              id: response.data.list[i].cbanco_destino, 
+              value: response.data.list[i].xbanco_destino
+            });
+          }
+        }
+      })
   }
 
   onSubmit(form){
@@ -245,12 +278,14 @@ export class AdministrationPaymentComponent implements OnInit {
    }
    this.payment.xreferencia = form.xreferencia;
    this.payment.fcobro = form.fcobro;
+   
+   this.payment.mprima_pagada = this.popup_form.get('mprima').value;
 
-   if(this.popup_form.get('mprima_pagada').value){
-    this.payment.mprima_pagada = this.popup_form.get('mprima_pagada').value;
-   }else{
-    this.payment.mprima_pagada = this.popup_form.get('mprima').value;
-   }
+  //  if(this.popup_form.get('mprima_pagada').value){
+  //   this.payment.mprima_pagada = this.popup_form.get('mprima_pagada').value;
+  //  }else{
+  //   this.payment.mprima_pagada = this.popup_form.get('mprima').value;
+  //  }
    
    this.payment.mprima_bs = this.popup_form.get('mprima_bs').value;
 
@@ -260,7 +295,11 @@ export class AdministrationPaymentComponent implements OnInit {
     this.payment.xnota = 'Sin nota agregada.'
    }
 
-   this.payment.cbanco_destino = this.popup_form.get('cbanco_destino').value
+   if(this.popup_form.get('cbanco_destino').value){
+    this.payment.cbanco_destino = this.popup_form.get('cbanco_destino').value;
+   }else{
+    this.payment.cbanco_destino = 0;
+   }
 
    this.payment.mtasa_cambio = this.mtasacambio
    this.payment.ftasa_cambio = this.ftasacambio

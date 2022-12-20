@@ -310,6 +310,7 @@ import { AdministrationBillLoadingComponent } from './pop-up/administration-bill
 import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
 import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
+import { FooterComponent } from './footer/footer.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -602,7 +603,8 @@ export function HttpLoaderFactory(http: HttpClient){
     BillLoadingSettlementComponent,
     AdministrationBillLoadingComponent,
     PolicyQuotationIndexComponent,
-    PolicyQuotationDetailComponent
+    PolicyQuotationDetailComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
