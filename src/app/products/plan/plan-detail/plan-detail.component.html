@@ -53,12 +53,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-2">
                                 <div class="form-group">
                                     <label>Costo</label>
                                     <input type="text" formControlName="mcosto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mcosto').errors }">
                                     <div *ngIf="submitted && detail_form.get('mcosto').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('mcosto').errors.required">{{ "PRODUCTS.PLANS.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="col-sm-12 col-md-2">
+                                <div class="form-group">
+                                    <label>Porcentaje La Mundial</label>
+                                    <input type="text" formControlName="paseguradora" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('paseguradora').errors }">
+                                    <div *ngIf="submitted && detail_form.get('paseguradora').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('paseguradora').errors.required">{{ "PRODUCTS.PLANS.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>                           
+                             <div class="col-sm-12 col-md-2">
+                                <div class="form-group">
+                                    <label>Porcentaje Arys</label>
+                                    <input type="text" formControlName="parys" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('parys').errors }">
+                                    <div *ngIf="submitted && detail_form.get('parys').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('parys').errors.required">{{ "PRODUCTS.PLANS.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>

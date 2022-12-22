@@ -158,10 +158,10 @@ export class PlanDetailComponent implements OnInit {
         this.detail_form.get('xplan').disable();
         this.detail_form.get('mcosto').setValue(response.data.mcosto);
         this.detail_form.get('mcosto').disable();
-        // this.detail_form.get('parys').setValue(response.data.parys);
-        // this.detail_form.get('parys').disable();
-        // this.detail_form.get('paseguradora').setValue(response.data.paseguradora);
-        // this.detail_form.get('paseguradora').disable();
+        this.detail_form.get('parys').setValue(response.data.parys);
+        this.detail_form.get('parys').disable();
+        this.detail_form.get('paseguradora').setValue(response.data.paseguradora);
+        this.detail_form.get('paseguradora').disable();
         this.detail_form.get('bactivo').setValue(response.data.bactivo);
         this.detail_form.get('bactivo').disable();
         this.paymentMethodologyList = [];
@@ -246,6 +246,8 @@ export class PlanDetailComponent implements OnInit {
   editPlan(){
     this.detail_form.get('ctipoplan').enable();
     this.detail_form.get('xplan').enable();
+    this.detail_form.get('parys').enable();
+    this.detail_form.get('paseguradora').enable();
     this.detail_form.get('bactivo').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
@@ -594,6 +596,8 @@ export class PlanDetailComponent implements OnInit {
         cplan: this.code,
         ctipoplan: form.ctipoplan,
         xplan: form.xplan,
+        paseguradora: form.paseguradora,        
+        parys: form.parys,
         mplan: form.mplan,
         bactivo: form.bactivo,
         cpais: this.currentUser.data.cpais,
