@@ -46,9 +46,7 @@ export class PlanRcvDetailComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private modalService : NgbModal) { 
-                if (this.router.getCurrentNavigation().extras.state == null) {
-                  this.router.navigate([`products/plan-rcv-index`]);
-                } else {
+                if (this.router.getCurrentNavigation().extras.state) {
                   this.ctarifa = this.router.getCurrentNavigation().extras.state; 
                 }
               }
