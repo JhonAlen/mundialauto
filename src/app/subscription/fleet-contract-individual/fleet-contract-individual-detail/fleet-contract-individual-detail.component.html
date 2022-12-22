@@ -296,19 +296,6 @@
                     </div>
                   </div>
                   <div class="col-md-3 mb-4 pb-2">
-                    <div class="form-outline">                        
-                      <label class="form-label required" for="form3Examplev4">Cobertura</label>
-                      <select formControlName="xcobertura" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcobertura').errors } " (change)="funcion()">
-                        <option value="RCV">RCV</option>
-                        <option value="AMPLIA">AMPLIA</option>
-                        <option value="PERDIDA">PERDIDA TOTAL</option>
-                      </select>                         
-                      <div *ngIf="submitted && search_form.get('xcobertura').errors"  class="invalid-feedback">
-                        <div *ngIf="search_form.get('xcobertura').errors.required">Se requiere completar el campo</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Tipo de vehículo</label>
                       <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }">
@@ -323,6 +310,19 @@
                       </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 mb-4 pb-2">
+                    <div class="form-outline">                        
+                      <label class="form-label required" for="form3Examplev4">Cobertura</label>
+                      <select formControlName="xcobertura" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xcobertura').errors } " (change)="validatecoverages()">
+                        <option value="RCV">RCV</option>
+                        <option value="AMPLIA">AMPLIA</option>
+                        <option value="PERDIDA">PERDIDA TOTAL</option>
+                      </select>                         
+                      <div *ngIf="submitted && search_form.get('xcobertura').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('xcobertura').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>
@@ -357,6 +357,25 @@
                     <div *ngIf="submitted && search_form.get('ccorredor').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('ccorredor').errors.required">Se requiere completar el campo</div>
                     </div>
+                  </div>
+                </div>
+                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
+                  <div class="form-check form-switch">
+                    <label style="margin-left: 12px;margin-top: 13px;">¿Posee Grúa?</label>
+                    <div class="row">
+                      <p class="col-sm-2 col-md-4" style="text-align: right;margin-left: -10px;">No</p>
+                      <input type="checkbox" formControlName="bgrua" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && search_form.get('bgrua').errors }" style="margin-left: 59px;" (change)="OperatioValueGrua()"> 
+                      <p class="col-sm-2 col-md-4" style="margin-left: 36px;">Si</p>
+                   </div>
+                    <div *ngIf="submitted && search_form.get('bgrua').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('bgrua').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
+                    </div>
+                </div>
+                </div>
+                <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0" *ngIf="grua">
+                  <div class="form-outline">
+                    <label class="form-label" for="form3Examplev5">Monto Grúa</label>
+                    <input type="number" formControlName="mgrua" class="form-control form-control-lg" readonly=readonly [ngClass]="{ 'is-invalid' : submitted && search_form.get('mgrua').errors }" />
                   </div>
                 </div>
                   <div class="row" style="padding: 10px;" *ngIf="cobertura">
