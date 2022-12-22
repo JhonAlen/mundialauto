@@ -493,7 +493,7 @@ async getPlanData(){
           binternacional: response.data.list[i].binternacional
         });
       }
-      this.planList.sort((a, b) => a.value > b.value ? 1 : -1)
+      this.planList.sort((a, b) => a.id > b.id ? 1 : -1)
     }
     },);
   }
@@ -631,9 +631,9 @@ async getmetodologia(){
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
   OperatioValueGrua(){
-    
+    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
-     cplan: this.search_form.get('cplan').value,
+     cplan: plan.id,
      xtipo: this.search_form.get('xtipo').value,
    }
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-grua`, params).subscribe((response: any) => {
