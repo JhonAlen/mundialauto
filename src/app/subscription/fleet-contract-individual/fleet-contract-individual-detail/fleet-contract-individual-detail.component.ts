@@ -1819,7 +1819,7 @@ async getmetodologia(){
           table: {
             widths: ['*'],
             body: [
-              [{text: 'Aprobado por la Superintendencia de la Actividad Aseguradora mediante Providencia Nº             de fecha ', fillColor: '#FFC000', alignment: 'center', border: [true, false, true, false]}]
+              [{text: 'Aprobado por la Superintendencia de la Actividad Aseguradora mediante Providencia Nº FSAA-1-1-0361-2022 de fecha 5/8/2022', alignment: 'center', border: [true, false, true, false]}]
             ]
           }
         },
