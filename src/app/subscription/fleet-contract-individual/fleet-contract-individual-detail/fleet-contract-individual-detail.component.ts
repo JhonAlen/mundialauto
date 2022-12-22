@@ -740,6 +740,7 @@ async getmetodologia(){
           mtasa_cambio: result.mtasa_cambio,
           ftasa_cambio: result.ftasa_cambio,
           cbanco_destino: result.cbanco_destino,
+          cestatusgeneral: 14
         }
 
         // if(this.paymentList){
@@ -767,6 +768,7 @@ async getmetodologia(){
        cplan: metodologiaPago.id,
        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
        xtipo: this.search_form.get('xtipo').value,
+       igrua: this.search_form.get('bgrua').value
       }  
         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
         if(response.data.status){

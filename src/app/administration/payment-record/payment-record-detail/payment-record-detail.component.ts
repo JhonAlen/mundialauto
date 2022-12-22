@@ -22,7 +22,8 @@ export class PaymentRecordDetailComponent implements OnInit {
   loading_cancel: boolean = false;
   submitted: boolean = false;
   alert = { show: false, type: "", message: "" };
-  planTypeList: any[] = [];
+  serviceOrderList: any[] = [];
+  settlementList: any[] = [];
   canCreate: boolean = false;
   canDetail: boolean = false;
   canEdit: boolean = false;
@@ -33,6 +34,9 @@ export class PaymentRecordDetailComponent implements OnInit {
   editStatus: boolean = false;
   cfiniquito;
   corden;
+  sumafactura;
+  bordenservicio: boolean = false;
+  bfiniquito: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -56,7 +60,9 @@ export class PaymentRecordDetailComponent implements OnInit {
       ffactura: [''],
       frecepcion: [''],
       fvencimiento: [''],
+      msumafactura: ['']
     });
+    this.payment_form.get('msumafactura').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -90,7 +96,80 @@ export class PaymentRecordDetailComponent implements OnInit {
   }
 
   initializeDetailModule(){
-    
+    this.sub = this.activatedRoute.paramMap.subscribe(params => {
+      this.code = params.get('id');
+      if(this.code){
+        if(!this.canDetail){
+          this.router.navigate([`/permission-error`]);
+          return;
+        }
+        if(this.canEdit){ this.showEditButton = true; }
+      }else{
+        if(!this.canCreate){
+          this.router.navigate([`/permission-error`]);
+          return;
+        }
+        this.editStatus = true;
+        this.showSaveButton = true;
+      }
+    });
+
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cfactura: this.code
+    }
+    this.http.post(`${environment.apiUrl}/api/administration/search-bill`, params, options).subscribe((response : any) => {
+      if(response.data.serviceOrder){
+        this.serviceOrderList = [];
+
+        //Lista de Ordenes de Servicio
+        for(let i = 0; i < response.data.serviceOrder.length; i++){
+          this.serviceOrderList.push({ 
+            corden: response.data.serviceOrder[i].corden,
+            xnombre: response.data.serviceOrder[i].xnombre,
+            mmontofactura: response.data.serviceOrder[i].mmontofactura,
+            xtipopagador: response.data.serviceOrder[i].xtipopagador
+          });
+          this.sumafactura = 0;
+          this.sumafactura += response.data.serviceOrder[i].mmontofactura;
+        }
+
+        this.payment_form.get('msumafactura').setValue(this.sumafactura)
+        this.bordenservicio = true;
+      }
+
+      if(response.data.settlement){
+        this.settlementList = [];
+
+        //Lista de finiquitos
+
+        for(let i = 0; i < response.data.settlement.length; i++){
+          this.settlementList.push({ 
+            cfiniquito: response.data.settlement[i].cfiniquito,
+            xnombre: response.data.settlement[i].xnombre,
+            mmontofactura: response.data.settlement[i].mmontofactura
+          });
+          console.log(this.settlementList)
+          this.sumafactura = 0;
+          this.sumafactura += response.data.settlement[i].mmontofactura;
+        }
+        this.payment_form.get('msumafactura').setValue(this.sumafactura)
+        this.bfiniquito = true;
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 401){
+        let condition = err.error.data.condition;
+        if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+      }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
 }
