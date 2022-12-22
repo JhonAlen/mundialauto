@@ -198,7 +198,7 @@ export class PaymentRecordIndexComponent implements OnInit {
       corden: corden,
       cfiniquito: cfiniquito
     }
-    this.router.navigate([`administration/payment-record-detail`], { state: this.paymentInfo});
+    this.router.navigate([`administration/payment-record-detail/${event.data.cfactura}`], { state: this.paymentInfo});
   }
 
 }
