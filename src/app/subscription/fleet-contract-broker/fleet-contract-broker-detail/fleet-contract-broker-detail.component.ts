@@ -140,6 +140,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
    modalidad: boolean = true;
    montorcv: boolean = true;
    cobertura: boolean = false;
+   grua: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -200,7 +201,9 @@ this.search_form = this.formBuilder.group({
   ifraccionamiento:[false],
   ncuotas:[''],
   ivigencia: [''],
-  pblindaje: ['']
+  pblindaje: [''],
+  bgrua:[false],
+  mgrua:[''],
 })
 
  ;
@@ -549,6 +552,30 @@ async getmetodologia(){
     this.search_form.get('cano').setValue(version.cano);
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
+
+  OperatioValueGrua(){
+    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    let params = {
+     cplan: plan.id,
+     xtipo: this.search_form.get('xtipo').value,
+   }
+      this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-grua`, params).subscribe((response: any) => {
+       if(response.data.status){
+         if(this.search_form.get('bgrua').value == true){
+          this.grua = true
+          this.search_form.get('mgrua').setValue(response.data.mgrua);
+         }else{
+           this.grua = false;
+         }
+       }
+       else
+       {
+         window.alert('No hay grua para este plan')
+         this.grua = false
+       }
+  });
+}
+
   ValidationPlan(){
 
     let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
@@ -610,6 +637,7 @@ async getmetodologia(){
         cplan: metodologiaPago.id,
         cmetodologiapago: this.search_form.get('cmetodologiapago').value,
         xtipo: this.search_form.get('xtipo').value,
+        igrua: this.search_form.get('bgrua').value
       }
         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
           if(response.data.status){
@@ -708,10 +736,12 @@ async getmetodologia(){
   }
   funcion(){
     if(this.search_form.get('xcobertura').value == 'RCV'){
+      if(this.currentUser.data.crol == 16){
+        this.bemitir = true;
+      }
       this.cobertura = false;
       this.modalidad = true;
       this.montorcv = true;
-      this.bemitir = false;
     }else{
       this.cobertura = true;
       this.modalidad = false;
@@ -748,6 +778,7 @@ async getmetodologia(){
           mtasa_cambio: result.mtasa_cambio,
           ftasa_cambio: result.ftasa_cambio,
           cbanco_destino: result.cbanco_destino,
+          cestatusgeneral: 14
         }
         this.onSubmit(this.search_form.value)
       }
@@ -872,8 +903,8 @@ async getmetodologia(){
             mmotin:form.mmotin,
             pblindaje: form.pblindaje,
             ivigencia: this.search_form.get('ivigencia').value,
-            cproductor: this.currentUser.data.ccorredor
-
+            cproductor: this.currentUser.data.ccorredor,
+            mgrua: form.mgrua
           };
           if(this.search_form.get('xcobertura').value == 'RCV'){
             console.log(this.search_form.get('cpais').value)
@@ -888,6 +919,8 @@ async getmetodologia(){
             this.fsuscripcion = response.data.fsuscripcion;
             this.femision = response.data.femision;
             if (this.bpagomanual) {
+              this.getFleetContractDetail(this.ccontratoflota);
+            }else if(this.currentUser.data.crol == 16, 17){
               this.getFleetContractDetail(this.ccontratoflota);
             }
           } else {
