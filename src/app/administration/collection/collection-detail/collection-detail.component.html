@@ -11,7 +11,7 @@
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
-                            {{ "ADMINISTRATION.COLLECTION.OWNERINFORMATION" | translate }}
+                            Información del Recibo
                         </div>
                         <div class="col-6">
                             <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(detail_form.value)" *ngIf="showSaveButton">
@@ -26,46 +26,55 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.NAME" | translate }}</label>
-                                    <input type="text" formControlName="xnombrepropietario" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xnombrepropietario').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xnombrepropietario').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xnombrepropietario').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>{{ "ADMINISTRATION.COLLECTION.CLIENT" | translate }}</label>
+                                    <input type="text" formControlName="xcliente" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xcliente').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xcliente').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xcliente').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.LASTNAME" | translate }}</label>
-                                    <input type="text" formControlName="xapellidopropietario" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xapellidopropietario').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xapellidopropietario').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xapellidopropietario').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>{{ "ADMINISTRATION.COLLECTION.DOCUMENTSIDENTIFICATIONCLIENT" | translate }}</label>
+                                    <input type="text" formControlName="xdocidentidadcliente" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xdocidentidadcliente').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xdocidentidadcliente').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xdocidentidadcliente').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.STARDATE" | translate }}</label>
-                                    <input type="text" formControlName="fdesde_pol" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fdesde_pol').errors }">
-                                    <div *ngIf="submitted && detail_form.get('fdesde_pol').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('fdesde_pol').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>{{ "ADMINISTRATION.COLLECTION.EMAIL" | translate }}</label>
+                                    <input type="text" formControlName="xemail" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xemail').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xemail').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xemail').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.FINALDATE" | translate }}</label>
-                                    <input type="text" formControlName="fhasta_pol" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fhasta_pol').errors }">
-                                    <div *ngIf="submitted && detail_form.get('fhasta_pol').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('fhasta_pol').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>{{ "ADMINISTRATION.COLLECTION.PHONE" | translate }}</label>
+                                    <input type="text" formControlName="xtelefono" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xtelefono').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xtelefono').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xtelefono').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.DOCUMENTSIDENTIFICATION" | translate }}</label>
-                                    <input type="text" formControlName="xdocidentidad" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xdocidentidad').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xdocidentidad').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xdocidentidad').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>Fecha Inicio - Vigencia del Recibo</label>
+                                    <input type="date" formControlName="fdesde_rec" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fdesde_rec').errors }">
+                                    <div *ngIf="submitted && detail_form.get('fdesde_rec').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('fdesde_rec').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Fecha Fin - Vigencia del Recibo</label>
+                                    <input type="date" formControlName="fhasta_rec" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('fhasta_rec').errors }">
+                                    <div *ngIf="submitted && detail_form.get('fhasta_rec').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('fhasta_rec').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -89,10 +98,10 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.COIN" | translate }}</label>
-                                    <input type="text" formControlName="xmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xmoneda').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xmoneda').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xmoneda').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
+                                    <label>{{ "ADMINISTRATION.COLLECTION.PREMIUM" | translate }}</label>
+                                    <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima').errors }">
+                                    <div *ngIf="submitted && detail_form.get('mprima').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('mprima').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -105,47 +114,23 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "ADMINISTRATION.COLLECTION.PREMIUM" | translate }}</label>
-                                    <input type="text" formControlName="mprima" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima').errors }">
-                                    <div *ngIf="submitted && detail_form.get('mprima').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('mprima').errors.required">{{ "CONFIGURATION.TAXESCONFIGURATION.REQUIREDNAME" | translate }}</div>
-                                    </div>
+                            <br>
+                            <div class="col-sm-12 mt-2">
+                                <div style="margin-top: 10px;">
+                                    <button style="width: 220px;height: 48px;margin-left: 100px;" [disabled]="loading || loading_cancel" class="btn company-detail-button btn-lg btn-block" type="button" (click)="addPayment()" *ngIf="bpago">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Pago Manual
+                                    </button>
+                                    
                                 </div>
+                            </div>
+                            <div class="col-sm-12 mt-2">
+                                <div style="width: 220px;height: 48px;margin-top: 10px;margin-left: 100px;" class="button">
+                                    <button id="ubiiboton"></button>
+                                </div> 
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header company-card-header">
-                    <div class="row">
-                        <div class="col-6">
-                            {{ "ADMINISTRATION.COLLECTION.COLLECTION" | translate }}
-                        </div>
-                        <div class="col-6">
-                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="addPayment()">
-                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                {{ "ADMINISTRATION.COLLECTION.ADDPAYMENT" | translate }}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="container">
-                        <ag-grid-angular #agGrid style="width: 100%; height: 150px;" class="ag-theme-alpine" [rowData]="paymentList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" [enableCellChangeFlash]="true" (gridReady)="onPaymentGridReady($event)">
-                            <ag-grid-column headerName="Tipo de Pago" field="xtipopago" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Banco" field="xbanco" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Prima Cancelada" field="mprima_pagada" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Referencia" field="xreferencia" [width]="250" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Fecha De Cobro" field="fcobro" [width]="230" [sortable]="true"></ag-grid-column>
-                        </ag-grid-angular>
-                    </div>
                 </div>
             </div>
         </div>

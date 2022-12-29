@@ -91,6 +91,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
   t4: string;
   x9: string;
   d9: number;
+  keyword = 'value';
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -107,7 +108,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
     });
     this.search_form.get('clote').disable();
     this.search_form.get('crecibo').disable();
-    this.search_form.get('xplaca').disable();
+    //this.search_form.get('xplaca').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -142,6 +143,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
 
   initializeDropdownDataRequest(){
     this.chargeList = [];
+    this.keyword;
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -152,7 +154,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
       if(response.data.status){
         this.chargeList = [];
         for(let i = 0; i < response.data.list.length; i++){
-          this.chargeList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} - Póliza Matriz Nro. ${response.data.list[i].xpoliza} - ${response.data.list[i].fingreso}` });
+          this.chargeList.push({ id: response.data.list[i].ccarga, value: `${response.data.list[i].xcliente} - Póliza Nro. ${response.data.list[i].xpoliza} - Placa ${response.data.list[i].xplaca}` });
         }
         this.chargeList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
@@ -195,13 +197,15 @@ export class FleetContractManagementIndexComponent implements OnInit {
     });*/
   }
   //drop down list con las fechas de carga de una flota matriz y nombre del cliente
-  batchDropdownDataRequest(){
+  batchDropdownDataRequest(event){
     this.receiptStatus = false;
     this.searchStatus = false;
     this.batchList = [];
+    this.keyword;
     this.search_form.get('clote').setValue(undefined);
     this.search_form.get('crecibo').setValue(undefined);
     this.search_form.get('xplaca').setValue(undefined);
+    this.search_form.get('ccarga').setValue(event.id)
     if(this.search_form.get('ccarga').value){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
@@ -231,26 +235,29 @@ export class FleetContractManagementIndexComponent implements OnInit {
     } else {
       this.search_form.get('clote').disable();
       this.search_form.get('crecibo').disable();
-      this.search_form.get('xplaca').disable();
+      //this.search_form.get('xplaca').disable();
     }
   }
 
-  receiptDropdownDataRequest(){
+  receiptDropdownDataRequest(event){
     this.searchStatus = false;
     this.receiptStatus = false;
     this.receiptList = [];
+    this.keyword;
     this.search_form.get('crecibo').setValue(undefined);
+    this.search_form.get('clote').setValue(event.id)
     if(this.search_form.get('clote').value){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
       let params = {
-        clote: this.search_form.get('clote').value
+        clote: this.search_form.get('clote').value,
+        ccarga: this.search_form.get('ccarga').value
       }
       this.http.post(`${environment.apiUrl}/api/valrep/receipt`, params, options).subscribe((response : any) => {
         if(response.data.status){
           this.receiptList = [];
           for(let i = 0; i < response.data.list.length; i++){
-            this.receiptList.push({ id: response.data.list[i].crecibo, value: `Recibo Nro. ${response.data.list[i].crecibo} - Desde: ${response.data.list[i].fdesde_rec} Hasta: ${response.data.list[i].fhasta_rec}` });
+            this.receiptList.push({ id: response.data.list[i].crecibo, value: `Recibo Nro. ${response.data.list[i].nconsecutivo} - Desde: ${response.data.list[i].fdesde_rec} Hasta: ${response.data.list[i].fhasta_rec}` });
           }
           this.receiptList.sort((a,b) => a.value > b.value ? 1 : -1);
         }
@@ -268,13 +275,15 @@ export class FleetContractManagementIndexComponent implements OnInit {
       this.search_form.get('crecibo').enable();
     } else {
       this.search_form.get('crecibo').disable();
-      this.search_form.get('xplaca').disable();
+      //this.search_form.get('xplaca').disable();
       this.search_form.get('crecibo').setValue(undefined);
       this.search_form.get('xplaca').setValue(undefined);
     }
   }
 
-  onChangeReceipt() {
+  onChangeReceipt(event) {
+    this.keyword;
+    this.search_form.get('crecibo').setValue(event.id)
     if (this.search_form.get('crecibo').value){
       this.searchStatus = true
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -296,19 +305,15 @@ export class FleetContractManagementIndexComponent implements OnInit {
             let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
             this.fdesde_pol = dateFormat;
           }
-          if (response.data.fdesde_pol) {
-            let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
-            this.fdesde_pol = dateFormat;
-          }
           if (response.data.fhasta_pol) {
             let dateFormat = new Date(response.data.fhasta_pol).toISOString().substring(0, 10);
             this.fhasta_pol = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fdesde_rec) {
             let dateFormat = new Date(response.data.fdesde_rec).toISOString().substring(0, 10);
             this.fdesde_rec = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fhasta_rec) {
             let dateFormat = new Date(response.data.fhasta_rec).toISOString().substring(0, 10);
             this.fhasta_rec = dateFormat
           }
@@ -318,11 +323,11 @@ export class FleetContractManagementIndexComponent implements OnInit {
           this.xmoneda = response.data.xmoneda;
           this.mprimaanual = response.data.mprimaanual;
           this.mprimaprorrata = response.data.mprimaprorrata;
-          if (response.data.fhasta_pol) {
+          if (response.data.fanulado) {
             let dateFormat = new Date(response.data.fanulado).toISOString().substring(0, 10);
             this.fanulado = dateFormat
           }
-          if (response.data.fhasta_pol) {
+          if (response.data.fcobro) {
             let dateFormat = new Date(response.data.fcobro).toISOString().substring(0, 10);
             this.fcobro = dateFormat
           }
@@ -390,7 +395,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
     } else {
       this.searchStatus = false;
       this.receiptStatus = false;
-      this.search_form.get('xplaca').disable();
+      //this.search_form.get('xplaca').disable();
       this.search_form.get('xplaca').setValue(undefined);
     }
   }
@@ -421,7 +426,9 @@ export class FleetContractManagementIndexComponent implements OnInit {
             xmarca: response.data.list[i].xmarca,
             xmodelo: response.data.list[i].xmodelo,
             xversion: response.data.list[i].xversion,
-            xplaca: response.data.list[i].xplaca
+            xplaca: response.data.list[i].xplaca,
+            xestatusgeneral: response.data.list[i].xestatusgeneral,
+            xpoliza: response.data.list[i].xpoliza
           });
         }
         this.receiptInfo = {

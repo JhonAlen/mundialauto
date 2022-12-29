@@ -42,9 +42,10 @@ export class SignInComponent implements OnInit {
     }
     this.authenticationService.login(form.xemail, form.xcontrasena).pipe(first()).subscribe((data : any) => {
       this.loading = false;
-      if(data.data.status == true){ this.router.navigate(['/home']).then(() =>{ window.location.reload(); });}
-      console.log(data.data)
+      if(data.data.ccorredor == null ){ this.router.navigate(['/home']).then(() =>{ window.location.reload(); });}
+      else if(data.data.ccorredor){ this.router.navigate(['/subscription/fleet-contract-broker-detail']).then(() =>{ window.location.reload(); }); }
     },
+    
     (err) => {
       let code = err.error.data.code;
       let message;

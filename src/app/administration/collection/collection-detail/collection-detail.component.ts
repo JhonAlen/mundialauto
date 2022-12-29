@@ -5,10 +5,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-
+//import { initUbii } from '@ubiipagos/boton-ubii';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
+import { DateSelectionModelChange } from '@angular/material/datepicker';
+import { borderTopRightRadius } from 'html2canvas/dist/types/css/property-descriptors/border-radius';
 
 @Component({
   selector: 'app-collection-detail',
@@ -23,6 +26,7 @@ export class CollectionDetailComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   guardado: boolean = false;
+  bpago: boolean = false;
   botonRegresar: boolean = false;
   code;
   sub;
@@ -31,13 +35,22 @@ export class CollectionDetailComponent implements OnInit {
   loading: boolean = false;
   loading_cancel: boolean = false;
   submitted: boolean = false;
+  pagoUbii: boolean = false;
   alert = { show: false, type: "", message: "" };
   paymentList: any[] = [];
   closeResult = '';
+  ctipopago: number;
+  xreferencia: string;
+  mprima_pagada: number;
+  fcobro: Date;
+  ctasacambio: number;
+  mtasacambio: number;
+  ftasacambio: Date;
+  ccodigo_ubii: String;
 
   constructor(private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
-              private http: HttpClient,
+              public http: HttpClient,
               private router: Router,
               private translate: TranslateService,
               private activatedRoute: ActivatedRoute,
@@ -47,22 +60,28 @@ export class CollectionDetailComponent implements OnInit {
     this.detail_form = this.formBuilder.group({
       xnombrepropietario: [''],
       xapellidopropietario: [''],
-      fdesde_pol: [''],
-      fhasta_pol: [''],
-      xdocidentidad: [''],
+      fdesde_rec: [''],
+      fhasta_rec: [''],
+      xdocidentidadpropietario: [''],
       xvehiculo: [''],
       xplaca: [''],
       crecibo: [''],
       xmoneda: [''],
       xestatusgeneral: [''],
       mprima: [''],
+      mprima_bs: [''],
       ctipopago: [''],
       xtipopago: [''],
       xreferencia: [''],
       fcobro: [''],
       cbanco: [''],
       mprima_pagada: [''],
-      cmoneda_pago: ['']
+      ccliente: [''],
+      xcliente: [''],
+      xdocidentidadcliente: [''],
+      xemail: [''],
+      xtelefono: [''],
+      xnombres: ['']
     })
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -112,6 +131,15 @@ export class CollectionDetailComponent implements OnInit {
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
+
+    this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, null, options).subscribe((response: any) => {
+      if (response.data.status) {
+        this.ctasacambio = response.data.tasaCambio.ctasa_cambio;
+        this.mtasacambio = response.data.tasaCambio.mtasa_cambio;
+        this.ftasacambio = response.data.tasaCambio.fingreso;
+      }
+    })
+
     let params = {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
@@ -119,26 +147,116 @@ export class CollectionDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/administration-collection/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
-        this.detail_form.get('xnombrepropietario').setValue(response.data.xnombrepropietario);
-        this.detail_form.get('xnombrepropietario').disable();
-        this.detail_form.get('xapellidopropietario').setValue(response.data.xapellidopropietario);
-        this.detail_form.get('xapellidopropietario').disable();
-        this.detail_form.get('fdesde_pol').setValue(new Date(response.data.fdesde_pol).toISOString().substring(0, 10));
-        this.detail_form.get('fdesde_pol').disable();
-        this.detail_form.get('fhasta_pol').setValue(new Date(response.data.fhasta_pol).toISOString().substring(0, 10));
-        this.detail_form.get('fhasta_pol').disable();
-        this.detail_form.get('xdocidentidad').setValue(response.data.xdocidentidad);
-        this.detail_form.get('xdocidentidad').disable();
-        this.detail_form.get('xvehiculo').setValue(response.data.xvehiculo);
-        this.detail_form.get('xvehiculo').disable();
-        this.detail_form.get('xplaca').setValue(response.data.xplaca);
-        this.detail_form.get('xplaca').disable();
-        this.detail_form.get('xmoneda').setValue(response.data.xmoneda);
-        this.detail_form.get('xmoneda').disable();
+
+        /*if (response.data.xestatusgeneral == "PENDIENTE") {
+          this.verifyReceipt();
+        } else {
+          this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
+          this.detail_form.get('xestatusgeneral').disable();
+        }*/
+
+        if(response.data.ccliente){
+          this.detail_form.get('ccliente').setValue(response.data.ccliente);
+          this.detail_form.get('ccliente').disable();
+        }else{
+          this.detail_form.get('ccliente').setValue('');
+          this.detail_form.get('ccliente').disable();
+        }
+
+        if(response.data.xcliente){
+          this.detail_form.get('xcliente').setValue(response.data.xcliente);
+          this.detail_form.get('xcliente').disable();
+        }else{
+          this.detail_form.get('xcliente').setValue('');
+          this.detail_form.get('xcliente').disable();
+        }
+        
+        if(response.data.xdocidentidadcliente){
+          this.detail_form.get('xdocidentidadcliente').setValue(response.data.xdocidentidadcliente);
+          this.detail_form.get('xdocidentidadcliente').disable();
+        }else{
+          this.detail_form.get('xdocidentidadcliente').setValue('');
+          this.detail_form.get('xdocidentidadcliente').disable();
+        }
+      
+        if(response.data.xemail){
+          this.detail_form.get('xemail').setValue(response.data.xemail);
+          this.detail_form.get('xemail').disable();
+        }else{
+          this.detail_form.get('xemail').setValue('');
+          this.detail_form.get('xemail').disable();
+        }
+
+        if(response.data.xtelefono){
+          this.detail_form.get('xtelefono').setValue(response.data.xtelefono);
+          this.detail_form.get('xtelefono').disable();
+        }else{
+          this.detail_form.get('xtelefono').setValue('');
+          this.detail_form.get('xtelefono').disable();
+        }
+        this.detail_form.get('fdesde_rec').setValue(new Date(response.data.fdesde_rec).toISOString().substring(0, 10));
+        this.detail_form.get('fdesde_rec').disable();
+        this.detail_form.get('fhasta_rec').setValue(new Date(response.data.fhasta_rec).toISOString().substring(0, 10));
+        this.detail_form.get('fhasta_rec').disable();
+
+        if(response.data.xdocidentidadpropietario){
+          this.detail_form.get('xdocidentidadpropietario').setValue(response.data.xdocidentidadpropietario);
+          this.detail_form.get('xdocidentidadpropietario').disable();
+        }else{
+          this.detail_form.get('xdocidentidadpropietario').setValue('');
+          this.detail_form.get('xdocidentidadpropietario').disable();
+        }
+
+        if(response.data.xvehiculo){
+          this.detail_form.get('xvehiculo').setValue(response.data.xvehiculo);
+          this.detail_form.get('xvehiculo').disable();
+        }else{
+          this.detail_form.get('xvehiculo').setValue('');
+          this.detail_form.get('xvehiculo').disable();
+        }
+
+        if(response.data.xplaca){
+          this.detail_form.get('xplaca').setValue(response.data.xplaca);
+          this.detail_form.get('xplaca').disable();
+        }else{
+          this.detail_form.get('xplaca').setValue('');
+          this.detail_form.get('xplaca').disable();
+        }
+
         this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
         this.detail_form.get('xestatusgeneral').disable();
         this.detail_form.get('mprima').setValue(response.data.mprima);
         this.detail_form.get('mprima').disable();
+        let prima = this.detail_form.get('mprima').value.split(" ");
+
+        let prima_ds: String = String(parseFloat(prima[0]).toFixed(2));
+
+        let prima_bs: String = String( (Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100).toFixed(2) );       
+
+        this.ccodigo_ubii = String(response.data.ccodigo_ubii);
+
+        console.log("amount_ds: " + prima_ds + ` ${typeof prima_ds}`);
+        console.log("amount_bs: " + prima_bs + ` ${typeof prima_bs}`);
+        console.log('concept: COMPRA');
+        console.log("principal: bs");
+        console.log('clientId: 1c134b42-70e1-11ed-ae36-005056967039');
+        console.log('orderId: ' + this.ccodigo_ubii + ` ${typeof this.ccodigo_ubii}`);
+
+        initUbii(
+          'ubiiboton',
+          {
+            amount_ds: prima_ds,
+            amount_bs: prima_bs,
+            concept: "COMPRA",
+            principal: "bs",
+            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+            orderId: this.ccodigo_ubii
+          },
+          this.callbackFn,
+          {
+            text: 'Pagar con Ubii Pagos '
+          }
+        );
       }
     },
     (err) => {
@@ -151,10 +269,12 @@ export class CollectionDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    this.bpago = true;
   }
 
   addPayment(){
-    let payment = { crecibo: this.code };
+    let payment = { crecibo: this.code , mpima_pagada : this.mprima_pagada };
     const modalRef = this.modalService.open(AdministrationPaymentComponent);
     modalRef.componentInstance.payment = payment;
     modalRef.result.then((result: any) => { 
@@ -163,25 +283,72 @@ export class CollectionDetailComponent implements OnInit {
             cgrid: this.paymentList.length,
             edit: true,
             ctipopago: result.ctipopago,
-            xtipopago: result.xtipopago,
             xreferencia: result.xreferencia,
             fcobro: result.fcobro,
+            mprima: result.mprima,
+            mprima_bs: result.mprima_bs,
             cbanco: result.cbanco,
-            xbanco: result.xbanco,
             mprima_pagada: result.mprima_pagada,
-            cmoneda_pago: result.cmoneda_pago
+            xnota: result.xnota,
+            cbanco_destino: result.cbanco_destino,
+            mtasa_cambio: result.mtasa_cambio,
+            ftasa_cambio: result.ftasa_cambio
           });
-          this.paymentGridApi.setRowData(this.paymentList);
-
+  
           if(this.paymentList){
             this.showSaveButton= true;
+            this.bpago = false;
           }
+
+          this.onSubmit(this.detail_form.value)
       }
     });
   }
 
   onPaymentGridReady(event){
     this.paymentGridApi = event.api;
+  }
+
+  async callbackFn(answer) {
+    console.log(answer);
+    if(answer.data.R == 0){
+      let ctipopago;
+      if(answer.data.method == "ZELLE"){
+        ctipopago = 4;
+      }
+      if(answer.data.method == "P2C") {
+        ctipopago = 3;
+      }
+      let datetimeformat = answer.data.date.split(' ');
+      let dateformat = datetimeformat[0].split('/');
+      let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
+      
+      await window.alert(`Se ha procesado exitosamente el pago de la póliza`);
+      const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
+        "method": "POST",
+        "headers": {
+          "CONTENT-TYPE": "Application/json",
+          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
+          "X-CLIENT-CHANNEL": "BTN-API",
+          "Authorization": "SKDJK23J4KJ2352304923059"
+        },
+        "body": JSON.stringify({
+          paymentData: {
+            crecibo: answer.data.orderID,
+            ctipopago: ctipopago,
+            xreferencia: answer.data.ref,
+            fcobro: fcobro,
+            mprima_pagada: answer.data.m
+          }
+        })
+
+      });
+      location.reload();
+    }
+
+    if (answer.data.R == 1) {
+      window.alert(`No se pudo procesar el pago ${answer.data.M}, intente nuevamente`);
+    }
   }
 
   onSubmit(form){
@@ -191,6 +358,7 @@ export class CollectionDetailComponent implements OnInit {
       this.loading = false;
       return;
     }
+
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params;

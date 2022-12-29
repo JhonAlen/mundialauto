@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserProviderComponent } from '@app/pop-up/user-provider/user-provider.component';
+import { UserBrokersComponent } from '@app/pop-up/user-brokers/user-brokers.component';
 
 import { PasswordValidator } from '@app/_validators/password.validator';
 import { AuthenticationService } from '@app/_services/authentication.service';
@@ -75,7 +76,10 @@ export class UserDetailComponent implements OnInit {
       cproveedor: [''],
       xproveedor: [{ value: '', disabled: true }],
       xrazonsocial: [{ value: '', disabled: true }],
-      bactivo: [true, Validators.required]
+      bactivo: [true, Validators.required],
+      bcorredor: [false],
+      ccorredor: [''],
+      xcorredor: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -213,10 +217,17 @@ export class UserDetailComponent implements OnInit {
         this.detail_form.get('xdireccion').disable();
         this.detail_form.get('bproveedor').setValue(response.data.bproveedor);
         this.detail_form.get('bproveedor').disable();
+        this.detail_form.get('bcorredor').setValue(response.data.bcorredor);
+        this.detail_form.get('bcorredor').disable();
         if(response.data.bproveedor){
           this.detail_form.get('xnombre').setValue(response.data.xnombre);
           this.detail_form.get('xrazonsocial').setValue(response.data.xrazonsocial);
         }
+        if(response.data.bcorredor){
+          this.detail_form.get('xcorredor').setValue(response.data.xcorredor);
+        }
+        this.detail_form.get('xcorredor').setValue(response.data.xcorredor);
+        this.detail_form.get('xcorredor').disable();
         this.detail_form.get('bactivo').setValue(response.data.bactivo);
         this.detail_form.get('bactivo').disable();
         this.detail_form.get('matching_xcontrasena').disable();
@@ -277,6 +288,8 @@ export class UserDetailComponent implements OnInit {
     this.detail_form.get('xtelefono').enable();
     this.detail_form.get('xdireccion').enable();
     this.detail_form.get('bproveedor').enable();
+    this.detail_form.get('bcorredor').enable();
+    this.detail_form.get('xcorredor').enable();
     this.detail_form.get('bactivo').enable();
     this.detail_form.get('crol').enable();
     this.showEditButton = false;
@@ -332,6 +345,40 @@ export class UserDetailComponent implements OnInit {
     }
   }
 
+  checkBroker(event: any){
+    if(!event.target.checked){
+      this.detail_form.get('ccorredor').setValue('');
+      this.detail_form.get('xcorredor').setValue('');
+    }
+  }
+
+  searchBroker(){
+    if(this.detail_form.get('cpais').value && this.detail_form.get('ccompania').value){
+      let broker = { 
+        cpais: this.detail_form.get('cpais').value,
+        ccompania: this.detail_form.get('ccompania').value
+      };
+      const modalRef = this.modalService.open(UserBrokersComponent, { size: 'xl' });
+      modalRef.componentInstance.broker = broker;
+      modalRef.result.then((result: any) => { 
+        if(result){
+          this.detail_form.get('ccorredor').setValue(result.ccorredor);
+          this.detail_form.get('xcorredor').setValue(result.xcorredor);
+        }
+      });
+    }else{
+      if(!this.detail_form.get('cpais').value){
+        this.alert.message = "SECURITY.USERS.REQUIREDCOUNTRY";
+        this.alert.type = 'warning';
+        this.alert.show = true;
+      }else if(!this.detail_form.get('ccompania').value){
+        this.alert.message = "SECURITY.USERS.REQUIREDCOMPANY";
+        this.alert.type = 'warning';
+        this.alert.show = true;
+      }
+    }
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -365,7 +412,9 @@ export class UserDetailComponent implements OnInit {
         ccompania: form.ccompania,
         crol: form.crol,
         cproveedor: form.cproveedor ? form.cproveedor : undefined,
-        cusuariomodificacion: this.currentUser.data.cusuario
+        cusuariomodificacion: this.currentUser.data.cusuario,
+        bcorredor: form.bcorredor,
+        ccorredor: form.ccorredor ? form.ccorredor : undefined,
       };
       url = `${environment.apiUrl}/api/user/update`;
     }else{
@@ -383,7 +432,9 @@ export class UserDetailComponent implements OnInit {
         ccompania: form.ccompania,
         crol: form.crol,
         cproveedor: form.cproveedor ? form.cproveedor : undefined,
-        cusuariocreacion: this.currentUser.data.cusuario
+        cusuariocreacion: this.currentUser.data.cusuario,
+        bcorredor: form.bcorredor,
+        ccorredor: form.ccorredor ? form.ccorredor : undefined,
       };
       url = `${environment.apiUrl}/api/user/create`;
     }

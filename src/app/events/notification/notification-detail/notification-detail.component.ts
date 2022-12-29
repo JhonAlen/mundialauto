@@ -107,6 +107,7 @@ export class NotificationDetailComponent implements OnInit {
       xmodelo: [{ value: '', disabled: true }],
       xtipo: [{ value: '', disabled: true }],
       xplaca: [{ value: '', disabled: true }],
+      xestatusgeneral: [{ value: '', disabled: true }],
       fano: [{ value: '', disabled: true }],
       xcolor: [{ value: '', disabled: true }],
       xserialcarroceria: [{ value: '', disabled: true }],
@@ -280,6 +281,8 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('ccontratoflota').setValue(response.data.ccontratoflota);
         this.detail_form.get('ccontratoflota').disable();
         this.detail_form.get('xcliente').setValue(response.data.xcliente);
+        console.log(response.data.fdesde_pol)
+        console.log(response.data.fhasta_pol)
         if(response.data.fdesde_pol) {
           let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
           this.detail_form.get('fdesde_pol').setValue(dateFormat);
@@ -363,6 +366,8 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('npasajero').disable();
         this.detail_form.get('xobservacion').setValue(response.data.xobservacion);
         this.detail_form.get('xobservacion').disable();
+        this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
+        this.detail_form.get('xestatusgeneral').disable();
         this.noteList = [];
         if(response.data.notes){
           for(let i = 0; i < response.data.notes.length; i++){
@@ -371,6 +376,7 @@ export class NotificationDetailComponent implements OnInit {
               create: false,
               cnotanotificacion: response.data.notes[i].cnotanotificacion,
               xnotanotificacion: response.data.notes[i].xnotanotificacion,
+              xcausafiniquito: response.data.notes[i].xcausafiniquito,
               xrutaarchivo: response.data.notes[i].xrutaarchivo,
               cfiniquito: response.data.notes[i].cfiniquito
             });
@@ -694,6 +700,15 @@ export class NotificationDetailComponent implements OnInit {
           this.detail_form.get('fhasta_pol').setValue(dateFormat);
         }
         this.detail_form.get('xcliente').setValue(result.xcliente);
+        this.detail_form.get('xestatusgeneral').setValue(result.xestatusgeneral);
+        this.detail_form.get('cestatusgeneral').setValue(result.cestatusgeneral);
+        if(this.detail_form.get('cestatusgeneral').value == 13){
+          if(window.confirm("Este usuario está en estatus pendiente, por ende, no se le prestará ningun servicio.")){
+            this.router.navigate([`events/notification-index`]);
+          }else{
+            this.router.navigate([`events/notification-index`]);
+          }
+        }
         this.detail_form.get('xmarca').setValue(result.xmarca);
         this.detail_form.get('xmodelo').setValue(result.xmodelo);
         this.detail_form.get('xtipo').setValue(result.xtipo);
@@ -1396,7 +1411,6 @@ export class NotificationDetailComponent implements OnInit {
         cimpuesto: 13,
         delete: false
       };
-      console.log(quote)
     }else{ 
       quote = { 
         type: 2,
@@ -1412,7 +1426,6 @@ export class NotificationDetailComponent implements OnInit {
         cimpuesto: 13,
         delete: false
       }; 
-      console.log(quote)
     }
  
     const modalRef = this.modalService.open(NotificationQuoteComponent, {size: 'xl'});
@@ -1497,7 +1510,7 @@ export class NotificationDetailComponent implements OnInit {
 
   addServiceOrder(){
     if(this.code){
-      let notificacion = {cnotificacion: this.code, repuestos: this.replacementList, createServiceOrder: true};
+      let notificacion = {cnotificacion: this.code, repuestos: this.replacementList, createServiceOrder: true, cestado: this.detail_form.get('cestado').value};
       const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
       modalRef.componentInstance.notificacion = notificacion;
       modalRef.result.then((result: any) => { 
@@ -1546,11 +1559,13 @@ export class NotificationDetailComponent implements OnInit {
           edit: false,
           cnotificacion: result.cnotificacion,
           xobservacion: result.xobservacion,
-          crepuesto: result.crepuesto,
           xdanos: result.xdanos,
-          corden: result.corden
+          mmontofiniquito: result.mmontofiniquito,
+          ccausafiniquito: result.ccausafiniquito,
+          cmoneda: result.cmoneda
         }
       });
+      console.log(this.settlement)
     }
   }
 
@@ -1624,7 +1639,6 @@ export class NotificationDetailComponent implements OnInit {
             orden: this.serviceOrderList[i]
           })
         }
-        console.log(updateServiceOrderList)
       }
       //let updateServiceOrderList = this.serviceOrderList.filter((row) => { return row.edit; });
       let createServiceOrderList = this.serviceOrderList.filter((row) => { return row.createServiceOrder; });
@@ -1783,6 +1797,7 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: event.data.bactivo,
         delete: false
       };
+      console.log(notificacion)
     }else{
       notificacion = { 
         edit: this.editStatus,
@@ -1812,6 +1827,7 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: event.data.bactivo,
         delete: false
       }
+      console.log(notificacion)
     }
     if(this.editStatus){
     const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});

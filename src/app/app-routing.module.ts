@@ -177,6 +177,20 @@ import { ServicesInsurersIndexComponent } from './tables/services-insurers/servi
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
+import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
+import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
+import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component'
+import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
+import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
+import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
+import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component'
+import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
+import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
+import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
+import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
+import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
+import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
 
 const routes: Routes = [
  
@@ -187,11 +201,9 @@ const routes: Routes = [
   { path: 'planes', component: PlanesComponent},
   { path: 'service', component: ServicesComponent},
   { path: 'register', component: RegisterComponent},
-  { path: 'dasboard', component: DashboardComponent},
-  { path: '', component: AdminLayoutComponent, children: [{path:'', loadChildren:() => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule)}]},
-  { path: 'sign-in', component: SignInComponent },
+  { path: 'dasboard', component: DashboardComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard]  },
-  { path: 'sign-in', component: SignInComponent},
+
   { path: 'change-password/:id', component: ChangePasswordComponent, canActivate: [SessionGuard]  },
   { path: 'permission-error', component: PermissionErrorComponent, canActivate: [AuthGuard]  },
   { path: 'security/user-index', component: UserIndexComponent, canActivate: [AuthGuard] },
@@ -383,6 +395,10 @@ const routes: Routes = [
   { path: 'tables/material-damage-detail/:id', component: MaterialDamageDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-index', component: NotificationIndexComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail', component: NotificationDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/fleet-contract-individual-detail', component: FleetContractIndividualDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/parent-policy-index', component: ParentPolicyIndexComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/parent-policy-detail', component: ParentPolicyDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/parent-policy-detail/:id', component: ParentPolicyDetailComponent, canActivate: [AuthGuard] },
   { path: 'events/notification-detail/:id', component: NotificationDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/tracing-type-index', component: TracingTypeIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/tracing-type-detail', component: TracingTypeDetailComponent, canActivate: [AuthGuard] },
@@ -436,9 +452,25 @@ const routes: Routes = [
   { path: 'events/service-order-detail/:id', component: ServiceOrderDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-index', component: CollectionIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/collection-detail', component: CollectionDetailComponent, canActivate: [AuthGuard] },
-  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] }
+  { path: 'administration/collection-detail/:id', component: CollectionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv-index', component: PlanRcvIndexComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv-detail', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
+  { path: 'products/plan-rcv-detail/:id', component: PlanRcvDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/receipt-generation', component: ReceiptGenerationComponent, canActivate: [AuthGuard]},
+  { path: 'administration/payment-record-index', component: PaymentRecordIndexComponent, canActivate: [AuthGuard] },
+  { path: 'administration/payment-record-detail', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/payment-record-detail/:id', component: PaymentRecordDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/bill-loading', component: BillLoadingComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/fleet-contract-broker-detail', component: FleetContractBrokerDetailComponent, canActivate: [AuthGuard] },
+  { path: 'tables/brand-model-version-index', component: BrandModelVersionIndexComponent, canActivate: [AuthGuard] },
+  { path: 'tables/brand-model-version-detail', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'tables/brand-model-version-detail/:id', component: BrandModelVersionDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/exchange-rate-index', component: ExchangeRateIndexComponent, canActivate: [AuthGuard] },
+  { path: 'administration/exchange-rate-detail', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/exchange-rate-detail/:id', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
+  { path: 'sign-in', component: SignInComponent },
+  {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
 
- 
 ];
 
 @NgModule({

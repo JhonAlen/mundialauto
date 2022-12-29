@@ -36,7 +36,11 @@ export class NotificationVehicleComponent implements OnInit {
       cmarca: [''],
       cmodelo: [''],
       cversion: [''],
-      xplaca: ['']
+      xversion: [''],
+      xplaca: [''],
+      xestatusgeneral: [''],
+      cestatusgeneral: [''],
+      xpropietario: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -154,10 +158,13 @@ export class NotificationVehicleComponent implements OnInit {
           this.vehicleList.push({ 
             ccontratoflota: response.data.list[i].ccontratoflota,
             xcliente: response.data.list[i].xcliente,
+            xestatusgeneral: response.data.list[i].xestatusgeneral,
+            cestatusgeneral: response.data.list[i].cestatusgeneral,
             fdesde_pol: response.data.list[i].fdesde_pol,
             fhasta_pol: response.data.list[i].fhasta_pol,
             xmarca: response.data.list[i].xmarca,
             xmodelo: response.data.list[i].xmodelo,
+            xversion: response.data.list[i].xversion,
             xtipo: response.data.list[i].xtipo,
             xplaca: response.data.list[i].xplaca,
             fano: response.data.list[i].fano,
@@ -170,8 +177,10 @@ export class NotificationVehicleComponent implements OnInit {
             xdireccionpropietario: response.data.list[i].xdireccionpropietario,
             xtelefonocelularpropietario: response.data.list[i].xtelefonocelularpropietario,
             xemailpropietario: response.data.list[i].xemailpropietario,
+            xpropietario: response.data.list[i].xpropietario
           });
         }
+        console.log(this.vehicleList)
       }
       this.loading = false;
     },
@@ -207,6 +216,8 @@ export class NotificationVehicleComponent implements OnInit {
     this.vehicle.xdireccionpropietario = event.data.xdireccionpropietario;
     this.vehicle.xtelefonocelularpropietario = event.data.xtelefonocelularpropietario;
     this.vehicle.xemailpropietario = event.data.xemailpropietario;
+    this.vehicle.cestatusgeneral = event.data.cestatusgeneral;
+    this.vehicle.xestatusgeneral = event.data.xestatusgeneral;
     this.activeModal.close(this.vehicle);
   }
 

@@ -26,6 +26,7 @@ export class NotificationNoteComponent implements OnInit {
   canSave: boolean = false;
   canSaveSettlement: boolean = false;
   isEdit: boolean = false;
+  finiquito: boolean = false;
   alert = { show : false, type : "", message : "" }
   xrutaarchivo: string;
 
@@ -41,7 +42,7 @@ export class NotificationNoteComponent implements OnInit {
       cfiniquito: [''],
       cnotificacion: [''],
       corden: [''],
-      ccotizacion: [''],
+      mmontofiniquito: [''],
       xobservacion: [''],
       xdanos: [''],
       crepuesto: [''],
@@ -49,8 +50,7 @@ export class NotificationNoteComponent implements OnInit {
       ccompania: [''],
       mtotal: [''],
       ccontratoflota: [''],
-      xnombre: [''],
-      xapellido: [''],
+      xnombres: [''],
       xdocidentidad: [''],
       xtelefonocelular: [''],
       cpropietario: [''],
@@ -65,7 +65,15 @@ export class NotificationNoteComponent implements OnInit {
       xcolor: [''],
       cmoneda: [''],
       xmoneda: [''],
-      fcreacionnoti: ['']
+      fcreacionnotificacion: [''],
+      mtotalcotizacion: [''],
+      mmontototalgrua: [''],
+      fcreacionnoti: [''],
+      cservicio: [''],
+      cservicioadicional: [''],
+      xdesde: [''],
+      xhasta: [''],
+      xcausafiniquito: ['']
     });
     if(this.note){
       if(this.note.type == 3){
@@ -105,8 +113,6 @@ export class NotificationNoteComponent implements OnInit {
       const formData = new FormData();
       formData.append('xdocumento', this.popup_form.get('xarchivo').value);
       formData.append('agentId', '007');
-      console.log(this.popup_form.get('xarchivo').value)
-      console.log(formData)
       this.http.post<any>(`${environment.apiUrl}/api/upload/document`, formData).subscribe(response => {
         if(response.data.status){
           console.log('hola')
@@ -148,45 +154,49 @@ export class NotificationNoteComponent implements OnInit {
       cfiniquito: this.note.cfiniquito,
       ccompania: this.note.ccompania
     };
-    console.log(params)
     this.http.post(`${environment.apiUrl}/api/notification/detail-settlement`, params, options).subscribe((response : any) => {
       if(response.data.status){
         this.popup_form.get('cfiniquito').setValue(response.data.cfiniquito);
         this.popup_form.get('cnotificacion').setValue(response.data.cnotificacion);
         this.popup_form.get('corden').setValue(response.data.corden);
-        this.popup_form.get('ccotizacion').setValue(response.data.ccotizacion);
+        this.popup_form.get('mmontofiniquito').setValue(response.data.mmontofiniquito);
         this.popup_form.get('xobservacion').setValue(response.data.xobservacion);
         this.popup_form.get('xdanos').setValue(response.data.xdanos);
-        this.popup_form.get('crepuesto').setValue(response.data.crepuesto);
         this.popup_form.get('xrepuesto').setValue(response.data.xrepuesto);
         this.popup_form.get('ccompania').setValue(response.data.ccompania);
-        this.popup_form.get('mtotal').setValue(response.data.mtotal);
+        this.popup_form.get('mmontototalgrua').setValue(response.data.mmontototalgrua);
         this.popup_form.get('ccontratoflota').setValue(response.data.ccontratoflota);
-        this.popup_form.get('xnombre').setValue(response.data.xnombre);
-        this.popup_form.get('xapellido').setValue(response.data.xapellido);
+        this.popup_form.get('xnombres').setValue(response.data.xnombres);
         this.popup_form.get('xdocidentidad').setValue(response.data.xdocidentidad);
         this.popup_form.get('xtelefonocelular').setValue(response.data.xtelefonocelular);
         this.popup_form.get('cpropietario').setValue(response.data.cpropietario);
         this.popup_form.get('cvehiculopropietario').setValue(response.data.cvehiculopropietario);
-        this.popup_form.get('cmarca').setValue(response.data.cmarca);
         this.popup_form.get('xmarca').setValue(response.data.xmarca);
-        this.popup_form.get('cmodelo').setValue(response.data.cmodelo);
         this.popup_form.get('xmodelo').setValue(response.data.xmodelo);
         this.popup_form.get('xplaca').setValue(response.data.xplaca);
+        this.popup_form.get('xcausafiniquito').setValue(response.data.xcausafiniquito);
+        this.popup_form.get('xcausafiniquito').disable();
+        if(this.popup_form.get('xcausafiniquito').value){
+          this.finiquito = true;
+        }
         this.popup_form.get('fano').setValue(response.data.fano);
         this.popup_form.get('xserialcarroceria').setValue(response.data.xserialcarroceria);
+        this.popup_form.get('cservicio').setValue(response.data.cservicio);
+        this.popup_form.get('cservicioadicional').setValue(response.data.cservicioadicional);
+        this.popup_form.get('xdesde').setValue(response.data.xdesde);
+        this.popup_form.get('xhasta').setValue(response.data.xhasta);
+        this.popup_form.get('mtotalcotizacion').setValue(response.data.mtotalcotizacion);
         this.popup_form.get('xcolor').setValue(response.data.xcolor);
         this.popup_form.get('cmoneda').setValue(response.data.cmoneda);
         this.popup_form.get('xmoneda').setValue(response.data.xmoneda);
-        if(response.data.fcreacionnoti){
-          let dateFormat = new Date(response.data.fcreacionnoti);
+        if(response.data.fcreacionnotificacion){
+          let dateFormat = new Date(response.data.fcreacionnotificacion);
           let dd = dateFormat.getDay();
           let mm = dateFormat.getMonth();
           let yyyy = dateFormat.getFullYear();
-          response.data.fcreacionnoti = dd + ' / ' + mm + ' / ' + yyyy;
-          this.popup_form.get('fcreacionnoti').setValue(response.data.fcreacionnoti);
-          this.popup_form.get('fcreacionnoti').disable();
-          console.log(this.popup_form.get('fcreacionnoti').value)
+          response.data.fcreacionnotificacion = dd + '/' + mm + '/' + yyyy;
+          this.popup_form.get('fcreacionnotificacion').setValue(response.data.fcreacionnotificacion);
+          this.popup_form.get('fcreacionnotificacion').disable();
         }
       }
     },
@@ -207,10 +217,20 @@ export class NotificationNoteComponent implements OnInit {
       content: [
         {
           columns: [
-            {
+          	{
               style: 'header',
-              width: 140,
-              height: 60,
+              text: [
+                {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                '\nUrl: www.lamundialdeseguros.com'
+              ],
+              alignment: 'left'
+            },
+            {
+              width: 160,
+              height: 80,
               image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjUAAADXCAYAAADiBqA4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEEdSURBVHhe7Z0HeFRV+ocTYv2vru6qa19WBZUqgigI9rL2gm1dK4qigih2RRHrWkEBG6ioWEBUUIqKgBQp0qsU6b1DElpmJnz/8ztzz3Dmzs1kWkLm5vc+z/eEzNw+IefNd75zTo4QQgghhPgASg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqamkFG/dKtunjpfCX/pJ4Y9fS8GAnlLww0dSOOgT2TK0l2z9ra9snzxEgmuXOnsQQgghFRtKTSWgeMcO2TJliqz7sqcsf/YJWfjfy2XBOXVk8YV1ZMkVdWXZtfVk+c31ZGXzk2Vly/qyunUDWd22gax55BRZ+3hDWffcubL5w/tky09dZceMYRLatMo5MiGEEFJxoNT4mI3DRsicO+6WSbVqy5TaNWT6yTXl' +
               'j1NrybymtWThubVl8SV1ZOlVJ8myG+vJitt3Cc2ah5XMPKFk5ulTZf2zkBr19QUVL54WDvXvDZ0ul63DP5Tiwg3O2QghhJDdC6XGZwTzC2Tpux/L+Ebny+gjj5ffjzlBJlY/UabU2iU1f57hSM2ldWXZNXXDWZo7ldC0qr9LaJ5pGJaX/50mG19tJBvfUF/fVF87OaH+veH101Q0lYK+7SWwbIZzBYQQQsjugVLjE7bMXSB/tHlahh9eV379ezUZcUh1+U1Jzbh/nSATlNRMrqmkpp6H1FxbT1bcoqTmLiU0bRrI2kdPCWdoIDSvOCLzdiPZ1LWxbHrvdNn0/umyuZv6t/qqv1ev431Iz+ZPbpftUwfIzuKQc1WEEEJI+UGpyXJ2hkIy/+WuMnj/E2Xw/x0nQ/Y/Tob9TUnNwdVl1OHHy9h/Hi/jjztBSc2JMq1eDZlldz8ZqbnN6Xp6UEnNEw1lfQcnQ6OEZlOXsMDkf6hkpof6+lkTKei5K/I/aSKbP3ZEB4LTqZHkf9pcgusWOldICCGElA+UmnJgc3CnzN5WLBMKQzK+ICQztxTL+sBO593UKZz9p4xtcpX8vM9xkRiy33Ey9K/VZPhB1WTkYdVl9FFKao49QSadeKJMrVNDZp5SQ+Y0qSkLzgnX1KD7SWdqIDVtG8i6J8M1NLrLCRkaZGaUtGiJ6aXim6ZS+K2Kvk3Cof5d0EfFV0pwlPBAfpDB2dj5TNk2rqfs3Jn+fRJCCCGJQKkpI/JDO+VXJTAdVwWkw/KAPLs0IO2XBKTdYhULA/LUgoA8r6L/2pCsLUqu4YcoLHyzm/xyQI0ooUEM/ouSmv2Pi+mC0nU1tWvIjAY1ZXbjmjL/rFqy6KI6srTZSVFSs7bdKbrrCd1JyLxs7t44nJ3p7UhMfyU0A8+XLYMulC0/XqK/6u8HnCUF/c4ICw4yOMjsvNtI8r+8S0IbljhXTgghhJQdlJoMU6yEY1RhSF5aGZDnVuwSmmcgM5bQPP5nQB6bF5BH5wbkkdlB' +
               '+X51SALFpcvNtsXLZdzZ18XITCTQBbXfcTLswGoyXHdBVY/qgjJ1NfPOrCWLLwiPflp+U7imBt1PyNQYqYGU6CzNV+GMDMRFi8zgZrJ16I2ybdjNsvXX28Jfh9wgW3++Iiw53zvZGyU3kKJN750t2yf1ce6AEEIIKRsoNRlki5KSD9cF5fkkhOZhJTQP/RGUtjOD8sLcoKzdUbLYbF20VEZUb+otM1bobM1fq+lszchDw11QGAUV3QUVrqtZclldWX7DSeHRT63DNTW6+8lITQ8lNeh26ndGODvzy7VhkRnRUrb/1ka2jW6rQ/975L36PWwTkZveSmzUMXCsbaO7O3dCCCGEZB5KTYYoDO2Ud9YGUhaaNjOCcv/0oLRT/16zPVZsEhUaHTHZmuNlXNXjZUI1ZGtqyIz6NWV2o11dULqu5raTZdW94dFPKBRGTY3ufkKmRkkNBAVZGp2hgdCMeVi2j28vOyY+Lzsmvahj+4QOsn3cE1pwtg5vruWmcMA54bobZG26NZbtYyk2hBBCygZKTQbIlNDcPzUoracE5fFpQVltiU1SQuOEXVvjztZMq1tDZjUMj4JadH5tWXKl1QWFYuGnndFPbzfStTG6+wlS89NluqsJ0rLj96ekaPL/pGj621I08x0pmvV++Cu+V6/jfZ29UdtjP521QTGxOt6asd10Nx0hhBCSSSg1aZJpobl3UlDumRiUR9X3q7ftTEloTLhra7yyNQvOdkZBXaukpvnJkS4oXVeDId3vh0c+oUgYmRojNcjKFE3rJEV/dJPAvM+laH5vHYE/v5SiOZ/IjhldwtmbsY/JthEtdB0Oiox1d9THp8u00R9QbAghhGQUSk0alJXQtJyg4vegPDK+SL5v+h9PYUkkzLw1ZiSUmWHY1NZ4ZmtahmcVxozCkS4o1NX0aaq7klAQvH1UK931pKVGCUxg4bcSWjJIgsuGhGPxAAks6COB2R/pbbAt6m10rQ1GSTliM3lsD4oNIYSQjEGpSZGyFpq7xwXljrHq' +
@@ -233,8 +253,8 @@ export class NotificationNoteComponent implements OnInit {
               'jQaNdEnzxKAhNl1MEB782x12F4o7Y5EKEBGTebFj4sSJzha7QNbEvI8G3+v67GOYBtyWHYiKF7YkeImEneEqSebMiLKffvrJeSUaPC9zDK/7A/YyFugCLAlbkGyB27hxY9TryBIByCvuiwuXZieVXmpAxwFBXwqNodU7Smx8JjQGiE2Ny9X1W0KTe0ys0OQeSqEhYdBYmSwKJKEk0JVhGj13w2rPIYMuGnRjxAuveo5UQINrN/gmTObCYMQC2Rav63GHadCRWTHHLKmmBDU2eB9ZLK+GH6KC99FN5QVEx5yjpBFltjh5dfvhOdhi5pVRMkBazXYIiBvAPqY7CwGxYXYm+6HUOHT8IehLoTHc32WH74TGsHpdsZx0ZX5coTmvGYWGhDE1E4h4GRT7L3zUoNhg1A5eR23I7sCWKoTdxYQskskSQbiSwc5gQSzc2KKHbiY3EAXz/ogRI5xXo7HP4TXyCZiCZK9uP2Bnokr7DPA8zLYIdDsZ7JobEyh4JtkLpcaic/+g57BtSMB+FxTKwDHZKTSGF3sWyb7qPryE5uLWW2RjfvY2+oVKWJ7vvF2ObqykxhKaE5tskk7vb1e/2Cg0JAyKZk0Dhi6MkrAXksRwYgMaWfMXPmo6dhfIcpjrQ9bCYHerJNvthXszWSwc086AQA4gKngP0uFVR4SFNs25UWvjhZ1p8hpRFq/bz2DLCGp84oGuJLOt/ZwMkCx38fOKFSucd0m2QalxMWpmSK57brvso6QGQrPfRYVy96vbZdZCf0x6tbFgp3TqVSQ3PbtNbmq/TR7quF1mzvfPhF7FxTtl6qygTJoWlJmzs1tCSdmAYlHTeHktEmkwRagI02UB7AJTdMVkGtSHoEuoNOxMkr3uk50JKUks4oH9TYE0jovh1MhemOwJnktJ3T0YMWTOXdKzNQXMCK+upXjdfgYUC5ttIGHxsGtv7EJhG3SJmW4zBO6VZCeUmhIIhXZKUWCnbiQJIf4Bw3dN4xVPHsxcNahLcWP/ZR+vngMNtFf3' +
               'STzQkKOBLW0/e1g2skoGu4aktOHk6MaxQZYEI4GwH8QGXTu4f1wPnhVqg+Jdl/1sS6pPKa1rCec3x3B3+xnsjBDCawSVwYy0wvlM4TI+M2S0bJDRMQXMCBYKZyeUGkJIpcJuNCEuXlJiN5pe3Rv2KCSvbAIaa2RS0JAmO6uwKZK1u7zc4JpR2Irt3PeAc9uNsz25nQFdR2aiOSMEaNRNETDuyc5OJYo93BsZHxtcF7I3pXUt4brMMUqa1RfCYboAvc5lKGmEFI6L/d2YLJJ7mDvJHig1hJBKBUb62A0i5qlBNwgadzSO9pBkBKQB3Rb4i99gd7MgUGuCBhSZDEgE5ACNN2o/ksWcH+f16p6xJ6jDObzmgrG72BBorLEdrg9FxqgtgdDY2Qq7hgj7Q0DQ+GMfSB62RRbIq5bGgGdpjoEsD2pTkA1CdxG6iYzQIPA88XzsZwSRsruBvIaMG+xiaUiIW8JwbnM+ZJnszIvpurOzSbgvk0VisXD2QqkhhFQ6zMR5XoH1gpCpsF9DVsEeNo2sg12o6w4co6T5b0rDFgPIFwTDLFMAObHneCkpC4RJ6uzJ/9yB49gzKAOvpQhKCgiLV5G111IJCMgF6nvc7+NeIDwQDlyTyT6ZwHPH/SPc0oLPwEwUiECXIMQMxzPPEOfF925MTQ7Oh8wdZBbnwmvIlOHYJDuh1BBCKiX4Sx7ygYYM9SNoVE3NCP6yR6YEjWS8yfkgG2jgTQOKbinITzqNIkZnIQuBUULIANnZDQSyNJCDeLU8ANKCIdPIyGA/CATuMV63FrpozPaJBDI4NrhvXDueHd6HeOGYRkjwPJENwVc8a5M9wfu4tnhhZ1psULeEz8vUOeF54Ryox3GLmwHPBdJnRnMh8LPg1VVHsgtKDSGkUuMlIGhAkxGTdCSmNHBsNPpYGbs0kSmJRK8PggAhQGOP7ipkY9A9hCwRshsQLrtuJt6ij17njFfQmwlS+RywTyr7kYoJpYYQQojODCHL4a4/cQMBMN1EyLgQUpGg' +
               '1BBCSCXHrDaOLpnSshaYp8cUWruHRROyu6HUEEJIJQZZGSMpqIGJl6XBe6YIN9nZigkpDyg1hBBSicFQZnuIO0Z+edXuYPizGaqOzA7rUEhFhFJDCCGVHHsmYIQZDYZCYCyKaeaOwbBn9yzEhFQkKDWEEFLJQdYFi0tiZJOdtcEwcLyG4dGpzrtDSHlCqSGEEBJFvLoaQioylBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQHyDy//O30PvAjFjdAAAAAElFTkSuQmCC',
-              alignment: 'left',
-            },
+              alignment: 'right'
+            }
           ]
         },
         {
@@ -282,15 +302,6 @@ export class NotificationNoteComponent implements OnInit {
         {
           columns: [
             {
-              text: [
-                {text: ' '}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
               width: 100,
               style: 'data',
               alignment: 'left',
@@ -313,7 +324,7 @@ export class NotificationNoteComponent implements OnInit {
               style: 'data',
               alignment: 'left',
               text: [
-                {text: 'Asegurado: ', bold: true}, {text: `${this.popup_form.get('xnombre').value}`}
+                {text: 'Asegurado: ', bold: true}, {text: `${this.popup_form.get('xnombres').value}`}
               ]
             },            
             {
@@ -386,39 +397,6 @@ export class NotificationNoteComponent implements OnInit {
           ]
         },
         {
-          columns: [
-            {
-              text: [
-                {text: ' '}
-              ]
-            }
-          ]
-        },
-        {
-          alignment: 'center',
-          text: [
-            {text: 'FINIQUITO DE ORDEN DE SERVICIO POR ', bold: true}, {text: this.popup_form.get('xdanos').value, bold: true}
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                {text: ' '}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                {text: ' '}
-              ]
-            }
-          ]
-        },
-        {
           table: {
             widths: ['*'],
             body: [
@@ -447,31 +425,13 @@ export class NotificationNoteComponent implements OnInit {
         {
           columns: [
             {
-              text: [
-                {text: ' '}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              text: [
-                {text: ' '}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
               fontSize: 12,
               style: 'data',
               alignment: 'justify',
               text: [
-                {text: 'Yo, '}, {text: `${this.popup_form.get('xnombre').value} `, bold: true}, {text: 'portador de la cedula de identidad No. '}, {text: `${this.popup_form.get('xdocidentidad').value}`, bold: true}, {text: '  '}, {text: 'he recibido de Mundial Autos la cantidad de '}, {text: `${this.popup_form.get('mtotal').value} `, bold: true}, {text: `${this.popup_form.get('xmoneda').value} `, bold: true},
+                {text: 'Yo, '}, {text: `${this.popup_form.get('xnombres').value} `, bold: true}, {text: 'portador de la cedula de identidad No. '}, {text: `${this.popup_form.get('xdocidentidad').value}`, bold: true}, {text: '  '}, {text: 'he recibido de La Mundial de Seguros la cantidad de '}, {text: `${this.popup_form.get('mmontofiniquito').value} `, bold: true}, {text: `${this.popup_form.get('xmoneda').value} `, bold: true},
                 {text: 'concepto de Finiquito del '}, {text: `${this.popup_form.get('xdanos').value} `, bold: true}, {text: 'definitiva, del vehículo descrito en este documento amparado bajo el certificado de afiliación #'}, {text: `${this.popup_form.get('ccontratoflota').value} `, bold: true}, {text: 'a consecuencia del siniestro #'}, {text: `${this.popup_form.get('cnotificacion').value} `,  bold: true}, {text: 'ocurrido el día '},
-                {text: `${this.popup_form.get('fcreacionnoti').value}. `, bold: true}
+                {text: `${this.popup_form.get('fcreacionnotificacion').value}. `, bold: true}
               ]
             }
           ]
@@ -519,7 +479,25 @@ export class NotificationNoteComponent implements OnInit {
               style: 'data',
               alignment: 'justify',
               text: [
-                {text: 'En virtud de este pago declaro: que no tengo nada más que reclamar a Mundial Autos por el referido concepto quedando la misma libre de responsabilidad con respecto a todas las consecuencias del mencionado siniestro. Firmo el presente en la ciudad de ___________ a los ___ días del mes de _____de ______'}
+                {text: 'En virtud de este pago declaro: que no tengo nada más que reclamar a Mundial Autos por el referido concepto quedando la misma libre de responsabilidad con respecto a todas las consecuencias del mencionado siniestro. Firmo el presente en la ciudad de ___________ a los _____ días del mes de _______________ de _________'}
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
+              text: [
+                {text: ' '}
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
+              text: [
+                {text: ' '}
               ]
             }
           ]
@@ -595,6 +573,15 @@ export class NotificationNoteComponent implements OnInit {
         {
           columns: [
             {
+              text: [
+                {text: ' '}
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
               fontSize: 10,
               alignment: 'right',
               text: [
@@ -631,10 +618,28 @@ export class NotificationNoteComponent implements OnInit {
         {
           columns: [
             {
+              text: [
+                {text: ' '}
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
+              text: [
+                {text: ' '}
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
               fontSize: 10,
               alignment: 'center',
               text: [
-                {text: 'Dirección: Av. Bolívar Norte, Torre Camoruco, Piso 24, Ofic. 3. Valencia - Edo. Carabobo Teléfonos: 0241-8200183/ 0414 - 4128237 Fax. 0241-8200150-60 '}
+                {text: 'Dirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101 Urb. Los Palos Grandes, 1060 Chacao, Caracas. Teléfonos: 0212 283-9619/ 0424 206-1351 '}
               ]
             }
           ]
@@ -644,11 +649,12 @@ export class NotificationNoteComponent implements OnInit {
         data: {
           fontSize: 11
         },
-
+        header: {
+          fontSize: 7.5,
+          color: 'gray'
+        },
       }
     }
     pdfMake.createPdf(pdfDefinition).open();
-    //pdfMake.createPdf(pdfDefinition).getDataUrl();
-    //pdfMake.createPdf(pdfDefinition).download(`HOLA`, function() { alert('El PDF se está Generando'); });
   }
 }

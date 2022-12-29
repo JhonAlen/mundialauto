@@ -51,12 +51,14 @@ export class NotificationServiceOrderComponent implements OnInit {
   purchaseOrder;
   coinList: any[] = [];
   code;
-  danos;
+  danos: boolean = false;
   emailList: any[] = [];
   statusList: any[] = [];
   cancellationList: any[] = [];
   alert = { show : false, type : "", message : "" }
-  replacementDeletedRowList
+  replacementDeletedRowList;
+  cancelled: boolean = false;
+  replacement: boolean = false
 
     constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -128,7 +130,12 @@ export class NotificationServiceOrderComponent implements OnInit {
       cestatusgeneral: [''],
       xestatusgeneral: [''],
       ccausaanulacion: [''],
-      xcausaanulacion: ['']
+      xcausaanulacion: [''],
+      xauto: [''],
+      xnombres: [''],
+      xnombresalternativos: [''],
+      xnombrespropietario: [''],
+      ccarga: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -170,7 +177,6 @@ export class NotificationServiceOrderComponent implements OnInit {
 
     if(!this.notificacion.edit && !this.notificacion.createServiceOrder ){
       this.editServiceOrder();
-      this.repuestos();
       this.getStatus();
       if(this.notificacion.cnotificacion){
         this.searchQuote();
@@ -182,7 +188,7 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.createServiceOrder();
       this.repuestos();
       this.getStatus();
-      this.popup_form.get('cestatusgeneral').setValue(52);
+      this.popup_form.get('cestatusgeneral').setValue(13);
       this.popup_form.get('cestatusgeneral').disable();
       this.popup_form.get('ccausaanulacion').setValue('');
       this.popup_form.get('ccausaanulacion').disable();
@@ -260,16 +266,35 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
             this.popup_form.get('bactivo').disable();
             this.popup_form.get('xactivo').disable();
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
+            this.popup_form.get('ccarga').setValue(response.data.list[0].ccarga);
+            this.popup_form.get('ccarga').disable(); 
           }
           this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion });
       }
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
+    let servicio;
+    if(this.popup_form.get('cservicio').value){
+      servicio = this.popup_form.get('cservicio').value
+    }else{
+      servicio = this.popup_form.get('cservicioadicional').value
+    }
     let params = {
       cnotificacion: this.popup_form.get('cnotificacion').value,
       ccompania: this.currentUser.data.ccompania,
-      cpais: this.currentUser.data.cpais
+      cpais: this.currentUser.data.cpais,
+      ccarga: this.popup_form.get('ccarga').value,
+      cestado: this.notificacion.cestado,
+      cservicio: servicio
     }
     this.http.post(`${environment.apiUrl}/api/valrep/notification-services`, params, options).subscribe((response: any) => {
       this.serviceList = [];
@@ -359,7 +384,6 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   searchQuote(){
     //Buscar cotizacion para obtener el código y elaborar el reporte
-
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -371,16 +395,24 @@ export class NotificationServiceOrderComponent implements OnInit {
           this.popup_form.get('ccotizacion').setValue(response.data.list[i].ccotizacion);
           this.popup_form.get('ccotizacion').disable();
         }
+        console.log(this.popup_form.get('ccotizacion').value)
       }
       if(this.popup_form.get('ccotizacion').value) {
         this.listRepairOrder();
+      }else{
+        window.alert('Los repuestos no han sido cotizados, no se puede generar ordenes de servicios.')
+        this.activeModal.close();
       }
     },
     (err) => {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "No se encontraron Daños"; }
+      else if(code == 404){ 
+        message = "¡Recuerda que el proveedor no ha cotizado!"; 
+        window.alert('Los repuestos no han sido cotizados, no se puede generar ordenes de servicios.')
+        this.activeModal.close();
+      }
       //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
       this.alert.type = 'primary';
@@ -442,6 +474,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('pimpuesto').disable();
             this.popup_form.get('xobservacion').setValue(response.data.list[0].xobservacion);
             this.popup_form.get('xobservacion').disable();
+            this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
             this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos);
             this.popup_form.get('xdanos').disable();
             this.popup_form.get('cmoneda').setValue(response.data.list[0].cmoneda);
@@ -497,6 +530,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cproveedor').disable();
             this.popup_form.get('xproveedor').setValue(response.data.list[0].xproveedor);
             this.popup_form.get('xproveedor').disable();
+            this.providerList.push({ proveedor: response.data.list[0].cproveedor, value: response.data.list[0].xproveedor});
             this.popup_form.get('xdireccionproveedor').setValue(response.data.list[0].xdireccionproveedor);
             this.popup_form.get('xdireccionproveedor').disable();
             this.popup_form.get('xdescripcion').setValue(response.data.list[0].xdescripcion);
@@ -523,8 +557,22 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('fano').disable();
             this.popup_form.get('fcreacion').setValue(response.data.list[0].fcreacion);
             this.popup_form.get('fcreacion').disable(); 
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
             this.popup_form.get('cestatusgeneral').setValue(response.data.list[0].cestatusgeneral);
+            if(this.popup_form.get('cestatusgeneral').value == 3){
+              this.cancelled = true;
+            }else{
+              this.cancelled = false;
+            }
             this.popup_form.get('xestatusgeneral').setValue(response.data.list[0].xestatusgeneral);
+            this.statusList.push({ id: response.data.list[0].cestatusgeneral, value: response.data.list[0].xestatusgeneral})
             this.changeCancellationCause();
             //this.cancellationList.push({ id: response.data.list[0].ccausaanulacion, value: response.data.list[0].xcausaanulacion})
             this.popup_form.get('ccausaanulacion').setValue(response.data.list[0].ccausaanulacion);
@@ -631,10 +679,10 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.serviceList = [];
       this.aditionalServiceList = [];
       if(this.notificacion.cnotificacion){
-        //let cnotificacion = this.code;
           if (this.notificacion.cnotificacion == response.data.list[0].cnotificacion){
             this.popup_form.get('corden').setValue(response.data.list[0].corden);
             this.popup_form.get('corden').disable();
+            this.repuestos();
             this.popup_form.get('cnotificacion').setValue(response.data.list[0].cnotificacion);
             this.popup_form.get('cnotificacion').disable();
             this.popup_form.get('ccontratoflota').setValue(response.data.list[0].ccontratoflota);
@@ -657,14 +705,20 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('mmonto').disable();
             this.popup_form.get('xdocumentocliente').setValue(response.data.list[0].xdocumentocliente);
             this.popup_form.get('xdocumentocliente').disable();
-            this.popup_form.get('xdireccionfiscal').setValue(response.data.list[0].xdireccionfiscal);
-            this.popup_form.get('xdireccionfiscal').disable();
+            if(response.data.list[0].xdireccionfiscal){
+              this.popup_form.get('xdireccionfiscal').setValue(response.data.list[0].xdireccionfiscal);
+              this.popup_form.get('xdireccionfiscal').disable();
+            }else{
+              this.popup_form.get('xdireccionfiscal').setValue('');
+              this.popup_form.get('xdireccionfiscal').disable();
+            }
             this.popup_form.get('xtelefono').setValue(response.data.list[0].xtelefono);
             this.popup_form.get('xtelefono').disable();
             this.popup_form.get('xdocumentoproveedor').setValue(response.data.list[0].xdocumentoproveedor);
             this.popup_form.get('xdocumentoproveedor').disable();
             this.popup_form.get('xobservacion').setValue(response.data.list[0].xobservacion);
             this.popup_form.get('xobservacion').disable();
+            this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
             this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos);
             this.popup_form.get('xdanos').disable();
             this.popup_form.get('mmontototal').setValue(response.data.list[0].mmontototal);
@@ -675,6 +729,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cmoneda').disable();
             this.popup_form.get('xmoneda').setValue(response.data.list[0].xmoneda);
             this.popup_form.get('xmoneda').disable();
+            this.coinList.push({ id: response.data.list[0].cmoneda, value: response.data.list[0].xmoneda });
             this.popup_form.get('pimpuesto').setValue(response.data.list[0].pimpuesto);
             this.popup_form.get('pimpuesto').disable();
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
@@ -691,18 +746,25 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cservicio').disable();
             this.popup_form.get('xservicio').setValue(response.data.list[0].xservicio);
             this.popup_form.get('xservicio').disable();
+            this.serviceList.push({ servicio: response.data.list[0].cservicio, value: response.data.list[0].xservicio});
             this.popup_form.get('cservicioadicional').setValue(response.data.list[0].cservicioadicional);
             this.popup_form.get('cservicioadicional').disable();
             this.popup_form.get('xservicioadicional').setValue(response.data.list[0].xservicioadicional);
             this.popup_form.get('xservicioadicional').disable();
+            this.aditionalServiceList.push({ servicio: response.data.list[0].cservicioadicional, value: response.data.list[0].xservicioadicional});
             if(response.data.list[0].cservicioadicional == 224){
               this.popup_form.get('cservicioadicional').setValue(response.data.list[0].cservicioadicional);
               this.popup_form.get('cservicioadicional').disable();
               this.popup_form.get('xservicioadicional').setValue(response.data.list[0].xservicioadicional);
               this.popup_form.get('xservicioadicional').disable();
+              this.aditionalServiceList.push({ servicio: response.data.list[0].cservicioadicional, value: response.data.list[0].xservicioadicional});
             }
             this.popup_form.get('cproveedor').setValue(response.data.list[0].cproveedor);
             this.popup_form.get('cproveedor').disable();
+            this.popup_form.get('xproveedor').setValue(response.data.list[0].xnombreproveedor);
+            this.popup_form.get('xproveedor').disable();
+            console.log(this.popup_form.get('xproveedor').value)
+            this.providerList.push({ proveedor: response.data.list[0].cproveedor, value: response.data.list[0].xnombreproveedor});
             this.popup_form.get('xtelefonoproveedor').setValue(response.data.list[0].xtelefonoproveedor);
             this.popup_form.get('xtelefonoproveedor').disable();
             this.popup_form.get('xdescripcion').setValue(response.data.list[0].xdescripcion);
@@ -713,8 +775,13 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xapellidopropietario').disable();
             this.popup_form.get('xdocidentidad').setValue(response.data.list[0].xdocidentidad);
             this.popup_form.get('xdocidentidad').disable();
-            this.popup_form.get('xtelefonocelular').setValue(response.data.list[0].xtelefonocelular);
-            this.popup_form.get('xtelefonocelular').disable();
+            if(response.data.list[0].xtelefonocelular){
+              this.popup_form.get('xtelefonocelular').setValue(response.data.list[0].xtelefonocelular);
+              this.popup_form.get('xtelefonocelular').disable();
+            }else{
+              this.popup_form.get('xtelefonocelular').setValue('Sin número telefónico');
+              this.popup_form.get('xtelefonocelular').disable();
+            }
             this.popup_form.get('xplaca').setValue(response.data.list[0].xplaca);
             this.popup_form.get('xplaca').disable();
             this.popup_form.get('xcolor').setValue(response.data.list[0].xcolor);
@@ -745,6 +812,15 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('cestatusgeneral').disable()
             this.popup_form.get('xestatusgeneral').setValue(response.data.list[0].xestatusgeneral);
             this.popup_form.get('xestatusgeneral').disable()
+            this.statusList.push({ id: response.data.list[0].cestatusgeneral, value: response.data.list[0].xestatusgeneral})
+            this.popup_form.get('xauto').setValue(response.data.list[0].xauto);
+            this.popup_form.get('xauto').disable(); 
+            this.popup_form.get('xnombres').setValue(response.data.list[0].xnombres);
+            this.popup_form.get('xnombres').disable(); 
+            this.popup_form.get('xnombrespropietario').setValue(response.data.list[0].xnombrespropietario);
+            this.popup_form.get('xnombrespropietario').disable(); 
+            this.popup_form.get('xnombresalternativos').setValue(response.data.list[0].xnombresalternativos);
+            this.popup_form.get('xnombresalternativos').disable(); 
             this.cancellationList.push({ id: response.data.list[0].ccausaanulacion, value: response.data.list[0].xcausaanulacion})
             this.popup_form.get('ccausaanulacion').setValue(response.data.list[0].ccausaanulacion);
             this.popup_form.get('ccausaanulacion').disable()
@@ -870,7 +946,10 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   editar(){
-    this.popup_form.get('bactivo').enable();
+    this.popup_form.get('cestatusgeneral').enable();
+    this.popup_form.get('xestatusgeneral').enable();
+    this.popup_form.get('ccausaanulacion').enable();
+    this.popup_form.get('xcausaanulacion').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
   }
@@ -878,10 +957,10 @@ export class NotificationServiceOrderComponent implements OnInit {
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    if (this.popup_form.invalid) {
-      this.loading = false;
-      return;
-    }
+    // if (this.popup_form.invalid) {
+    //   this.loading = false;
+    //   return;
+    // }
 
     let notificacionFilter = this.notificationList.filter((option) => { return option.id == this.popup_form.get('cnotificacion').value; });
     let serviceFilter = this.serviceList.filter((option) => { return option.servicio == this.popup_form.get('cservicio').value ; });
@@ -890,6 +969,7 @@ export class NotificationServiceOrderComponent implements OnInit {
     let coinFilter = this.coinList.filter((option) => { return option.id == this.popup_form.get('cmoneda').value; });
     let statusFilter = this.statusList.filter((option) => { return option.id == this.popup_form.get('cestatusgeneral').value; });
     let cancellationFilter = this.cancellationList.filter((option) => { return option.id == this.popup_form.get('ccausaanulacion').value; });
+    let replacementFilter = this.replacementList.filter((option) => { return option.value == this.popup_form.get('xrepuesto').value; });
 
     if(this.popup_form.get('cservicio').value){
       this.notificacion.cservicio = this.popup_form.get('cservicio').value ? this.popup_form.get('cservicio').value: undefined;
@@ -899,9 +979,9 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.notificacion.xservicio = aditionalServiceFilter[0].value ? aditionalServiceFilter[0].value: undefined;
     }
     
-    if(this.notificacion.cmoneda){
+    if(this.popup_form.get('cmoneda').value){
       this.notificacion.cmoneda = this.popup_form.get('cmoneda').value;
-      this.notificacion.xmoneda = this.popup_form.get('xmoneda').value;
+      this.notificacion.xmoneda = coinFilter[0].value;
     }else{
       this.notificacion.cmoneda = 0;
       this.notificacion.xmoneda = 'Sin Moneda';
@@ -912,7 +992,8 @@ export class NotificationServiceOrderComponent implements OnInit {
     this.notificacion.mmonto = this.popup_form.get('mmonto').value;
     this.notificacion.xobservacion = this.popup_form.get('xobservacion').value;
     this.notificacion.xfecha = this.popup_form.get('xfecha').value;
-    this.notificacion.xdanos = this.danos;
+    //this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
+    this.notificacion.xdanos = replacementFilter[0].value;
     this.notificacion.fajuste = this.popup_form.get('fajuste').value.substring(0, 10);
     this.notificacion.cproveedor = this.popup_form.get('cproveedor').value;
     this.notificacion.bactivo = this.popup_form.get('bactivo').value;
@@ -929,7 +1010,7 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   changeAditionalService(){
 
-    if(this.popup_form.get('cservicioadicional').value != 224){
+    if(this.popup_form.get('cservicioadicional').value != 228){
       this.popup_form.get('xdesde').disable();
       this.popup_form.get('xhacia').disable();
       this.popup_form.get('mmonto').disable();
@@ -951,14 +1032,14 @@ export class NotificationServiceOrderComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cservicio: this.popup_form.get('cservicioadicional').value
+      cservicio: this.popup_form.get('cservicioadicional').value,
+      cestado: this.notificacion.cestado
     }
     this.http.post(`${environment.apiUrl}/api/valrep/service-providers`, params, options).subscribe((response: any) => {
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
-          this.providerList.push({ proveedor: response.data.list[i].cproveedor, value: response.data.list[i].xproveedor, direccion: response.data.list[i].xdireccionproveedor, telefono: response.data.list[i].xtelefonoproveedor});
+          this.providerList.push({ proveedor: response.data.list[i].cproveedor, value: response.data.list[i].xproveedor});
         }
-        //this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
     },
     (err) => {
@@ -996,7 +1077,8 @@ export class NotificationServiceOrderComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cservicio: this.popup_form.get('cservicio').value
+      cservicio: this.popup_form.get('cservicio').value,
+      cestado: this.notificacion.cestado
     }
     this.http.post(`${environment.apiUrl}/api/valrep/service-providers`, params, options).subscribe((response: any) => {
       if(response.data.status){
@@ -1112,7 +1194,6 @@ export class NotificationServiceOrderComponent implements OnInit {
               cmoneda: response.data.replacements[i].cmoneda,
               xmoneda: response.data.replacements[i].xmoneda
             }
-            console.log(replacement)
             replacementsList.push(replacement);
           }
           this.purchaseOrder = {
@@ -1195,19 +1276,71 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   repuestos(){
-    let repuestos = [];
-    if(this.notificacion.repuestos){
-      for(let i = 0; i < this.notificacion.repuestos.length; i++){
-        let repuesto = this.notificacion.repuestos[i].xrepuesto;
-
-        repuestos.push(repuesto);
-      }
-      this.popup_form.get('xrepuesto').setValue(repuestos);
-      this.popup_form.get('xrepuesto').disable();
+    if(this.notificacion.createServiceOrder){
+        this.replacement = true;
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        let params = {
+          cnotificacion: this.notificacion.cnotificacion
+        };
+        this.http.post(`${environment.apiUrl}/api/valrep/settlement/replacement`, params, options).subscribe((response : any) => {
+          if(response.data.list){
+            for(let i = 0; i < response.data.list.length; i++){
+              this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
+            }
+            console.log(this.replacementList)
+          }
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        });
+    }else{
+        this.danos = true;
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        let params = {
+          cnotificacion: this.notificacion.cnotificacion,
+          corden: this.popup_form.get('corden').value
+        };
+        this.http.post(`${environment.apiUrl}/api/service-order/notification-service-order`, params, options).subscribe((response : any) => {
+          if(response.data.list){
+            this.replacementList.push({ id: response.data.list[0].corden, value: response.data.list[0].xdanos});
+            this.popup_form.get('corden').setValue(response.data.list[0].corden)
+            this.popup_form.get('corden').disable();
+            this.popup_form.get('xdanos').setValue(response.data.list[0].xdanos)
+            this.popup_form.get('xdanos').disable();
+          }
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+        });
     }
-    this.danos = this.popup_form.get('xrepuesto').value;
-    this.popup_form.get('xdanos').setValue(`${this.danos}`);
-    this.popup_form.get('xdanos').disable();
+    // if(this.notificacion.repuestos){
+    //   for(let i = 0; i < this.notificacion.repuestos.length; i++){
+    //     let repuesto = this.notificacion.repuestos[i].xrepuesto;
+
+    //     repuestos.push(repuesto);
+    //   }
+    //   this.popup_form.get('xrepuesto').setValue(repuestos);
+    //   this.popup_form.get('xrepuesto').disable();
+    // }
+    // this.danos = this.popup_form.get('xrepuesto').value;
+    // this.popup_form.get('xdanos').setValue(`${this.danos}`);
+    // this.popup_form.get('xdanos').disable();
   }
 
   changeDateFormat(date) {
@@ -1240,24 +1373,13 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.alert.show = true;
     });
   }
-  // sendEmail(){
-  //   let orden = { corden: this.notificacion.corden };
-  //   const modalRef = this.modalService.open(NotificationEmailComponent);
-  //   modalRef.componentInstance.orden = orden;
-  //   modalRef.result.then((result: any) => { 
-  //     if(result){
-  //       this.emailList.push({
-  //         cgrid: this.emailList.length,
-  //         create: true,
-  //         corden: result.corden,
-  //         xmensaje: result.xmensaje,
-  //         xrutaarchivo: result.xrutaarchivo
-  //       });
-  //     }
-  //   });
-  // }
 
   changeCancellationCause(){  
+    if(this.popup_form.get('cestatusgeneral').value == 3){
+      this.cancelled = true;
+    }else{
+      this.cancelled = false;
+    }
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -1267,11 +1389,11 @@ export class NotificationServiceOrderComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/valrep/cancellation-cause/service-order`, params, options).subscribe((response: any) => {
       if(response.data.list){
         for(let i = 0; i < response.data.list.length; i++){
-          if(this.popup_form.get('cestatusgeneral').value == 42){
+          if(this.popup_form.get('cestatusgeneral').value == 3){
             this.cancellationList.push({ id: response.data.list[i].ccausaanulacion, value: response.data.list[i].xcausaanulacion})
             this.popup_form.get('ccausaanulacion').enable()
             this.popup_form.get('xcausaanulacion').enable()
-          }else if(this.popup_form.get('cestatusgeneral').value != 42){
+          }else if(this.popup_form.get('cestatusgeneral').value != 3){
             this.popup_form.get('ccausaanulacion').setValue('')
             this.popup_form.get('ccausaanulacion').disable()
             this.popup_form.get('xcausaanulacion').setValue('')
@@ -1293,7 +1415,7 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   buildStatus(){
-    if(this.popup_form.get('cestatusgeneral').value == 52){
+    if(this.popup_form.get('cestatusgeneral').value == 13){
       this.popup_form.get('xestatusgeneral').value
       return "color1"
     }else{
@@ -1308,10 +1430,20 @@ export class NotificationServiceOrderComponent implements OnInit {
         content: [
           {
             columns: [
-              {
+            	{
                 style: 'header',
-                width: 140,
-                height: 60,
+                text: [
+                  {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                  '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                  '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                  '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                  '\nUrl: www.lamundialdeseguros.com'
+                ],
+                alignment: 'left'
+              },
+              {
+                width: 160,
+                height: 80,
                 image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjUAAADXCAYAAADiBqA4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEEdSURBVHhe7Z0HeFRV+ocTYv2vru6qa19WBZUqgigI9rL2gm1dK4qigih2RRHrWkEBG6ioWEBUUIqKgBQp0qsU6b1DElpmJnz/8ztzz3Dmzs1kWkLm5vc+z/eEzNw+IefNd75zTo4QQgghhPgASg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqamkFG/dKtunjpfCX/pJ4Y9fS8GAnlLww0dSOOgT2TK0l2z9ra9snzxEgmuXOnsQQgghFRtKTSWgeMcO2TJliqz7sqcsf/YJWfjfy2XBOXVk8YV1ZMkVdWXZtfVk+c31ZGXzk2Vly/qyunUDWd22gax55BRZ+3hDWffcubL5w/tky09dZceMYRLatMo5MiGEEFJxoNT4mI3DRsicO+6WSbVqy5TaNWT6yTXl' +
                 'j1NrybymtWThubVl8SV1ZOlVJ8myG+vJitt3Cc2ah5XMPKFk5ulTZf2zkBr19QUVL54WDvXvDZ0ul63DP5Tiwg3O2QghhJDdC6XGZwTzC2Tpux/L+Ebny+gjj5ffjzlBJlY/UabU2iU1f57hSM2ldWXZNXXDWZo7ldC0qr9LaJ5pGJaX/50mG19tJBvfUF/fVF87OaH+veH101Q0lYK+7SWwbIZzBYQQQsjugVLjE7bMXSB/tHlahh9eV379ezUZcUh1+U1Jzbh/nSATlNRMrqmkpp6H1FxbT1bcoqTmLiU0bRrI2kdPCWdoIDSvOCLzdiPZ1LWxbHrvdNn0/umyuZv6t/qqv1ev431Iz+ZPbpftUwfIzuKQc1WEEEJI+UGpyXJ2hkIy/+WuMnj/E2Xw/x0nQ/Y/Tob9TUnNwdVl1OHHy9h/Hi/jjztBSc2JMq1eDZlldz8ZqbnN6Xp6UEnNEw1lfQcnQ6OEZlOXsMDkf6hkpof6+lkTKei5K/I/aSKbP3ZEB4LTqZHkf9pcgusWOldICCGElA+UmnJgc3CnzN5WLBMKQzK+ICQztxTL+sBO593UKZz9p4xtcpX8vM9xkRiy33Ey9K/VZPhB1WTkYdVl9FFKao49QSadeKJMrVNDZp5SQ+Y0qSkLzgnX1KD7SWdqIDVtG8i6J8M1NLrLCRkaZGaUtGiJ6aXim6ZS+K2Kvk3Cof5d0EfFV0pwlPBAfpDB2dj5TNk2rqfs3Jn+fRJCCCGJQKkpI/JDO+VXJTAdVwWkw/KAPLs0IO2XBKTdYhULA/LUgoA8r6L/2pCsLUqu4YcoLHyzm/xyQI0ooUEM/ouSmv2Pi+mC0nU1tWvIjAY1ZXbjmjL/rFqy6KI6srTZSVFSs7bdKbrrCd1JyLxs7t44nJ3p7UhMfyU0A8+XLYMulC0/XqK/6u8HnCUF/c4ICw4yOMjsvNtI8r+8S0IbljhXTgghhJQdlJoMU6yEY1RhSF5aGZDnVuwSmmcgM5bQPP5nQB6bF5BH5wbkkdlB' +
                 '+X51SALFpcvNtsXLZdzZ18XITCTQBbXfcTLswGoyXHdBVY/qgjJ1NfPOrCWLLwiPflp+U7imBt1PyNQYqYGU6CzNV+GMDMRFi8zgZrJ16I2ybdjNsvXX28Jfh9wgW3++Iiw53zvZGyU3kKJN750t2yf1ce6AEEIIKRsoNRlki5KSD9cF5fkkhOZhJTQP/RGUtjOD8sLcoKzdUbLYbF20VEZUb+otM1bobM1fq+lszchDw11QGAUV3QUVrqtZclldWX7DSeHRT63DNTW6+8lITQ8lNeh26ndGODvzy7VhkRnRUrb/1ka2jW6rQ/975L36PWwTkZveSmzUMXCsbaO7O3dCCCGEZB5KTYYoDO2Ud9YGUhaaNjOCcv/0oLRT/16zPVZsEhUaHTHZmuNlXNXjZUI1ZGtqyIz6NWV2o11dULqu5raTZdW94dFPKBRGTY3ufkKmRkkNBAVZGp2hgdCMeVi2j28vOyY+Lzsmvahj+4QOsn3cE1pwtg5vruWmcMA54bobZG26NZbtYyk2hBBCygZKTQbIlNDcPzUoracE5fFpQVltiU1SQuOEXVvjztZMq1tDZjUMj4JadH5tWXKl1QWFYuGnndFPbzfStTG6+wlS89NluqsJ0rLj96ekaPL/pGj621I08x0pmvV++Cu+V6/jfZ29UdtjP521QTGxOt6asd10Nx0hhBCSSSg1aZJpobl3UlDumRiUR9X3q7ftTEloTLhra7yyNQvOdkZBXaukpvnJkS4oXVeDId3vh0c+oUgYmRojNcjKFE3rJEV/dJPAvM+laH5vHYE/v5SiOZ/IjhldwtmbsY/JthEtdB0Oiox1d9THp8u00R9QbAghhGQUSk0alJXQtJyg4vegPDK+SL5v+h9PYUkkzLw1ZiSUmWHY1NZ4ZmtahmcVxozCkS4o1NX0aaq7klAQvH1UK931pKVGCUxg4bcSWjJIgsuGhGPxAAks6COB2R/pbbAt6m10rQ1GSTliM3lsD4oNIYSQjEGpSZGyFpq7xwXljrHq' +
@@ -1334,16 +1466,8 @@ export class NotificationServiceOrderComponent implements OnInit {
                 'jQaNdEnzxKAhNl1MEB782x12F4o7Y5EKEBGTebFj4sSJzha7QNbEvI8G3+v67GOYBtyWHYiKF7YkeImEneEqSebMiLKffvrJeSUaPC9zDK/7A/YyFugCLAlbkGyB27hxY9TryBIByCvuiwuXZieVXmpAxwFBXwqNodU7Smx8JjQGiE2Ny9X1W0KTe0ys0OQeSqEhYdBYmSwKJKEk0JVhGj13w2rPIYMuGnRjxAuveo5UQINrN/gmTObCYMQC2Rav63GHadCRWTHHLKmmBDU2eB9ZLK+GH6KC99FN5QVEx5yjpBFltjh5dfvhOdhi5pVRMkBazXYIiBvAPqY7CwGxYXYm+6HUOHT8IehLoTHc32WH74TGsHpdsZx0ZX5coTmvGYWGhDE1E4h4GRT7L3zUoNhg1A5eR23I7sCWKoTdxYQskskSQbiSwc5gQSzc2KKHbiY3EAXz/ogRI5xXo7HP4TXyCZiCZK9uP2Bnokr7DPA8zLYIdDsZ7JobEyh4JtkLpcaic/+g57BtSMB+FxTKwDHZKTSGF3sWyb7qPryE5uLWW2RjfvY2+oVKWJ7vvF2ObqykxhKaE5tskk7vb1e/2Cg0JAyKZk0Dhi6MkrAXksRwYgMaWfMXPmo6dhfIcpjrQ9bCYHerJNvthXszWSwc086AQA4gKngP0uFVR4SFNs25UWvjhZ1p8hpRFq/bz2DLCGp84oGuJLOt/ZwMkCx38fOKFSucd0m2QalxMWpmSK57brvso6QGQrPfRYVy96vbZdZCf0x6tbFgp3TqVSQ3PbtNbmq/TR7quF1mzvfPhF7FxTtl6qygTJoWlJmzs1tCSdmAYlHTeHktEmkwRagI02UB7AJTdMVkGtSHoEuoNOxMkr3uk50JKUks4oH9TYE0jovh1MhemOwJnktJ3T0YMWTOXdKzNQXMCK+upXjdfgYUC5ttIGHxsGtv7EJhG3SJmW4zBO6VZCeUmhIIhXZKUWCnbiQJIf4Bw3dN4xVPHsxcNahLcWP/ZR+vngMNtFf3' +
                 'STzQkKOBLW0/e1g2skoGu4aktOHk6MaxQZYEI4GwH8QGXTu4f1wPnhVqg+Jdl/1sS6pPKa1rCec3x3B3+xnsjBDCawSVwYy0wvlM4TI+M2S0bJDRMQXMCBYKZyeUGkJIpcJuNCEuXlJiN5pe3Rv2KCSvbAIaa2RS0JAmO6uwKZK1u7zc4JpR2Irt3PeAc9uNsz25nQFdR2aiOSMEaNRNETDuyc5OJYo93BsZHxtcF7I3pXUt4brMMUqa1RfCYboAvc5lKGmEFI6L/d2YLJJ7mDvJHig1hJBKBUb62A0i5qlBNwgadzSO9pBkBKQB3Rb4i99gd7MgUGuCBhSZDEgE5ACNN2o/ksWcH+f16p6xJ6jDObzmgrG72BBorLEdrg9FxqgtgdDY2Qq7hgj7Q0DQ+GMfSB62RRbIq5bGgGdpjoEsD2pTkA1CdxG6iYzQIPA88XzsZwSRsruBvIaMG+xiaUiIW8JwbnM+ZJnszIvpurOzSbgvk0VisXD2QqkhhFQ6zMR5XoH1gpCpsF9DVsEeNo2sg12o6w4co6T5b0rDFgPIFwTDLFMAObHneCkpC4RJ6uzJ/9yB49gzKAOvpQhKCgiLV5G111IJCMgF6nvc7+NeIDwQDlyTyT6ZwHPH/SPc0oLPwEwUiECXIMQMxzPPEOfF925MTQ7Oh8wdZBbnwmvIlOHYJDuh1BBCKiX4Sx7ygYYM9SNoVE3NCP6yR6YEjWS8yfkgG2jgTQOKbinITzqNIkZnIQuBUULIANnZDQSyNJCDeLU8ANKCIdPIyGA/CATuMV63FrpozPaJBDI4NrhvXDueHd6HeOGYRkjwPJENwVc8a5M9wfu4tnhhZ1psULeEz8vUOeF54Ryox3GLmwHPBdJnRnMh8LPg1VVHsgtKDSGkUuMlIGhAkxGTdCSmNHBsNPpYGbs0kSmJRK8PggAhQGOP7ipkY9A9hCwRshsQLrtuJt6ij17njFfQmwlS+RywTyr7kYoJpYYQQojODCHL4a4/cQMBMN1EyLgQUpGg' +
                 '1BBCSCXHrDaOLpnSshaYp8cUWruHRROyu6HUEEJIJQZZGSMpqIGJl6XBe6YIN9nZigkpDyg1hBBSicFQZnuIO0Z+edXuYPizGaqOzA7rUEhFhFJDCCGVHHsmYIQZDYZCYCyKaeaOwbBn9yzEhFQkKDWEEFLJQdYFi0tiZJOdtcEwcLyG4dGpzrtDSHlCqSGEEBJFvLoaQioylBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQHyDy//O30PvAjFjdAAAAAElFTkSuQmCC',
-                alignment: 'left',
-              },
-              {
-                fontSize: 15,
-                alignment: 'right',
-                style: this.buildStatus(),
-                text: [
-                  {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
-                ]
-              },
+                alignment: 'right'
+              }
             ]
           },
           {
@@ -1374,7 +1498,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             {
               alignment: 'left',
               text: [
-                {text: 'RIF: ', bold: true}, {text: `${this.popup_form.get('xdocumentocliente').value}`}
+                {text: 'RIF: ', bold: true}, {text: `${this.popup_form.get('xdocidentidad').value}`}
               ]
             },
           ]
@@ -1414,12 +1538,24 @@ export class NotificationServiceOrderComponent implements OnInit {
             }
           },
           {
+            columns: [
+              {
+                fontSize: 10,
+                alignment: 'right',
+                style: this.buildStatus(),
+                text: [
+                  {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
+                ]
+              }
+            ]
+          },
+          {
             style: 'data',
             columns: [
               {
                 table: {
                   alignment: 'right',
-                  widths: [170, '*', 190],
+                  //widths: [200, -49, 5],
                   body: [
                     [{text: [{text: `Caracas, ${new Date().getDate()} de ${this.getMonthAsString(new Date().getMonth())} de ${new Date().getFullYear()}`}], border: [false, false, false, false]} ]
                   ]
@@ -1504,29 +1640,11 @@ export class NotificationServiceOrderComponent implements OnInit {
             ]
           },
           {
-            columns: [
-              {
-                text: [
-                  {text: ' '}
-                ]
-              }
-            ]
-          },
-          {
             style: 'data',
             columns: [
               {
                 text: [
                   {text: 'Sirva la presente para solicitarle la prestación del servicio de '}, {text: this.getServiceOrderService()}, {text: ' para nuestro afiliado:'}
-                ]
-              }
-            ]
-          },
-          {
-            columns: [
-              {
-                text: [
-                  {text: ' '}
                 ]
               }
             ]
@@ -1564,7 +1682,7 @@ export class NotificationServiceOrderComponent implements OnInit {
               {
                 style: 'data',
                 text: [
-                  {text: 'NOMBRE:   ', bold: true}, {text: `${this.popup_form.get('xnombrepropietario').value}`}, {text: ', Documento de identificación: ', bold: true}, {text: `${this.popup_form.get('xdocidentidad').value}`}, {text: ', TLF.: ', bold: true}, {text: `${this.popup_form.get('xtelefonocelular').value}`}
+                  {text: 'NOMBRE:   ', bold: true}, {text: `${this.popup_form.get('xnombrespropietario').value}`}, {text: ', Documento de identificación: ', bold: true}, {text: `${this.popup_form.get('xdocidentidad').value}`}, {text: ', TLF.: ', bold: true}, {text: `${this.popup_form.get('xtelefonocelular').value}`}
                 ]
               }
             ]
@@ -1736,7 +1854,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 width: 450,
                 style: 'data',
                 text: [
-                  {text: 'IVA:         ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.popup_form.get('mmontototaliva').value)}`
+                  {text: 'IVA:         ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.popup_form.get('mmontototaliva').value)} ${this.popup_form.get('xmoneda').value}`
                 ]
               }
             ]
@@ -1772,7 +1890,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 width: 470,
                 style: 'data',
                 text: [
-                  {text: 'No Cubierto:       ', bold: true}, {text: '0,00'}
+                  {text: 'No Cubierto:       ', bold: true}, {text: '0,00 USD'}
                 ]
               }
             ]
@@ -1800,16 +1918,7 @@ export class NotificationServiceOrderComponent implements OnInit {
               {
                 style: 'data',
                 text: [
-                  {text: 'OBSERVACIONES:\n'}, {text: this.popup_form.get('xobservacion').value}
-                ]
-              }
-            ]
-          },
-          {
-            columns: [
-              {
-                text: [
-                  {text: ' '}
+                  {text: 'OBSERVACIONES: '}, {text: this.popup_form.get('xobservacion').value}
                 ]
               }
             ]
@@ -1876,10 +1985,14 @@ export class NotificationServiceOrderComponent implements OnInit {
           color2: {
             color: '#7F0303'
           },
+          header: {
+            fontSize: 7.5,
+            color: 'gray'
+          },
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`Orden de Servicio para ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`Orden de Servicio para ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
   } else if(this.popup_form.get('cservicioadicional').value == 282 || this.popup_form.get('cservicio').value == 282){
     const pdfDefinition: any = {
       content: [
@@ -1887,8 +2000,18 @@ export class NotificationServiceOrderComponent implements OnInit {
           columns: [
             {
               style: 'header',
-              width: 140,
-              height: 60,
+              text: [
+                {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                '\nUrl: www.lamundialdeseguros.com'
+              ],
+              alignment: 'left'
+            },
+            {
+              width: 160,
+              height: 80,
               image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjUAAADXCAYAAADiBqA4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEEdSURBVHhe7Z0HeFRV+ocTYv2vru6qa19WBZUqgigI9rL2gm1dK4qigih2RRHrWkEBG6ioWEBUUIqKgBQp0qsU6b1DElpmJnz/8ztzz3Dmzs1kWkLm5vc+z/eEzNw+IefNd75zTo4QQgghhPgASg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqamkFG/dKtunjpfCX/pJ4Y9fS8GAnlLww0dSOOgT2TK0l2z9ra9snzxEgmuXOnsQQgghFRtKTSWgeMcO2TJliqz7sqcsf/YJWfjfy2XBOXVk8YV1ZMkVdWXZtfVk+c31ZGXzk2Vly/qyunUDWd22gax55BRZ+3hDWffcubL5w/tky09dZceMYRLatMo5MiGEEFJxoNT4mI3DRsicO+6WSbVqy5TaNWT6yTXl' +
               'j1NrybymtWThubVl8SV1ZOlVJ8myG+vJitt3Cc2ah5XMPKFk5ulTZf2zkBr19QUVL54WDvXvDZ0ul63DP5Tiwg3O2QghhJDdC6XGZwTzC2Tpux/L+Ebny+gjj5ffjzlBJlY/UabU2iU1f57hSM2ldWXZNXXDWZo7ldC0qr9LaJ5pGJaX/50mG19tJBvfUF/fVF87OaH+veH101Q0lYK+7SWwbIZzBYQQQsjugVLjE7bMXSB/tHlahh9eV379ezUZcUh1+U1Jzbh/nSATlNRMrqmkpp6H1FxbT1bcoqTmLiU0bRrI2kdPCWdoIDSvOCLzdiPZ1LWxbHrvdNn0/umyuZv6t/qqv1ev431Iz+ZPbpftUwfIzuKQc1WEEEJI+UGpyXJ2hkIy/+WuMnj/E2Xw/x0nQ/Y/Tob9TUnNwdVl1OHHy9h/Hi/jjztBSc2JMq1eDZlldz8ZqbnN6Xp6UEnNEw1lfQcnQ6OEZlOXsMDkf6hkpof6+lkTKei5K/I/aSKbP3ZEB4LTqZHkf9pcgusWOldICCGElA+UmnJgc3CnzN5WLBMKQzK+ICQztxTL+sBO593UKZz9p4xtcpX8vM9xkRiy33Ey9K/VZPhB1WTkYdVl9FFKao49QSadeKJMrVNDZp5SQ+Y0qSkLzgnX1KD7SWdqIDVtG8i6J8M1NLrLCRkaZGaUtGiJ6aXim6ZS+K2Kvk3Cof5d0EfFV0pwlPBAfpDB2dj5TNk2rqfs3Jn+fRJCCCGJQKkpI/JDO+VXJTAdVwWkw/KAPLs0IO2XBKTdYhULA/LUgoA8r6L/2pCsLUqu4YcoLHyzm/xyQI0ooUEM/ouSmv2Pi+mC0nU1tWvIjAY1ZXbjmjL/rFqy6KI6srTZSVFSs7bdKbrrCd1JyLxs7t44nJ3p7UhMfyU0A8+XLYMulC0/XqK/6u8HnCUF/c4ICw4yOMjsvNtI8r+8S0IbljhXTgghhJQdlJoMU6yEY1RhSF5aGZDnVuwSmmcgM5bQPP5nQB6bF5BH5wbkkdlB' +
               '+X51SALFpcvNtsXLZdzZ18XITCTQBbXfcTLswGoyXHdBVY/qgjJ1NfPOrCWLLwiPflp+U7imBt1PyNQYqYGU6CzNV+GMDMRFi8zgZrJ16I2ybdjNsvXX28Jfh9wgW3++Iiw53zvZGyU3kKJN750t2yf1ce6AEEIIKRsoNRlki5KSD9cF5fkkhOZhJTQP/RGUtjOD8sLcoKzdUbLYbF20VEZUb+otM1bobM1fq+lszchDw11QGAUV3QUVrqtZclldWX7DSeHRT63DNTW6+8lITQ8lNeh26ndGODvzy7VhkRnRUrb/1ka2jW6rQ/975L36PWwTkZveSmzUMXCsbaO7O3dCCCGEZB5KTYYoDO2Ud9YGUhaaNjOCcv/0oLRT/16zPVZsEhUaHTHZmuNlXNXjZUI1ZGtqyIz6NWV2o11dULqu5raTZdW94dFPKBRGTY3ufkKmRkkNBAVZGp2hgdCMeVi2j28vOyY+Lzsmvahj+4QOsn3cE1pwtg5vruWmcMA54bobZG26NZbtYyk2hBBCygZKTQbIlNDcPzUoracE5fFpQVltiU1SQuOEXVvjztZMq1tDZjUMj4JadH5tWXKl1QWFYuGnndFPbzfStTG6+wlS89NluqsJ0rLj96ekaPL/pGj621I08x0pmvV++Cu+V6/jfZ29UdtjP521QTGxOt6asd10Nx0hhBCSSSg1aZJpobl3UlDumRiUR9X3q7ftTEloTLhra7yyNQvOdkZBXaukpvnJkS4oXVeDId3vh0c+oUgYmRojNcjKFE3rJEV/dJPAvM+laH5vHYE/v5SiOZ/IjhldwtmbsY/JthEtdB0Oiox1d9THp8u00R9QbAghhGQUSk0alJXQtJyg4vegPDK+SL5v+h9PYUkkzLw1ZiSUmWHY1NZ4ZmtahmcVxozCkS4o1NX0aaq7klAQvH1UK931pKVGCUxg4bcSWjJIgsuGhGPxAAks6COB2R/pbbAt6m10rQ1GSTliM3lsD4oNIYSQjEGpSZGyFpq7xwXljrHq' +
@@ -1911,16 +2034,8 @@ export class NotificationServiceOrderComponent implements OnInit {
               'jQaNdEnzxKAhNl1MEB782x12F4o7Y5EKEBGTebFj4sSJzha7QNbEvI8G3+v67GOYBtyWHYiKF7YkeImEneEqSebMiLKffvrJeSUaPC9zDK/7A/YyFugCLAlbkGyB27hxY9TryBIByCvuiwuXZieVXmpAxwFBXwqNodU7Smx8JjQGiE2Ny9X1W0KTe0ys0OQeSqEhYdBYmSwKJKEk0JVhGj13w2rPIYMuGnRjxAuveo5UQINrN/gmTObCYMQC2Rav63GHadCRWTHHLKmmBDU2eB9ZLK+GH6KC99FN5QVEx5yjpBFltjh5dfvhOdhi5pVRMkBazXYIiBvAPqY7CwGxYXYm+6HUOHT8IehLoTHc32WH74TGsHpdsZx0ZX5coTmvGYWGhDE1E4h4GRT7L3zUoNhg1A5eR23I7sCWKoTdxYQskskSQbiSwc5gQSzc2KKHbiY3EAXz/ogRI5xXo7HP4TXyCZiCZK9uP2Bnokr7DPA8zLYIdDsZ7JobEyh4JtkLpcaic/+g57BtSMB+FxTKwDHZKTSGF3sWyb7qPryE5uLWW2RjfvY2+oVKWJ7vvF2ObqykxhKaE5tskk7vb1e/2Cg0JAyKZk0Dhi6MkrAXksRwYgMaWfMXPmo6dhfIcpjrQ9bCYHerJNvthXszWSwc086AQA4gKngP0uFVR4SFNs25UWvjhZ1p8hpRFq/bz2DLCGp84oGuJLOt/ZwMkCx38fOKFSucd0m2QalxMWpmSK57brvso6QGQrPfRYVy96vbZdZCf0x6tbFgp3TqVSQ3PbtNbmq/TR7quF1mzvfPhF7FxTtl6qygTJoWlJmzs1tCSdmAYlHTeHktEmkwRagI02UB7AJTdMVkGtSHoEuoNOxMkr3uk50JKUks4oH9TYE0jovh1MhemOwJnktJ3T0YMWTOXdKzNQXMCK+upXjdfgYUC5ttIGHxsGtv7EJhG3SJmW4zBO6VZCeUmhIIhXZKUWCnbiQJIf4Bw3dN4xVPHsxcNahLcWP/ZR+vngMNtFf3' +
               'STzQkKOBLW0/e1g2skoGu4aktOHk6MaxQZYEI4GwH8QGXTu4f1wPnhVqg+Jdl/1sS6pPKa1rCec3x3B3+xnsjBDCawSVwYy0wvlM4TI+M2S0bJDRMQXMCBYKZyeUGkJIpcJuNCEuXlJiN5pe3Rv2KCSvbAIaa2RS0JAmO6uwKZK1u7zc4JpR2Irt3PeAc9uNsz25nQFdR2aiOSMEaNRNETDuyc5OJYo93BsZHxtcF7I3pXUt4brMMUqa1RfCYboAvc5lKGmEFI6L/d2YLJJ7mDvJHig1hJBKBUb62A0i5qlBNwgadzSO9pBkBKQB3Rb4i99gd7MgUGuCBhSZDEgE5ACNN2o/ksWcH+f16p6xJ6jDObzmgrG72BBorLEdrg9FxqgtgdDY2Qq7hgj7Q0DQ+GMfSB62RRbIq5bGgGdpjoEsD2pTkA1CdxG6iYzQIPA88XzsZwSRsruBvIaMG+xiaUiIW8JwbnM+ZJnszIvpurOzSbgvk0VisXD2QqkhhFQ6zMR5XoH1gpCpsF9DVsEeNo2sg12o6w4co6T5b0rDFgPIFwTDLFMAObHneCkpC4RJ6uzJ/9yB49gzKAOvpQhKCgiLV5G111IJCMgF6nvc7+NeIDwQDlyTyT6ZwHPH/SPc0oLPwEwUiECXIMQMxzPPEOfF925MTQ7Oh8wdZBbnwmvIlOHYJDuh1BBCKiX4Sx7ygYYM9SNoVE3NCP6yR6YEjWS8yfkgG2jgTQOKbinITzqNIkZnIQuBUULIANnZDQSyNJCDeLU8ANKCIdPIyGA/CATuMV63FrpozPaJBDI4NrhvXDueHd6HeOGYRkjwPJENwVc8a5M9wfu4tnhhZ1psULeEz8vUOeF54Ryox3GLmwHPBdJnRnMh8LPg1VVHsgtKDSGkUuMlIGhAkxGTdCSmNHBsNPpYGbs0kSmJRK8PggAhQGOP7ipkY9A9hCwRshsQLrtuJt6ij17njFfQmwlS+RywTyr7kYoJpYYQQojODCHL4a4/cQMBMN1EyLgQUpGg' +
               '1BBCSCXHrDaOLpnSshaYp8cUWruHRROyu6HUEEJIJQZZGSMpqIGJl6XBe6YIN9nZigkpDyg1hBBSicFQZnuIO0Z+edXuYPizGaqOzA7rUEhFhFJDCCGVHHsmYIQZDYZCYCyKaeaOwbBn9yzEhFQkKDWEEFLJQdYFi0tiZJOdtcEwcLyG4dGpzrtDSHlCqSGEEBJFvLoaQioylBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQHyDy//O30PvAjFjdAAAAAElFTkSuQmCC',
-              alignment: 'left',
-            },
-            {
-              fontSize: 15,
-              alignment: 'right',
-              style: this.buildStatus(),
-              text: [
-                {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
-              ]
-            },
+              alignment: 'right'
+            }
           ]
         },
         {
@@ -1991,6 +2106,18 @@ export class NotificationServiceOrderComponent implements OnInit {
           }
         },
         {
+          columns: [
+            {
+              fontSize: 10,
+              alignment: 'right',
+              style: this.buildStatus(),
+              text: [
+                {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
+              ]
+            }
+          ]
+        },
+        {
           style: 'data',
           columns: [
             {
@@ -2008,7 +2135,7 @@ export class NotificationServiceOrderComponent implements OnInit {
             },
             {
               table: {
-                widths: [170, '*', 190],
+                widths: [200, -49, 5],
                 body: [
                   [{text: [{text: `Caracas, ${new Date().getDate()} de ${this.getMonthAsString(new Date().getMonth())} de ${new Date().getFullYear()}`}], border: [false, false, false, false]} ]
                 ]
@@ -2257,30 +2384,6 @@ export class NotificationServiceOrderComponent implements OnInit {
               width: 475,
               style: 'data',
               text: [
-                {text: 'Depreciación:             ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              alignment: 'right',
-              width: 475,
-              style: 'data',
-              text: [
-                {text: 'Penalización:              ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
-              ]
-            }
-          ]
-        },
-        {
-          columns: [
-            {
-              alignment: 'right',
-              width: 475,
-              style: 'data',
-              text: [
                 {text: 'IVA:                            ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.popup_form.get('mmontoiva').value)} `, {text: `${this.popup_form.get('xmoneda').value}`}
               ]
             }
@@ -2400,19 +2503,33 @@ export class NotificationServiceOrderComponent implements OnInit {
         color2: {
           color: '#7F0303'
         },
+        header: {
+          fontSize: 7.5,
+          color: 'gray'
+        },
       }
     }
     pdfMake.createPdf(pdfDefinition).open();
-    pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+    pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
     } else if(this.popup_form.get('cservicioadicional').value == 283 || this.popup_form.get('cservicio').value == 283){
       const pdfDefinition: any = {
         content: [
           {
             columns: [
-              {
+            	{
                 style: 'header',
-                width: 140,
-                height: 60,
+                text: [
+                  {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                  '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                  '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                  '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                  '\nUrl: www.lamundialdeseguros.com'
+                ],
+                alignment: 'left'
+              },
+              {
+                width: 160,
+                height: 80,
                 image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjUAAADXCAYAAADiBqA4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEEdSURBVHhe7Z0HeFRV+ocTYv2vru6qa19WBZUqgigI9rL2gm1dK4qigih2RRHrWkEBG6ioWEBUUIqKgBQp0qsU6b1DElpmJnz/8ztzz3Dmzs1kWkLm5vc+z/eEzNw+IefNd75zTo4QQgghhPgASg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqamkFG/dKtunjpfCX/pJ4Y9fS8GAnlLww0dSOOgT2TK0l2z9ra9snzxEgmuXOnsQQgghFRtKTSWgeMcO2TJliqz7sqcsf/YJWfjfy2XBOXVk8YV1ZMkVdWXZtfVk+c31ZGXzk2Vly/qyunUDWd22gax55BRZ+3hDWffcubL5w/tky09dZceMYRLatMo5MiGEEFJxoNT4mI3DRsicO+6WSbVqy5TaNWT6yTXl' +
                 'j1NrybymtWThubVl8SV1ZOlVJ8myG+vJitt3Cc2ah5XMPKFk5ulTZf2zkBr19QUVL54WDvXvDZ0ul63DP5Tiwg3O2QghhJDdC6XGZwTzC2Tpux/L+Ebny+gjj5ffjzlBJlY/UabU2iU1f57hSM2ldWXZNXXDWZo7ldC0qr9LaJ5pGJaX/50mG19tJBvfUF/fVF87OaH+veH101Q0lYK+7SWwbIZzBYQQQsjugVLjE7bMXSB/tHlahh9eV379ezUZcUh1+U1Jzbh/nSATlNRMrqmkpp6H1FxbT1bcoqTmLiU0bRrI2kdPCWdoIDSvOCLzdiPZ1LWxbHrvdNn0/umyuZv6t/qqv1ev431Iz+ZPbpftUwfIzuKQc1WEEEJI+UGpyXJ2hkIy/+WuMnj/E2Xw/x0nQ/Y/Tob9TUnNwdVl1OHHy9h/Hi/jjztBSc2JMq1eDZlldz8ZqbnN6Xp6UEnNEw1lfQcnQ6OEZlOXsMDkf6hkpof6+lkTKei5K/I/aSKbP3ZEB4LTqZHkf9pcgusWOldICCGElA+UmnJgc3CnzN5WLBMKQzK+ICQztxTL+sBO593UKZz9p4xtcpX8vM9xkRiy33Ey9K/VZPhB1WTkYdVl9FFKao49QSadeKJMrVNDZp5SQ+Y0qSkLzgnX1KD7SWdqIDVtG8i6J8M1NLrLCRkaZGaUtGiJ6aXim6ZS+K2Kvk3Cof5d0EfFV0pwlPBAfpDB2dj5TNk2rqfs3Jn+fRJCCCGJQKkpI/JDO+VXJTAdVwWkw/KAPLs0IO2XBKTdYhULA/LUgoA8r6L/2pCsLUqu4YcoLHyzm/xyQI0ooUEM/ouSmv2Pi+mC0nU1tWvIjAY1ZXbjmjL/rFqy6KI6srTZSVFSs7bdKbrrCd1JyLxs7t44nJ3p7UhMfyU0A8+XLYMulC0/XqK/6u8HnCUF/c4ICw4yOMjsvNtI8r+8S0IbljhXTgghhJQdlJoMU6yEY1RhSF5aGZDnVuwSmmcgM5bQPP5nQB6bF5BH5wbkkdlB' +
                 '+X51SALFpcvNtsXLZdzZ18XITCTQBbXfcTLswGoyXHdBVY/qgjJ1NfPOrCWLLwiPflp+U7imBt1PyNQYqYGU6CzNV+GMDMRFi8zgZrJ16I2ybdjNsvXX28Jfh9wgW3++Iiw53zvZGyU3kKJN750t2yf1ce6AEEIIKRsoNRlki5KSD9cF5fkkhOZhJTQP/RGUtjOD8sLcoKzdUbLYbF20VEZUb+otM1bobM1fq+lszchDw11QGAUV3QUVrqtZclldWX7DSeHRT63DNTW6+8lITQ8lNeh26ndGODvzy7VhkRnRUrb/1ka2jW6rQ/975L36PWwTkZveSmzUMXCsbaO7O3dCCCGEZB5KTYYoDO2Ud9YGUhaaNjOCcv/0oLRT/16zPVZsEhUaHTHZmuNlXNXjZUI1ZGtqyIz6NWV2o11dULqu5raTZdW94dFPKBRGTY3ufkKmRkkNBAVZGp2hgdCMeVi2j28vOyY+Lzsmvahj+4QOsn3cE1pwtg5vruWmcMA54bobZG26NZbtYyk2hBBCygZKTQbIlNDcPzUoracE5fFpQVltiU1SQuOEXVvjztZMq1tDZjUMj4JadH5tWXKl1QWFYuGnndFPbzfStTG6+wlS89NluqsJ0rLj96ekaPL/pGj621I08x0pmvV++Cu+V6/jfZ29UdtjP521QTGxOt6asd10Nx0hhBCSSSg1aZJpobl3UlDumRiUR9X3q7ftTEloTLhra7yyNQvOdkZBXaukpvnJkS4oXVeDId3vh0c+oUgYmRojNcjKFE3rJEV/dJPAvM+laH5vHYE/v5SiOZ/IjhldwtmbsY/JthEtdB0Oiox1d9THp8u00R9QbAghhGQUSk0alJXQtJyg4vegPDK+SL5v+h9PYUkkzLw1ZiSUmWHY1NZ4ZmtahmcVxozCkS4o1NX0aaq7klAQvH1UK931pKVGCUxg4bcSWjJIgsuGhGPxAAks6COB2R/pbbAt6m10rQ1GSTliM3lsD4oNIYSQjEGpSZGyFpq7xwXljrHq' +
@@ -2435,15 +2552,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 'jQaNdEnzxKAhNl1MEB782x12F4o7Y5EKEBGTebFj4sSJzha7QNbEvI8G3+v67GOYBtyWHYiKF7YkeImEneEqSebMiLKffvrJeSUaPC9zDK/7A/YyFugCLAlbkGyB27hxY9TryBIByCvuiwuXZieVXmpAxwFBXwqNodU7Smx8JjQGiE2Ny9X1W0KTe0ys0OQeSqEhYdBYmSwKJKEk0JVhGj13w2rPIYMuGnRjxAuveo5UQINrN/gmTObCYMQC2Rav63GHadCRWTHHLKmmBDU2eB9ZLK+GH6KC99FN5QVEx5yjpBFltjh5dfvhOdhi5pVRMkBazXYIiBvAPqY7CwGxYXYm+6HUOHT8IehLoTHc32WH74TGsHpdsZx0ZX5coTmvGYWGhDE1E4h4GRT7L3zUoNhg1A5eR23I7sCWKoTdxYQskskSQbiSwc5gQSzc2KKHbiY3EAXz/ogRI5xXo7HP4TXyCZiCZK9uP2Bnokr7DPA8zLYIdDsZ7JobEyh4JtkLpcaic/+g57BtSMB+FxTKwDHZKTSGF3sWyb7qPryE5uLWW2RjfvY2+oVKWJ7vvF2ObqykxhKaE5tskk7vb1e/2Cg0JAyKZk0Dhi6MkrAXksRwYgMaWfMXPmo6dhfIcpjrQ9bCYHerJNvthXszWSwc086AQA4gKngP0uFVR4SFNs25UWvjhZ1p8hpRFq/bz2DLCGp84oGuJLOt/ZwMkCx38fOKFSucd0m2QalxMWpmSK57brvso6QGQrPfRYVy96vbZdZCf0x6tbFgp3TqVSQ3PbtNbmq/TR7quF1mzvfPhF7FxTtl6qygTJoWlJmzs1tCSdmAYlHTeHktEmkwRagI02UB7AJTdMVkGtSHoEuoNOxMkr3uk50JKUks4oH9TYE0jovh1MhemOwJnktJ3T0YMWTOXdKzNQXMCK+upXjdfgYUC5ttIGHxsGtv7EJhG3SJmW4zBO6VZCeUmhIIhXZKUWCnbiQJIf4Bw3dN4xVPHsxcNahLcWP/ZR+vngMNtFf3' +
                 'STzQkKOBLW0/e1g2skoGu4aktOHk6MaxQZYEI4GwH8QGXTu4f1wPnhVqg+Jdl/1sS6pPKa1rCec3x3B3+xnsjBDCawSVwYy0wvlM4TI+M2S0bJDRMQXMCBYKZyeUGkJIpcJuNCEuXlJiN5pe3Rv2KCSvbAIaa2RS0JAmO6uwKZK1u7zc4JpR2Irt3PeAc9uNsz25nQFdR2aiOSMEaNRNETDuyc5OJYo93BsZHxtcF7I3pXUt4brMMUqa1RfCYboAvc5lKGmEFI6L/d2YLJJ7mDvJHig1hJBKBUb62A0i5qlBNwgadzSO9pBkBKQB3Rb4i99gd7MgUGuCBhSZDEgE5ACNN2o/ksWcH+f16p6xJ6jDObzmgrG72BBorLEdrg9FxqgtgdDY2Qq7hgj7Q0DQ+GMfSB62RRbIq5bGgGdpjoEsD2pTkA1CdxG6iYzQIPA88XzsZwSRsruBvIaMG+xiaUiIW8JwbnM+ZJnszIvpurOzSbgvk0VisXD2QqkhhFQ6zMR5XoH1gpCpsF9DVsEeNo2sg12o6w4co6T5b0rDFgPIFwTDLFMAObHneCkpC4RJ6uzJ/9yB49gzKAOvpQhKCgiLV5G111IJCMgF6nvc7+NeIDwQDlyTyT6ZwHPH/SPc0oLPwEwUiECXIMQMxzPPEOfF925MTQ7Oh8wdZBbnwmvIlOHYJDuh1BBCKiX4Sx7ygYYM9SNoVE3NCP6yR6YEjWS8yfkgG2jgTQOKbinITzqNIkZnIQuBUULIANnZDQSyNJCDeLU8ANKCIdPIyGA/CATuMV63FrpozPaJBDI4NrhvXDueHd6HeOGYRkjwPJENwVc8a5M9wfu4tnhhZ1psULeEz8vUOeF54Ryox3GLmwHPBdJnRnMh8LPg1VVHsgtKDSGkUuMlIGhAkxGTdCSmNHBsNPpYGbs0kSmJRK8PggAhQGOP7ipkY9A9hCwRshsQLrtuJt6ij17njFfQmwlS+RywTyr7kYoJpYYQQojODCHL4a4/cQMBMN1EyLgQUpGg' +
                 '1BBCSCXHrDaOLpnSshaYp8cUWruHRROyu6HUEEJIJQZZGSMpqIGJl6XBe6YIN9nZigkpDyg1hBBSicFQZnuIO0Z+edXuYPizGaqOzA7rUEhFhFJDCCGVHHsmYIQZDYZCYCyKaeaOwbBn9yzEhFQkKDWEEFLJQdYFi0tiZJOdtcEwcLyG4dGpzrtDSHlCqSGEEBJFvLoaQioylBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQHyDy//O30PvAjFjdAAAAAElFTkSuQmCC',
-                alignment: 'left',
-              },
-              {
-                fontSize: 15,
-                alignment: 'right',
-                style: this.buildStatus(),
-                text: [
-                  {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
-                ]
+                alignment: 'right'
               },
             ]
           },
@@ -2515,6 +2624,18 @@ export class NotificationServiceOrderComponent implements OnInit {
             }
           },
           {
+            columns: [
+              {
+                fontSize: 10,
+                alignment: 'right',
+                style: this.buildStatus(),
+                text: [
+                  {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
+                ]
+              }
+            ]
+          },
+          {
             style: 'data',
             columns: [
               {
@@ -2532,7 +2653,7 @@ export class NotificationServiceOrderComponent implements OnInit {
               },
               {
                 table: {
-                  widths: [170, '*', 190],
+                  widths: [200, -49, 5],
                   body: [
                     [{text: [{text: `Caracas, ${new Date().getDate()} de ${this.getMonthAsString(new Date().getMonth())} de ${new Date().getFullYear()}`}], border: [false, false, false, false]} ]
                   ]
@@ -2688,7 +2809,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 alignment: 'left',
                 style: 'data',
                 text: [
-                  {text: 'REPUESTOS A REPARAR', bold: true}
+                  {text: 'PIEZAS A REPARAR', bold: true}
                 ]
               }
             ]
@@ -2770,30 +2891,6 @@ export class NotificationServiceOrderComponent implements OnInit {
                 style: 'data',
                 text: [
                   {text: 'Subtotal:                 ', bold: true}, `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.purchaseOrder.mtotalcotizacion)} `, {text: `${this.popup_form.get('xmoneda').value}`}
-                ]
-              }
-            ]
-          },
-          {
-            columns: [
-              {
-                alignment: 'right',
-                width: 475,
-                style: 'data',
-                text: [
-                  {text: 'Depreciación:             ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
-                ]
-              }
-            ]
-          },
-          {
-            columns: [
-              {
-                alignment: 'right',
-                width: 475,
-                style: 'data',
-                text: [
-                  {text: 'Penalización:              ', bold: true}, {text: '0,00 '}, {text: `${this.popup_form.get('xmoneda').value}`}
                 ]
               }
             ]
@@ -2923,19 +3020,33 @@ export class NotificationServiceOrderComponent implements OnInit {
           color2: {
             color: '#7F0303'
           },
+          header: {
+            fontSize: 7.5,
+            color: 'gray'
+          },
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      pdfMake.createPdf(pdfDefinition).download(`${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
       }else{
       const pdfDefinition: any = {
         content: [
           {
             columns: [
-              {
+            	{
                 style: 'header',
-                width: 140,
-                height: 60,
+                text: [
+                  {text: 'RIF: '}, {text: 'J000846448', bold: true},
+                  '\nDirección: Av. Francisco de Miranda, Edif. Cavendes, Piso 11 OF 1101',
+                  '\nUrb. Los Palos Grandes, 1060 Chacao, Caracas.',
+                  '\nTelf. +58 212 283-9619 / +58 424 206-1351',
+                  '\nUrl: www.lamundialdeseguros.com'
+                ],
+                alignment: 'left'
+              },
+              {
+                width: 160,
+                height: 80,
                 image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAjUAAADXCAYAAADiBqA4AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAEEdSURBVHhe7Z0HeFRV+ocTYv2vru6qa19WBZUqgigI9rL2gm1dK4qigih2RRHrWkEBG6ioWEBUUIqKgBQp0qsU6b1DElpmJnz/8ztzz3Dmzs1kWkLm5vc+z/eEzNw+IefNd75zTo4QQgghhPgASg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqSGEEEKIL6DUEEIIIcQXUGoIIYQQ4gsoNYQQQgjxBZQaQgghhPgCSg0hhBBCfAGlhhBCCCG+gFJDCCGEEF9AqamkFG/dKtunjpfCX/pJ4Y9fS8GAnlLww0dSOOgT2TK0l2z9ra9snzxEgmuXOnsQQgghFRtKTSWgeMcO2TJliqz7sqcsf/YJWfjfy2XBOXVk8YV1ZMkVdWXZtfVk+c31ZGXzk2Vly/qyunUDWd22gax55BRZ+3hDWffcubL5w/tky09dZceMYRLatMo5MiGEEFJxoNT4mI3DRsicO+6WSbVqy5TaNWT6yTXl' +
                 'j1NrybymtWThubVl8SV1ZOlVJ8myG+vJitt3Cc2ah5XMPKFk5ulTZf2zkBr19QUVL54WDvXvDZ0ul63DP5Tiwg3O2QghhJDdC6XGZwTzC2Tpux/L+Ebny+gjj5ffjzlBJlY/UabU2iU1f57hSM2ldWXZNXXDWZo7ldC0qr9LaJ5pGJaX/50mG19tJBvfUF/fVF87OaH+veH101Q0lYK+7SWwbIZzBYQQQsjugVLjE7bMXSB/tHlahh9eV379ezUZcUh1+U1Jzbh/nSATlNRMrqmkpp6H1FxbT1bcoqTmLiU0bRrI2kdPCWdoIDSvOCLzdiPZ1LWxbHrvdNn0/umyuZv6t/qqv1ev431Iz+ZPbpftUwfIzuKQc1WEEEJI+UGpyXJ2hkIy/+WuMnj/E2Xw/x0nQ/Y/Tob9TUnNwdVl1OHHy9h/Hi/jjztBSc2JMq1eDZlldz8ZqbnN6Xp6UEnNEw1lfQcnQ6OEZlOXsMDkf6hkpof6+lkTKei5K/I/aSKbP3ZEB4LTqZHkf9pcgusWOldICCGElA+UmnJgc3CnzN5WLBMKQzK+ICQztxTL+sBO593UKZz9p4xtcpX8vM9xkRiy33Ey9K/VZPhB1WTkYdVl9FFKao49QSadeKJMrVNDZp5SQ+Y0qSkLzgnX1KD7SWdqIDVtG8i6J8M1NLrLCRkaZGaUtGiJ6aXim6ZS+K2Kvk3Cof5d0EfFV0pwlPBAfpDB2dj5TNk2rqfs3Jn+fRJCCCGJQKkpI/JDO+VXJTAdVwWkw/KAPLs0IO2XBKTdYhULA/LUgoA8r6L/2pCsLUqu4YcoLHyzm/xyQI0ooUEM/ouSmv2Pi+mC0nU1tWvIjAY1ZXbjmjL/rFqy6KI6srTZSVFSs7bdKbrrCd1JyLxs7t44nJ3p7UhMfyU0A8+XLYMulC0/XqK/6u8HnCUF/c4ICw4yOMjsvNtI8r+8S0IbljhXTgghhJQdlJoMU6yEY1RhSF5aGZDnVuwSmmcgM5bQPP5nQB6bF5BH5wbkkdlB' +
                 '+X51SALFpcvNtsXLZdzZ18XITCTQBbXfcTLswGoyXHdBVY/qgjJ1NfPOrCWLLwiPflp+U7imBt1PyNQYqYGU6CzNV+GMDMRFi8zgZrJ16I2ybdjNsvXX28Jfh9wgW3++Iiw53zvZGyU3kKJN750t2yf1ce6AEEIIKRsoNRlki5KSD9cF5fkkhOZhJTQP/RGUtjOD8sLcoKzdUbLYbF20VEZUb+otM1bobM1fq+lszchDw11QGAUV3QUVrqtZclldWX7DSeHRT63DNTW6+8lITQ8lNeh26ndGODvzy7VhkRnRUrb/1ka2jW6rQ/975L36PWwTkZveSmzUMXCsbaO7O3dCCCGEZB5KTYYoDO2Ud9YGUhaaNjOCcv/0oLRT/16zPVZsEhUaHTHZmuNlXNXjZUI1ZGtqyIz6NWV2o11dULqu5raTZdW94dFPKBRGTY3ufkKmRkkNBAVZGp2hgdCMeVi2j28vOyY+Lzsmvahj+4QOsn3cE1pwtg5vruWmcMA54bobZG26NZbtYyk2hBBCygZKTQbIlNDcPzUoracE5fFpQVltiU1SQuOEXVvjztZMq1tDZjUMj4JadH5tWXKl1QWFYuGnndFPbzfStTG6+wlS89NluqsJ0rLj96ekaPL/pGj621I08x0pmvV++Cu+V6/jfZ29UdtjP521QTGxOt6asd10Nx0hhBCSSSg1aZJpobl3UlDumRiUR9X3q7ftTEloTLhra7yyNQvOdkZBXaukpvnJkS4oXVeDId3vh0c+oUgYmRojNcjKFE3rJEV/dJPAvM+laH5vHYE/v5SiOZ/IjhldwtmbsY/JthEtdB0Oiox1d9THp8u00R9QbAghhGQUSk0alJXQtJyg4vegPDK+SL5v+h9PYUkkzLw1ZiSUmWHY1NZ4ZmtahmcVxozCkS4o1NX0aaq7klAQvH1UK931pKVGCUxg4bcSWjJIgsuGhGPxAAks6COB2R/pbbAt6m10rQ1GSTliM3lsD4oNIYSQjEGpSZGyFpq7xwXljrHq' +
@@ -2958,15 +3069,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 'jQaNdEnzxKAhNl1MEB782x12F4o7Y5EKEBGTebFj4sSJzha7QNbEvI8G3+v67GOYBtyWHYiKF7YkeImEneEqSebMiLKffvrJeSUaPC9zDK/7A/YyFugCLAlbkGyB27hxY9TryBIByCvuiwuXZieVXmpAxwFBXwqNodU7Smx8JjQGiE2Ny9X1W0KTe0ys0OQeSqEhYdBYmSwKJKEk0JVhGj13w2rPIYMuGnRjxAuveo5UQINrN/gmTObCYMQC2Rav63GHadCRWTHHLKmmBDU2eB9ZLK+GH6KC99FN5QVEx5yjpBFltjh5dfvhOdhi5pVRMkBazXYIiBvAPqY7CwGxYXYm+6HUOHT8IehLoTHc32WH74TGsHpdsZx0ZX5coTmvGYWGhDE1E4h4GRT7L3zUoNhg1A5eR23I7sCWKoTdxYQskskSQbiSwc5gQSzc2KKHbiY3EAXz/ogRI5xXo7HP4TXyCZiCZK9uP2Bnokr7DPA8zLYIdDsZ7JobEyh4JtkLpcaic/+g57BtSMB+FxTKwDHZKTSGF3sWyb7qPryE5uLWW2RjfvY2+oVKWJ7vvF2ObqykxhKaE5tskk7vb1e/2Cg0JAyKZk0Dhi6MkrAXksRwYgMaWfMXPmo6dhfIcpjrQ9bCYHerJNvthXszWSwc086AQA4gKngP0uFVR4SFNs25UWvjhZ1p8hpRFq/bz2DLCGp84oGuJLOt/ZwMkCx38fOKFSucd0m2QalxMWpmSK57brvso6QGQrPfRYVy96vbZdZCf0x6tbFgp3TqVSQ3PbtNbmq/TR7quF1mzvfPhF7FxTtl6qygTJoWlJmzs1tCSdmAYlHTeHktEmkwRagI02UB7AJTdMVkGtSHoEuoNOxMkr3uk50JKUks4oH9TYE0jovh1MhemOwJnktJ3T0YMWTOXdKzNQXMCK+upXjdfgYUC5ttIGHxsGtv7EJhG3SJmW4zBO6VZCeUmhIIhXZKUWCnbiQJIf4Bw3dN4xVPHsxcNahLcWP/ZR+vngMNtFf3' +
                 'STzQkKOBLW0/e1g2skoGu4aktOHk6MaxQZYEI4GwH8QGXTu4f1wPnhVqg+Jdl/1sS6pPKa1rCec3x3B3+xnsjBDCawSVwYy0wvlM4TI+M2S0bJDRMQXMCBYKZyeUGkJIpcJuNCEuXlJiN5pe3Rv2KCSvbAIaa2RS0JAmO6uwKZK1u7zc4JpR2Irt3PeAc9uNsz25nQFdR2aiOSMEaNRNETDuyc5OJYo93BsZHxtcF7I3pXUt4brMMUqa1RfCYboAvc5lKGmEFI6L/d2YLJJ7mDvJHig1hJBKBUb62A0i5qlBNwgadzSO9pBkBKQB3Rb4i99gd7MgUGuCBhSZDEgE5ACNN2o/ksWcH+f16p6xJ6jDObzmgrG72BBorLEdrg9FxqgtgdDY2Qq7hgj7Q0DQ+GMfSB62RRbIq5bGgGdpjoEsD2pTkA1CdxG6iYzQIPA88XzsZwSRsruBvIaMG+xiaUiIW8JwbnM+ZJnszIvpurOzSbgvk0VisXD2QqkhhFQ6zMR5XoH1gpCpsF9DVsEeNo2sg12o6w4co6T5b0rDFgPIFwTDLFMAObHneCkpC4RJ6uzJ/9yB49gzKAOvpQhKCgiLV5G111IJCMgF6nvc7+NeIDwQDlyTyT6ZwHPH/SPc0oLPwEwUiECXIMQMxzPPEOfF925MTQ7Oh8wdZBbnwmvIlOHYJDuh1BBCKiX4Sx7ygYYM9SNoVE3NCP6yR6YEjWS8yfkgG2jgTQOKbinITzqNIkZnIQuBUULIANnZDQSyNJCDeLU8ANKCIdPIyGA/CATuMV63FrpozPaJBDI4NrhvXDueHd6HeOGYRkjwPJENwVc8a5M9wfu4tnhhZ1psULeEz8vUOeF54Ryox3GLmwHPBdJnRnMh8LPg1VVHsgtKDSGkUuMlIGhAkxGTdCSmNHBsNPpYGbs0kSmJRK8PggAhQGOP7ipkY9A9hCwRshsQLrtuJt6ij17njFfQmwlS+RywTyr7kYoJpYYQQojODCHL4a4/cQMBMN1EyLgQUpGg' +
                 '1BBCSCXHrDaOLpnSshaYp8cUWruHRROyu6HUEEJIJQZZGSMpqIGJl6XBe6YIN9nZigkpDyg1hBBSicFQZnuIO0Z+edXuYPizGaqOzA7rUEhFhFJDCCGVHHsmYIQZDYZCYCyKaeaOwbBn9yzEhFQkKDWEEFLJQdYFi0tiZJOdtcEwcLyG4dGpzrtDSHlCqSGEEBJFvLoaQioylBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQX0CpIYQQQogvoNQQQgghxBdQagghhBDiCyg1hBBCCPEFlBpCCCGE+AJKDSGEEEJ8AaWGEEIIIb6AUkMIIYQQHyDy//O30PvAjFjdAAAAAElFTkSuQmCC',
-                alignment: 'left',
-              },
-              {
-                fontSize: 15,
-                alignment: 'right',
-                style: this.buildStatus(),
-                text: [
-                  {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
-                ]
+                alignment: 'right'
               },
             ]
           },
@@ -3004,6 +3107,27 @@ export class NotificationServiceOrderComponent implements OnInit {
             }
           },
           {
+            columns: [
+              {
+                fontSize: 10,
+                alignment: 'right',
+                style: this.buildStatus(),
+                text: [
+                  {text: `${this.popup_form.get('xestatusgeneral').value}`, bold: true}
+                ]
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                text: [
+                  {text: ' '}
+                ]
+              }
+            ]
+          },
+          {
             style: 'data',
             columns: [
               {
@@ -3022,7 +3146,7 @@ export class NotificationServiceOrderComponent implements OnInit {
               {
                 table: {
                   alignment: 'right',
-                  widths: [170, '*', 190],
+                  widths: [200, -49, 5],
                   body: [
                     [{text: [{text: `Caracas, ${new Date().getDate()} de ${this.getMonthAsString(new Date().getMonth())} de ${new Date().getFullYear()}`}], border: [false, false, false, false]} ]
                   ]
@@ -3393,10 +3517,14 @@ export class NotificationServiceOrderComponent implements OnInit {
           color2: {
             color: '#7F0303'
           },
+          header: {
+            fontSize: 7.5,
+            color: 'gray'
+          },
         }
       }
       pdfMake.createPdf(pdfDefinition).open();
-      pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}.pdf`, function() { alert('El PDF se está Generando'); });
+      //pdfMake.createPdf(pdfDefinition).download(`ORDEN DE SERVICIO PARA ${this.getServiceOrderService()} #${this.popup_form.get('corden').value}, PARA ${this.popup_form.get('xcliente').value}.pdf`, function() { alert('El PDF se está Generando'); });
     }
   }
 }

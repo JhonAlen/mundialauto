@@ -78,26 +78,26 @@ export class ProviderDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.detail_form = this.formBuilder.group({
-      xproveedor: ['', Validators.required],
-      xrazonsocial: ['', Validators.required],
-      ctipodocidentidad: ['', Validators.required],
-      xdocidentidad: ['', Validators.required],
-      xtelefono: ['', Validators.required],
+      xproveedor: [''],
+      xrazonsocial: [''],
+      ctipodocidentidad: [''],
+      xdocidentidad: [''],
+      xtelefono: [''],
       xemail: ['', Validators.compose([
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])],
       xfax: [''],
       xpaginaweb: [''],
       pretencion: [''],
-      xdireccion: ['', Validators.required],
-      xdireccioncorreo: ['', Validators.required],
-      xobservacion: ['', Validators.required],
-      centeimpuesto: ['', Validators.required],
-      ldiascredito: ['', Validators.required],
-      cestado: ['', Validators.required],
-      cciudad: ['', Validators.required],
-      bafiliado: [false, Validators.required],
-      bactivo: [true, Validators.required]
+      xdireccion: [''],
+      xdireccioncorreo: [''],
+      xobservacion: [''],
+      centeimpuesto: [''],
+      ldiascredito: [''],
+      cestado: [''],
+      cciudad: [''],
+      bafiliado: [false],
+      bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if (this.currentUser) {

@@ -1,54 +1,46 @@
-<!-- <mat-toolbar class="mat-elevation-z8">
-    <button
-      mat-icon-button
-      *ngIf="sidenav.mode === 'over'"
-      (click)="sidenav.toggle()"
-    >
-      <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
-      <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
-    </button>
-    Responsive side navigation
-  </mat-toolbar>
-  
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
-      <img
-        class="avatar mat-elevation-z8"
-        src="https://source.unsplash.com/c_GmwfHBDzk/200x200"
-      />
-  
-      <h4 class="name">John Smith</h4>
-      <p class="designation">Software Engineer</p>
-  
-      <mat-divider></mat-divider>
-  
-      <button mat-button class="menu-button" routerLink="/home">
-        <mat-icon>home</mat-icon>
-        <span>Home</span>
-      </button>
-      <button mat-button class="menu-button" routerLink="/profile">
-        <mat-icon>person</mat-icon>
-        <span>Profile</span>
-      </button>
-      <button mat-button class="menu-button" routerLink="/about">
-        <mat-icon>info</mat-icon>
-        <span>About</span>
-      </button>
-  
-      <mat-divider></mat-divider>
-  
-      <button mat-button class="menu-button" routerLink="/help">
-        <mat-icon>help</mat-icon>
-        <span>Help</span>
-      </button>
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <div class="content mat-elevation-z8">
-        <router-outlet></router-outlet>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+
+<body>
+    <mat-toolbar class="mat-elevation-z8">
+        <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+          <mat-icon *ngIf="!sidenav.opened">notes </mat-icon>
+          <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+        </button>
+    
+      </mat-toolbar>
+      
+      <mat-sidenav-container>
+        <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+          <img class="logo logocompany" >
+          <mat-divider></mat-divider>
+      
+            <button mat-button class="menu-button" routerLink="/subscription/fleet-contract-broker-detail">
+            <mat-icon>assignment</mat-icon>
+            <span style="color: white;">Emitir Polizas</span>
+          </button>
+          <button mat-button class="menu-button" routerLink="/subscription/fleet-contract-broker-index">
+            <mat-icon>credit_card</mat-icon>
+            <span style="color: white;">Gestión de Ventas</span>
+          </button>
+         <!-- <button mat-button class="menu-button" routerLink="/notifications">
+            <mat-icon>notification_important</mat-icon>
+            <span>Notificaciones</span>
+          </button>  -->
+          <button mat-button class="menu-button" (click)="logOut()" >
+            <mat-icon style="color: white;">exit_to_app</mat-icon>
+            <span style="color: white;">Salir</span>
+          </button>
+
+        </mat-sidenav>
+         <mat-sidenav-content>
+          <div class="content mat-elevation-z8">
+            <router-outlet></router-outlet>
+          </div>
+        </mat-sidenav-content> 
+      </mat-sidenav-container> 
+</body>
 
 
 
- -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

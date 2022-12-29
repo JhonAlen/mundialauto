@@ -42,19 +42,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.NOTIFICATIONS.NOTIFICATION" | translate }}</label>
-                                    <select formControlName="cnotificacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cnotificacion').errors }" (change)="getNotificationData()">
-                                        <option></option>
-                                        <option *ngFor="let notification of notificationList" value="{{ notification.id }}">{{ notification.id }}</option>
-                                    </select>
-                                    
-                                    <div *ngIf="submitted && popup_form.get('cnotificacion').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('cnotificacion').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDASSOCIATETYPE" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>-->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.FLEETCONTRACT" | translate }}</label>
@@ -67,48 +54,21 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.NAME" | translate }}</label>
-                                    <input type="text" formControlName="xnombre" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombre').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xnombre').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xnombre').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.LASTNAME" | translate }}</label>
-                                    <input type="text" formControlName="xapellido" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xapellido').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xapellido').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xapellido').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
+                                    <input type="text" formControlName="xnombres" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombres').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xnombres').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xnombres').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.ALTERNATIVENAME" | translate }}</label>
-                                    <input type="text" formControlName="xnombrealternativo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombrealternativo').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xnombrealternativo').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xnombrealternativo').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
+                                    <input type="text" formControlName="xnombresalternativos" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombresalternativos').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xnombresalternativos').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xnombresalternativos').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.ALTERNATESURNAME" | translate }}</label>
-                                    <input type="text" formControlName="xapellidoalternativo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xapellidoalternativo').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xapellidoalternativo').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xapellidoalternativo').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--<div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.NOTIFICATIONDATE" | translate }}</label>
-                                    <input type="text" formControlName="fcreacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('fcreacion').errors }">
-                                    <div *ngIf="submitted && popup_form.get('fcreacion').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('fcreacion').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>-->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.ACCIDENT" | translate }}</label>
@@ -127,12 +87,36 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
                                     <textarea type="text" formControlName="xdanos" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xdanos').errors }"></textarea>
                                     <div *ngIf="submitted && popup_form.get('xdanos').errors"  class="invalid-feedback">
                                         <div *ngIf="popup_form.get('xdanos').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="col-sm-12 col-md-4" *ngIf="replacement">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="xrepuesto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xrepuesto').errors }">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList" value="{{ replacement.value }}">{{ replacement.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('xrepuesto').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xrepuesto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4" *ngIf="danos">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.DAMAGES" | translate }}</label>
+                                    <select formControlName="corden" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('corden').errors }">
+                                        <option></option>
+                                        <option *ngFor="let replacement of replacementList" value="{{ replacement.id }}">{{ replacement.value }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && popup_form.get('corden').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('corden').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDDOCUMENTTYPE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -156,19 +140,10 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.OWNERNAME" | translate }}</label>
-                                    <input type="text" formControlName="xnombrepropietario" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombrepropietario').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xnombrepropietario').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xnombrepropietario').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.OWNERLASTNAME" | translate }}</label>
-                                    <input type="text" formControlName="xapellidopropietario" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xapellidopropietario').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xapellidopropietario').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xapellidopropietario').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
+                                    <label>{{ "EVENTS.SERVICEORDER.OWNER" | translate }}</label>
+                                    <input type="text" formControlName="xnombrespropietario" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnombrespropietario').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xnombrespropietario').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xnombrespropietario').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -192,6 +167,15 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
+                                    <label>{{ "EVENTS.SERVICEORDER.VEHICLE" | translate }}</label>
+                                    <input type="text" formControlName="xauto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xauto').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xauto').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('xauto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.BADGE" | translate }}</label>
                                     <input type="text" formControlName="xplaca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xplaca').errors }">
                                     <div *ngIf="submitted && popup_form.get('xplaca').errors"  class="invalid-feedback">
@@ -199,73 +183,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.COLOR" | translate }}</label>
-                                    <input type="text" formControlName="xcolor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xcolor').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xcolor').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xcolor').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.MARCA" | translate }}</label>
-                                    <input type="text" formControlName="xmarca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xmarca').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xmarca').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xmarca').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.MODEL" | translate }}</label>
-                                    <input type="text" formControlName="xmodelo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xmodelo').errors }">
-                                    <div *ngIf="submitted && popup_form.get('xmodelo').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xmodelo').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.SINCE" | translate }}</label>
-                                    <textarea type="text" formControlName="xdesde" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xdesde').errors }"></textarea>
-                                    <div *ngIf="submitted && popup_form.get('xdesde').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xdesde').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.TOWARDS" | translate }}</label>
-                                    <textarea type="text" formControlName="xhacia" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xhacia').errors }"></textarea>
-                                    <div *ngIf="submitted && popup_form.get('xhacia').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('xhacia').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.AMOUNT" | translate }}</label>
-                                    <input type="number" formControlName="mmonto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mmonto').errors }">
-                                    <div *ngIf="submitted && popup_form.get('mmonto').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('mmonto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>{{ "EVENTS.SERVICEORDER.COIN" | translate }}</label>
-                                    <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cmoneda').errors }">
-                                        <option></option>
-                                        <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
-                                    </select>
-                                    <div *ngIf="submitted && popup_form.get('cmoneda').errors"  class="invalid-feedback">
-                                        <div *ngIf="popup_form.get('cmoneda').errors.required">{{ "THIRDPARTIES.OWNERS.REQUIREDCOIN" | translate }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <br>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.STATUS" | translate }}</label>
@@ -278,7 +195,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <div class="col-sm-12 col-md-4" *ngIf="cancelled">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.SERVICEORDER.CANCELLATIONCAUSE" | translate }}</label>
                                     <select formControlName="ccausaanulacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ccausaanulacion').errors }" (change)="changeCancellationCause()">
@@ -290,9 +207,52 @@
                                     </div>
                                 </div>
                             </div>
+                            <br>
                         </div>
                     </div>        
                     <br>
+                    <br>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4">
+                        <div class="form-group" style="margin-left: 15px;">
+                            <label>{{ "EVENTS.SERVICEORDER.SINCE" | translate }}</label>
+                            <textarea type="text" formControlName="xdesde" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xdesde').errors }"></textarea>
+                            <div *ngIf="submitted && popup_form.get('xdesde').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('xdesde').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="col-sm-12 col-md-4">
+                        <div class="form-group">
+                            <label>{{ "EVENTS.SERVICEORDER.TOWARDS" | translate }}</label>
+                            <textarea type="text" formControlName="xhacia" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xhacia').errors }"></textarea>
+                            <div *ngIf="submitted && popup_form.get('xhacia').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('xhacia').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div style="width: 180px">
+                        <div class="form-group">
+                            <label>{{ "EVENTS.SERVICEORDER.AMOUNT" | translate }}</label>
+                            <input type="number" formControlName="mmonto" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mmonto').errors }">
+                            <div *ngIf="submitted && popup_form.get('mmonto').errors"  class="invalid-feedback">
+                                <div *ngIf="popup_form.get('mmonto').errors.required">{{ "EVENTS.SERVICEORDER.REQUIREDIDENTIFICATIONDOCUMENT" | translate }}</div>
+                            </div>
+                        </div>
+                        </div>
+                        <div style="width: 150px">
+                            <div class="form-group">
+                                <label>{{ "EVENTS.SERVICEORDER.COIN" | translate }}</label>
+                                <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cmoneda').errors }">
+                                    <option></option>
+                                    <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
+                                </select>
+                                <div *ngIf="submitted && popup_form.get('cmoneda').errors"  class="invalid-feedback">
+                                    <div *ngIf="popup_form.get('cmoneda').errors.required">{{ "THIRDPARTIES.OWNERS.REQUIREDCOIN" | translate }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <br>
                     <div class="card-header company-card-header">
                         <div class="row">

@@ -1,11 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ClubRoutingModule } from './../app/club/club-routing.module';
+import {MatNativeDateModule} from '@angular/material/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgGridModule } from 'ag-grid-angular';
 import { JwtInterceptor } from '@app/_helpers/jwt.interceptor';
@@ -263,7 +263,16 @@ import { ServicesComponent } from './club/pages-statics/services/services.compon
 import { InicioComponent } from './club/pages-statics/inicio/inicio.component';
 import { PlanesComponent } from './club/pages-statics/planes/planes.component';
 import { QsomosComponent } from './club/pages-statics/qsomos/qsomos.component';
-//import angularChartist from 'angular-chartist.js';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MaterialExampleModule } from './../material.module';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+import {MatInputModule} from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { TablesDocumentsComponent } from './pop-up/tables-documents/tables-documents.component';
 import { ServicesInsurersIndexComponent } from './tables/services-insurers/services-insurers-index/services-insurers-index.component';
 import { ServicesInsurersDetailComponent } from './tables/services-insurers/services-insurers-detail/services-insurers-detail.component';
@@ -271,6 +280,37 @@ import { FleetLoadingComponent } from './subscription/fleet-loading/fleet-loadin
 import { CollectionIndexComponent } from './administration/collection/collection-index/collection-index.component';
 import { CollectionDetailComponent } from './administration/collection/collection-detail/collection-detail.component';
 import { AdministrationPaymentComponent } from './pop-up/administration-payment/administration-payment.component';
+import { PlanRcvIndexComponent } from './products/plan-rcv/plan-rcv-index/plan-rcv-index.component';
+import { PlanRcvDetailComponent } from './products/plan-rcv/plan-rcv-detail/plan-rcv-detail.component';
+import { FleetContractIndividualDetailComponent } from './subscription/fleet-contract-individual/fleet-contract-individual-detail/fleet-contract-individual-detail.component';
+import { FleetContractManagementRealcoverageComponent } from './pop-up/fleet-contract-management-realcoverage/fleet-contract-management-realcoverage.component';
+import { NotificationRejectionLetterComponent } from './pop-up/notification-rejection-letter/notification-rejection-letter.component';
+import { ParentPolicyIndexComponent } from './subscription/parent-policy/parent-policy-index/parent-policy-index.component';
+import { ParentPolicyDetailComponent } from './subscription/parent-policy/parent-policy-detail/parent-policy-detail.component';
+import { BatchComponent } from './pop-up/batch/batch.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReceiptGenerationComponent } from './subscription/fleet-contract-individual/receipt-generation/receipt-generation.component';
+import { FleetContractIndividualAccessorysComponent } from './pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
+import { FleetContractIndividualAccessoryAmountComponent } from './pop-up/fleet-contract-individual-accessory-amount/fleet-contract-individual-accessory-amount.component';
+import { PaymentRecordIndexComponent } from './administration/payment-record/payment-record-index/payment-record-index.component';
+import { PaymentRecordDetailComponent } from './administration/payment-record/payment-record-detail/payment-record-detail.component';
+import { BillLoadingComponent } from './administration/bill-loading/bill-loading.component'
+import {CdkMenuModule} from '@angular/cdk/menu';
+import { FleetContractBrokerIndexComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-index/fleet-contract-broker-index.component';
+import { FleetContractBrokerDetailComponent } from './subscription/fleet-contract-broker/fleet-contract-broker-detail/fleet-contract-broker-detail.component';
+import { UserBrokersComponent } from './pop-up/user-brokers/user-brokers.component';
+import { BillLoadingServiceOrderComponent } from './pop-up/bill-loading-service-order/bill-loading-service-order.component';
+import { BrandModelVersionIndexComponent } from './tables/brand-model-version/brand-model-version-index/brand-model-version-index.component';
+import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
+import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
+import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
+import { BillLoadingSettlementComponent } from './pop-up/bill-loading-settlement/bill-loading-settlement.component';
+import { AdministrationBillLoadingComponent } from './pop-up/administration-bill-loading/administration-bill-loading.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
+import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
+import { FooterComponent } from './footer/footer.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -536,16 +576,59 @@ export function HttpLoaderFactory(http: HttpClient){
     FleetLoadingComponent,
     CollectionIndexComponent,
     CollectionDetailComponent,
-    AdministrationPaymentComponent
+    AdministrationPaymentComponent,
+    PlanRcvIndexComponent,
+    PlanRcvDetailComponent,
+    FleetContractIndividualDetailComponent,
+    ReceiptGenerationComponent,
+    FleetContractManagementRealcoverageComponent,
+    NotificationRejectionLetterComponent,
+    ParentPolicyIndexComponent,
+    ParentPolicyDetailComponent,
+    BatchComponent,
+    ReceiptGenerationComponent,
+    FleetContractIndividualAccessorysComponent,
+    FleetContractIndividualAccessoryAmountComponent,
+    PaymentRecordIndexComponent,
+    PaymentRecordDetailComponent,
+    BillLoadingComponent,
+    FleetContractBrokerIndexComponent,
+    FleetContractBrokerDetailComponent,
+    UserBrokersComponent,
+    BillLoadingServiceOrderComponent,
+    BrandModelVersionIndexComponent,
+    BrandModelVersionDetailComponent,
+    ExchangeRateIndexComponent,
+    ExchangeRateDetailComponent,
+    BillLoadingSettlementComponent,
+    AdministrationBillLoadingComponent,
+    PolicyQuotationIndexComponent,
+    PolicyQuotationDetailComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
+    CdkMenuModule,
+    MaterialExampleModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    NgxMatSelectSearchModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
     NgbModule,
+    MatSidenavModule,
+    MatToolbarModule,
     RouterModule,
-    ClubRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
     NgbModule,
+    AutocompleteLibModule,
     TranslateModule.forRoot({
       loader:{
         provide: TranslateLoader,

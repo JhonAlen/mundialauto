@@ -1100,7 +1100,7 @@ export class WebServiceConnectionService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     try {
-      let response = await this.http.post(`${environment.apiUrl}/api/brand/search`, params, options).toPromise();
+      let response = await this.http.post(`${environment.apiUrl}/api/valrep/brand`, params, options).toPromise();
       return response;
     }
     catch (err) {
@@ -1512,6 +1512,36 @@ export class WebServiceConnectionService {
       return { error: true, code: err.error.data.code, message: message }
     }
   }
+
+  async createContractIndividual(params: any): Promise<any> {
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    // validamos.
+    try {
+      let response = await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/create/individualContract`, params).toPromise();
+      return response;
+    }
+    catch (err) {
+      let message;
+      switch (err.error.data.code) {
+        case 400:
+          message = "HTTP.ERROR.PARAMSERROR";
+          break;
+        case 404:
+          message = "HTTP.ERROR.COLORS.COLORNOTFOUND";
+          break;
+        case 500:
+          message = "HTTP.ERROR.INTERNALSERVERERROR";
+          break;
+        default:
+          message = "HTTP.ERROR.INTERNALSERVERERROR";
+          break;
+      }
+      return { error: true, code: err.error.data.code, message: message }
+    }
+  }
+
+
 
   async detailCity(params: any): Promise<any> {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -3366,7 +3396,7 @@ export class WebServiceConnectionService {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     try {
-      let response = await this.http.post(`${environment.apiUrl}/api/model/search`, params, options).toPromise();
+      let response = await this.http.post(`${environment.apiUrl}/api/valrep/model`, params, options).toPromise();
       return response;
     }
     catch (err) {
