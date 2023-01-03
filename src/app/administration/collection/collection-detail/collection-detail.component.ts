@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-//import { initUbii } from '@ubiipagos/boton-ubii';
+// import { initUbii } from '@ubiipagos/boton-ubii';
 import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -37,7 +37,7 @@ export class CollectionDetailComponent implements OnInit {
   submitted: boolean = false;
   pagoUbii: boolean = false;
   alert = { show: false, type: "", message: "" };
-  paymentList: any[] = [];
+  paymentList = {};
   closeResult = '';
   ctipopago: number;
   xreferencia: string;
@@ -239,7 +239,7 @@ export class CollectionDetailComponent implements OnInit {
         console.log("amount_bs: " + prima_bs + ` ${typeof prima_bs}`);
         console.log('concept: COMPRA');
         console.log("principal: bs");
-        console.log('clientId: 1c134b42-70e1-11ed-ae36-005056967039');
+        console.log('clientId: f2514eda-610b-11ed-8e56-000c29b62ba1');
         console.log('orderId: ' + this.ccodigo_ubii + ` ${typeof this.ccodigo_ubii}`);
 
         initUbii(
@@ -249,7 +249,7 @@ export class CollectionDetailComponent implements OnInit {
             amount_bs: prima_bs,
             concept: "COMPRA",
             principal: "bs",
-            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
             orderId: this.ccodigo_ubii
           },
           this.callbackFn,
@@ -279,13 +279,11 @@ export class CollectionDetailComponent implements OnInit {
     modalRef.componentInstance.payment = payment;
     modalRef.result.then((result: any) => { 
       if(result){
-          this.paymentList.push({
-            cgrid: this.paymentList.length,
+          this.paymentList = {
             edit: true,
             ctipopago: result.ctipopago,
             xreferencia: result.xreferencia,
             fcobro: result.fcobro,
-            mprima: result.mprima,
             mprima_bs: result.mprima_bs,
             cbanco: result.cbanco,
             mprima_pagada: result.mprima_pagada,
@@ -293,12 +291,13 @@ export class CollectionDetailComponent implements OnInit {
             cbanco_destino: result.cbanco_destino,
             mtasa_cambio: result.mtasa_cambio,
             ftasa_cambio: result.ftasa_cambio
-          });
+          }
   
           if(this.paymentList){
             this.showSaveButton= true;
             this.bpago = false;
           }
+          console.log(this.paymentList)
 
           this.onSubmit(this.detail_form.value)
       }
