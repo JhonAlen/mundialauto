@@ -14,7 +14,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { Console } from 'console';
 
-//import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
