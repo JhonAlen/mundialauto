@@ -145,7 +145,13 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   modalidad: boolean = true;
   montorcv: boolean = true;
   keyword = 'value';
-  
+
+// Validation place 
+ xdocidentidad : string;
+ fdesde_pol_place : Date ;
+ fhasta_pol_place : Date ;
+ xpoliza_place : string;
+   
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
@@ -665,6 +671,23 @@ async getmetodologia(){
          this.search_form.get('ncobro').setValue(response.data.mprima);
        }
   });
+}
+OperatioValidationPlate(){
+  let params =  {
+    xplaca: this.search_form.get('xplaca').value,  
+
+  };
+  this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validate-plate`, params).subscribe((response: any) => {
+    if(response.data.status){
+      this.xdocidentidad = response.data.xdocidentidad;
+      this.fdesde_pol_place = response.data.fdesde_pol;
+      this.fhasta_pol_place = response.data.fhasta_pol;
+      this.xpoliza_place = response.data.xpoliza;
+      window.alert(`La placa ingresada ya se encuentra activa con el numero póliza n° ${this.xpoliza_place} del cliente poseedor de la C.I ${this.xdocidentidad} con vigencia desde ${this.fdesde_pol_place} hasta ${this.fhasta_pol_place}`);
+      this.search_form.get('xplaca').setValue('');
+    }
+
+  },);
 }
  functio(){
   let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
