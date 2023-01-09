@@ -1818,6 +1818,9 @@
         },
         "PARENTPOLICY": {
             "PARENTPOLICY":"Póliza Matriz"
+        },
+        "POLICY-CANCELLATIONS": {
+            "POLICY-CANCELLATIONS": "Anulación de Pólizas"
         }
     },
     "EVENTS": {
