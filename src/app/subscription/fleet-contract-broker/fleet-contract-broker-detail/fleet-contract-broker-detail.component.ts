@@ -142,6 +142,12 @@ export class FleetContractBrokerDetailComponent implements OnInit {
    cobertura: boolean = false;
    grua: boolean = false;
 
+   // Validation place 
+  xdocidentidad : string;
+  fdesde_pol_place : Date ;
+  fhasta_pol_place : Date ;
+  xpoliza_place : string;
+
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
@@ -732,6 +738,24 @@ async getmetodologia(){
         this.search_form.get('cestado').setValue(response.data.cestado);
         this.search_form.get('cciudad').setValue(response.data.cciudad);
       } 
+    },);
+  }
+  OperatioValidationPlate(){
+    const now = new Date().toLocaleDateString();
+    let params =  {
+      xplaca: this.search_form.get('xplaca').value,  
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/validate-plate`, params).subscribe((response: any) => {
+      if(response.data.status){
+        if(now >response.data.fhasta_pol) {
+        this.xdocidentidad = response.data.xdocidentidad;
+        this.fdesde_pol_place = response.data.fdesde_pol;
+        this.fhasta_pol_place = response.data.fhasta_pol;
+        this.xpoliza_place = response.data.xpoliza;
+        window.alert(`La placa ingresada ya se encuentra activa con el número de póliza N° ${this.xpoliza_place} del cliente poseedor de la C.I ${this.xdocidentidad} con vigencia desde ${this.fdesde_pol_place} hasta ${this.fhasta_pol_place}`);
+        this.search_form.get('xplaca').setValue('');
+        }
+      }
     },);
   }
   funcion(){

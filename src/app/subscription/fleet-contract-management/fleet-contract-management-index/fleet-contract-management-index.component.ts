@@ -108,7 +108,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
     });
     this.search_form.get('clote').disable();
     this.search_form.get('crecibo').disable();
-    //this.search_form.get('xplaca').disable();
+    // this.search_form.get('xplaca').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -400,6 +400,11 @@ export class FleetContractManagementIndexComponent implements OnInit {
     }
   }
 
+  searchforbadge(){
+    this.searchStatus = true
+
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -413,7 +418,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
       ccarga: form.ccarga,
       clote: form.clote,
       crecibo: form.crecibo,
-      xplaca: form.xplaca ? form.xplaca : undefined,
+      xplaca: form.xplaca,
       ccompania: this.currentUser.data.ccompania
     }
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/search`, params, options).subscribe((response : any) => {
