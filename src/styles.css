@@ -18,10 +18,17 @@
     border-color:white;
     color: white;
 }
+<<<<<<< HEAD
 .navbar{
     position: initial;
     z-index: 999;
 }
+=======
+/* .col-12{
+    position: sticky;
+    z-index: -4;
+} */
+>>>>>>> origin/jhon
 
 .logocompany{
     background: url("./assets/imagenes/mundial-logo2.png") no-repeat;

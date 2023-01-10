@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CauseForCancellationComponent } from '@app/pop-up/cause-for-cancellation/cause-for-cancellation.component';
 
 @Component({
   selector: 'app-policy-cancellations',
@@ -30,6 +31,7 @@ export class PolicyCancellationsComponent implements OnInit {
   canEdit: boolean = false;
   canDelete: boolean = false;
   keyword = 'value';
+  cancellationData: {};
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -113,11 +115,11 @@ export class PolicyCancellationsComponent implements OnInit {
   prueba(event){
     this.search_form.get('ccarga').setValue(event.id)
     if(this.search_form.get('ccarga').value){
-      this.onSubmit(this.search_form.value)
+      this.searchFleetContract(this.search_form.value)
     }
   }
 
-  onSubmit(form){
+  searchFleetContract(form){
     this.submitted = true;
     this.loading = true;
     if (this.search_form.invalid) {
@@ -161,4 +163,51 @@ export class PolicyCancellationsComponent implements OnInit {
     });
   }
 
+  rowClicked(event: any){
+    let cancellation = {ccarga: this.search_form.get('ccarga').value};
+    const modalRef = this.modalService.open(CauseForCancellationComponent);
+    modalRef.componentInstance.cancellation = cancellation;
+    modalRef.result.then((result: any) => { 
+
+      if(result){
+        this.cancellationData = {
+          ccarga: this.search_form.get('ccarga').value,
+          ccausaanulacion: result.ccausaanulacion,
+        }
+        this.onSubmit()
+      }
+    });
+  }
+
+  onSubmit(){
+    this.submitted = true;
+    this.loading = true;
+
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      ccompania: this.currentUser.data.ccompania,
+      cpais: this.currentUser.data.cpais,
+      anulacion: this.cancellationData
+    };
+    this.http.post(`${environment.apiUrl}/api/fleet-contract-management/cancellations`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        window.alert('Se ha anulado esta póliza con éxito')
+        location.reload();
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ 
+        message = "No se encontraron contratos que cumplan con los parámetros de búsqueda"; 
+      }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+      this.loading = false;
+    });
+  }
 }
