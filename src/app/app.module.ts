@@ -311,6 +311,8 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
 import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
 import { FooterComponent } from './footer/footer.component';
+import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
+import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -604,7 +606,9 @@ export function HttpLoaderFactory(http: HttpClient){
     AdministrationBillLoadingComponent,
     PolicyQuotationIndexComponent,
     PolicyQuotationDetailComponent,
-    FooterComponent
+    FooterComponent,
+    PolicyCancellationsComponent,
+    CauseForCancellationComponent
   ],
   imports: [
     BrowserModule,

@@ -191,6 +191,7 @@ import { BrandModelVersionIndexComponent } from './tables/brand-model-version/br
 import { BrandModelVersionDetailComponent } from './tables/brand-model-version/brand-model-version-detail/brand-model-version-detail.component';
 import { ExchangeRateIndexComponent } from './administration/exchange-rate/exchange-rate-index/exchange-rate-index.component';
 import { ExchangeRateDetailComponent } from './administration/exchange-rate/exchange-rate-detail/exchange-rate-detail.component';
+import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
 
 const routes: Routes = [
  
@@ -468,6 +469,7 @@ const routes: Routes = [
   { path: 'administration/exchange-rate-index', component: ExchangeRateIndexComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-detail', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
   { path: 'administration/exchange-rate-detail/:id', component: ExchangeRateDetailComponent, canActivate: [AuthGuard] },
+  { path: 'subscription/policy-cancellations', component: PolicyCancellationsComponent, canActivate: [AuthGuard] },
   { path: 'sign-in', component: SignInComponent },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
 
