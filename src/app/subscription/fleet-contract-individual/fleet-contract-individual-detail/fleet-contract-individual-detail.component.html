@@ -298,16 +298,9 @@
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Tipo de vehículo</label>
-                      <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }">
-                        <option value="Particular">Particular</option>
-                        <option value="Rustico">Rustico</option>
-                        <option value="Pick-UP">Pick-UP</option>
-                        <option value="Carga">Carga</option>
-                        <option value="Carga 5-8">Carga 5-8 Toneladas</option>
-                        <option value="Carga 8-12">Carga 8-12 Toneladas</option>
-                        <option value="Carga M-12">Carga M-12 Toneladas</option>
-                        <option value="Motos">Motos</option>
-                      </select>
+                      <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }" (change)="getTypeVehicle()">
+                      <option *ngFor="let tipo of TypeVehicleList" value="{{ tipo.id }}">{{ tipo.value }}</option>
+                    </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
                         <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
                       </div>

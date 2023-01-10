@@ -34,6 +34,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   alert = { show: false, type: "", message: "" };
   marcaList: any[] = [];
   modeloList: any[] = [];
+  TypeVehicleList: any[] = [];
   coberturaList: any[] = [];
   versionList: any[] = [];
   corredorList: any[] = [];
@@ -268,6 +269,7 @@ async initializeDropdownDataRequest(){
     this.getCobertura();
     this.getCountry();
     this.getLastExchangeRate();
+    this.getTypeVehicle()
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -503,6 +505,26 @@ async getPlanData(){
     }
     },);
   }
+async getTypeVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/over-limit/type-vehicle`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicleList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicleList.push({ 
+            id: response.data.list[i].ctarifa_exceso,
+            value: response.data.list[i].xgrupo,
+          });
+        }
+      }
+      },);
+  }
+  
 async getColor(){
     let params =  {
       cpais: this.currentUser.data.cpais,
