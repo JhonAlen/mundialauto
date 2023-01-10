@@ -18,10 +18,10 @@
     border-color:white;
     color: white;
 }
-.col-12{
+/* .col-12{
     position: sticky;
     z-index: -4;
-}
+} */
 
 .logocompany{
     background: url("./assets/imagenes/mundial-logo2.png") no-repeat;
