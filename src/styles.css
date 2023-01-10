@@ -18,9 +18,9 @@
     border-color:white;
     color: white;
 }
-.col-12{
-    position: sticky;
-    z-index: -4;
+.navbar{
+    position: initial;
+    z-index: 999;
 }
 
 .logocompany{
