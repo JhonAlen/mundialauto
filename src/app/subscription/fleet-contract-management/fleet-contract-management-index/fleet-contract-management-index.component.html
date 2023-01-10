@@ -97,7 +97,7 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "SUBSCRIPTION.FLEETCONTRACTSMANAGEMENT.PLATE" | translate }}</label>
-                                    <input type="text" formControlName="xplaca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xplaca').errors }">
+                                    <input type="text" formControlName="xplaca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xplaca').errors }" (change)="searchforbadge()">
                                     <div *ngIf="submitted && search_form.get('xplaca').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
