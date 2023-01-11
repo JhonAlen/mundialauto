@@ -313,6 +313,8 @@ import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/
 import { FooterComponent } from './footer/footer.component';
 import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
 import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
+import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
+import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -608,7 +610,9 @@ export function HttpLoaderFactory(http: HttpClient){
     PolicyQuotationDetailComponent,
     FooterComponent,
     PolicyCancellationsComponent,
-    CauseForCancellationComponent
+    CauseForCancellationComponent,
+    TakersIndexComponent,
+    TakersDetailComponent
   ],
   imports: [
     BrowserModule,
