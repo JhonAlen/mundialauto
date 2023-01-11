@@ -298,7 +298,7 @@
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Tipo de vehículo</label>
-                      <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }" (change)="getTypeVehicle()">
+                      <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors }" >
                       <option *ngFor="let tipo of TypeVehicleList" value="{{ tipo.id }}">{{ tipo.value }}</option>
                     </select>
                       <div *ngIf="submitted && search_form.get('xtipo').errors" class="invalid-feedback">
