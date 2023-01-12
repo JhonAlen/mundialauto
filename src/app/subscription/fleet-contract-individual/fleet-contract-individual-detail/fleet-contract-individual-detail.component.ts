@@ -181,7 +181,7 @@ async ngOnInit(): Promise<void>{
       cplan: ['', Validators.required],
       ccorredor:['', Validators.required],
       xcobertura: ['', Validators.required],
-      xtipo: ['', Validators.required],
+      ctarifa_exceso: ['', Validators.required],
       ncapacidad_p: ['', Validators.required],
       cmetodologiapago: ['', Validators.required],
       msuma_aseg:[''],
@@ -659,10 +659,9 @@ async getmetodologia(){
     this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
   OperatioValueGrua(){
-    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    //let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
-     cplan: plan.id,
-     xtipo: this.search_form.get('xtipo').value,
+      ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
    }
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-grua`, params).subscribe((response: any) => {
        if(response.data.status){
@@ -685,7 +684,7 @@ async getmetodologia(){
     let params = {
      cplan: this.search_form.get('cplan').value,
      cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-     xtipo: this.search_form.get('xtipo').value,
+     ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
  
    }
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
@@ -845,8 +844,9 @@ OperatioValidationPlate(){
       let params = {
        cplan: metodologiaPago.id,
        cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-       xtipo: this.search_form.get('xtipo').value,
-       igrua: this.search_form.get('bgrua').value
+       ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+       igrua: this.search_form.get('bgrua').value, 
+       ncapacidad_p: this.search_form.get('ncapacidad_p').value
       }  
         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
         if(response.data.status){
@@ -1011,7 +1011,6 @@ OperatioValidationPlate(){
             xserialcarroceria: form.xserialcarroceria,
             xserialmotor: form.xserialmotor,  
             xcobertura: this.search_form.get('xcobertura').value,
-            xtipo: this.search_form.get('xtipo').value,
             msuma_aseg: form.msuma_aseg,
             pcasco: this.search_form.get('pcasco').value,
             mprima_casco: form.mprima_casco,
@@ -1036,6 +1035,7 @@ OperatioValidationPlate(){
             fcobro: this.fcobro,
             mprima_pagada: this.mprima_pagada,
             xpago: this.search_form.get('xpago').value,
+            ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
             payment: this.paymentList,
             accessory: this.accessoryList
           };
