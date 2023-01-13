@@ -91,7 +91,7 @@ export class TakersIndexComponent implements OnInit {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+      else if(code == 404){ message = "No se encontraron registros."; }
       else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
       this.alert.message = message;
       this.alert.type = 'danger';

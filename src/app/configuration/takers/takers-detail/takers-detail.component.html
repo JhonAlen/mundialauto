@@ -18,7 +18,7 @@
                                 <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "CONFIGURATION.CLAUSES.CANCEL" | translate }}
                             </button>
-                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editExhibit()" *ngIf="canEdit && showEditButton">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editTakers()" *ngIf="canEdit && showEditButton">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "CONFIGURATION.CLAUSES.EDIT" | translate }}
                             </button>
@@ -108,30 +108,30 @@
                                 </div>
                             </div> 
                             <div class="col-sm-12 col-md-4">
-                                <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Estado</label>
-                                    
-                                    <ng-autocomplete  [data]="stateList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Estado" (selected)='changeCityData($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                                    </ng-autocomplete>
-                                
-                                    <ng-template #itemTemplate let-item >
-                                        <a [innerHTML]="item.value"></a>
-                                    </ng-template>
-                                
-                                    <ng-template #notFoundTemplate let-notFound >
-                                        <div [innerHTML]="notFound"></div>
-                                    </ng-template>
-                                  
+                              <div class="form-outline">
+                                  <label class="form-label" for="form3Examplev5">Estado</label>
+                                  <div >
+                                  <ng-autocomplete  [data]="stateList" [searchKeyword]="keyword" 
+                                                  placeholder="Seleccionar Ciudad" (selected)='changeCityData($event)'
+                                                  [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                  </ng-autocomplete>
+                              
+                                  <ng-template #itemTemplate let-item >
+                                      <a [innerHTML]="item.value"></a>
+                                  </ng-template>
+                              
+                                  <ng-template #notFoundTemplate let-notFound  >
+                                      <div [innerHTML]="notFound"></div>
+                                  </ng-template>
                                 </div>
+                              </div>
                             </div> 
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Ciudad</label>
                                     <div style="background: fixed">
                                     <ng-autocomplete  [data]="cityList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Ciudad"
+                                                    placeholder="Seleccionar Ciudad" (selected)='selectCity($event)'
                                                     [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 

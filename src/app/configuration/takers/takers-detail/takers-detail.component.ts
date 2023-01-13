@@ -36,7 +36,7 @@ export class TakersDetailComponent implements OnInit {
   stateList: any[] = [];
   cityList:  any[] = [];
   generalStatusList:  any[] = [];
-  keyword: 'value'
+  keyword: 'value';
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -140,6 +140,18 @@ export class TakersDetailComponent implements OnInit {
         this.detail_form.get('xtelefono').disable();
         this.detail_form.get('xcorreo').setValue(response.data.xcorreo);
         this.detail_form.get('xcorreo').disable();
+        this.detail_form.get('cpais').setValue(response.data.cpais);
+        this.detail_form.get('cpais').disable();
+        this.detail_form.get('cestado').setValue(response.data.cestado);
+        this.detail_form.get('cestado').disable();
+        this.detail_form.get('cciudad').setValue(response.data.cciudad);
+        this.detail_form.get('cciudad').disable();
+        this.detail_form.get('cestatusgeneral').setValue(response.data.cestatusgeneral);
+        this.detail_form.get('cestatusgeneral').disable();
+        this.countryList.push({ id: response.data.cpais, value: response.data.xpais});
+        this.stateList.push({ id: response.data.cestado, value: response.data.xestado});
+        this.cityList.push({ id: response.data.cciudad, value: response.data.xciudad});
+        this.generalStatusList.push({ id: response.data.cestatusgeneral, value: response.data.xestatusgeneral});
       }
       this.loading_cancel = false;
     }, 
@@ -161,6 +173,7 @@ export class TakersDetailComponent implements OnInit {
     let params =  {
       cusuario: this.currentUser.data.cusuario
      };
+     this.keyword;
     this.http.post(`${environment.apiUrl}/api/valrep/country`, params, options).subscribe((response: any) => {
       if(response.data.list){
         this.countryList = [];
@@ -186,12 +199,12 @@ export class TakersDetailComponent implements OnInit {
   }
 
   changeStateData(){
-    this.keyword;
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params =  {
       cpais: this.detail_form.get('cpais').value 
     };
+    this.keyword = 'value';
     this.http.post(`${environment.apiUrl}/api/valrep/state`, params, options).subscribe((response: any) => {
       if(response.data.list){
         this.stateList = [];
@@ -218,7 +231,6 @@ export class TakersDetailComponent implements OnInit {
   }
 
   changeCityData(event){
-    this.keyword;
     this.detail_form.get('cestado').setValue(event.id)
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
@@ -226,6 +238,7 @@ export class TakersDetailComponent implements OnInit {
       cpais: this.detail_form.get('cpais').value,  
       cestado: this.detail_form.get('cestado').value
     };
+    this.keyword;
     this.http.post(`${environment.apiUrl}/api/valrep/city`, params, options).subscribe((response: any) => {
       if(response.data.list){
         this.cityList = [];
@@ -250,9 +263,9 @@ export class TakersDetailComponent implements OnInit {
     });
   }
 
-  // selectCity(event){
-  //   this.detail_form.get('cciudad').setValue(event.id)
-  // }
+  selectCity(event){
+    this.detail_form.get('cciudad').setValue(event.id)
+  }
 
   getGeneralStatus(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -285,6 +298,24 @@ export class TakersDetailComponent implements OnInit {
     });
   }
 
+  editTakers(){
+    this.detail_form.get('xtomador').enable();
+    this.detail_form.get('xprofesion').enable();
+    this.detail_form.get('xrif').enable();
+    this.detail_form.get('xdomicilio').enable();
+    this.detail_form.get('xzona_postal').enable();
+    this.detail_form.get('xtelefono').enable();
+    this.detail_form.get('xcorreo').enable();
+    this.detail_form.get('cpais').enable();
+    this.detail_form.get('cestado').enable();
+    this.detail_form.get('cciudad').enable();
+    this.detail_form.get('cestatusgeneral').enable();
+
+    this.showEditButton = false;
+    this.showSaveButton = true;
+    this.editStatus = true;
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -307,6 +338,7 @@ export class TakersDetailComponent implements OnInit {
         xdomicilio: form.xdomicilio,
         cestado: form.cestado,
         cciudad: form.cciudad,
+        cpais: form.cpais,
         xzona_postal: form.xzona_postal,
         xtelefono: form.xtelefono,
         cestatusgeneral: form.cestatusgeneral,
@@ -319,6 +351,7 @@ export class TakersDetailComponent implements OnInit {
         xprofesion: form.xprofesion,
         xrif: form.xrif,
         xdomicilio: form.xdomicilio,
+        cpais: form.cpais,
         cestado: form.cestado,
         cciudad: form.cciudad,
         xzona_postal: form.xzona_postal,
@@ -332,13 +365,14 @@ export class TakersDetailComponent implements OnInit {
 
 
     this.http.post(url, params, options).subscribe((response: any) => {
-      if(response.data.status){
-        if(this.code){
-          this.router.navigate([`/configuration/takers-index`]);
-        }else{
-          this.router.navigate([`/configuration/takers-detail/${response.data.ctomador}`]);
-        }
-      }else{
+      if(response.data.create){
+        window.alert(`Se ha registrado exitosamente el tomador ${form.xtomador}`)
+        this.router.navigate([`/configuration/takers-index`]);
+      }else if(response.data.update){
+        window.alert(`Se ha editado exitosamente el tomador ${form.xtomador}`)
+        this.router.navigate([`/configuration/takers-index`]);
+      }
+      else{
         let condition = response.data.condition;
         if(condition == "service-order-already-exist"){
           this.alert.message = "EVENTS.SERVICEORDER.NAMEREADYEXIST";
