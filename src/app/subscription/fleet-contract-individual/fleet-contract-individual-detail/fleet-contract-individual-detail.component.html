@@ -319,6 +319,25 @@
                       </div>
                     </div>
                   </div>
+                  <div class="col-sm-12 col-md-4">
+                    <div class="form-outline">
+                        <label class="form-label" for="form3Examplev5">Tomador</label>
+                        <div >
+                        <ng-autocomplete  [data]="takersList" [searchKeyword]="keyword" 
+                                        placeholder="Seleccionar Tomador" (selected)='selectedTaker($event)'
+                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                        </ng-autocomplete>
+                    
+                        <ng-template #itemTemplate let-item >
+                            <a [innerHTML]="item.value"></a>
+                        </ng-template>
+                    
+                        <ng-template #notFoundTemplate let-notFound  >
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </div> 
                   <div><button type="button" class="btn btn-light btn-lg" data-mdb-ripple-color="dark" (click)="generateTarifa()" *ngIf="cobertura">Calcular Tarifas</button></div>
 
                 </div>
