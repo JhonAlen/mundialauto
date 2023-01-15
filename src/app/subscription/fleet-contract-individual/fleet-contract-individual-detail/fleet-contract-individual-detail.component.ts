@@ -578,6 +578,8 @@ async getCobertura(){
       },);
   }
 async getmetodologia(){
+
+
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
@@ -1064,10 +1066,10 @@ OperatioValidationPlate(){
             msuma_blindaje: form.msuma_blindaje,
             mprima_blindaje: form.mprima_blindaje,
             mprima_bruta: form.mprima_bruta,
-            pcatastrofico: this.search_form.get('pcatastrofico').value,
-            pmotin: this.search_form.get('pmotin').value,
+            pcatastrofico: form.pcatastrofico,
+            pmotin: form.pmotin,
             mmotin: form.mmotin,
-            pblindaje: this.search_form.get('pblindaje').value,
+            pblindaje: form.pblindaje,
             cplan: metodologiaPago.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,
@@ -1086,6 +1088,7 @@ OperatioValidationPlate(){
             payment: this.paymentList,
             accessory: this.accessoryList
           };
+          
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
