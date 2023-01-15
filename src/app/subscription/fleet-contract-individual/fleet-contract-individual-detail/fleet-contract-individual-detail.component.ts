@@ -152,7 +152,18 @@ export class FleetContractIndividualDetailComponent implements OnInit {
  fdesde_pol_place : Date ;
  fhasta_pol_place : Date ;
  xpoliza_place : string;
-   
+ takersList: any[] = [];
+ xtomador : string;
+ xprofesion : string;
+ xrif : string;
+ xdomicilio : string;
+ xzona_postal : string;
+ 
+ xtelefono : string;
+ xcorreo : string;
+ xestado : string;
+ xciudad : string;
+
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
               private authenticationService : AuthenticationService,
@@ -215,7 +226,8 @@ async ngOnInit(): Promise<void>{
       mprima_pagada:[''],
       cbanco: [''],
       xcedula: [''],
-      binternacional: ['']
+      binternacional: [''],
+      ctomador: [''],
     });
 
     this.currentUser = this.authenticationService.currentUserValue;
@@ -269,7 +281,8 @@ async initializeDropdownDataRequest(){
     this.getCobertura();
     this.getCountry();
     this.getLastExchangeRate();
-    this.getTypeVehicle()
+    this.getTypeVehicle();
+    this.getTakersData();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -565,6 +578,8 @@ async getCobertura(){
       },);
   }
 async getmetodologia(){
+
+
     let params =  {
       cpais: this.currentUser.data.cpais,  
       ccompania: this.currentUser.data.ccompania,
@@ -971,6 +986,39 @@ OperatioValidationPlate(){
     return xmetodologiapago.value
   }
 
+  getTakersData(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params;
+    this.keyword;
+    this.http.post(`${environment.apiUrl}/api/valrep/takers`, params, options).subscribe((response: any) => {
+      if(response.data.list){
+        this.takersList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.takersList.push({ 
+            id: response.data.list[i].ctomador,
+            value: response.data.list[i].xtomador,
+          });
+          this.takersList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.NOTIFICATIONS.NOTIFICATIONNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  selectedTaker(event){
+    this.search_form.get('ctomador').setValue(event.id)
+  }
+
  onSubmit(form){
     this.clear = false;
     this.submitted = true;
@@ -1018,10 +1066,10 @@ OperatioValidationPlate(){
             msuma_blindaje: form.msuma_blindaje,
             mprima_blindaje: form.mprima_blindaje,
             mprima_bruta: form.mprima_bruta,
-            pcatastrofico: this.search_form.get('pcatastrofico').value,
-            pmotin: this.search_form.get('pmotin').value,
+            pcatastrofico: form.pcatastrofico,
+            pmotin: form.pmotin,
             mmotin: form.mmotin,
-            pblindaje: this.search_form.get('pblindaje').value,
+            pblindaje: form.pblindaje,
             cplan: metodologiaPago.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,
@@ -1036,9 +1084,11 @@ OperatioValidationPlate(){
             mprima_pagada: this.mprima_pagada,
             xpago: this.search_form.get('xpago').value,
             ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+            ctomador: this.search_form.get('ctomador').value,
             payment: this.paymentList,
             accessory: this.accessoryList
           };
+          
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
@@ -1153,6 +1203,55 @@ OperatioValidationPlate(){
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
+        this.xtomador = response.data.xtomador;
+        if(response.data.xprofesion){
+          this.xprofesion = response.data.xprofesion;
+        }else{
+          this.xprofesion = ' ';
+        }
+
+        if(response.data.xrif){
+          this.xrif = response.data.xrif;
+        }else{
+          this.xrif = ' ';
+        }
+
+        if(response.data.xdomicilio){
+          this.xdomicilio = response.data.xdomicilio;
+        }else{
+          this.xdomicilio = ' ';
+        }
+
+        if(response.data.xzona_postal){
+          this.xzona_postal = response.data.xzona_postal;
+        }else{
+          this.xzona_postal = ' ';
+        }
+
+        if(response.data.xtelefono){
+          this.xtelefono = response.data.xtelefono;
+        }else{
+          this.xtelefono = ' ';
+        }
+
+        if(response.data.xcorreo){
+          this.xcorreo = response.data.xcorreo;
+        }else{
+          this.xcorreo = ' ';
+        }
+
+        if(response.data.xestado){
+          this.xestado = response.data.xestado;
+        }else{
+          this.xestado = ' ';
+        }
+        
+        if(response.data.xciudad){
+          this.xciudad = response.data.xciudad;
+        }else{
+          this.xciudad = response.data.xciudad;
+        }
+        
         if(response.data.fnacimientopropietario){
           let dateFormat = new Date(response.data.fnacimientopropietario);
           let dd = dateFormat.getDay();
@@ -1349,7 +1448,7 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 150, 70, 60, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, border: [false, false, true, false]}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: this.xprofesion, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xrif, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1358,7 +1457,7 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdomicilio, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestado, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1367,7 +1466,7 @@ OperatioValidationPlate(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudad, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: this.xzona_postal, border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefono, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xcorreo, border: [false, false, true, true]}]
             ]
           }
         },
