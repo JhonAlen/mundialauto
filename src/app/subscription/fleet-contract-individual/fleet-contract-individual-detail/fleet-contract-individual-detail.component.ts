@@ -1204,7 +1204,13 @@ OperatioValidationPlate(){
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
-        this.xtomador = response.data.xtomador;
+
+        if(response.data.xtomador){
+          this.xtomador = response.data.xtomador;
+        }else{
+          this.xtomador = this.xnombrecliente;
+        }
+        
         if(response.data.xprofesion){
           this.xprofesion = response.data.xprofesion;
         }else{
@@ -1214,13 +1220,13 @@ OperatioValidationPlate(){
         if(response.data.xrif){
           this.xrif = response.data.xrif;
         }else{
-          this.xrif = ' ';
+          this.xrif = this.xdocidentidadcliente;
         }
 
         if(response.data.xdomicilio){
           this.xdomicilio = response.data.xdomicilio;
         }else{
-          this.xdomicilio = ' ';
+          this.xdomicilio = this.xdireccionfiscalcliente;
         }
 
         if(response.data.xzona_postal){
@@ -1232,25 +1238,25 @@ OperatioValidationPlate(){
         if(response.data.xtelefono){
           this.xtelefono = response.data.xtelefono;
         }else{
-          this.xtelefono = ' ';
+          this.xtelefono = this.xtelefonocliente;
         }
 
         if(response.data.xcorreo){
           this.xcorreo = response.data.xcorreo;
         }else{
-          this.xcorreo = ' ';
+          this.xcorreo = this.xemailcliente;
         }
 
         if(response.data.xestado){
           this.xestado = response.data.xestado;
         }else{
-          this.xestado = ' ';
+          this.xestado = this.xestadocliente;
         }
         
         if(response.data.xciudad){
           this.xciudad = response.data.xciudad;
         }else{
-          this.xciudad = response.data.xciudad;
+          this.xciudad = this.xciudadcliente;
         }
         
         if(response.data.fnacimientopropietario){

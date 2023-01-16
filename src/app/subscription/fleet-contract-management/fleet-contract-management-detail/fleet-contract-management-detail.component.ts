@@ -624,7 +624,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('ctiporecibo').disable();
         this.detail_form.get('xtransmision').setValue(response.data.xtransmision);
         this.detail_form.get('xtransmision').disable();
-        this.xtomador = response.data.xtomador;
+        if(response.data.xtomador){
+          this.xtomador = response.data.xtomador;
+        }else{
+          this.xtomador = this.xnombrecliente;
+        }
+        
         if(response.data.xprofesion){
           this.xprofesion = response.data.xprofesion;
         }else{
@@ -634,13 +639,13 @@ export class FleetContractManagementDetailComponent implements OnInit {
         if(response.data.xrif){
           this.xrif = response.data.xrif;
         }else{
-          this.xrif = ' ';
+          this.xrif = this.xdocidentidadcliente;
         }
 
         if(response.data.xdomicilio){
           this.xdomicilio = response.data.xdomicilio;
         }else{
-          this.xdomicilio = ' ';
+          this.xdomicilio = this.xdireccionfiscalcliente;
         }
 
         if(response.data.xzona_postal){
@@ -652,25 +657,25 @@ export class FleetContractManagementDetailComponent implements OnInit {
         if(response.data.xtelefono){
           this.xtelefono = response.data.xtelefono;
         }else{
-          this.xtelefono = ' ';
+          this.xtelefono = this.xtelefonocliente;
         }
 
         if(response.data.xcorreo){
           this.xcorreo = response.data.xcorreo;
         }else{
-          this.xcorreo = ' ';
+          this.xcorreo = this.xemailcliente;
         }
 
         if(response.data.xestado){
           this.xestado = response.data.xestado;
         }else{
-          this.xestado = ' ';
+          this.xestado = this.xestadocliente;
         }
         
         if(response.data.xciudad){
           this.xciudad = response.data.xciudad;
         }else{
-          this.xciudad = response.data.xciudad;
+          this.xciudad = this.xciudadcliente;
         }
         //this.searchTotalAmountDataRequest();
         this.accesoriesList = [];
