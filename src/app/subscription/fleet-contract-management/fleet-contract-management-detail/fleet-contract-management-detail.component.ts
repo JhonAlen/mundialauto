@@ -101,6 +101,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
   xnombrerepresentantelegal: string;
   xdocidentidadrepresentantelegal: string;
   xanexo: string;
+  cstatuspoliza: number;
   rowClick: boolean = false;
   cuadro: boolean = false;
   coverage = {};
@@ -425,6 +426,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           this.detail_form.get('femision').setValue(this.femision);
           this.detail_form.get('femision').disable();
         }
+        this.cstatuspoliza = response.data.cestatusgeneral;
         this.generalStatusList.push({ id: response.data.cestatusgeneral, value: response.data.xestatusgeneral });
         this.detail_form.get('cestatusgeneral').setValue(response.data.cestatusgeneral);
         this.detail_form.get('cestatusgeneral').disable();
@@ -1565,6 +1567,15 @@ export class FleetContractManagementDetailComponent implements OnInit {
       });
     }
     
+  selectWatermark() {
+    let body = [];
+    if (this.cstatuspoliza == 14) {
+      body.push({text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 20, angle: 70});
+      return body;
+    }
+
+  }
+
   buildCoverageBody2() {
     let body = [];
     this.coverageList.forEach(function(row) {
@@ -1967,8 +1978,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, rowSpan: 2, border: [false, false, true, true]}],
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]/*,
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]*/
             ]
           }
         },
