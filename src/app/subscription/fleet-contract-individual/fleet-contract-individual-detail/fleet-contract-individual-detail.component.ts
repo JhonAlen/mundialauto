@@ -1083,6 +1083,7 @@ OperatioValidationPlate(){
             xpago: this.search_form.get('xpago').value,
             ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
             ctomador: this.search_form.get('ctomador').value,
+            cusuario: this.currentUser.data.cusuario,
             payment: this.paymentList,
             accessory: this.accessoryList
           };
