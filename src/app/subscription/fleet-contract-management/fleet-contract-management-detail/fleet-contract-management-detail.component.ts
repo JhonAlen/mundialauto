@@ -2098,7 +2098,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
             ]
           }
         },
-        {
+        /*{
           style: 'data',
           table: {
             widths: ['*'],
@@ -2115,7 +2115,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
               [{text: this.xobservaciones, border: [true, false, true, false]}]
             ]
           }
-        },
+        },*/
         {
           style: 'data',
           table: {
