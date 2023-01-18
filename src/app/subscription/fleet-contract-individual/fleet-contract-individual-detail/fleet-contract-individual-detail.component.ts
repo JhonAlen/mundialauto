@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
@@ -14,7 +14,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { Console } from 'console';
 
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -892,7 +892,7 @@ OperatioValidationPlate(){
             amount_bs:  prima_bs,
             concept: "COMPRA",
             principal: "ds",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
             orderId: orden
           },
           this.callbackFn.bind(this),
@@ -1764,8 +1764,8 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xrif, rowSpan: 2, border: [false, false, true, true]}],
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:'/*, rowSpan: 2*/, bold: true, border: [false, false, false, true]}, {text: this.xrif/*, rowSpan: 2*/, border: [false, false, true, true]}]/*,
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]*/
             ]
           }
         },
@@ -1884,24 +1884,24 @@ OperatioValidationPlate(){
             ]
           }
         },
-        {
-          style: 'data',
-          table: {
-            widths: ['*'],
-            body: [
-              [{text: 'OBSERVACIONES', alignment: 'center', fillColor: '#ababab', bold: true}]
-            ]
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: ['*'],
-            body: [
-              [{text: this.xobservaciones, border: [true, false, true, false]}]
-            ]
-          }
-        },
+        // {
+        //   style: 'data',
+        //   table: {
+        //     widths: ['*'],
+        //     body: [
+        //       [{text: 'OBSERVACIONES', alignment: 'center', fillColor: '#ababab', bold: true}]
+        //     ]
+        //   }
+        // },
+        // {
+        //   style: 'data',
+        //   table: {
+        //     widths: ['*'],
+        //     body: [
+        //       [{text: this.xobservaciones, border: [true, false, true, false]}]
+        //     ]
+        //   }
+        // },
         {
           style: 'data',
           table: {
