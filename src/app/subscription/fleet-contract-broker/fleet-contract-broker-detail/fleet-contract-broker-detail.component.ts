@@ -147,6 +147,22 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   fdesde_pol_place : Date ;
   fhasta_pol_place : Date ;
   xpoliza_place : string;
+  takersList: any[] = [];
+  xtomador : string;
+  xprofesion : string;
+  xrif : string;
+  xdomicilio : string;
+  xzona_postal : string;
+  xzona_postal_propietario : string;
+  xtelefono : string;
+  xcorreo : string;
+  xestado : string;
+  xciudad : string;
+  keyword = 'value';
+  TypeVehicleList: any[] = [];
+  xclase: string;
+  xtransmision: string;
+  nkilometraje: string;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -180,7 +196,6 @@ this.search_form = this.formBuilder.group({
   xserialcarroceria: ['', Validators.required],
   xserialmotor: ['', Validators.required],
   xcobertura: ['', Validators.required],
-  xtipo: ['', Validators.required],
   cplan: ['', Validators.required],
   ccorredor: ['', Validators.required],
   cmetodologiapago: [''],
@@ -210,6 +225,13 @@ this.search_form = this.formBuilder.group({
   pblindaje: [''],
   bgrua:[false],
   mgrua:[''],
+  ctarifa_exceso: [''],  
+  ctomador: [''],
+  nkilometraje: [''],
+  xzona_postal: [''],
+  xtipo: [''],
+  xuso: [''],
+  xclase: ['']
 })
 
  ;
@@ -254,6 +276,8 @@ async initializeDropdownDataRequest(){
     this.getCorredorData();
     this.getCountry();
     this.getLastExchangeRate();
+    this.getTypeVehicle();
+    this.getTakersData();
 
 
     let params = {
@@ -432,6 +456,27 @@ async getPlanData(){
     }
     },);
   }
+
+  async getTypeVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/over-limit/type-vehicle`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicleList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicleList.push({ 
+            id: response.data.list[i].ctarifa_exceso,
+            value: response.data.list[i].xgrupo,
+          });
+        }
+      }
+      },);
+  }
+
 async getColor(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -560,10 +605,9 @@ async getmetodologia(){
   }
 
   OperatioValueGrua(){
-    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    // let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
-     cplan: plan.id,
-     xtipo: this.search_form.get('xtipo').value,
+      ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
    }
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-grua`, params).subscribe((response: any) => {
        if(response.data.status){
@@ -632,6 +676,7 @@ async getmetodologia(){
       if (!this.validateForm(this.search_form)) {
           this.bpagarubii = false
           this.search_form.get('cmetodologiapago').setValue('');
+          console.log(this.validateForm(this.search_form))
           window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
         } else {
           if (this.bpagomanual == false) {
@@ -642,8 +687,9 @@ async getmetodologia(){
       let params = {
         cplan: metodologiaPago.id,
         cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-        xtipo: this.search_form.get('xtipo').value,
-        igrua: this.search_form.get('bgrua').value
+        ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+        igrua: this.search_form.get('bgrua').value,
+        ncapacidad_p: this.search_form.get('ncapacidad_p').value
       }
         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
           if(response.data.status){
@@ -848,6 +894,7 @@ async getmetodologia(){
   }
 
     validateForm(form) {
+      console.log(form)
     if (form.invalid){
       return false;
     }
@@ -898,7 +945,6 @@ async getmetodologia(){
             xserialcarroceria: form.xserialcarroceria,
             xserialmotor: form.xserialmotor,  
             xcobertura: this.search_form.get('xcobertura').value,
-            xtipo: this.search_form.get('xtipo').value,
             cplan: metodologiaPago.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,
@@ -928,7 +974,15 @@ async getmetodologia(){
             pblindaje: form.pblindaje,
             ivigencia: this.search_form.get('ivigencia').value,
             cproductor: this.currentUser.data.ccorredor,
-            mgrua: form.mgrua
+            mgrua: form.mgrua,
+            ctomador: this.search_form.get('ctomador').value,
+            cusuario: this.currentUser.data.cusuario,
+            ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+            xzona_postal: form.xzona_postal,
+            xuso: form.xuso,
+            xtipo: form.xtipo,
+            nkilometraje: form.nkilometraje,
+            xclase: form.xclase
           };
           if(this.search_form.get('xcobertura').value == 'RCV'){
             console.log(this.search_form.get('cpais').value)
@@ -1070,7 +1124,64 @@ async getmetodologia(){
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
+        this.xclase = response.data.xclase;
+        this.xtransmision = response.data.xtransmision;
         this.xcolor = response.data.xcolor;
+        this.xzona_postal_propietario = response.data.xzona_postal_propietario;
+        this.nkilometraje = response.data.nkilometraje
+        if(response.data.xtomador){
+          this.xtomador = response.data.xtomador;
+        }else{
+          this.xtomador = this.xnombrecliente;
+        }
+        
+        if(response.data.xprofesion){
+          this.xprofesion = response.data.xprofesion;
+        }else{
+          this.xprofesion = ' ';
+        }
+
+        if(response.data.xrif){
+          this.xrif = response.data.xrif;
+        }else{
+          this.xrif = this.xdocidentidadcliente;
+        }
+
+        if(response.data.xdomicilio){
+          this.xdomicilio = response.data.xdomicilio;
+        }else{
+          this.xdomicilio = this.xdireccionfiscalcliente;
+        }
+
+        if(response.data.xzona_postal){
+          this.xzona_postal = response.data.xzona_postal;
+        }else{
+          this.xzona_postal = this.xzona_postal_propietario;
+        }
+
+        if(response.data.xtelefono){
+          this.xtelefono = response.data.xtelefono;
+        }else{
+          this.xtelefono = this.xtelefonocliente;
+        }
+
+        if(response.data.xcorreo){
+          this.xcorreo = response.data.xcorreo;
+        }else{
+          this.xcorreo = this.xemailcliente;
+        }
+
+        if(response.data.xestado){
+          this.xestado = response.data.xestado;
+        }else{
+          this.xestado = this.xestadocliente;
+        }
+        
+        if(response.data.xciudad){
+          this.xciudad = response.data.xciudad;
+        }else{
+          this.xciudad = this.xciudadcliente;
+        }
         if(response.data.fnacimientopropietario){
           let dateFormat = new Date(response.data.fnacimientopropietario);
           let dd = dateFormat.getDay();
@@ -1103,6 +1214,39 @@ async getmetodologia(){
   getPaymentMethodology(cmetodologiapago) {
     let xmetodologiapago = this.metodologiaList.find(element => element.id === parseInt(cmetodologiapago));
     return xmetodologiapago.value
+  }
+
+  getTakersData(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params;
+    this.keyword;
+    this.http.post(`${environment.apiUrl}/api/valrep/takers`, params, options).subscribe((response: any) => {
+      if(response.data.list){
+        this.takersList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.takersList.push({ 
+            id: response.data.list[i].ctomador,
+            value: response.data.list[i].xtomador,
+          });
+          this.takersList.sort((a, b) => a.value > b.value ? 1 : -1)
+        }
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.NOTIFICATIONS.NOTIFICATIONNOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
+  }
+
+  selectedTaker(event){
+    this.search_form.get('ctomador').setValue(event.id)
   }
   
   changeDateFormat(date) {
@@ -1264,7 +1408,7 @@ async getmetodologia(){
           table: {
             widths: [60, 150, 70, 60, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, border: [false, false, true, false]}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: this.xprofesion, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xrif, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1273,7 +1417,7 @@ async getmetodologia(){
           table: {
             widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdomicilio, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestado, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1282,7 +1426,7 @@ async getmetodologia(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudad, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: this.xzona_postal, border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefono, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xcorreo, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1327,7 +1471,7 @@ async getmetodologia(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocliente, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1372,7 +1516,7 @@ async getmetodologia(){
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.xtransmision, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1381,7 +1525,7 @@ async getmetodologia(){
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: this.nkilometraje, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1557,8 +1701,8 @@ async getmetodologia(){
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]/*,
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]*/
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xrif, rowSpan: 2, border: [false, false, true, true]}],
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]
             ]
           }
         },
@@ -1567,7 +1711,7 @@ async getmetodologia(){
           table: {
             widths: [60, 300, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdomicilio, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestado, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1576,7 +1720,7 @@ async getmetodologia(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudad, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: this.xzona_postal, border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xcorreo, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1621,7 +1765,7 @@ async getmetodologia(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },

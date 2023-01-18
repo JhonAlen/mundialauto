@@ -1990,7 +1990,7 @@ section {
 .hero .info {
   position: absolute;
   inset: 0;
-  z-index: -4;
+
 }
 
 @media (max-width: 768px) {

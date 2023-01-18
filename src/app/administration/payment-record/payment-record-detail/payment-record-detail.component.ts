@@ -134,9 +134,10 @@ export class PaymentRecordDetailComponent implements OnInit {
           this.sumafactura = 0;
           this.sumafactura += response.data.serviceOrder[i].mmontofactura;
         }
-
-        this.payment_form.get('msumafactura').setValue(this.sumafactura)
-        this.bordenservicio = true;
+        if(this.serviceOrderList[0]){
+          this.payment_form.get('msumafactura').setValue(this.sumafactura)
+          this.bordenservicio = true;
+        }
       }
 
       if(response.data.settlement){
@@ -150,12 +151,14 @@ export class PaymentRecordDetailComponent implements OnInit {
             xnombre: response.data.settlement[i].xnombre,
             mmontofactura: response.data.settlement[i].mmontofactura
           });
-          console.log(this.settlementList)
           this.sumafactura = 0;
           this.sumafactura += response.data.settlement[i].mmontofactura;
         }
-        this.payment_form.get('msumafactura').setValue(this.sumafactura)
-        this.bfiniquito = true;
+        if(this.settlementList[0]){
+          this.payment_form.get('msumafactura').setValue(this.sumafactura)
+          this.bfiniquito = true;
+        }
+
       }
     },
     (err) => {
