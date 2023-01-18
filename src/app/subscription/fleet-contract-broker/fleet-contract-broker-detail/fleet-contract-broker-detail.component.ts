@@ -33,6 +33,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   modeloList: any[] = [];
   corredorList: any[] = [];
   coberturaList: any[] = [];
+  TypeVehicleList: any[] = [];
   versionList: any[] = [];
   planList: any[] = [];
   CountryList: any[] = [];
@@ -147,6 +148,12 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   fdesde_pol_place : Date ;
   fhasta_pol_place : Date ;
   xpoliza_place : string;
+  xtomador: any;
+  xprofesion: any;
+  xciudad: any;
+  xrif: any;
+  xcorreo: any;
+  xzona_postal: any;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -210,6 +217,10 @@ this.search_form = this.formBuilder.group({
   pblindaje: [''],
   bgrua:[false],
   mgrua:[''],
+  xuso:[''],
+  xclase:[''],
+  nkilometraje:[''],
+  ctarifa_exceso:['']
 })
 
  ;
@@ -254,6 +265,7 @@ async initializeDropdownDataRequest(){
     this.getCorredorData();
     this.getCountry();
     this.getLastExchangeRate();
+    this.getTypeVehicle()
 
 
     let params = {
@@ -533,6 +545,26 @@ async getmetodologia(){
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+  }
+
+  async getTypeVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/over-limit/type-vehicle`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicleList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicleList.push({ 
+            id: response.data.list[i].ctarifa_exceso,
+            value: response.data.list[i].xgrupo,
+          });
+        }
+      }
+      },);
   }
 
   calculation(){
@@ -925,10 +957,14 @@ async getmetodologia(){
             pcatastrofico: form.pcatastrofico,
             pmotin:form.pmotin,
             mmotin:form.mmotin,
+            xuso:form.xuso,
+            xclase:form.xclase,
+            nkilometraje:form.nkilometraje,
             pblindaje: form.pblindaje,
             ivigencia: this.search_form.get('ivigencia').value,
             cproductor: this.currentUser.data.ccorredor,
-            mgrua: form.mgrua
+            mgrua: form.mgrua,
+            ctarifa_exceso:form.ctarifa_exceso
           };
           if(this.search_form.get('xcobertura').value == 'RCV'){
             console.log(this.search_form.get('cpais').value)
@@ -1488,7 +1524,7 @@ async getmetodologia(){
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En mi carácter de tomador de la póliza contratada con la mundial de seguros, c.a bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
+              [{text: 'En mi carácter de tomador de la póliza contratada con La Mundial de Seguros, C.A bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
                       'proviene de una fuente lícita y por lo tanto, no tiene relación alguna con el dinero, capitales, bienes, haberes, valores o títulos producto de las actividades \n' +
                       'o acciones derivadas de operaciones ilícitas previstas en las normas sobre administración de riesgos de legitimación de capitales, financiamiento al terrorismo y \n' +
                       'financiamiento de la proliferación de armas de destrucción masiva en la actividad aseguradora. El tomador y/o asegurado declara(n) recibir en este acto las \n' +
@@ -1557,8 +1593,8 @@ async getmetodologia(){
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]/*,
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]*/
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xrif, rowSpan: 2, border: [false, false, true, true]}],
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]
             ]
           }
         },
@@ -1576,7 +1612,7 @@ async getmetodologia(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudad, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: this.xzona_postal, border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xcorreo, border: [false, false, true, true]}]
             ]
           }
         },

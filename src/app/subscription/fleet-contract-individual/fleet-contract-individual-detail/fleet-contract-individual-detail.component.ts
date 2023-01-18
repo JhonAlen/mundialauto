@@ -1679,7 +1679,7 @@ OperatioValidationPlate(){
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En mi carácter de tomador de la póliza contratada con la mundial de seguros, c.a bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
+              [{text: 'En mi carácter de tomador de la póliza contratada con La Mundial de Seguros, C.A bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
                       'proviene de una fuente lícita y por lo tanto, no tiene relación alguna con el dinero, capitales, bienes, haberes, valores o títulos producto de las actividades \n' +
                       'o acciones derivadas de operaciones ilícitas previstas en las normas sobre administración de riesgos de legitimación de capitales, financiamiento al terrorismo y \n' +
                       'financiamiento de la proliferación de armas de destrucción masiva en la actividad aseguradora. El tomador y/o asegurado declara(n) recibir en este acto las \n' +
@@ -1748,8 +1748,8 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]/*,
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]*/
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xrif, rowSpan: 2, border: [false, false, true, true]}],
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]
             ]
           }
         },
