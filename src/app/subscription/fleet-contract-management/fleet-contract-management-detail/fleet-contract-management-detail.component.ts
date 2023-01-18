@@ -109,11 +109,17 @@ export class FleetContractManagementDetailComponent implements OnInit {
   xrif : string;
   xdomicilio : string;
   xzona_postal : string;
-  
+  xzona_postal_propietario : string;
   xtelefono : string;
   xcorreo : string;
   xestado : string;
   xciudad : string;
+  xclase: string;
+  xtransmision: string;
+  nkilometraje: string;
+  xuso: string;
+  xtipovehiculo: string;
+
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -209,7 +215,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
       ccobertura: [''],
       xanexo: [''],
       xobservaciones: [''],
-      xtransmision: ['']
+      xtransmision: [''],
+      ctomador: [''],
+      xzona_postal: [''],
+      xtipo: [''],
+      nkilometraje: [''],
+      xclase: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -624,6 +635,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
         this.detail_form.get('ctiporecibo').disable();
         this.detail_form.get('xtransmision').setValue(response.data.xtransmision);
         this.detail_form.get('xtransmision').disable();
+        this.xzona_postal_propietario = response.data.xzona_postal_propietario;
+        this.nkilometraje = response.data.nkilometraje;
+        this.xclase = response.data.xclase;
+        this.xtransmision = response.data.xtransmision;
+        this.xuso = response.data.xuso;
+        this.xtipovehiculo = response.data.xtipovehiculo;
         if(response.data.xtomador){
           this.xtomador = response.data.xtomador;
         }else{
@@ -651,7 +668,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         if(response.data.xzona_postal){
           this.xzona_postal = response.data.xzona_postal;
         }else{
-          this.xzona_postal = ' ';
+          this.xzona_postal = response.data.xzona_postal_propietario;
         }
 
         if(response.data.xtelefono){
@@ -1816,7 +1833,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocliente').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1861,7 +1878,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('ncapacidadpasajerosvehiculo').value, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xplaca').value, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xtransmision').value, border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('ncapacidadpasajerosvehiculo').value, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xplaca').value, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xtransmision').value, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1870,7 +1887,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.detail_form.get('xtipovehiculo').value, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialcarroceria').value, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialmotor').value, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialcarroceria').value, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.detail_form.get('xserialmotor').value, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: this.nkilometraje, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1879,7 +1896,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [20, 45, 30, 50, 50, 140, '*'],
             body: [
-              [{text: 'TIPO:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xtipovehiculo').value, border: [false, false, false, false]}, {text: 'AÑO:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('fano').value, border: [false, false, false, false]}, {text: 'COLOR:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xcolor').value, border: [false, false, false, false]}, {text: ' ', border: [false, false, true, false]}]
+              [{text: 'TIPO:', bold: true, border: [true, false, false, false]}, {text: this.xtipovehiculo, border: [false, false, false, false]}, {text: 'AÑO:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('fano').value, border: [false, false, false, false]}, {text: 'COLOR:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xcolor').value, border: [false, false, false, false]}, {text: ' ', border: [false, false, true, false]}]
             ]
           }
         },
@@ -2063,8 +2080,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, rowSpan: 2, border: [false, false, true, true]}],
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xrif, rowSpan: 2, border: [false, false, true, true]}],
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]
             ]
           }
         },
@@ -2127,7 +2144,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocelularpropietario').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.detail_form.get('xciudadpropietario').value, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xtelefonocliente').value, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.detail_form.get('xemailpropietario').value, border: [false, false, true, false]}]
             ]
           }
         },
