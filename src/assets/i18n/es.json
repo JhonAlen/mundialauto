@@ -1193,6 +1193,9 @@
             "PLANTYPE": "Tipo de Plan",
             "DATEFROM": "Fecha Desde",
             "DATETO": "Fecha Hasta"
+        },
+        "TAKERS": {
+            "TAKERS": "Tomadores"
         }
     },
     "PROVIDERS": {

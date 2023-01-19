@@ -65,7 +65,7 @@ export class TakersDetailComponent implements OnInit {
       let options = { headers: headers };
       let params = {
         cusuario: this.currentUser.data.cusuario,
-        cmodulo: 116
+        cmodulo: 117
       };
       this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
         if(response.data.status){

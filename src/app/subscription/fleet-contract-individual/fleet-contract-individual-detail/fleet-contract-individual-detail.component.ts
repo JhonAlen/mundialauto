@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
@@ -14,7 +14,7 @@ import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { Console } from 'console';
 
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -158,11 +158,14 @@ export class FleetContractIndividualDetailComponent implements OnInit {
  xrif : string;
  xdomicilio : string;
  xzona_postal : string;
- 
+ xzona_postal_propietario : string;
  xtelefono : string;
  xcorreo : string;
  xestado : string;
  xciudad : string;
+ xclase: string;
+ xtransmision: string;
+ nkilometraje: string;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -228,6 +231,11 @@ async ngOnInit(): Promise<void>{
       xcedula: [''],
       binternacional: [''],
       ctomador: [''],
+      xzona_postal: [''],
+      xuso: [''],
+      xtipo: [''],
+      nkilometraje: [''],
+      xclase: ['']
     });
 
     this.currentUser = this.authenticationService.currentUserValue;
@@ -884,7 +892,7 @@ OperatioValidationPlate(){
             amount_bs:  prima_bs,
             concept: "COMPRA",
             principal: "ds",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
             orderId: orden
           },
           this.callbackFn.bind(this),
@@ -1085,6 +1093,12 @@ OperatioValidationPlate(){
             xpago: this.search_form.get('xpago').value,
             ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
             ctomador: this.search_form.get('ctomador').value,
+            xzona_postal: form.xzona_postal,
+            xuso: form.xuso,
+            xtipo: form.xtipo,
+            nkilometraje: form.nkilometraje,
+            xclase: form.xclase,
+            cusuario: this.currentUser.data.cusuario,
             payment: this.paymentList,
             accessory: this.accessoryList
           };
@@ -1203,7 +1217,16 @@ OperatioValidationPlate(){
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
-        this.xtomador = response.data.xtomador;
+        this.xzona_postal_propietario = response.data.xzona_postal_propietario;
+        this.nkilometraje = response.data.nkilometraje;
+        this.xclase = response.data.xclase;
+        this.xtransmision = response.data.xtransmision;
+        if(response.data.xtomador){
+          this.xtomador = response.data.xtomador;
+        }else{
+          this.xtomador = this.xnombrecliente;
+        }
+        
         if(response.data.xprofesion){
           this.xprofesion = response.data.xprofesion;
         }else{
@@ -1213,43 +1236,43 @@ OperatioValidationPlate(){
         if(response.data.xrif){
           this.xrif = response.data.xrif;
         }else{
-          this.xrif = ' ';
+          this.xrif = this.xdocidentidadcliente;
         }
 
         if(response.data.xdomicilio){
           this.xdomicilio = response.data.xdomicilio;
         }else{
-          this.xdomicilio = ' ';
+          this.xdomicilio = this.xdireccionfiscalcliente;
         }
 
         if(response.data.xzona_postal){
           this.xzona_postal = response.data.xzona_postal;
         }else{
-          this.xzona_postal = ' ';
+          this.xzona_postal = response.data.xzona_postal_propietario;
         }
 
         if(response.data.xtelefono){
           this.xtelefono = response.data.xtelefono;
         }else{
-          this.xtelefono = ' ';
+          this.xtelefono = this.xtelefonocliente;
         }
 
         if(response.data.xcorreo){
           this.xcorreo = response.data.xcorreo;
         }else{
-          this.xcorreo = ' ';
+          this.xcorreo = this.xemailcliente;
         }
 
         if(response.data.xestado){
           this.xestado = response.data.xestado;
         }else{
-          this.xestado = ' ';
+          this.xestado = this.xestadocliente;
         }
         
         if(response.data.xciudad){
           this.xciudad = response.data.xciudad;
         }else{
-          this.xciudad = response.data.xciudad;
+          this.xciudad = this.xciudadcliente;
         }
         
         if(response.data.fnacimientopropietario){
@@ -1511,7 +1534,7 @@ OperatioValidationPlate(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocliente, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1556,7 +1579,7 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.xtransmision, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1565,7 +1588,7 @@ OperatioValidationPlate(){
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: this.nkilometraje, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1741,8 +1764,8 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, true]}, {text: this.xdocidentidadcliente, border: [false, false, true, true]}]/*,
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {}, {}]*/
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:'/*, rowSpan: 2*/, bold: true, border: [false, false, false, true]}, {text: this.xrif/*, rowSpan: 2*/, border: [false, false, true, true]}]/*,
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]*/
             ]
           }
         },
@@ -1805,7 +1828,7 @@ OperatioValidationPlate(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocliente, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1861,24 +1884,24 @@ OperatioValidationPlate(){
             ]
           }
         },
-        {
-          style: 'data',
-          table: {
-            widths: ['*'],
-            body: [
-              [{text: 'OBSERVACIONES', alignment: 'center', fillColor: '#ababab', bold: true}]
-            ]
-          }
-        },
-        {
-          style: 'data',
-          table: {
-            widths: ['*'],
-            body: [
-              [{text: this.xobservaciones, border: [true, false, true, false]}]
-            ]
-          }
-        },
+        // {
+        //   style: 'data',
+        //   table: {
+        //     widths: ['*'],
+        //     body: [
+        //       [{text: 'OBSERVACIONES', alignment: 'center', fillColor: '#ababab', bold: true}]
+        //     ]
+        //   }
+        // },
+        // {
+        //   style: 'data',
+        //   table: {
+        //     widths: ['*'],
+        //     body: [
+        //       [{text: this.xobservaciones, border: [true, false, true, false]}]
+        //     ]
+        //   }
+        // },
         {
           style: 'data',
           table: {
