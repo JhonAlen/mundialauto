@@ -460,6 +460,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.receiptList.push({
             ccontratoflota: response.data.list[i].ccontratoflota,
+            crecibo: response.data.list[i].crecibo,
             xrecibo: response.data.list[i].xrecibo,
             nconsecutivo: response.data.list[i].nconsecutivo,
             fdesde_rec: response.data.list[i].fdesde_rec,
@@ -490,7 +491,8 @@ export class FleetContractManagementIndexComponent implements OnInit {
   }
 
   downloadReceipt(e) {
-    this.generateReceipt(e.data.xrecibo);
+    let recibo = this.receiptList.find(receipt => receipt.xrecibo == e.data.xrecibo && receipt.nconsecutivo == e.data.nconsecutivo);
+    this.generateReceipt(recibo.crecibo);
   }
 
   goToDetail(){
