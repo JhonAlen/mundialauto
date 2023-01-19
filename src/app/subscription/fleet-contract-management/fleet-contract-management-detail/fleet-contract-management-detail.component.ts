@@ -2970,8 +2970,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', rowSpan: 2, bold: true, border: [false, false, false, true]}, {text: this.xrif, rowSpan: 2, border: [false, false, true, true]}],
-              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:'/*, rowSpan: 2*/, bold: true, border: [false, false, false, true]}, {text: this.xrif/*, rowSpan: 2*/, border: [false, false, true, true]}]/*,
+              [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]*/
             ]
           }
         },
@@ -3090,7 +3090,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
             ]
           }
         },
-        {
+        /*{
           style: 'data',
           table: {
             widths: ['*'],
@@ -3107,7 +3107,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
               [{text: this.xobservaciones, border: [true, false, true, false]}]
             ]
           }
-        },
+        },*/
         {
           style: 'data',
           table: {
@@ -3337,7 +3337,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
     }
     pdfMake.createPdf(pdfDefinition).open();
     // pdf.download(`Póliza - ${this.xnombrecliente}`, function() { alert('Se ha descargado la póliza Exitosamente'); location.reload()});  
-    pdfMake.createPdf(pdfDefinition).download(`Póliza - ${this.xnombrecliente} - N° - ${this.xpoliza}`, function() { alert('El PDF se está Generando');});
+    //pdfMake.createPdf(pdfDefinition).download(`Póliza - ${this.xnombrecliente} - N° - ${this.xpoliza}`, function() { alert('El PDF se está Generando');});
   }
     catch(err){console.log(err.message)}
   }  

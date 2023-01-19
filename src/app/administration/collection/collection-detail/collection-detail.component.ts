@@ -5,8 +5,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-// import { initUbii } from '@ubiipagos/boton-ubii';
-import { initUbii } from '@ubiipagos/boton-ubii-dc';
+import { initUbii } from '@ubiipagos/boton-ubii';
+// import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
@@ -239,7 +239,7 @@ export class CollectionDetailComponent implements OnInit {
         console.log("amount_bs: " + prima_bs + ` ${typeof prima_bs}`);
         console.log('concept: COMPRA');
         console.log("principal: bs");
-        console.log('clientId: f2514eda-610b-11ed-8e56-000c29b62ba1');
+        console.log('clientId: 1c134b42-70e1-11ed-ae36-005056967039');
         console.log('orderId: ' + this.ccodigo_ubii + ` ${typeof this.ccodigo_ubii}`);
 
         initUbii(
@@ -249,7 +249,7 @@ export class CollectionDetailComponent implements OnInit {
             amount_bs: prima_bs,
             concept: "COMPRA",
             principal: "bs",
-            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
+            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
             orderId: this.ccodigo_ubii
           },
           this.callbackFn,
