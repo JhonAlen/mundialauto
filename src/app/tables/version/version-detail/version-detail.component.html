@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <form [formGroup]="detail_form">
                         <div class="row">
-                            <div class="col-sm-12 col-md-4">
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.ASSOCIATECODE" | translate }}</label>
                                     <input type="number" formControlName="casociado" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('casociado').errors }">
@@ -40,7 +40,7 @@
                                         <div *ngIf="detail_form.get('casociado').errors.required">{{ "TABLES.VERSIONS.REQUIREDASSOCIATECODE" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.BRAND" | translate }}</label>
@@ -77,16 +77,16 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.TRANSMISSIONTYPE" | translate }}</label>
-                                    <select formControlName="ctipotransmision" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ctipotransmision').errors }">
-                                        <option></option>
-                                        <option *ngFor="let transmissionType of transmissionTypeList" value="{{ transmissionType.id }}">{{ transmissionType.value }}</option>
+                                    <select formControlName="xtransmision" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xtransmision').errors }">
+                                        <!-- <option></option> -->
+                                        <option *ngFor="let transmissionType of transmissionTypeList" value="{{ transmissionType.value }}">{{ transmissionType.value }}</option>
                                     </select>
-                                    <div *ngIf="submitted && detail_form.get('ctipotransmision').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('ctipotransmision').errors.required">{{ "TABLES.VERSIONS.REQUIREDTRANSMISIONTYPE" | translate }}</div>
+                                    <div *ngIf="submitted && detail_form.get('xtransmision').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xtransmision').errors.required">{{ "TABLES.VERSIONS.REQUIREDTRANSMISIONTYPE" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.ENGINEDISPLACEMENT" | translate }}</label>
                                     <input type="text" formControlName="xcilindrajemotor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xcilindrajemotor').errors }">
@@ -94,8 +94,8 @@
                                         <div *ngIf="detail_form.get('xcilindrajemotor').errors.required">{{ "TABLES.VERSIONS.REQUIREDENGINEDISPLACEMENT" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
+                            </div> -->
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.VEHICLETYPE" | translate }}</label>
                                     <select formControlName="ctipovehiculo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ctipovehiculo').errors }">
@@ -106,8 +106,8 @@
                                         <div *ngIf="detail_form.get('ctipovehiculo').errors.required">{{ "TABLES.VERSIONS.REQUIREDVEHICLETYPE" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
+                            </div> -->
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.LOADINGCAPACITY" | translate }}</label>
                                     <input type="number" formControlName="ncapacidadcarga" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ncapacidadcarga').errors }">
@@ -115,7 +115,7 @@
                                         <div *ngIf="detail_form.get('ncapacidadcarga').errors.required">{{ "TABLES.VERSIONS.REQUIREDLOADINGCAPACITY" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "TABLES.VERSIONS.PASSENGERS" | translate }}</label>

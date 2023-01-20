@@ -35,10 +35,10 @@ export class ModelDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.detail_form = this.formBuilder.group({
-      cmarca: ['', Validators.required],
-      casociado: ['', Validators.required],
-      xmodelo: ['', Validators.required],
-      bactivo: [true, Validators.required]
+      cmarca: [''],
+      // casociado: ['', Validators.required],
+      xmodelo: [''],
+      bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if (this.currentUser) {
@@ -129,8 +129,8 @@ export class ModelDetailComponent implements OnInit {
       return;
     }
     if (request.data.status) {
-      this.detail_form.get('casociado').setValue(request.data.casociado);
-      this.detail_form.get('casociado').disable();
+      // this.detail_form.get('casociado').setValue(request.data.casociado);
+      // this.detail_form.get('casociado').disable();
       this.detail_form.get('cmarca').setValue(request.data.cmarca);
       this.detail_form.get('cmarca').disable();
       this.detail_form.get('xmodelo').setValue(request.data.xmodelo);
@@ -143,8 +143,8 @@ export class ModelDetailComponent implements OnInit {
   }
 
   editModel() {
-    this.detail_form.get('cmarca').enable();
-    this.detail_form.get('casociado').enable();
+   // this.detail_form.get('cmarca').enable();
+    // this.detail_form.get('casociado').enable();
     this.detail_form.get('xmodelo').enable();
     this.detail_form.get('bactivo').enable();
     this.showEditButton = false;
@@ -163,6 +163,7 @@ export class ModelDetailComponent implements OnInit {
   }
 
   async onSubmit(form): Promise<void> {
+    console.log(this.detail_form.value, this.code)
     this.submitted = true;
     this.loading = true;
     if (this.detail_form.invalid) {
@@ -178,8 +179,8 @@ export class ModelDetailComponent implements OnInit {
           cmodulo: 25
         },
         cmodelo: this.code,
-        cmarca: form.cmarca,
-        casociado: form.casociado,
+        cmarca: this.detail_form.get('cmarca').value,
+        // casociado: form.casociado,
         xmodelo: form.xmodelo,
         bactivo: form.bactivo,
         cpais: this.currentUser.data.cpais,
@@ -194,7 +195,7 @@ export class ModelDetailComponent implements OnInit {
           cmodulo: 25
         },
         cmarca: form.cmarca,
-        casociado: form.casociado,
+        //casociado: form.casociado,
         xmodelo: form.xmodelo,
         bactivo: form.bactivo,
         cpais: this.currentUser.data.cpais,

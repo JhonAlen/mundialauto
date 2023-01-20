@@ -228,6 +228,11 @@ async ngOnInit(): Promise<void>{
       xcedula: [''],
       binternacional: [''],
       ctomador: [''],
+      xuso: [''],
+      xclase: [''],
+      xtipo: [''],
+      xzona_postal:[''],
+      nkilometraje: [''],
     });
 
     this.currentUser = this.authenticationService.currentUserValue;
@@ -1075,6 +1080,11 @@ OperatioValidationPlate(){
             femision: form.femision,
             ncobro: form.ncobro,
             mgrua: form.mgrua,
+            xuso: form.xuso,
+            xclase: form.xclase,
+            xtipo: form.xtipo,
+            xzona_postal: form.xzona_postal,
+            nkilometraje: form.nkilometraje,
             ccodigo_ubii:form.ccodigo_ubii,
             ccorredor:  this.search_form.get('ccorredor').value,
             xcedula: form.xrif_cliente,

@@ -47,7 +47,7 @@ export class VersionDetailComponent implements OnInit {
       cmodelo: ['', Validators.required],
       casociado: ['', Validators.required],
       xversion: ['', Validators.required],
-      ctipotransmision: ['', Validators.required],
+      xtransmision: ['', Validators.required],
       xcilindrajemotor: ['', Validators.required],
       ctipovehiculo: ['', Validators.required],
       ncapacidadcarga: ['', Validators.required],
@@ -113,7 +113,7 @@ export class VersionDetailComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/valrep/transmission-type`, params, options).subscribe((response : any) => {
       if(response.data.status){
         for(let i = 0; i < response.data.list.length; i++){
-          this.transmissionTypeList.push({ id: response.data.list[i].ctipotransmision, value: response.data.list[i].xtipotransmision });
+          this.transmissionTypeList.push({ id: response.data.list[i].xtransmision, value: response.data.list[i].xtipotransmision });
         }
         this.transmissionTypeList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
@@ -174,8 +174,9 @@ export class VersionDetailComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/version/detail`, params, options).subscribe((response: any) => {
       if(response.data.status){
-        this.detail_form.get('casociado').setValue(response.data.casociado);
-        this.detail_form.get('casociado').disable();
+        console.log(response.data)
+        // this.detail_form.get('casociado').setValue(response.data.casociado);
+        // this.detail_form.get('casociado').disable();
         this.detail_form.get('cmarca').setValue(response.data.cmarca);
         this.detail_form.get('cmarca').disable();
         this.modelDropdownDataRequest();
@@ -183,8 +184,8 @@ export class VersionDetailComponent implements OnInit {
         this.detail_form.get('cmodelo').disable();
         this.detail_form.get('xversion').setValue(response.data.xversion);
         this.detail_form.get('xversion').disable();
-        this.detail_form.get('ctipotransmision').setValue(response.data.ctipotransmision);
-        this.detail_form.get('ctipotransmision').disable();
+        this.detail_form.get('xtransmision').setValue(response.data.xtransmision);
+        //this.detail_form.get('xtransmision').disable();
         this.detail_form.get('xcilindrajemotor').setValue(response.data.xcilindrajemotor);
         this.detail_form.get('xcilindrajemotor').disable();
         this.detail_form.get('ctipovehiculo').setValue(response.data.ctipovehiculo);
@@ -215,7 +216,7 @@ export class VersionDetailComponent implements OnInit {
     this.detail_form.get('casociado').enable();
     this.detail_form.get('cmodelo').enable();
     this.detail_form.get('xversion').enable();
-    this.detail_form.get('ctipotransmision').enable();
+    this.detail_form.get('xtransmision').enable();
     this.detail_form.get('xcilindrajemotor').enable();
     this.detail_form.get('ctipovehiculo').enable();
     this.detail_form.get('ncapacidadcarga').enable();
@@ -280,7 +281,7 @@ export class VersionDetailComponent implements OnInit {
     if(this.code){
       params = {
         cversion: this.code,
-        ctipotransmision: form.ctipotransmision,
+        xtransmision: form.xtransmision,
         xcilindrajemotor: form.xcilindrajemotor,
         ctipovehiculo: form.ctipovehiculo,
         ncapacidadcarga: form.ncapacidadcarga,
@@ -297,7 +298,7 @@ export class VersionDetailComponent implements OnInit {
     }else{
       params = {
         cmarca: form.cmarca,
-        ctipotransmision: form.ctipotransmision,
+        xtransmision: form.xtransmision,
         xcilindrajemotor: form.xcilindrajemotor,
         ctipovehiculo: form.ctipovehiculo,
         ncapacidadcarga: form.ncapacidadcarga,
