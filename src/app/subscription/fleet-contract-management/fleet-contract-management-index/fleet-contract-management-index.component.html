@@ -121,13 +121,13 @@
                 <div class="card-body">
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 104px;" class="ag-theme-alpine" [rowData]="fleetContractList" [pagination]="false" [paginationPageSize]="1" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="N° Recibo" field="crecibo" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="N° Contrato" field="ccontratoflota" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Póliza" field="xpoliza" [width]="120" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Cliente" field="xcliente" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Placa" field="xplaca" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Marca" field="xmarca" [width]="150" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Modelo" field="xmodelo" [width]="160" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Versión" field="xversion" [width]="274" [sortable]="true" [resizable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Placa" field="xplaca" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="Estatus" field="xestatusgeneral" [width]="140" [sortable]="true" [resizable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>

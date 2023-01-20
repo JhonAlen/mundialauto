@@ -428,7 +428,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
         this.fleetContractList = [];
         for(let i = 0; i < response.data.list.length; i++){
           this.fleetContractList.push({ 
-            crecibo: form.crecibo,
+            xcliente: response.data.list[i].xcliente,
             ccontratoflota: response.data.list[i].ccontratoflota,
             xmarca: response.data.list[i].xmarca,
             xmodelo: response.data.list[i].xmodelo,
