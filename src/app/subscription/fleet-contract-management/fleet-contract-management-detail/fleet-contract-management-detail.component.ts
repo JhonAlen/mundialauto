@@ -1836,6 +1836,10 @@ export class FleetContractManagementDetailComponent implements OnInit {
       body.push({text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 20, angle: 70});
       return body;
     }
+    if (this.cstatuspoliza == 3) {
+      body.push({text: 'Póliza Anulada', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 20, angle: 70});
+      return body;
+    }
 
   }
 
@@ -2665,8 +2669,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
           style: 'data',
           table: {
             widths: [130, 80, 30, 55, 30, 55, '*'],
-            body: [
-              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'Vigencia del Recibo:', bold: true, border: [false, false, false, false]}, {text: 'Desde:', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: 'Hasta:', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: 'Ambas a las 12 AM.', border: [false, false, true, false]}]
+            body: [                                                                                                                   //Se eliminarán los espacios en blanco
+              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', bold: true, border: [false, false, false, false]}, {text: ' ', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: ' ', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: ' ', border: [false, false, true, false]}]
             ]
           }
         },
@@ -2909,14 +2913,14 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En mi carácter de tomador de la póliza contratada con la mundial de seguros, c.a bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
-                      'proviene de una fuente lícita y por lo tanto, no tiene relación alguna con el dinero, capitales, bienes, haberes, valores o títulos producto de las actividades \n' +
-                      'o acciones derivadas de operaciones ilícitas previstas en las normas sobre administración de riesgos de legitimación de capitales, financiamiento al terrorismo y \n' +
-                      'financiamiento de la proliferación de armas de destrucción masiva en la actividad aseguradora. El tomador y/o asegurado declara(n) recibir en este acto las \n' +
-                      'condiciones generales y particulares de la póliza, así como las cláusulas  y anexos arriba mencionados, copia de la solicitud de seguro y demás documentos que \n' +
-                      'formen parte del contrato. El Tomador, Asegurado o Beneficiario de la Póliza, que sienta vulneración de sus derechos, y requieran presentar cualquier denuncia, \n' +
-                      'queja, reclamo o solicitud de asesoría; surgida con ocasión de este contrato de seguros; puede acudir a la Oficina de la Defensoría del Asegurado de la\n' +
-                      'Superintendencia de la Actividad Aseguradora, o comunicarlo a través de la página web: http://www.sudeaseg.gob.ve/.\n', border: [true, false, true, true]}],
+              [{text: 'En mi carácter de tomador de la póliza contratada con La Mundial de Seguros, C.A bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, ' +
+                      'proviene de una fuente lícita y por lo tanto, no tiene relación alguna con el dinero, capitales, bienes, haberes, valores o títulos producto de las actividades ' +
+                      'o acciones derivadas de operaciones ilícitas previstas en las normas sobre administración de riesgos de legitimación de capitales, financiamiento al terrorismo y ' +
+                      'financiamiento de la proliferación de armas de destrucción masiva en la actividad aseguradora. El tomador y/o asegurado declara(n) recibir en este acto las ' +
+                      'condiciones generales y particulares de la póliza, así como las cláusulas  y anexos arriba mencionados, copia de la solicitud de seguro y demás documentos que ' +
+                      'formen parte del contrato. El Tomador, Asegurado o Beneficiario de la Póliza, que sienta vulneración de sus derechos, y requieran presentar cualquier denuncia, ' +
+                      'queja, reclamo o solicitud de asesoría; surgida con ocasión de este contrato de seguros; puede acudir a la Oficina de la Defensoría del Asegurado de la' +
+                      'Superintendencia de la Actividad Aseguradora, o comunicarlo a través de la página web: http://www.sudeaseg.gob.ve/.', alignment: 'justify', border: [true, false, true, true]}],
             ]
           }
         },
@@ -2959,7 +2963,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [130, 80, 30, 55, 30, 55, '*'],
             body: [
-              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'Vigencia del Recibo:', bold: true, border: [false, false, false, false]}, {text: 'Desde:', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: 'Hasta:', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: 'Ambas a las 12 AM.', border: [false, false, true, false]}]
+              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: ' ', bold: true, border: [false, false, false, false]}, {text: ' ', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: ' ', bold: true, border: [false, false, false, false]}, {text: ` `, border: [false, false, false, false]}, {text: ' ', border: [false, false, true, false]}]
             ]
           }
         },
@@ -2978,7 +2982,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: [60, 300, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:'/*, rowSpan: 2*/, bold: true, border: [false, false, false, true]}, {text: this.xrif/*, rowSpan: 2*/, border: [false, false, true, true]}]/*,
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:'/*, rowSpan: 2*/, bold: true, border: [false, false, false, false]}, {text: this.xrif/*, rowSpan: 2*/, border: [false, false, true, false]}]/*,
               [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]*/
             ]
           }
@@ -3022,7 +3026,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
         {
           style: 'data',
           table: {
-            widths: [60, 300, 24, '*'],
+            widths: [60, 300, 30, '*'],
             body: [
               [{text: 'ASEGURADO:', bold: true, border: [true, false, false, false]}, {text: `${this.xnombrepropietario} ${this.xapellidopropietario}`, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadpropietario, border: [false, false, true, false]}]
             ]
