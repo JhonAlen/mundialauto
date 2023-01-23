@@ -1831,14 +1831,14 @@ export class FleetContractManagementDetailComponent implements OnInit {
     }
     
   selectWatermark() {
-    let body = [];
-    if (this.cstatuspoliza == 14) {
-      body.push({text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 20, angle: 70});
-      return body;
+    let watermarkBody = {}
+    if (this.cstatuspoliza == 13) {
+      watermarkBody = {text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
     }
     if (this.cstatuspoliza == 3) {
-      body.push({text: 'Póliza Anulada', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 20, angle: 70});
-      return body;
+      watermarkBody = {text: 'PÓLIZA ANULADA', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
     }
 
   }
