@@ -98,6 +98,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   ctasa_cambio: number;
   mtasa_cambio: number;
   fingreso_tasa: Date;
+  cestatusgeneral: number;
 
   serviceList: any[] = [];
   coverageList: any[] = [];
@@ -1221,6 +1222,7 @@ OperatioValidationPlate(){
         this.nkilometraje = response.data.nkilometraje;
         this.xclase = response.data.xclase;
         this.xtransmision = response.data.xtransmision;
+        this.cestatusgeneral = response.data.cestatusgeneral;
         if(response.data.xtomador){
           this.xtomador = response.data.xtomador;
         }else{
@@ -1396,9 +1398,27 @@ OperatioValidationPlate(){
     return body;
   }
 
+  selectWatermark() {
+    let watermarkBody = {}
+    if (this.cestatusgeneral == 13) {
+      watermarkBody = {text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+    if (this.cestatusgeneral == 7) {
+      watermarkBody = {text: 'COBRADO', color: 'green', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+    if (this.cestatusgeneral == 3) {
+      watermarkBody = {text: 'PÓLIZA ANULADA', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+
+  }
+
   createPDF(){
     try{
     const pdfDefinition: any = {
+      watermark: this.selectWatermark(),
       info: {
         title: `Póliza - ${this.xnombrecliente}`,
         subject: `Póliza - ${this.xnombrecliente}`
