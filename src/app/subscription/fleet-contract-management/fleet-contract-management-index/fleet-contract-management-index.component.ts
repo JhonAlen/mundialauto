@@ -90,6 +90,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
   xtituloreporte: string;
   xnombrerepresentantelegal: string;
   xdocidentidadrepresentantelegal: string;
+  cestatusgeneral: number;
 
   keyword = 'value';
   columnDefs: ColDef[] = [
@@ -382,6 +383,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
         this.xtituloreporte = response.data.xtituloreporte;
         this.xnombrerepresentantelegal = response.data.xrepresentantelegal;
         this.xdocidentidadrepresentantelegal = response.data.xdocidentidadrepresentantelegal;
+        this.cestatusgeneral = response.data.cestatusgeneral;
         this.createPDFReceipt();
       }
     },
@@ -557,8 +559,21 @@ export class FleetContractManagementIndexComponent implements OnInit {
     }
   }
 
-  createReceipt(){
-    this.createPDFReceipt();
+  selectWatermark() {
+    let watermarkBody = {}
+    if (this.cestatusgeneral == 13) {
+      watermarkBody = {text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+    if (this.cestatusgeneral == 7) {
+      watermarkBody = {text: 'COBRADO', color: 'green', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+    if (this.cestatusgeneral == 3) {
+      watermarkBody = {text: 'PÓLIZA ANULADA', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+
   }
 
   createPDFReceipt() {
@@ -567,6 +582,7 @@ export class FleetContractManagementIndexComponent implements OnInit {
         title: `Recibo N° ${this.xrecibo}-${this.nconsecutivo} - ${this.xnombretomador}`,
         subject: `Recibo N° ${this.xrecibo}-${this.nconsecutivo} - ${this.xnombretomador}`
       },
+      watermark: this.selectWatermark(),
       content: [
         {
           style: 'data',
