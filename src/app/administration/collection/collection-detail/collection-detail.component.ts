@@ -5,13 +5,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-import { initUbii } from '@ubiipagos/boton-ubii';
-// import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
 import { DateSelectionModelChange } from '@angular/material/datepicker';
 import { borderTopRightRadius } from 'html2canvas/dist/types/css/property-descriptors/border-radius';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-collection-detail',
@@ -235,13 +235,6 @@ export class CollectionDetailComponent implements OnInit {
 
         this.ccodigo_ubii = String(response.data.ccodigo_ubii);
 
-        console.log("amount_ds: " + prima_ds + ` ${typeof prima_ds}`);
-        console.log("amount_bs: " + prima_bs + ` ${typeof prima_bs}`);
-        console.log('concept: COMPRA');
-        console.log("principal: bs");
-        console.log('clientId: 1c134b42-70e1-11ed-ae36-005056967039');
-        console.log('orderId: ' + this.ccodigo_ubii + ` ${typeof this.ccodigo_ubii}`);
-
         initUbii(
           'ubiiboton',
           {
@@ -249,7 +242,7 @@ export class CollectionDetailComponent implements OnInit {
             amount_bs: prima_bs,
             concept: "COMPRA",
             principal: "bs",
-            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
             orderId: this.ccodigo_ubii
           },
           this.callbackFn,

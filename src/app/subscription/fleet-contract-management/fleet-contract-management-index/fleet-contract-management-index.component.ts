@@ -94,15 +94,13 @@ export class FleetContractManagementIndexComponent implements OnInit {
 
   keyword = 'value';
   columnDefs: ColDef[] = [
-    { headerName: 'N°', field: 'nconsecutivo', width: 50, resizable: true},
     { headerName: 'N° Recibo', field: 'nrecibo', width: 105, resizable: true },
-    { headerName: 'N° Contrato', field: 'ccontratoflota', width: 110, resizable: true},
     { headerName: 'N° Placa', field: 'xplaca', width: 135, resizable: true},
     { headerName: 'Inicio Vigencia', field: 'fdesde_rec', width: 150, resizable: true},
     { headerName: 'Fin Vigencia', field: 'fhasta_rec', width: 150, resizable: true},
     { headerName: 'Prima Total Recibo (USD)', field: 'mprima_anual', width: 220, resizable: true},
     { headerName: 'Estatus', field: 'xstatus', width: 140, resizable: true},
-    { headerName: 'Descargar', field: 'xdescargar', width: 165, resizable: true, cellStyle: {color: 'white', 'background-color': 'green', 'border-radius': '5px'}, onCellClicked: (e) => {this.downloadReceipt(e)}}
+    { headerName: 'Descargar', field: 'xdescargar', width: 145, resizable: true, cellStyle: {color: 'white', 'background-color': 'green', 'border-radius': '5px'}, onCellClicked: (e) => {this.downloadReceipt(e)}}
   ];
   fsubscripcion: string;
 

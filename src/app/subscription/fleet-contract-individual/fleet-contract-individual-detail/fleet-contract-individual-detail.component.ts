@@ -4,7 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 import { environment } from '@environments/environment';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
@@ -12,9 +11,8 @@ import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-import { Console } from 'console';
-
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+//import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -98,6 +96,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   ctasa_cambio: number;
   mtasa_cambio: number;
   fingreso_tasa: Date;
+  cestatusgeneral: number;
 
   serviceList: any[] = [];
   coverageList: any[] = [];
@@ -892,7 +891,7 @@ OperatioValidationPlate(){
             amount_bs:  prima_bs,
             concept: "COMPRA",
             principal: "ds",
-            clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+            clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
             orderId: orden
           },
           this.callbackFn.bind(this),
@@ -1221,6 +1220,7 @@ OperatioValidationPlate(){
         this.nkilometraje = response.data.nkilometraje;
         this.xclase = response.data.xclase;
         this.xtransmision = response.data.xtransmision;
+        this.cestatusgeneral = response.data.cestatusgeneral;
         if(response.data.xtomador){
           this.xtomador = response.data.xtomador;
         }else{
@@ -1396,9 +1396,27 @@ OperatioValidationPlate(){
     return body;
   }
 
+  selectWatermark() {
+    let watermarkBody = {}
+    if (this.cestatusgeneral == 13) {
+      watermarkBody = {text: 'PENDIENTE DE PAGO', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+    if (this.cestatusgeneral == 7) {
+      watermarkBody = {text: 'COBRADO', color: 'green', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+    if (this.cestatusgeneral == 3) {
+      watermarkBody = {text: 'PÓLIZA ANULADA', color: 'red', opacity: 0.3, bold: true, italics: false, fontSize: 50, angle: 70}
+      return watermarkBody;
+    }
+
+  }
+
   createPDF(){
     try{
     const pdfDefinition: any = {
+      watermark: this.selectWatermark(),
       info: {
         title: `Póliza - ${this.xnombrecliente}`,
         subject: `Póliza - ${this.xnombrecliente}`
