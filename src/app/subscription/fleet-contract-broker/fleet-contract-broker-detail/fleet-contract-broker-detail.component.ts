@@ -5,12 +5,12 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
 
 
 @Component({
@@ -712,7 +712,7 @@ async getmetodologia(){
               amount_bs:  prima_bs,
               concept: "COMPRA",
               principal: "ds",
-              clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+              clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
               orderId: orden
             },
             this.callbackFn.bind(this),

@@ -16,6 +16,7 @@ import { environment } from '@environments/environment';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Console } from 'console';
+import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 /*
 pdfMake.fonts = {
@@ -2902,7 +2903,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           }
         },
         {
-          style: 'data',
+          style: 'prueba',
           table: {
             widths: ['*'],
             body: [
@@ -2913,7 +2914,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
                       'condiciones generales y particulares de la póliza, así como las cláusulas  y anexos arriba mencionados, copia de la solicitud de seguro y demás documentos que \n' +
                       'formen parte del contrato. El Tomador, Asegurado o Beneficiario de la Póliza, que sienta vulneración de sus derechos, y requieran presentar cualquier denuncia, \n' +
                       'queja, reclamo o solicitud de asesoría; surgida con ocasión de este contrato de seguros; puede acudir a la Oficina de la Defensoría del Asegurado de la\n' +
-                      'Superintendencia de la Actividad Aseguradora, o comunicarlo a través de la página web: http://www.sudeaseg.gob.ve/.\n', border: [true, false, true, true]}],
+                      'Superintendencia de la Actividad Aseguradora, o comunicarlo a través de la página web: http://www.sudeaseg.gob.ve/.\n', alignment: 'justify', border: [true, false, true, true]}],
             ]
           }
         },
@@ -3336,6 +3337,10 @@ export class FleetContractManagementDetailComponent implements OnInit {
           color: 'gray'
         },
         data: {
+          fontSize: 7
+        },
+        prueba: {
+          alignment: 'justify',
           fontSize: 7
         }
       }

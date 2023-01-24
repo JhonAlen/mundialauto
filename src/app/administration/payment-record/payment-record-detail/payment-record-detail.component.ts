@@ -173,6 +173,44 @@ export class PaymentRecordDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    this.getBillData();
+  }
+
+  getBillData(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cfactura: this.code
+    }
+    this.http.post(`${environment.apiUrl}/api/administration/bill-detail`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.payment_form.get('xcliente').setValue(response.data.xcliente)
+        this.payment_form.get('xcliente').disable();
+        this.payment_form.get('nfactura').setValue(response.data.nfactura)
+        this.payment_form.get('nfactura').disable();
+        this.payment_form.get('ncontrol').setValue(response.data.ncontrol)
+        this.payment_form.get('ncontrol').disable();
+        this.payment_form.get('ffactura').setValue(new Date(response.data.ffactura).toISOString().substring(0, 10));
+        this.payment_form.get('ffactura').disable();
+        this.payment_form.get('frecepcion').setValue(new Date(response.data.frecepcion).toISOString().substring(0, 10))
+        this.payment_form.get('frecepcion').disable();
+        this.payment_form.get('fvencimiento').setValue(new Date(response.data.fvencimiento).toISOString().substring(0, 10))
+        this.payment_form.get('fvencimiento').disable();
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 401){
+        let condition = err.error.data.condition;
+        if(condition == 'user-dont-have-permissions'){ this.router.navigate([`/permission-error`]); }
+      }else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
 }
