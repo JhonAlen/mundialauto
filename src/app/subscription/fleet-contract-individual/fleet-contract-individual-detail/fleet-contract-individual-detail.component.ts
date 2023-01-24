@@ -665,6 +665,8 @@ async getmetodologia(){
 
     let motin = this.search_form.get('msuma_aseg').value * this.search_form.get('pmotin').value / 100;
     this.search_form.get('mmotin').setValue(motin);
+
+    
   }
   data(){
     let division = this.search_form.get('pdescuento').value / 100

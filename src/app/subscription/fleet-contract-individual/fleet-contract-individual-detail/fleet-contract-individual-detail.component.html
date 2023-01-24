@@ -432,7 +432,7 @@
                     <div class="col-md-2 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label " for="form3Examplev4">Tarifa de Casco</label>
-                        <input type="number" step="0.01" formControlName="pcasco" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('pcasco').errors }" />
+                        <input type="number" step="0.01" formControlName="pcasco" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('pcasco').errors }" (change)="calculation()"/>
                         <div *ngIf="submitted && search_form.get('pcasco').errors" class="invalid-feedback">
                           <div *ngIf="search_form.get('pcasco').errors.required">Se requiere completar el campo</div>
                         </div>
@@ -478,7 +478,7 @@
                     <div class="col-md-2 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label " for="form3Examplev4">Tasa Catastrofico</label>
-                        <input type="number" step="0.01" formControlName="pcatastrofico" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('pcatastrofico').errors }" />
+                        <input type="number" step="0.01" formControlName="pcatastrofico" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('pcatastrofico').errors }" (change)="calculation()" />
                         <div *ngIf="submitted && search_form.get('pcatastrofico').errors" class="invalid-feedback">
                           <div *ngIf="search_form.get('pcatastrofico').errors.required">Se requiere completar el campo</div>
                         </div>
@@ -496,7 +496,7 @@
                     <div class="col-md-2 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label " for="form3Examplev4">Tasa Motin</label>
-                        <input type="number" step="0.01" formControlName="pmotin" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('pmotin').errors }" />
+                        <input type="number" step="0.01" formControlName="pmotin" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('pmotin').errors }" (change)="calculation()"/>
                         <div *ngIf="submitted && search_form.get('pmotin').errors" class="invalid-feedback">
                           <div *ngIf="search_form.get('pmotin').errors.required">Se requiere completar el campo</div>
                         </div>
