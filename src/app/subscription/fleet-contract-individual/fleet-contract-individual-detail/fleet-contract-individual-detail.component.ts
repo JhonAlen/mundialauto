@@ -11,8 +11,8 @@ import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
-//import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-fleet-contract-individual-detail',
@@ -895,7 +895,7 @@ OperatioValidationPlate(){
           },
           this.callbackFn.bind(this),
           {
-            text: `Pago orden N°${orden}`
+            text: 'Pagar con Ubii '
           },
         
         );
@@ -1006,8 +1006,6 @@ OperatioValidationPlate(){
         "method": "POST",
         "headers": {
           "CONTENT-TYPE": "Application/json",
-          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
-          "X-CLIENT-CHANNEL": "BTN-API",
           "Authorization": `Bearer ${this.currentUser.data.csession}`
         },
         "body": JSON.stringify({
@@ -1114,7 +1112,6 @@ OperatioValidationPlate(){
     this.clear = false;
     this.submitted = true;
     if (!this.validateForm(this.search_form)) {
-      closeUbii();
       this.submitted = true;
       this.loading = false;
       this.clear = true;
@@ -1202,12 +1199,9 @@ OperatioValidationPlate(){
             // if (this.bpagomanual || this.search_form.get('xcobertura').value != 'RCV') {
             //   this.getFleetContractDetail(this.ccontratoflota);
             // }
-          } else {
-            closeUbii()
           }
         },
         (err) => {
-          closeUbii();
           let code = err.error.data.code;
           let message;
           if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
