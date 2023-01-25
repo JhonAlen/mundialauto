@@ -9,8 +9,8 @@ import { AdministrationPaymentComponent } from '@app/pop-up/administration-payme
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
-//import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 
 
 @Component({
@@ -976,7 +976,6 @@ async getmetodologia(){
   }
 
     validateForm(form) {
-      console.log(form)
     if (form.invalid){
       return false;
     }
@@ -997,7 +996,6 @@ async getmetodologia(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     if (this.validateForm(this.search_form) == false) {
-      closeUbii();
       console.log('entro');
     } else {
       if (!this.ccontratoflota) {
@@ -1084,11 +1082,9 @@ async getmetodologia(){
               this.getFleetContractDetail(this.ccontratoflota);
             }
           } else {
-            closeUbii()
           }
         },
         (err) => {
-          closeUbii();
           let code = err.error.data.code;
           let message;
           if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
