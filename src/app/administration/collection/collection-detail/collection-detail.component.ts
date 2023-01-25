@@ -47,6 +47,7 @@ export class CollectionDetailComponent implements OnInit {
   mtasacambio: number;
   ftasacambio: Date;
   ccodigo_ubii: String;
+  ccontratoflota: number;
 
   constructor(private formBuilder: FormBuilder, 
               private authenticationService : AuthenticationService,
@@ -155,6 +156,8 @@ export class CollectionDetailComponent implements OnInit {
           this.detail_form.get('xestatusgeneral').disable();
         }*/
 
+        this.ccontratoflota = response.data.ccontratoflota;
+
         if(response.data.ccliente){
           this.detail_form.get('ccliente').setValue(response.data.ccliente);
           this.detail_form.get('ccliente').disable();
@@ -245,7 +248,7 @@ export class CollectionDetailComponent implements OnInit {
             clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
             orderId: this.ccodigo_ubii
           },
-          this.callbackFn,
+          this.callbackFn.bind(this),
           {
             text: 'Pagar con Ubii Pagos '
           }
@@ -290,7 +293,6 @@ export class CollectionDetailComponent implements OnInit {
             this.showSaveButton= true;
             this.bpago = false;
           }
-          console.log(this.paymentList)
 
           this.onSubmit(this.detail_form.value)
       }
@@ -302,7 +304,7 @@ export class CollectionDetailComponent implements OnInit {
   }
 
   async callbackFn(answer) {
-    console.log(answer);
+
     if(answer.data.R == 0){
       let ctipopago;
       if(answer.data.method == "ZELLE"){
@@ -315,18 +317,18 @@ export class CollectionDetailComponent implements OnInit {
       let dateformat = datetimeformat[0].split('/');
       let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
       
-      await window.alert(`Se ha procesado exitosamente el pago de la póliza`);
+      window.alert(`Se ha procesado exitosamente el pago de la póliza`);
       const response = await fetch(`${environment.apiUrl}/api/administration-collection/ubii/update`, {
         "method": "POST",
         "headers": {
           "CONTENT-TYPE": "Application/json",
-          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
-          "X-CLIENT-CHANNEL": "BTN-API",
-          "Authorization": "SKDJK23J4KJ2352304923059"
+          "Authorization": `Bearer ${this.currentUser.data.csession}`
         },
         "body": JSON.stringify({
           paymentData: {
-            crecibo: answer.data.orderID,
+            crecibo: this.code,
+            ccontratoflota: this.ccontratoflota,
+            orderId: this.ccodigo_ubii,
             ctipopago: ctipopago,
             xreferencia: answer.data.ref,
             fcobro: fcobro,
