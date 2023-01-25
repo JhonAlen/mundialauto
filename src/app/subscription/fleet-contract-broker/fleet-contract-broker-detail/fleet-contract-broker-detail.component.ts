@@ -855,9 +855,93 @@ async getmetodologia(){
     });
   }
 
+  async onSubmitUbii() {
+    this.search_form.disable();
+      let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+      let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+      let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+      let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+      const response = await fetch(`${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`, {
+        "method": "POST",
+        "headers": {
+          "CONTENT-TYPE": "Application/json",
+          "Authorization": `Bearer ${this.currentUser.data.csession}`
+        },
+        "body": JSON.stringify({
+          icedula: this.search_form.get('icedula').value,
+          xrif_cliente: this.search_form.get('xrif_cliente').value,
+          xnombre: this.search_form.get('xnombre').value,
+          xapellido: this.search_form.get('xapellido').value,
+          xtelefono_emp: this.search_form.get('xtelefono_emp').value,
+          xtelefono_prop: this.search_form.get('xtelefono_prop').value,
+          email: this.search_form.get('email').value,
+          cpais:this.search_form.get('cpais').value,
+          cestado: this.search_form.get('cestado').value,
+          cciudad: this.search_form.get('cciudad').value,
+          xdireccionfiscal: this.search_form.get('xdireccionfiscal').value,
+          xplaca: this.search_form.get('xplaca').value,
+          cmarca: marca.id,
+          cmodelo: modelo.id,
+          cversion: version.id,
+          cano: this.search_form.get('cano').value,
+          ncapacidad_p: this.search_form.get('ncapacidad_p').value,
+          xcolor:this.search_form.get('xcolor').value,    
+          xserialcarroceria: this.search_form.get('xserialcarroceria').value,
+          xserialmotor: this.search_form.get('xserialmotor').value,  
+          xcobertura: this.search_form.get('xcobertura').value,
+          msuma_aseg: this.search_form.get('msuma_aseg').value,
+          pcasco: this.search_form.get('pcasco').value,
+          mprima_casco: this.search_form.get('mprima_casco').value,
+          mcatastrofico: this.search_form.get('mcatastrofico').value,
+          msuma_blindaje: this.search_form.get('msuma_blindaje').value,
+          mprima_blindaje: this.search_form.get('mprima_blindaje').value,
+          mprima_bruta: this.search_form.get('mprima_bruta').value,
+          pcatastrofico: this.search_form.get('pcatastrofico').value,
+          pmotin: this.search_form.get('pmotin').value,
+          mmotin: this.search_form.get('mmotin').value,
+          pblindaje: this.search_form.get('pblindaje').value,
+          cplan: metodologiaPago.id,
+          cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+          femision: this.search_form.get('femision').value,
+          ncobro: this.search_form.get('ncobro').value,
+          mgrua: this.search_form.get('mgrua').value,
+          ccodigo_ubii: this.search_form.get('ccodigo_ubii').value,
+          ccorredor:  this.search_form.get('ccorredor').value,
+          xcedula: this.search_form.get('xrif_cliente').value,
+          ctipopago: this.ctipopago,
+          xreferencia: this.xreferencia,
+          fcobro: this.fcobro,
+          mprima_pagada: this.mprima_pagada,
+          xpago: this.search_form.get('xpago').value,
+          ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+          ctomador: this.search_form.get('ctomador').value,
+          xzona_postal: this.search_form.get('xzona_postal').value,
+          xuso: this.search_form.get('xuso').value,
+          xtipo: this.search_form.get('xtipo').value,
+          nkilometraje: this.search_form.get('nkilometraje').value,
+          xclase: this.search_form.get('xclase').value,
+          cusuario: this.currentUser.data.cusuario,
+          payment: this.paymentList,
+          accessory: this.accessoryList
+        }) 
+      });
+      let res = await response.json();
+      if (res.data.status) {
+        this.ccontratoflota = res.data.ccontratoflota;
+        this.fdesde_pol = res.data.fdesde_pol;
+        this.fhasta_pol = res.data.fhasta_pol;
+        this.fdesde_rec = res.data.fdesde_rec;
+        this.fhasta_rec = res.data.fhasta_rec;
+        this.xrecibo = res.data.xrecibo;
+        this.fsuscripcion = res.data.fsuscripcion;
+        this.femision = res.data.femision;
+      }
+  }
+
   async callbackFn(answer) {
 
     if(answer.data.R == 0){
+      await this.onSubmitUbii();
       let ctipopago;
       if(answer.data.method == "ZELLE"){
         ctipopago = 4;
@@ -868,17 +952,15 @@ async getmetodologia(){
       let datetimeformat = answer.data.date.split(' ');
       let dateformat = datetimeformat[0].split('/');
       let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
-       
       const response = await fetch(`${environment.apiUrl}/api/fleet-contract-management/ubii/update`, {
         "method": "POST",
         "headers": {
           "CONTENT-TYPE": "Application/json",
-          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
-          "X-CLIENT-CHANNEL": "BTN-API",
-          "Authorization": "SKDJK23J4KJ2352304923059"
+          "Authorization": `Bearer ${this.currentUser.data.csession}`
         },
         "body": JSON.stringify({
           paymentData: {
+            ccontratoflota: this.ccontratoflota,
             orderId: answer.data.orderID,
             ctipopago: ctipopago,
             xreferencia: answer.data.ref,
