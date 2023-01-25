@@ -5,13 +5,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
-// import { initUbii } from '@ubiipagos/boton-ubii';
-import { initUbii } from '@ubiipagos/boton-ubii-dc';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { RoadManagementConfigurationIndexComponent } from '@app/quotation/road-management-configuration/road-management-configuration-index/road-management-configuration-index.component';
 import { DateSelectionModelChange } from '@angular/material/datepicker';
 import { borderTopRightRadius } from 'html2canvas/dist/types/css/property-descriptors/border-radius';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 
 @Component({
   selector: 'app-collection-detail',
@@ -234,13 +234,6 @@ export class CollectionDetailComponent implements OnInit {
         let prima_bs: String = String( (Math.round( ( (parseFloat(prima[0]) * (this.mtasacambio) ) + Number.EPSILON ) * 100 ) /100).toFixed(2) );       
 
         this.ccodigo_ubii = String(response.data.ccodigo_ubii);
-
-        console.log("amount_ds: " + prima_ds + ` ${typeof prima_ds}`);
-        console.log("amount_bs: " + prima_bs + ` ${typeof prima_bs}`);
-        console.log('concept: COMPRA');
-        console.log("principal: bs");
-        console.log('clientId: f2514eda-610b-11ed-8e56-000c29b62ba1');
-        console.log('orderId: ' + this.ccodigo_ubii + ` ${typeof this.ccodigo_ubii}`);
 
         initUbii(
           'ubiiboton',

@@ -987,43 +987,43 @@ export class NotificationServiceOrderComponent implements OnInit {
     if(this.popup_form.get('xdesde').value){
       this.notificacion.xdesde = this.popup_form.get('xdesde').value;
     }else{
-      this.notificacion.xdesde = ' ';
+      this.notificacion.xdesde = null;
     }
 
     if(this.popup_form.get('xhacia').value){
       this.notificacion.xhacia = this.popup_form.get('xhacia').value;
     }else{
-      this.notificacion.xhacia = ' ';
+      this.notificacion.xhacia = null;
     }
 
     if(this.popup_form.get('mmonto').value){
       this.notificacion.mmonto = this.popup_form.get('mmonto').value;
     }else{
-      this.notificacion.mmonto = 0;
+      this.notificacion.mmonto = null;
     }
 
     if(this.popup_form.get('xobservacion').value){
       this.notificacion.xobservacion = this.popup_form.get('xobservacion').value;
     }else{
-      this.notificacion.xobservacion = ' ';
+      this.notificacion.xobservacion = null;
     }
 
     if(this.popup_form.get('xfecha').value){
       this.notificacion.xfecha = this.popup_form.get('xfecha').value;
     }else{
-      this.notificacion.xfecha = ' ';
+      this.notificacion.xfecha = null;
     }
 
     if(this.popup_form.get('xrepuesto').value){
       this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
     }else{
-      this.notificacion.xdanos = 'Sin repuestos';
+      this.notificacion.xdanos = 'SIN DAÑOS';
     }
     this.notificacion.fajuste = this.popup_form.get('fajuste').value.substring(0, 10);
     if(this.popup_form.get('cproveedor').value){
       this.notificacion.cproveedor = this.popup_form.get('cproveedor').value;
     }else{
-      this.notificacion.cproveedor = 0;
+      this.notificacion.cproveedor = null;
     }
 
     this.notificacion.bactivo = 1

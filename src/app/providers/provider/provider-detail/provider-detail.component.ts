@@ -78,25 +78,21 @@ export class ProviderDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.detail_form = this.formBuilder.group({
-      xproveedor: [''],
+      xnombre: [''],
       xrazonsocial: [''],
-      ctipodocidentidad: [''],
       xdocidentidad: [''],
       xtelefono: [''],
-      xemail: ['', Validators.compose([
+      xcorreo: ['', Validators.compose([
         Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
       ])],
-      xfax: [''],
-      xpaginaweb: [''],
+      pislr: [''],
       pretencion: [''],
       xdireccion: [''],
-      xdireccioncorreo: [''],
       xobservacion: [''],
       centeimpuesto: [''],
-      ldiascredito: [''],
+      nlimite: [''],
       cestado: [''],
       cciudad: [''],
-      bafiliado: [false],
       bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -223,41 +219,33 @@ export class ProviderDetailComponent implements OnInit {
       return;
     }
     if (request.data.status) {
-      this.detail_form.get('xproveedor').setValue(request.data.xproveedor);
-      this.detail_form.get('xproveedor').disable();
+      this.detail_form.get('xnombre').setValue(request.data.xnombre);
+      this.detail_form.get('xnombre').disable();
       this.detail_form.get('xrazonsocial').setValue(request.data.xrazonsocial);
       this.detail_form.get('xrazonsocial').disable();
-      this.detail_form.get('ctipodocidentidad').setValue(request.data.ctipodocidentidad);
-      this.detail_form.get('ctipodocidentidad').disable();
       this.detail_form.get('xdocidentidad').setValue(request.data.xdocidentidad);
       this.detail_form.get('xdocidentidad').disable();
       this.detail_form.get('xtelefono').setValue(request.data.xtelefono);
       this.detail_form.get('xtelefono').disable();
-      request.data.xemail ? this.detail_form.get('xemail').setValue(request.data.xemail) : false;
-      this.detail_form.get('xemail').disable();
-      request.data.xfax ? this.detail_form.get('xfax').setValue(request.data.xfax) : false;
-      this.detail_form.get('xfax').disable();
-      request.data.xpaginaweb ? this.detail_form.get('xpaginaweb').setValue(request.data.xpaginaweb) : false;
-      this.detail_form.get('xpaginaweb').disable();
+      request.data.xcorreo ? this.detail_form.get('xcorreo').setValue(request.data.xcorreo) : false;
+      this.detail_form.get('xcorreo').disable();
       request.data.pretencion ? this.detail_form.get('pretencion').setValue(request.data.pretencion) : false;
       this.detail_form.get('pretencion').disable();
+      request.data.pislr ? this.detail_form.get('pislr').setValue(request.data.pislr) : false;
+      this.detail_form.get('pislr').disable();
       this.detail_form.get('xdireccion').setValue(request.data.xdireccion);
       this.detail_form.get('xdireccion').disable();
-      this.detail_form.get('xdireccioncorreo').setValue(request.data.xdireccioncorreo);
-      this.detail_form.get('xdireccioncorreo').disable();
       this.detail_form.get('xobservacion').setValue(request.data.xobservacion);
       this.detail_form.get('xobservacion').disable();
       this.detail_form.get('centeimpuesto').setValue(request.data.centeimpuesto);
       this.detail_form.get('centeimpuesto').disable();
-      this.detail_form.get('ldiascredito').setValue(request.data.ldiascredito);
-      this.detail_form.get('ldiascredito').disable();
+      this.detail_form.get('nlimite').setValue(request.data.nlimite);
+      this.detail_form.get('nlimite').disable();
       this.detail_form.get('cestado').setValue(request.data.cestado);
       this.detail_form.get('cestado').disable();
       this.cityDropdownDataRequest();
       this.detail_form.get('cciudad').setValue(request.data.cciudad);
       this.detail_form.get('cciudad').disable();
-      this.detail_form.get('bafiliado').setValue(request.data.bafiliado);
-      this.detail_form.get('bafiliado').disable();
       this.detail_form.get('bactivo').setValue(request.data.bactivo);
       this.detail_form.get('bactivo').disable();
       this.bankList = [];
@@ -359,23 +347,19 @@ export class ProviderDetailComponent implements OnInit {
   }
 
   editProvider() {
-    this.detail_form.get('xproveedor').enable();
+    this.detail_form.get('xnombre').enable();
     this.detail_form.get('xrazonsocial').enable();
-    this.detail_form.get('ctipodocidentidad').enable();
     this.detail_form.get('xdocidentidad').enable();
     this.detail_form.get('xtelefono').enable();
-    this.detail_form.get('xemail').enable();
-    this.detail_form.get('xfax').enable();
-    this.detail_form.get('xpaginaweb').enable();
+    this.detail_form.get('xcorreo').enable();
     this.detail_form.get('pretencion').enable();
+    this.detail_form.get('pislr').enable();
     this.detail_form.get('xdireccion').enable();
-    this.detail_form.get('xdireccioncorreo').enable();
     this.detail_form.get('xobservacion').enable();
     this.detail_form.get('centeimpuesto').enable();
-    this.detail_form.get('ldiascredito').enable();
+    this.detail_form.get('nlimite').enable();
     this.detail_form.get('cestado').enable();
     this.detail_form.get('cciudad').enable();
-    this.detail_form.get('bafiliado').enable();
     this.detail_form.get('bactivo').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
@@ -926,24 +910,20 @@ export class ProviderDetailComponent implements OnInit {
         cusuariomodificacion: this.currentUser.data.cusuario,
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
-        xproveedor: form.xproveedor,
-        ctipodocidentidad: form.ctipodocidentidad,
+        xnombre: form.xnombre,
         xdocidentidad: form.xdocidentidad,
         xrazonsocial: form.xrazonsocial,
         cestado: form.cestado,
         cciudad: form.cciudad,
         xdireccion: form.xdireccion,
-        xdireccioncorreo: form.xdireccioncorreo,
         xtelefono: form.xtelefono,
-        xfax: form.xfax ? form.xfax : undefined,
         pretencion: form.pretencion ? form.pretencion : undefined,
         centeimpuesto: form.centeimpuesto,
-        ldiascredito: form.ldiascredito,
-        xemail: form.xemail ? form.xemail : undefined,
-        bafiliado: form.bafiliado,
-        xpaginaweb: form.xpaginaweb ? form.xpaginaweb : undefined,
+        nlimite: form.nlimite,
+        xcorreo: form.xcorreo ? form.xcorreo : undefined,
         xobservacion: form.xobservacion,
         bactivo: form.bactivo,
+        pislr: form.pislr,
         banks: {
           create: createBankList,
           update: updateBankList,
@@ -1018,24 +998,20 @@ export class ProviderDetailComponent implements OnInit {
         cusuariocreacion: this.currentUser.data.cusuario,
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
-        xproveedor: form.xproveedor,
-        ctipodocidentidad: form.ctipodocidentidad,
+        xnombre: form.xnombre,
         xdocidentidad: form.xdocidentidad,
         xrazonsocial: form.xrazonsocial,
         cestado: form.cestado,
         cciudad: form.cciudad,
         xdireccion: form.xdireccion,
-        xdireccioncorreo: form.xdireccioncorreo,
         xtelefono: form.xtelefono,
-        xfax: form.xfax ? form.xfax : undefined,
         pretencion: form.pretencion ? form.pretencion : undefined,
         centeimpuesto: form.centeimpuesto,
-        ldiascredito: form.ldiascredito,
-        xemail: form.xemail ? form.xemail : undefined,
-        bafiliado: form.bafiliado,
-        xpaginaweb: form.xpaginaweb ? form.xpaginaweb : undefined,
+        nlimite: form.nlimite,
+        xcorreo: form.xcorreo ? form.xcorreo : undefined,
         xobservacion: form.xobservacion,
         bactivo: form.bactivo,
+        pislr: form.pislr,
         banks: createBankList,
         states: createStateList,
         brands: createBrandList,
