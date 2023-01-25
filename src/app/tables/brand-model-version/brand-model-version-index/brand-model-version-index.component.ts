@@ -8,6 +8,7 @@ import { WebServiceConnectionService } from '@services/web-service-connection.se
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { Console } from 'console';
+import { ignoreElements } from 'rxjs/operators';
 
 @Component({
   selector: 'app-brand-model-version-index',
@@ -51,9 +52,10 @@ export class BrandModelVersionIndexComponent implements OnInit {
       xmarca: [''],
       xmodelo: [''],
       xversion: [''],
-      npasajeros: [''],
-      xtrasnmision:[''],
+      npasajero: [''],
+      xtransmision:[''],
       cano:[''],
+      xaccion:['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -65,7 +67,12 @@ export class BrandModelVersionIndexComponent implements OnInit {
       }
       this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
         if(response.data.status){
-
+          this.search_form.get('cano').disable();
+          this.search_form.get('xversion').disable();
+          this.search_form.get('xmarca').disable();
+          this.search_form.get('xmodelo').disable();
+          this.search_form.get('npasajero').disable();
+          this.search_form.get('xtransmision').disable();
           this.initializeDropdownDataRequest();
           if(!response.data.bindice){
             this.router.navigate([`/permission-error`]);
@@ -134,7 +141,6 @@ export class BrandModelVersionIndexComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
-
  }
 
   async getModeloData(event){
@@ -142,6 +148,9 @@ export class BrandModelVersionIndexComponent implements OnInit {
 
     this.keyword;
     this.search_form.get('cmarca').setValue(event.control)
+    if(this.search_form.get('cmarca').value == 0 || this.search_form.get('cmarca').value){
+      this.prueba();
+    }
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
       let params = {
         cpais: this.currentUser.data.cpais,
@@ -164,6 +173,21 @@ export class BrandModelVersionIndexComponent implements OnInit {
              control: request.data.list[i].control  });
         }
         this.modelList.sort((a, b) => a.value > b.value ? 1 : -1)
+      }
+
+      this.prueba();
+    }
+
+    prueba(){
+      if(this.search_form.get('cmarca').value == 0 || this.search_form.get('cmarca').value){
+        console.log('si paso mi rey')
+        console.log(this.search_form.get('cmodelo').value)
+        if(this.search_form.get('cmodelo').value == " "){
+          console.log('pasa por el que está vacio')
+        }
+        if(this.search_form.get('cmodelo').value == 0 || this.search_form.get('cmodelo').value){
+          
+        }
       }
     }
 
@@ -188,7 +212,7 @@ export class BrandModelVersionIndexComponent implements OnInit {
             cano: response.data.list[i].cano, 
             control: response.data.list[i].control,
             npasajero: response.data.list[i].npasajero,
-            xtrasnmision: response.data.list[i].xtrasnmision
+            xtransmision: response.data.list[i].xtransmision
           });
         }
         this.versionList.sort((a, b) => a.value > b.value ? 1 : -1)
@@ -197,79 +221,73 @@ export class BrandModelVersionIndexComponent implements OnInit {
   }
   searchVersion(event){
     this.search_form.get('cversion').setValue(event.control)
-    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
-    this.search_form.get('cano').setValue(version.cano);
-    this.search_form.get('ncapacidad_p').setValue(version.npasajero);
+    //let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    // this.search_form.get('cano').setValue(version.cano);
+    // this.search_form.get('ncapacidad_p').setValue(version.npasajero);
   }
 
 
   onSubmit(form){
-    this.submitted = true;
-    this.loading = true;
+      if(this.search_form.get('xaccion').value == 'detail'){
 
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params = {
-      cpais: this.currentUser.data.cpais,
-      cmarca: this.search_form.get('cmarca').value,
-      cmodelo: this.search_form.get('cmodelo').value,
-      cversion: this.search_form.get('cversion').value,
-    }
-    this.http.post(`${environment.apiUrl}/api/brand/search`, params, options).subscribe((response : any) => {
-      if(response.data.list){
-        this.vehicleList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.vehicleList.push({ 
-            cmarca: response.data.list[i].cmarca,
-            xmarca: response.data.list[i].xmarca,
-            cmodelo: response.data.list[i].cmodelo,
-            xmodelo: response.data.list[i].xmodelo,
-            cversion: response.data.list[i].cversion,
-            xversion: response.data.list[i].xversion,
-            cano: response.data.list[i].cano,
-          });
-        }
-        this.vehicleList.sort((a, b) => a.value > b.value ? 1 : -1)
+
       }
-      this.loading = false;
-    },(err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "No se encontraron contratos pendientes"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'primary';
-      this.alert.show = true;
-      this.loading = false;
-    });
+      else if(this.search_form.get('xaccion').value == 'create'){
+
+
+
+      }
+
+
+ 
   }
 
   goToDetail(event){
+    this.canCreate = true
+    this.submitted = true
+    this.keyword;
+    this.search_form.get('xaccion').setValue('detail');
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+    this.search_form.get('xmarca').enable();
+    this.search_form.get('xmarca').setValue(marca.value);
     let modelo = this.modelList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
-    let version = this.modelList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    this.search_form.get('xmodelo').enable();
+    this.search_form.get('xmodelo').setValue(modelo.value);
+    let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+    this.search_form.get('xversion').setValue(version.value);
+    this.search_form.get('xversion').enable();
+    this.search_form.get('npasajero').setValue(version.npasajero);
+    this.search_form.get('npasajero').enable();
+    this.search_form.get('cano').setValue(version.cano);
+    this.search_form.get('cano').enable();
+    this.search_form.get('xtransmision').setValue(version.xtransmision);
+    this.search_form.get('xtransmision').enable();
+    this.transmissionTypeList.push({ id: version.xtransmision, value: version.xtransmision });
+  }
 
-    console.log(marca,modelo,version)
-  if(marca > 0){
-    this.canEdit = true;
-    this.detail = true;
-    this.search_form.get('cmarca').setValue(marca.value)
+  goToCreate(event){
+    this.canCreate = false
+    this.submitted = true
+    this.keyword;
+    this.search_form.get('xaccion').setValue('create');
+
+  if(this.search_form.get('xmarca').value > 0){
+    console.log('marca')
+
+   
 
    }
-  else if(version > 0){
-    this.canEdit = true;
-          this.search_form.get('cmarca').setValue(marca.value)
-          this.search_form.get('cmodelo').setValue(modelo.value)
-          this.search_form.get('cversion').setValue(version.value)
+   else if(this.search_form.get('xversion').value > 0){
+     console.log('version')
+      
 
   }
-  else if(modelo > 0){
-    this.canEdit = true;
-          this.search_form.get('cmarca').setValue(marca.value)
-          this.search_form.get('cmodelo').setValue(modelo.value)
+   else if(this.search_form.get('xmodelo').value > 0){
+        console.log('modelo')
+    
 
   } 
+
 
 
   }

@@ -14,20 +14,20 @@
                              Marca - Modelo - Versión
                         </div>
                         <div class="col-6">
-                            <button [disabled]="loading" class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
+                            <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate($event)">
                                 {{ "EVENTS.NOTIFICATIONS.CREATE" | translate }}
                             </button>
-                            <button   class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
+                            <button  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
                                 {{ "EVENTS.NOTIFICATIONS.EDIT" | translate }}
                             </button>
-                            <button *ngIf="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
+                            <button *ngIf="submitted" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
                                 Guardar
                             </button>
                         </div>
                     </div>
                 </div>
+              <form [formGroup]="search_form">
                 <div class="card-body">
-                    <form [formGroup]="search_form">
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-outline">
@@ -89,168 +89,80 @@
                                 </div>
                               </div>
                         </div>
-                    </form>
                 </div>
+                <div class="row mt-5 mb-5" >
+                  <div class="col-sm-12">
+                      <div class="card">
+                          <div class="card-header company-card-header">
+                              <div class="row">
+                                  <div class="col-6">
+                                      Lista
+                                  </div>
+                              </div>
+                          </div>
+                           <div class="row" style="padding: 10px;">
+                                    <div class="col-md-3 mb-4 pb-2" >
+                                      <div class="form-outline">
+                                        <label class="form-label required" for="form3Examplev5">Marca</label>
+                                        <input type="text" formControlName="xmarca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xmarca').errors }"  />
+                                        <div *ngIf="submitted && search_form.get('xmarca').errors" class="invalid-feedback">
+                                          <div *ngIf="search_form.get('xmarca').errors.required">Se requiere completar el campo</div>
+                                        </div>
+                                      </div>
+                                    </div>
+          
+                                    <div class="col-md-3 mb-4 pb-2 ">
+                                      <div class="form-outline">
+                                        <label class="form-label required" for="form3Examplev5">Modelo</label>
+                                        <input type="text" formControlName="xmodelo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xmodelo').errors }"  />
+                                        <div *ngIf="submitted && search_form.get('xmodelo').errors" class="invalid-feedback">
+                                          <div *ngIf="search_form.get('xmodelo').errors.required">Se requiere completar el campo</div>
+                                        </div>
+                                      </div>
+                                    </div>
+          
+                                     <div class="col-md-3 mb-4 pb-2" >
+                                      <div class="form-outline">
+                                        <label class="form-label " for="form3Examplev5">Version</label>
+                                        <input type="text" formControlName="xversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xversion').errors }"  />
+                                        <div *ngIf="submitted && search_form.get('xversion').errors" class="invalid-feedback">
+                                          <div *ngIf="search_form.get('xversion').errors.required">Se requiere completar el campo</div>
+                                        </div>
+                                      </div>
+                                    </div>
+          
+                                    <div class="col-md-3 mb-4 pb-2 " >
+                                      <div class="form-outline">
+                                        <label class="form-label required" for="form3Examplev5">Capacidad de Pasajeros</label>
+                                        <input type="number" formControlName="npasajero" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('npasajero').errors }" />
+                                      </div>
+                                    </div>
+          
+                                    <div class="col-md-3 mb-4 pb-2 " >
+                                      <div class="form-outline">
+                                        <label class="form-label required" for="form3Examplev5">Transmisión</label>
+                                        <select formControlName="xtransmision" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtransmision').errors }">
+                                          <!-- <option></option> -->
+                                          <option *ngFor="let transmissionType of transmissionTypeList" value="{{ transmissionType.value }}">{{ transmissionType.value }}</option>
+                                      </select>                            </div>
+                                    </div>
+          
+                                    <div class="col-md-3 mb-4 pb-2 " >
+                                      <div class="form-outline">
+                                        <label class="form-label required" for="form3Examplev5">Año</label>
+                                        <input type="cano" formControlName="cano" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" />
+                                      </div>
+                                    </div>
+                            </div> 
+                      </div>
+                  </div>
+              </div> 
+              </form>
             </div>
         </div>
     </div>
-    <div class="row mt-5 mb-5" >
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header company-card-header">
-                    <div class="row">
-                        <div class="col-6">
-                            Lista
-                        </div>
-                    </div>
-                </div>
-                 <div class="row" style="padding: 10px;">
-                          <div class="col-md-3 mb-4 pb-2" >
-                            <div class="form-outline">
-                              <label class="form-label required" for="form3Examplev5">Marca</label>
-                              <input type="text" formControlName="cmarca" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors }"  />
-                              <div *ngIf="submitted && search_form.get('cmarca').errors" class="invalid-feedback">
-                                <div *ngIf="search_form.get('cmarca').errors.required">Se requiere completar el campo</div>
-                              </div>
-                            </div>
-                          </div>
 
-                          <div class="col-md-3 mb-4 pb-2 ">
-                            <div class="form-outline">
-                              <label class="form-label required" for="form3Examplev5">Modelo</label>
-                              <input type="text" formControlName="cmodelo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }"  />
-                              <div *ngIf="submitted && search_form.get('cmodelo').errors" class="invalid-feedback">
-                                <div *ngIf="search_form.get('cmodelo').errors.required">Se requiere completar el campo</div>
-                              </div>
-                            </div>
-                          </div>
-
-                           <div class="col-md-3 mb-4 pb-2" >
-                            <div class="form-outline">
-                              <label class="form-label " for="form3Examplev5">Version</label>
-                              <input type="text" formControlName="cversion" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }"  />
-                              <div *ngIf="submitted && search_form.get('cversion').errors" class="invalid-feedback">
-                                <div *ngIf="search_form.get('cversion').errors.required">Se requiere completar el campo</div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div class="col-md-3 mb-4 pb-2 " >
-                            <div class="form-outline">
-                              <label class="form-label required" for="form3Examplev5">Capacidad de Pasajeros</label>
-                              <input type="number" formControlName="npasajeros" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('npasajeros').errors }" />
-                            </div>
-                          </div>
-
-                          <div class="col-md-3 mb-4 pb-2 " >
-                            <div class="form-outline">
-                              <label class="form-label required" for="form3Examplev5">Transmisión</label>
-                              <select formControlName="xtransmision" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtransmision').errors }">
-                                <!-- <option></option> -->
-                                <option *ngFor="let transmissionType of transmissionTypeList" value="{{ transmissionType.value }}">{{ transmissionType.value }}</option>
-                            </select>                            </div>
-                          </div>
-
-                          <div class="col-md-3 mb-4 pb-2 " >
-                            <div class="form-outline">
-                              <label class="form-label required" for="form3Examplev5">Año</label>
-                              <input type="cano" formControlName="cano" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" />
-                            </div>
-                          </div>
-                  </div> 
-            </div>
-        </div>
-    </div> 
 </div>
-    <!-- <div class="row mt-5">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card" style= "width: 463px;height: 475px;margin-left: -47px;">
-                        <div class="card-header company-card-header">
-                            <div class="row">
-                                <div class="col-6">
-                                    Buscar Marca, Modelo, Version
-                                </div>
-                                <div class="col-6">
-                                    <button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
-                                        {{ "EVENTS.NOTIFICATIONS.CREATE" | translate }}
-                                    </button>
-                                    <button class="btn company-detail-button float-right" type="button" (click)="goToDetail()">
-                                        {{ "EVENTS.NOTIFICATIONS.EDIT" | translate }}
-                                    </button>
-                                    <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
-                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                        Buscar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <form [formGroup]="search_form">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Marca</label>
-                                            <select formControlName="cmarca" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmarca').errors }">
-                                                <option></option>
-                                                <option *ngFor="let brand of brandList" value="{{ brand.id }}">{{ brand.value }}</option>
-                                            </select>
-                                            <div *ngIf="submitted && search_form.get('cmarca').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Modelo</label>
-                                            <select formControlName="cmodelo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cmodelo').errors }">
-                                                <option></option>
-                                                <option *ngFor="let model of modelList" value="{{ model.id }}">{{ model.value }}</option>
-                                            </select>
-                                            <div *ngIf="submitted && search_form.get('cmodelo').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Version</label>
-                                            <select formControlName="cversion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cversion').errors }">
-                                                <option></option>
-                                                <option *ngFor="let version of versionList" value="{{ version.id }}">{{ version.value }}</option>
-                                            </select>
-                                            <div *ngIf="submitted && search_form.get('cversion').errors"  class="invalid-feedback">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6" style="margin-left: -218px;">
-                    <div class="card" style="width: 964px;">
-                        <div class="card-header company-card-header">
-                            <div class="row">
-                                <div class="col-6">
-                                    Lista
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="container">
-                                <ag-grid-angular style="width: 100%; height: 468px;" class="ag-theme-alpine" [rowData]="vehicleList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                                    <ag-grid-column headerName="Marca" field="xmarca" [width]="250" [sortable]="true"></ag-grid-column>
-                                    <ag-grid-column headerName="Modelo" field="xmodelo" [width]="250" [sortable]="true"></ag-grid-column>
-                                    <ag-grid-column headerName="Version" field="xversion" [width]="250" [sortable]="true"></ag-grid-column>
-                                    <ag-grid-column headerName="Año" field="cano" [width]="150" [sortable]="true"></ag-grid-column>
-                                </ag-grid-angular>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 
 <footer>    
   <div >       
