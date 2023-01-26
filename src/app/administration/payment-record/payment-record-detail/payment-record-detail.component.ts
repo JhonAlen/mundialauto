@@ -161,6 +161,7 @@ export class PaymentRecordDetailComponent implements OnInit {
             xnombre: response.data.settlement[i].xnombre,
             mmontofactura: response.data.settlement[i].mmontofactura
           });
+          console.log(this.settlementList)
           this.sumafactura = 0;
           this.sumafactura += response.data.settlement[i].mmontofactura;
           this.moneda = response.data.settlement[i].xmoneda;

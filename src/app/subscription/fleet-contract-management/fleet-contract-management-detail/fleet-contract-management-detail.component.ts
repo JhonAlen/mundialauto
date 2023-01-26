@@ -111,17 +111,11 @@ export class FleetContractManagementDetailComponent implements OnInit {
   xrif : string;
   xdomicilio : string;
   xzona_postal : string;
-  xzona_postal_propietario : string;
+  
   xtelefono : string;
   xcorreo : string;
   xestado : string;
   xciudad : string;
-  xclase: string;
-  xtransmision: string;
-  nkilometraje: string;
-  xuso: string;
-  xtipovehiculo: string;
-
 
 
 
@@ -169,6 +163,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
   montorcv: boolean = true;
   cobertura: boolean = false;
   grua: boolean = false;
+  xuso: any;
+  xtipovehiculo: any;
+  xclase: any;
+  xtransmision: any;
+  xzona_postal_propietario: any;
+  nkilometraje: any;
 
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -265,12 +265,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       ccobertura: [''],
       xanexo: [''],
       xobservaciones: [''],
-      xtransmision: [''],
-      ctomador: [''],
-      xzona_postal: [''],
-      xtipo: [''],
-      nkilometraje: [''],
-      xclase: ['']
+      xtransmision: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -2466,7 +2461,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
+              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 / 0414-4128237 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
         },

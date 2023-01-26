@@ -136,15 +136,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-4 mb-4 pb-2">
-                      <div class="form-outline form-white">
-                        <label class="form-label required" for="form3Examplea8">Zona Postal</label>
-                        <input type="text" formControlName="xzona_postal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xzona_postal').errors }" />
-                        <div *ngIf="submitted && search_form.get('xzona_postal').errors" class="invalid-feedback">
-                          <div *ngIf="search_form.get('xzona_postal').errors.required">Se requiere completar el campo</div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -508,25 +499,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-12 col-md-4">
-                    <div class="form-outline">
-                        <label class="form-label" for="form3Examplev5">Tomador</label>
-                        <div >
-                        <ng-autocomplete  [data]="takersList" [searchKeyword]="keyword" 
-                                        placeholder="Seleccionar Tomador" (selected)='selectedTaker($event)'
-                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                        </ng-autocomplete>
-                    
-                        <ng-template #itemTemplate let-item >
-                            <a [innerHTML]="item.value"></a>
-                        </ng-template>
-                    
-                        <ng-template #notFoundTemplate let-notFound  >
-                            <div [innerHTML]="notFound"></div>
-                        </ng-template>
-                      </div>
-                    </div>
-                  </div> 
                   <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Fecha de inicio</label>
