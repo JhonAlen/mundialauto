@@ -37,6 +37,8 @@ export class PaymentRecordDetailComponent implements OnInit {
   sumafactura;
   bordenservicio: boolean = false;
   bfiniquito: boolean = false;
+  moneda;
+  bcalculo: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -60,7 +62,12 @@ export class PaymentRecordDetailComponent implements OnInit {
       ffactura: [''],
       frecepcion: [''],
       fvencimiento: [''],
-      msumafactura: ['']
+      msumafactura: [''],
+      pretencion: [''],
+      pislr: [''],
+      porcentajeretencion: [''],
+      porcentajeimpuesto: [''],
+      pimpuesto: [''],
     });
     this.payment_form.get('msumafactura').disable();
     this.currentUser = this.authenticationService.currentUserValue;
@@ -129,13 +136,16 @@ export class PaymentRecordDetailComponent implements OnInit {
             corden: response.data.serviceOrder[i].corden,
             xnombre: response.data.serviceOrder[i].xnombre,
             mmontofactura: response.data.serviceOrder[i].mmontofactura,
-            xtipopagador: response.data.serviceOrder[i].xtipopagador
+            xtipopagador: response.data.serviceOrder[i].xtipopagador,
+            xmoneda: response.data.serviceOrder[i].xmoneda
           });
           this.sumafactura = 0;
           this.sumafactura += response.data.serviceOrder[i].mmontofactura;
+          this.moneda = response.data.serviceOrder[i].xmoneda;
         }
         if(this.serviceOrderList[0]){
-          this.payment_form.get('msumafactura').setValue(this.sumafactura)
+          this.payment_form.get('msumafactura').setValue(this.sumafactura + ' ' + this.moneda)
+          console.log(this.payment_form.get('msumafactura').value)
           this.bordenservicio = true;
         }
       }
@@ -153,9 +163,10 @@ export class PaymentRecordDetailComponent implements OnInit {
           });
           this.sumafactura = 0;
           this.sumafactura += response.data.settlement[i].mmontofactura;
+          this.moneda = response.data.settlement[i].xmoneda;
         }
         if(this.settlementList[0]){
-          this.payment_form.get('msumafactura').setValue(this.sumafactura)
+          this.payment_form.get('msumafactura').setValue(this.sumafactura + ' ' + this.moneda)
           this.bfiniquito = true;
         }
 
@@ -197,6 +208,19 @@ export class PaymentRecordDetailComponent implements OnInit {
         this.payment_form.get('frecepcion').disable();
         this.payment_form.get('fvencimiento').setValue(new Date(response.data.fvencimiento).toISOString().substring(0, 10))
         this.payment_form.get('fvencimiento').disable();
+        this.payment_form.get('pretencion').setValue(response.data.pretencion)
+        this.payment_form.get('pretencion').disable();
+        this.payment_form.get('pislr').setValue(response.data.pislr)
+        this.payment_form.get('pislr').disable();
+        this.payment_form.get('pimpuesto').setValue(response.data.pimpuesto)
+        this.payment_form.get('pimpuesto').disable();
+
+        //máscara
+        this.payment_form.get('porcentajeretencion').setValue(this.payment_form.get('pretencion').value + '%');
+        this.payment_form.get('porcentajeretencion').disable();
+        this.payment_form.get('porcentajeimpuesto').setValue(this.payment_form.get('pislr').value + '%');
+        this.payment_form.get('porcentajeimpuesto').disable();
+      
       }
     },
     (err) => {
@@ -211,6 +235,10 @@ export class PaymentRecordDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+  }
+
+  calculationBill(){
+    this.bcalculo = true;
   }
 
 }

@@ -289,6 +289,8 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
     this.danos = this.popup_form.get('xrepuesto').value;
     this.popup_form.get('xdanos').setValue(`${this.danos}`);
     this.popup_form.get('xdanos').disable();
+    console.log(this.quote.mmontocotizacion)
+    console.log(this.quote.repuestos)
   }
 
   onSubmit(form){
