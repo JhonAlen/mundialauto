@@ -5,12 +5,12 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
-import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as pdfMake from 'pdfmake/build/pdfmake';
-// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii-dc';
+import { initUbii } from '@ubiipagos/boton-ubii-dc';
+//import { initUbii } from '@ubiipagos/boton-ubii';
 
 
 @Component({
@@ -698,7 +698,7 @@ async getmetodologia(){
               amount_bs:  prima_bs,
               concept: "COMPRA",
               principal: "ds",
-              clientId:"1c134b42-70e1-11ed-ae36-005056967039",
+              clientId:"f2514eda-610b-11ed-8e56-000c29b62ba1",
               orderId: orden
             },
             this.callbackFn.bind(this),
@@ -841,9 +841,93 @@ async getmetodologia(){
     });
   }
 
+  async onSubmitUbii() {
+    this.search_form.disable();
+      let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+      let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+      let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
+      let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+      const response = await fetch(`${environment.apiUrl}/api/fleet-contract-management/create/Contract-Broker`, {
+        "method": "POST",
+        "headers": {
+          "CONTENT-TYPE": "Application/json",
+          "Authorization": `Bearer ${this.currentUser.data.csession}`
+        },
+        "body": JSON.stringify({
+          icedula: this.search_form.get('icedula').value,
+          xrif_cliente: this.search_form.get('xrif_cliente').value,
+          xnombre: this.search_form.get('xnombre').value,
+          xapellido: this.search_form.get('xapellido').value,
+          xtelefono_emp: this.search_form.get('xtelefono_emp').value,
+          xtelefono_prop: this.search_form.get('xtelefono_prop').value,
+          email: this.search_form.get('email').value,
+          cpais:this.search_form.get('cpais').value,
+          cestado: this.search_form.get('cestado').value,
+          cciudad: this.search_form.get('cciudad').value,
+          xdireccionfiscal: this.search_form.get('xdireccionfiscal').value,
+          xplaca: this.search_form.get('xplaca').value,
+          cmarca: marca.id,
+          cmodelo: modelo.id,
+          cversion: version.id,
+          cano: this.search_form.get('cano').value,
+          ncapacidad_p: this.search_form.get('ncapacidad_p').value,
+          xcolor:this.search_form.get('xcolor').value,    
+          xserialcarroceria: this.search_form.get('xserialcarroceria').value,
+          xserialmotor: this.search_form.get('xserialmotor').value,  
+          xcobertura: this.search_form.get('xcobertura').value,
+          msuma_aseg: this.search_form.get('msuma_aseg').value,
+          pcasco: this.search_form.get('pcasco').value,
+          mprima_casco: this.search_form.get('mprima_casco').value,
+          mcatastrofico: this.search_form.get('mcatastrofico').value,
+          msuma_blindaje: this.search_form.get('msuma_blindaje').value,
+          mprima_blindaje: this.search_form.get('mprima_blindaje').value,
+          mprima_bruta: this.search_form.get('mprima_bruta').value,
+          pcatastrofico: this.search_form.get('pcatastrofico').value,
+          pmotin: this.search_form.get('pmotin').value,
+          mmotin: this.search_form.get('mmotin').value,
+          pblindaje: this.search_form.get('pblindaje').value,
+          cplan: metodologiaPago.id,
+          cmetodologiapago: this.search_form.get('cmetodologiapago').value,
+          femision: this.search_form.get('femision').value,
+          ncobro: this.search_form.get('ncobro').value,
+          mgrua: this.search_form.get('mgrua').value,
+          ccodigo_ubii: this.search_form.get('ccodigo_ubii').value,
+          ccorredor:  this.search_form.get('ccorredor').value,
+          xcedula: this.search_form.get('xrif_cliente').value,
+          ctipopago: this.ctipopago,
+          xreferencia: this.xreferencia,
+          fcobro: this.fcobro,
+          mprima_pagada: this.mprima_pagada,
+          xpago: this.search_form.get('xpago').value,
+          ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+          ctomador: this.search_form.get('ctomador').value,
+          xzona_postal: this.search_form.get('xzona_postal').value,
+          xuso: this.search_form.get('xuso').value,
+          xtipo: this.search_form.get('xtipo').value,
+          nkilometraje: this.search_form.get('nkilometraje').value,
+          xclase: this.search_form.get('xclase').value,
+          cusuario: this.currentUser.data.cusuario,
+          payment: this.paymentList,
+          accessory: this.accessoryList
+        }) 
+      });
+      let res = await response.json();
+      if (res.data.status) {
+        this.ccontratoflota = res.data.ccontratoflota;
+        this.fdesde_pol = res.data.fdesde_pol;
+        this.fhasta_pol = res.data.fhasta_pol;
+        this.fdesde_rec = res.data.fdesde_rec;
+        this.fhasta_rec = res.data.fhasta_rec;
+        this.xrecibo = res.data.xrecibo;
+        this.fsuscripcion = res.data.fsuscripcion;
+        this.femision = res.data.femision;
+      }
+  }
+
   async callbackFn(answer) {
 
     if(answer.data.R == 0){
+      await this.onSubmitUbii();
       let ctipopago;
       if(answer.data.method == "ZELLE"){
         ctipopago = 4;
@@ -854,17 +938,15 @@ async getmetodologia(){
       let datetimeformat = answer.data.date.split(' ');
       let dateformat = datetimeformat[0].split('/');
       let fcobro = dateformat[2] + '-' + dateformat[1] + '-' + dateformat[0] + ' ' + datetimeformat[1];
-       
       const response = await fetch(`${environment.apiUrl}/api/fleet-contract-management/ubii/update`, {
         "method": "POST",
         "headers": {
           "CONTENT-TYPE": "Application/json",
-          "X-CLIENT-ID": "f2514eda-610b-11ed-8e56-000c29b62ba1",
-          "X-CLIENT-CHANNEL": "BTN-API",
-          "Authorization": "SKDJK23J4KJ2352304923059"
+          "Authorization": `Bearer ${this.currentUser.data.csession}`
         },
         "body": JSON.stringify({
           paymentData: {
+            ccontratoflota: this.ccontratoflota,
             orderId: answer.data.orderID,
             ctipopago: ctipopago,
             xreferencia: answer.data.ref,
@@ -900,7 +982,6 @@ async getmetodologia(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     if (this.validateForm(this.search_form) == false) {
-      closeUbii();
       console.log('entro');
     } else {
       if (!this.ccontratoflota) {
@@ -984,11 +1065,9 @@ async getmetodologia(){
               this.getFleetContractDetail(this.ccontratoflota);
             }
           } else {
-            closeUbii()
           }
         },
         (err) => {
-          closeUbii();
           let code = err.error.data.code;
           let message;
           if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
@@ -1269,19 +1348,18 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [70, 51, 80, '*'],
+            widths: [70, 51, 80, 80, 80, '*'],
             body: [
-              [{text: 'Fecha de Suscripción:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.fsuscripcion), rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, false]}, {text: `Sucursal ${this.xsucursalemision}`, border: [false, false, true, false]}],
-              [{}, {}, {text: 'Sucursal Suscriptora:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.xsucursalsuscriptora}`, border: [false, false, true, true]}]
+              [{text: 'Fecha de Suscripción:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.fsuscripcion), alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.xsucursalemision}`, border: [false, false, false, true]}, {text: 'Sucursal Suscriptora:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.xsucursalsuscriptora}`, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [130, 80, 30, 55, 30, 55, '*'],
+            widths: [130, 80, 50, 80, '*'],
             body: [
-              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'Vigencia del Recibo:', bold: true, border: [false, false, false, false]}, {text: 'Desde:', bold: true, border: [false, false, false, false]}, {text: `${this.changeDateFormat(this.fdesde_rec)}`, border: [false, false, false, false]}, {text: 'Hasta:', bold: true, border: [false, false, false, false]}, {text: `${this.changeDateFormat(this.fhasta_rec)}`, border: [false, false, false, false]}, {text: 'Ambas a las 12 AM.', border: [false, false, true, false]}]
+              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'Tipo de Movimiento:', bold: true, border: [false, false, false, false]}, {text: 'EMISIÓN', border: [false, false, false, false]}, {text: 'Frecuencia de Pago:', bold: true, border: [false, false, false, false]}, {text: this.getPaymentMethodology(this.cmetodologiapago), border: [false, false, true, false]}]
             ]
           }
         },
@@ -1290,15 +1368,14 @@ async getmetodologia(){
           table: {
             widths: [70, 51, 80, 50, 80, '*'],
             body: [
-              [{text: 'Fecha de Emisión:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Tipo de Movimiento:', bold: true, border: [false, false, false, false]}, {text: 'EMISIÓN', border: [false, false, false, false]}, {text: 'Frecuencia de Pago:', bold: true, border: [false, false, false, false]}, {text: this.getPaymentMethodology(this.cmetodologiapago), border: [false, false, true, false]}],
-              [{}, {}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Prima Total', bold: true, border: [false, false, false, true]}, {text: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal), border: [false, false, true, true]}]
+              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Prima Total', bold: true, border: [false, false, false, true]}, {text: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal), border: [false, false, true, true]} ]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [60, 150, 70, 60, '*', '*'],
+            widths: [40, 170, 70, 70, '*', '*'],
             body: [
               [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, border: [false, false, true, false]}]
             ]
@@ -1307,7 +1384,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, 24, '*'],
+            widths: [40, 310, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1316,7 +1393,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 130, 40, 24, 30, 50, 24, '*'],
             body: [
               [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
             ]
@@ -1334,7 +1411,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [24, 134, 50, 24, 50, 24, '*', '*'],
+            widths: [24, 130, 50, 24, 50, 24, '*', '*'],
             body: [
               [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Zona Cobro:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, true, true]}]
             ]
@@ -1343,7 +1420,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [44, 296, '*', '*'],
             body: [
               [{text: 'ASEGURADO:', bold: true, border: [true, false, false, false]}, {text: `${this.xnombrepropietario} ${this.xapellidopropietario}`, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadpropietario, border: [false, false, true, false]}]
             ]
@@ -1352,7 +1429,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, 24, '*'],
+            widths: [40, 310, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadopropietario, border: [false, false, true, false]}]
             ]
@@ -1361,7 +1438,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 130, 40, 24, 30, 50, 24, '*'],
             body: [
               [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
@@ -1460,12 +1537,12 @@ async getmetodologia(){
           table: {
             widths: [150, 100, 60, 50, '*'],
             body: [
-              [{text: 'Prima Total', colSpan: 4, alignment: 'right', bold: true, border: [true, false, true, false]}, {}, {}, {}, {text: `${this.xmoneda} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal)}`, alignment: 'right', bold: true, border: [false, false, true, false]}],
-              [{text: 'Prima a Prorrata:', colSpan: 4, alignment: 'right', bold: true, border: [true, true, true, false]}, {}, {}, {}, {text: ' '/*`${this.detail_form.get('xmoneda').value} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimaprorrata)}`*/, alignment: 'right', bold: true, border: [false, true, true, false]}],
+              [{text: 'Prima Total', colSpan: 4, alignment: 'right', bold: true, border: [true, false, true, false]}, {}, {}, {}, {text: `${this.xmoneda} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal)}`, alignment: 'right', bold: true, border: [false, false, true, false]}]/*,
+              [{text: 'Prima a Prorrata:', colSpan: 4, alignment: 'right', bold: true, border: [true, true, true, false]}, {}, {}, {}, {text: ' '`${this.detail_form.get('xmoneda').value} ${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimaprorrata)}`, alignment: 'right', bold: true, border: [false, true, true, false]}],*/
             ]
           }
         },
-        {
+        /*{
           style: 'data',
           table: {
             widths: ['*'],
@@ -1482,7 +1559,7 @@ async getmetodologia(){
               [{text: this.xnombrecliente, alignment: 'center', bold: true, border: [true, false, false, false]}, {text: 'C.I.', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, alignment: 'center', border: [false, false, true, false]}]
             ]
           }
-        },
+        },*/
         {
           style: 'data',
           table: {
@@ -1562,19 +1639,18 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [70, 51, 80, '*'],
+            widths: [70, 51, 80, 80, 80, '*'],
             body: [
-              [{text: 'Fecha de Suscripción:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.fsuscripcion), rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, false]}, {text: `Sucursal ${this.xsucursalemision}`, border: [false, false, true, false]}],
-              [{}, {}, {text: 'Sucursal Suscriptora:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.xsucursalsuscriptora}`, border: [false, false, true, true]}]
+              [{text: 'Fecha de Suscripción:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.fsuscripcion), alignment: 'center', border: [false, false, true, true]}, {text: 'Sucursal Emisión:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.xsucursalemision}`, border: [false, false, false, true]}, {text: 'Sucursal Suscriptora:', bold: true, border: [false, false, false, true]}, {text: `Sucursal ${this.xsucursalsuscriptora}`, border: [false, false, true, true]}]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [130, 80, 30, 55, 30, 55, '*'],
+            widths: [130, 80, 50, 80, '*'],
             body: [
-              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'Vigencia del Recibo:', bold: true, border: [false, false, false, false]}, {text: 'Desde:', bold: true, border: [false, false, false, false]}, {text: `${this.changeDateFormat(this.fdesde_rec)}`, border: [false, false, false, false]}, {text: 'Hasta:', bold: true, border: [false, false, false, false]}, {text: `${this.changeDateFormat(this.fhasta_rec)}`, border: [false, false, false, false]}, {text: 'Ambas a las 12 AM.', border: [false, false, true, false]}]
+              [{text: 'Datos del Recibo', alignment: 'center', fillColor: '#ababab', bold: true, border: [true, false, true, true]}, {text: 'Tipo de Movimiento:', bold: true, border: [false, false, false, false]}, {text: 'EMISIÓN', border: [false, false, false, false]}, {text: 'Frecuencia de Pago:', bold: true, border: [false, false, false, false]}, {text: this.getPaymentMethodology(this.cmetodologiapago), border: [false, false, true, false]}]
             ]
           }
         },
@@ -1583,15 +1659,14 @@ async getmetodologia(){
           table: {
             widths: [70, 51, 80, 50, 80, '*'],
             body: [
-              [{text: 'Fecha de Emisión:', rowSpan: 2, bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), rowSpan: 2, alignment: 'center', border: [false, false, true, true]}, {text: 'Tipo de Movimiento:', bold: true, border: [false, false, false, false]}, {text: 'EMISIÓN', border: [false, false, false, false]}, {text: 'Frecuencia de Pago:', bold: true, border: [false, false, false, false]}, {text: this.getPaymentMethodology(this.cmetodologiapago), border: [false, false, true, false]}],
-              [{}, {}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Prima Total', bold: true, border: [false, false, false, true]}, {text: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal), border: [false, false, true, true]}]
+              [{text: 'Fecha de Emisión:', bold: true, border: [true, false, true, true]}, {text: this.changeDateFormat(this.femision), alignment: 'center', border: [false, false, true, true]}, {text: 'Moneda:', bold: true, border: [false, false, false, true]}, {text: this.xmoneda, border: [false, false, false, true]}, {text: 'Prima Total', bold: true, border: [false, false, false, true]}, {text: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mprimatotal), border: [false, false, true, true]} ]
             ]
           }
         },
         {
           style: 'data',
           table: {
-            widths: [60, 300, '*', '*'],
+            widths: [40, 300, '*', '*'],
             body: [
               [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:'/*, rowSpan: 2*/, bold: true, border: [false, false, false, true]}, {text: this.xrif/*, rowSpan: 2*/, border: [false, false, true, true]}]/*,
               [{text: 'Índole o Profesión:', bold: true, border: [true, false, false, true]}, {text: this.xprofesion, border: [false, false, false, true]}, {}, {}]*/
@@ -1601,7 +1676,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, 24, '*'],
+            widths: [40, 310, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
@@ -1610,7 +1685,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [24, 134, 40, 20, 30, 50, 24, '*'],
+            widths: [24, 130, 40, 24, 30, 50, 24, '*'],
             body: [
               [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudad, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: this.xzona_postal, border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xcorreo, border: [false, false, true, true]}]
             ]
@@ -1637,7 +1712,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, 24, '*'],
+            widths: [44, 296, '*', '*'],
             body: [
               [{text: 'ASEGURADO:', bold: true, border: [true, false, false, false]}, {text: `${this.xnombrepropietario} ${this.xapellidopropietario}`, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadpropietario, border: [false, false, true, false]}]
             ]
@@ -1646,7 +1721,7 @@ async getmetodologia(){
         {
           style: 'data',
           table: {
-            widths: [60, 300, 24, '*'],
+            widths: [40, 310, 24, '*'],
             body: [
               [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionpropietario, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadopropietario, border: [false, false, true, false]}]
             ]
