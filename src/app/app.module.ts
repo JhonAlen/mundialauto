@@ -315,6 +315,7 @@ import { PolicyCancellationsComponent } from './subscription/policy-cancellation
 import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
 import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
+import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -612,7 +613,8 @@ export function HttpLoaderFactory(http: HttpClient){
     PolicyCancellationsComponent,
     CauseForCancellationComponent,
     TakersIndexComponent,
-    TakersDetailComponent
+    TakersDetailComponent,
+    PendingPaymentsComponent
   ],
   imports: [
     BrowserModule,
