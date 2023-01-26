@@ -2078,7 +2078,7 @@ OperatioValidationPlate(){
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
+              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 / 0414-4128237 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
         },
