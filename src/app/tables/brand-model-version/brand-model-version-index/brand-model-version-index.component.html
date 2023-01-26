@@ -14,9 +14,9 @@
                              Marca - Modelo - Versión
                         </div>
                         <div class="col-6">
-                            <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate($event)">
+                            <!-- <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate($event)">
                                 {{ "EVENTS.NOTIFICATIONS.CREATE" | translate }}
-                            </button>
+                            </button> -->
                             <button  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
                                 {{ "EVENTS.NOTIFICATIONS.EDIT" | translate }}
                             </button>
@@ -147,12 +147,22 @@
                                       </select>                            </div>
                                     </div>
           
-                                    <div class="col-md-3 mb-4 pb-2 " >
+                                    <div class="col-md-2 mb-4 pb-2 " >
                                       <div class="form-outline">
                                         <label class="form-label required" for="form3Examplev5">Año</label>
                                         <input type="cano" formControlName="cano" class="form-control form-control-lg"  [ngClass]="{ 'is-invalid' : submitted && search_form.get('cano').errors }" />
                                       </div>
                                     </div>
+                                    
+                              <div class="col-md-3 mb-4 pb-2">
+                                <div class="form-group form-check">
+                                    <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && search_form.get('bactivo').errors }">
+                                    <label>{{ "TABLES.BRANDS.ACTIVE" | translate }}</label>
+                                    <div *ngIf="submitted && search_form.get('bactivo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('bactivo').errors.required">{{ "TABLES.BRANDS.REQUIREDACTIVE" | translate }}</div>
+                                    </div>
+                                </div>
+                            </div>
                             </div> 
                       </div>
                   </div>
