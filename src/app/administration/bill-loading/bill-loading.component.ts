@@ -263,6 +263,7 @@ export class BillLoadingComponent implements OnInit {
   }
 
   addServiceOrder(){
+    console.log(this.bill_form.get('crecibidor').value)
     let orden = { cproveedor: this.bill_form.get('cproveedor').value, ccliente: this.bill_form.get('crecibidor').value };
     const modalRef = this.modalService.open(BillLoadingServiceOrderComponent, { size: 'xl' });
     modalRef.componentInstance.orden = orden;
@@ -367,7 +368,7 @@ export class BillLoadingComponent implements OnInit {
       this.bfiniquito = false;
       this.showEditButton = true;
       this.showSaveButton = true;
-      this.bill_form.get('crecibidor').setValue(this.bill_form.get('cproveedor').value)
+      //this.bill_form.get('crecibidor').setValue(this.bill_form.get('cproveedor').value)
     }
   }
 

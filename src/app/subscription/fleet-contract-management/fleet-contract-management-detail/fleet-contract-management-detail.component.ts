@@ -16,6 +16,7 @@ import { environment } from '@environments/environment';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Console } from 'console';
+import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 /*
 pdfMake.fonts = {
@@ -2170,7 +2171,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           }
         },
         {
-          style: 'data',
+          style: 'prueba',
           table: {
             widths: ['*'],
             body: [
@@ -2602,6 +2603,10 @@ export class FleetContractManagementDetailComponent implements OnInit {
           color: 'gray'
         },
         data: {
+          fontSize: 7
+        },
+        prueba: {
+          alignment: 'justify',
           fontSize: 7
         }
       }

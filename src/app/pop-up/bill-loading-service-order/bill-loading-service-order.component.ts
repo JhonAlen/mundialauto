@@ -83,7 +83,7 @@ export class BillLoadingServiceOrderComponent implements OnInit {
         this.alert.show = true;
       });
     }
-    //Buscar los accesorios
+    //Buscar las ordenes de servicios
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -92,6 +92,7 @@ export class BillLoadingServiceOrderComponent implements OnInit {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
     };
+    console.log(params)
     this.http.post(`${environment.apiUrl}/api/administration/service-order`, params, options).subscribe((response: any) => {
       if(response.data.list){
         this.serviceOrderList = [];

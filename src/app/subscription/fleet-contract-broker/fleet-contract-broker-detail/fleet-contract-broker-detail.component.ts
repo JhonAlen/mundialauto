@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
