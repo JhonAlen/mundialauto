@@ -33,6 +33,8 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   marcaList: any[] = [];
   modeloList: any[] = [];
   TypeVehicleList: any[] = [];
+  TypeVehicle: any[] = [];
+  ListClase: any[] = [];
   coberturaList: any[] = [];
   versionList: any[] = [];
   corredorList: any[] = [];
@@ -232,8 +234,8 @@ async ngOnInit(): Promise<void>{
       binternacional: [''],
       ctomador: [''],
       xuso: [''],
-      xclase: [''],
-      xtipo: [''],
+      cclase: [''],
+      ctipovehiculo: [''],
       xzona_postal:[''],
       nkilometraje: [''],
     });
@@ -291,6 +293,8 @@ async initializeDropdownDataRequest(){
     this.getLastExchangeRate();
     this.getTypeVehicle();
     this.getTakersData();
+    this.VehicleData();
+    this.ClaseData();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -526,7 +530,7 @@ async getPlanData(){
     }
     },);
   }
-async getTypeVehicle(){
+  async getTypeVehicle(){
     let params =  {
       cpais: this.currentUser.data.cpais,
       ccompania: this.currentUser.data.ccompania,
@@ -545,7 +549,43 @@ async getTypeVehicle(){
       }
       },);
   }
+  async VehicleData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
   
+    this.http.post(`${environment.apiUrl}/api/valrep/vehicle/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicle.push({ 
+            id: response.data.list[i].ctipovehiculo,
+            value: response.data.list[i].xtipovehiculo,
+          });
+        }
+      }
+      },);
+  }
+  async ClaseData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/clase/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.ListClase = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.ListClase.push({ 
+            id: response.data.list[i].cclase,
+            value: response.data.list[i].xclase,
+          });
+        }
+      }
+      },);
+  }
 async getColor(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -625,7 +665,7 @@ async getmetodologia(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params =  {
-      xtipo: this.search_form.get('xtipo').value,  
+      ctipovehiculo: this.search_form.get('ctipovehiculo').value,  
       xmarca: marca.value,
       xmodelo: modelo.value,
       cano: this.search_form.get('cano').value,
@@ -970,9 +1010,9 @@ OperatioValidationPlate(){
           ctomador: this.search_form.get('ctomador').value,
           xzona_postal: this.search_form.get('xzona_postal').value,
           xuso: this.search_form.get('xuso').value,
-          xtipo: this.search_form.get('xtipo').value,
+          ctipovehiculo: this.search_form.get('ctipovehiculo').value,
           nkilometraje: this.search_form.get('nkilometraje').value,
-          xclase: this.search_form.get('xclase').value,
+          cclase: this.search_form.get('cclase').value,
           cusuario: this.currentUser.data.cusuario,
           payment: this.paymentList,
           accessory: this.accessoryList
@@ -1167,8 +1207,8 @@ OperatioValidationPlate(){
             ncobro: form.ncobro,
             mgrua: form.mgrua,
             xuso: form.xuso,
-            xclase: form.xclase,
-            xtipo: form.xtipo,
+            cclase: form.cclase,
+            ctipovehiculo: form.ctipovehiculo,
             xzona_postal: form.xzona_postal,
             nkilometraje: form.nkilometraje,
             ccodigo_ubii:form.ccodigo_ubii,
