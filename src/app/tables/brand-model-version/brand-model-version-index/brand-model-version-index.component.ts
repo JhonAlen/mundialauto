@@ -18,6 +18,7 @@ import { ignoreElements } from 'rxjs/operators';
 export class BrandModelVersionIndexComponent implements OnInit {
 
   currentUser;
+  code;
   search_form: UntypedFormGroup;
   loading: boolean = false;
   canCreate: boolean = false;
@@ -206,7 +207,7 @@ export class BrandModelVersionIndexComponent implements OnInit {
     this.search_form.get('cversion').setValue(event.control)
   }
   goToDetail(event){
-    //this.canCreate = true
+    this.canCreate = true
     this.submitted = true
     this.keyword;
     this.search_form.get('xaccion').setValue('detail');
@@ -233,23 +234,43 @@ export class BrandModelVersionIndexComponent implements OnInit {
     this.submitted = true
     this.keyword;
     this.search_form.get('xaccion').setValue('create');
+    let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
+    let modelo = this.modelList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
 
-  if(this.search_form.get('xmarca').value > 0){
-    console.log('marca')
-
-   
-
-   }
-   else if(this.search_form.get('xversion').value > 0){
-     console.log('version')
-      
-
+    if(this.search_form.get('cmarca').value == ""){
+      this.search_form.get('xmarca').enable()
+      this.search_form.get('xmodelo').disable()
+      this.search_form.get('xversion').disable()
+      this.search_form.get('npasajero').disable()
+      this.search_form.get('xtransmision').disable()
+      this.search_form.get('cano').disable()
+      this.search_form.get('bactivo').setValue(true)
+      console.log('marca crear')
+      if(this.search_form.get('cmodelo').value == ""){
+     console.log('crear modelo')
+     this.search_form.get('xmarca').setValue(marca.value)
+     this.search_form.get('xmarca').disable()
+     this.search_form.get('xmodelo').enable()
+     this.search_form.get('xversion').disable()
+     this.search_form.get('npasajero').disable()
+     this.search_form.get('xtransmision').disable()
+     this.search_form.get('cano').disable()
+     this.search_form.get('bactivo').setValue(true) 
   }
-   else if(this.search_form.get('xmodelo').value > 0){
-        console.log('modelo')
-    
-
-  } 
+  if(this.search_form.get('cversion').value == ""){
+    console.log('crear version')
+    this.search_form.get('xmarca').setValue(marca.value)
+    this.search_form.get('xmarca').disable()
+    this.search_form.get('xmodelo').setValue(modelo.value)
+    this.search_form.get('xmodelo').disable()
+    this.search_form.get('xversion').enable()
+    this.search_form.get('npasajero').enable()
+    this.search_form.get('xtransmision').enable()
+    this.search_form.get('cano').enable()
+    this.search_form.get('bactivo').setValue(true)    
+}
+    }
+   
 
 
 
@@ -263,7 +284,10 @@ export class BrandModelVersionIndexComponent implements OnInit {
 //modificacion de marca        
         if(marca.value == this.search_form.get('xmarca').value){
           console.log('marca')
+          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+          let options = { headers: headers };
           let request;
+          let url;
           let params ={
             cmarca : marca.id,
             xmarca : form.xmarca,
@@ -271,10 +295,37 @@ export class BrandModelVersionIndexComponent implements OnInit {
             cusuariomodificacion: this.currentUser.data.cusuario,
             cpais: this.currentUser.data.cpais
           }
-         request =  this.webService.updateBrand(params);
+          url = `${environment.apiUrl}/api/brand/update`
+          this.http.post(url, params, options).subscribe((response : any) => {
+            if(response.data.status){
+                location.reload();
+            }else{
+              let condition = response.data.condition;
+              if(condition == "brand-name-already-exist"){
+                this.alert.message = "TABLES.BRAND.NAMEALREADYEXIST";
+                this.alert.type = 'danger';
+                this.alert.show = true;
+              }
+            }
+            this.loading = false;
+          },
+          (err) => {
+            let code = err.error.data.code;
+            let message;
+            if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+            else if(code == 404){ message = "HTTP.ERROR.BRAND.BRANDNOTFOUND"; }
+            else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+            this.alert.message = message;
+            this.alert.type = 'danger';
+            this.alert.show = true;
+            this.loading = false;
+          });
         }else{
           console.log('marca2')
+          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+          let options = { headers: headers };
           let request;
+          let url;
           let params ={
             cmarca : marca.id,
             xmarca : form.xmarca,
@@ -282,13 +333,40 @@ export class BrandModelVersionIndexComponent implements OnInit {
             cusuariomodificacion: this.currentUser.data.cusuario,
             cpais: this.currentUser.data.cpais
           }
-          request = this.webService.updateBrand(params);
+          url = `${environment.apiUrl}/api/brand/update`
+          this.http.post(url, params, options).subscribe((response : any) => {
+            if(response.data.status){
+                location.reload();
+            }else{
+              let condition = response.data.condition;
+              if(condition == "brand-name-already-exist"){
+                this.alert.message = "TABLES.BRAND.NAMEALREADYEXIST";
+                this.alert.type = 'danger';
+                this.alert.show = true;
+              }
+            }
+            this.loading = false;
+          },
+          (err) => {
+            let code = err.error.data.code;
+            let message;
+            if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+            else if(code == 404){ message = "HTTP.ERROR.BRAND.BRANDNOTFOUND"; }
+            else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+            this.alert.message = message;
+            this.alert.type = 'danger';
+            this.alert.show = true;
+            this.loading = false;
+          });
 
         }
 //modificacion de modelo 
         if(modelo.value == this.search_form.get('xmodelo').value){
           console.log('modelo')
+          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+          let options = { headers: headers };
           let request;
+          let url;
           let params ={
             cmarca : marca.id,
             cmodelo : modelo.id,
@@ -297,10 +375,37 @@ export class BrandModelVersionIndexComponent implements OnInit {
             cusuariomodificacion: this.currentUser.data.cusuario,
             cpais: this.currentUser.data.cpais
           }
-         request =  this.webService.updateModel(params);
+          url = `${environment.apiUrl}/api/model/update`
+          this.http.post(url, params, options).subscribe((response : any) => {
+            if(response.data.status){
+                location.reload();
+            }else{
+              let condition = response.data.condition;
+              if(condition == "brand-name-already-exist"){
+                this.alert.message = "TABLES.MODEL.NAMEALREADYEXIST";
+                this.alert.type = 'danger';
+                this.alert.show = true;
+              }
+            }
+            this.loading = false;
+          },
+          (err) => {
+            let code = err.error.data.code;
+            let message;
+            if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+            else if(code == 404){ message = "HTTP.ERROR.MODEL.BRANDNOTFOUND"; }
+            else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+            this.alert.message = message;
+            this.alert.type = 'danger';
+            this.alert.show = true;
+            this.loading = false;
+          });
         }else{
           console.log('modelo2')
+          let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+          let options = { headers: headers };
           let request;
+          let url;
           let params ={
             cmarca : marca.id,
             cmodelo : modelo.id,
@@ -309,7 +414,31 @@ export class BrandModelVersionIndexComponent implements OnInit {
             cusuariomodificacion: this.currentUser.data.cusuario,
             cpais: this.currentUser.data.cpais
           }
-         request =  this.webService.updateModel(params);
+          url = `${environment.apiUrl}/api/model/update`
+          this.http.post(url, params, options).subscribe((response : any) => {
+            if(response.data.status){
+                location.reload();
+            }else{
+              let condition = response.data.condition;
+              if(condition == "brand-name-already-exist"){
+                this.alert.message = "TABLES.MODEL.NAMEALREADYEXIST";
+                this.alert.type = 'danger';
+                this.alert.show = true;
+              }
+            }
+            this.loading = false;
+          },
+          (err) => {
+            let code = err.error.data.code;
+            let message;
+            if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+            else if(code == 404){ message = "HTTP.ERROR.MODEL.BRANDNOTFOUND"; }
+            else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+            this.alert.message = message;
+            this.alert.type = 'danger';
+            this.alert.show = true;
+            this.loading = false;
+          });
         }
 //modificacion de version      
         if(version.value == this.search_form.get('xversion').value){
@@ -378,6 +507,7 @@ export class BrandModelVersionIndexComponent implements OnInit {
           url = `${environment.apiUrl}/api/version/update`
           this.http.post(url, params, options).subscribe((response : any) => {
             if(response.data.status){
+                window.alert('Los datos han sido actualizados con éxito')
                 location.reload();
             }else{
               let condition = response.data.condition;
@@ -399,13 +529,51 @@ export class BrandModelVersionIndexComponent implements OnInit {
             this.alert.type = 'danger';
             this.alert.show = true;
             this.loading = false;
-          });}
-      }
+        });}
+      
+        window.alert('Los datos han sido actualizados con éxito')
+
+        }
 //creaciones
-      else{
-
-
-
+      else if(this.search_form.get('xaccion').value == 'detail') {
+        if(this.search_form.get('cmarca').value == ""){
+        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+        let options = { headers: headers };
+        let request;
+        let url;
+        let params ={
+          cmarca : this.code,
+          xmarca : this.search_form.get('xmarca').value,
+          bactivo: this.search_form.get('bactivo').value,
+          cusuariomodificacion: this.currentUser.data.cusuario,
+          cpais: this.currentUser.data.cpais
+        }
+        url = `${environment.apiUrl}/api/brand/create`
+        this.http.post(url, params, options).subscribe((response : any) => {
+          if(response.data.status){
+              location.reload();
+          }else{
+            let condition = response.data.condition;
+            if(condition == "brand-name-already-exist"){
+              this.alert.message = "TABLES.BRAND.NAMEALREADYEXIST";
+              this.alert.type = 'danger';
+              this.alert.show = true;
+            }
+          }
+          this.loading = false;
+        },
+        (err) => {
+          let code = err.error.data.code;
+          let message;
+          if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+          else if(code == 404){ message = "HTTP.ERROR.BRAND.BRANDNOTFOUND"; }
+          else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+          this.alert.message = message;
+          this.alert.type = 'danger';
+          this.alert.show = true;
+          this.loading = false;
+        });
+        }
       }
 
 
