@@ -36,30 +36,31 @@ export class ProviderServiceComponent implements OnInit {
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        cpais: this.currentUser.data.cpais,
-        ccompania: this.currentUser.data.ccompania
-      };
-      this.http.post(`${environment.apiUrl}/api/valrep/service-type`, params, options).subscribe((response : any) => {
-        if(response.data.status){
-          for(let i = 0; i < response.data.list.length; i++){
-            this.serviceTypeList.push({ id: response.data.list[i].ctiposervicio, value: response.data.list[i].xtiposervicio });
-          }
-          this.serviceTypeList.sort((a,b) => a.value > b.value ? 1 : -1);
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
-        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
+      // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      // let options = { headers: headers };
+      // let params = {
+      //   cpais: this.currentUser.data.cpais,
+      //   ccompania: this.currentUser.data.ccompania
+      // };
+      // this.http.post(`${environment.apiUrl}/api/valrep/service-type`, params, options).subscribe((response : any) => {
+      //   if(response.data.status){
+      //     for(let i = 0; i < response.data.list.length; i++){
+      //       this.serviceTypeList.push({ id: response.data.list[i].ctiposervicio, value: response.data.list[i].xtiposervicio });
+      //     }
+      //     this.serviceTypeList.sort((a,b) => a.value > b.value ? 1 : -1);
+      //   }
+      // },
+      // (err) => {
+      //   let code = err.error.data.code;
+      //   let message;
+      //   if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      //   else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICETYPENOTFOUND"; }
+      //   else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      //   this.alert.message = message;
+      //   this.alert.type = 'danger';
+      //   this.alert.show = true;
+      // });
+      this.serviceDropdownDataRequest();
       if(this.service){
         if(this.service.type == 3){
           this.canSave = true;
@@ -82,51 +83,72 @@ export class ProviderServiceComponent implements OnInit {
   }
 
   serviceDropdownDataRequest(){
-    if(this.popup_form.get('ctiposervicio').value){
-      let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      let options = { headers: headers };
-      let params = {
-        cpais: this.currentUser.data.cpais,
-        ccompania: this.currentUser.data.ccompania,
-        ctiposervicio: this.popup_form.get('ctiposervicio').value
-      }
-      this.http.post(`${environment.apiUrl}/api/valrep/service`, params, options).subscribe((response : any) => {
-        if(response.data.status){
-          this.serviceList = [];
-          for(let i = 0; i < response.data.list.length; i++){
-            this.serviceList.push({ id: response.data.list[i].cservicio, value: response.data.list[i].xservicio });
-          }
-          this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
-        }
-      },
-      (err) => {
-        let code = err.error.data.code;
-        let message;
-        if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-        else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICENOTFOUND"; }
-        else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-        this.alert.message = message;
-        this.alert.type = 'danger';
-        this.alert.show = true;
-      });
+    // if(this.popup_form.get('ctiposervicio').value){
+    //   let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    //   let options = { headers: headers };
+    //   let params = {
+    //     cpais: this.currentUser.data.cpais,
+    //     ccompania: this.currentUser.data.ccompania,
+    //     // ctiposervicio: this.popup_form.get('ctiposervicio').value
+    //   }
+    //   this.http.post(`${environment.apiUrl}/api/valrep/service`, params, options).subscribe((response : any) => {
+    //     if(response.data.status){
+    //       this.serviceList = [];
+    //       for(let i = 0; i < response.data.list.length; i++){
+    //         this.serviceList.push({ id: response.data.list[i].cservicio, value: response.data.list[i].xservicio });
+    //       }
+    //       this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
+    //     }
+    //   },
+    //   (err) => {
+    //     let code = err.error.data.code;
+    //     let message;
+    //     if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+    //     else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICENOTFOUND"; }
+    //     else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+    //     this.alert.message = message;
+    //     this.alert.type = 'danger';
+    //     this.alert.show = true;
+    //   });
+    // }
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+      // ctiposervicio: this.popup_form.get('ctiposervicio').value
     }
+    this.http.post(`${environment.apiUrl}/api/valrep/search-service`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        this.serviceList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.serviceList.push({ id: response.data.list[i].cservicio, value: response.data.list[i].xservicio });
+        }
+        this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-    if (this.popup_form.invalid) {
-      this.loading = false;
-      return;
-    }
-    let serviceTypeFilter = this.serviceTypeList.filter((option) => { return option.id == form.ctiposervicio; });
+    // if (this.popup_form.invalid) {
+    //   this.loading = false;
+    //   return;
+    // }
     let serviceFilter = this.serviceList.filter((option) => { return option.id == form.cservicio; });
-    this.service.ctiposervicio = form.ctiposervicio;
-    this.service.xtiposervicio = serviceTypeFilter[0].value;
     this.service.cservicio = form.cservicio;
     this.service.xservicio = serviceFilter[0].value;
-    this.service.pservicio = form.pservicio;
-    this.service.mservicio = form.mservicio;
     this.activeModal.close(this.service);
   }
 

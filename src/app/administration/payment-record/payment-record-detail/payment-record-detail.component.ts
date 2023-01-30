@@ -38,6 +38,8 @@ export class PaymentRecordDetailComponent implements OnInit {
   bordenservicio: boolean = false;
   bfiniquito: boolean = false;
   moneda;
+  mmontocotizacion;
+  mmontocotizacioniva;
   bcalculo: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -68,8 +70,18 @@ export class PaymentRecordDetailComponent implements OnInit {
       porcentajeretencion: [''],
       porcentajeimpuesto: [''],
       pimpuesto: [''],
+      etiquetamoneda: [''],
+      mmontocotizacion: [''],
+      mmontocotizacioniva: [''],
+      mmontototaliva: [''],
+      mmontototalretencion: [''],
+      mmontototalislr: [''],
+      mmontototalimpuestos: [''],
+      mmontototalfactura: [''],
+      sumafactura: [''],
+      mfactura: ['']
     });
-    this.payment_form.get('msumafactura').disable();
+    this.payment_form.get('sumafactura').disable();
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -142,10 +154,12 @@ export class PaymentRecordDetailComponent implements OnInit {
           this.sumafactura = 0;
           this.sumafactura += response.data.serviceOrder[i].mmontofactura;
           this.moneda = response.data.serviceOrder[i].xmoneda;
+          this.mmontocotizacion = response.data.serviceOrder[i].mmontocotizacion;
+          this.mmontocotizacioniva = response.data.serviceOrder[i].mmontocotizacioniva;
         }
         if(this.serviceOrderList[0]){
-          this.payment_form.get('msumafactura').setValue(this.sumafactura + ' ' + this.moneda)
-          console.log(this.payment_form.get('msumafactura').value)
+          this.payment_form.get('sumafactura').setValue(this.sumafactura + ' ' + this.moneda)
+          this.payment_form.get('msumafactura').setValue(this.sumafactura)
           this.bordenservicio = true;
         }
       }
@@ -161,13 +175,13 @@ export class PaymentRecordDetailComponent implements OnInit {
             xnombre: response.data.settlement[i].xnombre,
             mmontofactura: response.data.settlement[i].mmontofactura
           });
-          console.log(this.settlementList)
           this.sumafactura = 0;
           this.sumafactura += response.data.settlement[i].mmontofactura;
           this.moneda = response.data.settlement[i].xmoneda;
         }
         if(this.settlementList[0]){
-          this.payment_form.get('msumafactura').setValue(this.sumafactura + ' ' + this.moneda)
+          this.payment_form.get('sumafactura').setValue(this.sumafactura + ' ' + this.moneda)
+          this.payment_form.get('msumafactura').setValue(this.sumafactura)
           this.bfiniquito = true;
         }
 
@@ -240,6 +254,63 @@ export class PaymentRecordDetailComponent implements OnInit {
 
   calculationBill(){
     this.bcalculo = true;
+    this.payment_form.get('etiquetamoneda').setValue(this.moneda + ':')
+    this.payment_form.get('etiquetamoneda').disable();
+
+    let monto_convertido = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.mmontocotizacion)
+    this.payment_form.get('mmontocotizacion').setValue(monto_convertido)
+    this.payment_form.get('mmontocotizacion').disable();
+
+    //Calculo de iva al monto original.
+
+    let calculoiva = this.mmontocotizacion * this.payment_form.get('pimpuesto').value / 100;
+    let monto_convertido_iva = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(calculoiva)
+    this.payment_form.get('mmontototaliva').setValue(monto_convertido_iva)
+    this.payment_form.get('mmontototaliva').disable();
+
+
+    //Calculo de retencion e iva.
+
+    let calculoretencion = calculoiva * this.payment_form.get('pretencion').value / 100;
+    let monto_convertido_retencion = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(calculoretencion)
+    this.payment_form.get('mmontototalretencion').setValue(monto_convertido_retencion)
+    this.payment_form.get('mmontototalretencion').disable();
+
+
+    //calculo impuesto sobre la renta y monto original
+
+    let calculoislr = this.mmontocotizacion * this.payment_form.get('pislr').value / 100;
+    let monto_convertido_islr = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(calculoislr)
+    this.payment_form.get('mmontototalislr').setValue(monto_convertido_islr)
+    this.payment_form.get('mmontototalislr').disable();
+
+
+    //Total impuestos
+
+    let resta_Impuestos = calculoretencion - calculoislr;
+    let monto_convertido_impuestos = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(resta_Impuestos)
+
+    this.payment_form.get('mmontototalimpuestos').setValue(monto_convertido_impuestos)
+    this.payment_form.get('mmontototalimpuestos').disable();
+
+
+    //Colocarle la mascara al monto de la factura
+
+    let mascara = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.payment_form.get('msumafactura').value)
+    this.payment_form.get('mfactura').setValue(mascara)
+    this.payment_form.get('mfactura').disable();
+
+
+    //Monto total a pagar
+    
+    let calculo_a_pagar = this.payment_form.get('msumafactura').value - resta_Impuestos;
+    let monto_convertido_total = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(calculo_a_pagar)
+    this.payment_form.get('mmontototalfactura').setValue(monto_convertido_total)
+    this.payment_form.get('mmontototalfactura').disable();
+  }
+
+  onSubmit(){
+    console.log('hola')
   }
 
 }
