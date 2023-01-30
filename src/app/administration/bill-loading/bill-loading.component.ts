@@ -419,6 +419,7 @@ export class BillLoadingComponent implements OnInit {
       mmontofactura: form.mmontofactura,
       xobservacion: form.xobservacion,
       xrutaarchivo: this.billList[0].xrutaarchivo,
+      cestatusgeneral: 10,
       cmoneda: form.cmoneda,
       serviceorder: {
         create: serviceOrderFilter

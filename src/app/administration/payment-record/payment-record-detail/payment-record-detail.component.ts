@@ -79,7 +79,8 @@ export class PaymentRecordDetailComponent implements OnInit {
       mmontototalimpuestos: [''],
       mmontototalfactura: [''],
       sumafactura: [''],
-      mfactura: ['']
+      mfactura: [''],
+      cfactura: ['']
     });
     this.payment_form.get('sumafactura').disable();
     this.currentUser = this.authenticationService.currentUserValue;
@@ -211,6 +212,8 @@ export class PaymentRecordDetailComponent implements OnInit {
     }
     this.http.post(`${environment.apiUrl}/api/administration/bill-detail`, params, options).subscribe((response : any) => {
       if(response.data.status){
+        this.payment_form.get('cfactura').setValue(response.data.cfactura)
+        this.payment_form.get('cfactura').disable();
         this.payment_form.get('xcliente').setValue(response.data.xcliente)
         this.payment_form.get('xcliente').disable();
         this.payment_form.get('nfactura').setValue(response.data.nfactura)
@@ -310,7 +313,32 @@ export class PaymentRecordDetailComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log('hola')
+    this.submitted = true;
+    this.loading = true;
+
+    let params = {
+      cfactura: this.payment_form.get('cfactura').value,
+      xcliente: this.payment_form.get('xcliente').value,
+      nfactura: this.payment_form.get('nfactura').value,
+      ffactura: this.payment_form.get('ffactura').value,
+      msumafactura: this.payment_form.get('msumafactura').value,
+      mmontocotizacion: this.payment_form.get('mmontocotizacion').value,
+      mmontototaliva: this.payment_form.get('mmontototaliva').value,
+      mmontototalretencion: this.payment_form.get('mmontototalretencion').value,
+      mmontototalislr: this.payment_form.get('mmontototalislr').value,
+      mmontototalimpuestos: this.payment_form.get('mmontototalimpuestos').value,
+      mmontototalfactura: this.payment_form.get('mmontototalfactura').value,
+      cusuario: this.currentUser.data.cusuario,
+      cestatusgeneral: 12
+    };
+
+    this.http.post( `${environment.apiUrl}/api/administration/create-payment`,params).subscribe((response : any) => {
+      if(response.data.status){
+        this.loading = false;
+        window.alert('Se ha procesado el pago de la factura seleccionada.')
+        location.reload()
+      }
+    })
   }
 
 }
