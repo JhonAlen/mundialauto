@@ -298,13 +298,12 @@
                   <div class="col-md-3 mb-4 pb-2">
                     <div class="form-outline">                        
                       <label class="form-label required" for="form3Examplev4">Uso</label>
-                      <select formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors } ">
-                        <option value="PARTICULAR">PARTICULAR</option>
-                        <option value="PRIVADO">PRIVADO</option>
-                        <option value="CARGA">CARGA</option>
-                      </select>                         
-                      <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
-                        <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
+                      <select formControlName="cuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cuso').errors } ">
+                        <option></option>
+                        <option *ngFor="let Utility of UtilityVehicle" value="{{ Utility.id }}">{{ Utility.value }}</option>
+                      </select>                       
+                      <div *ngIf="submitted && search_form.get('cuso').errors"  class="invalid-feedback">
+                        <div *ngIf="search_form.get('cuso').errors.required">Se requiere completar el campo</div>
                       </div>
                     </div>
                   </div>

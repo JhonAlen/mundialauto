@@ -34,6 +34,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   modeloList: any[] = [];
   TypeVehicleList: any[] = [];
   TypeVehicle: any[] = [];
+  UtilityVehicle: any[] = [];
   ListClase: any[] = [];
   coberturaList: any[] = [];
   versionList: any[] = [];
@@ -233,7 +234,7 @@ async ngOnInit(): Promise<void>{
       xcedula: [''],
       binternacional: [''],
       ctomador: [''],
-      xuso: [''],
+      cuso: [''],
       cclase: [''],
       ctipovehiculo: [''],
       xzona_postal:[''],
@@ -295,6 +296,7 @@ async initializeDropdownDataRequest(){
     this.getTakersData();
     this.VehicleData();
     this.ClaseData();
+    this.getUtilityVehicle()
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -549,6 +551,24 @@ async getPlanData(){
       }
       },);
   }
+ async getUtilityVehicle(){
+  let params =  {
+    cpais: this.currentUser.data.cpais,
+  };
+
+  this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+    if(response.data.status){
+      this.UtilityVehicle = [];
+      for(let i = 0; i < response.data.list.length; i++){
+        this.UtilityVehicle.push({ 
+          id: response.data.list[i].cuso,
+          value: response.data.list[i].xuso,
+        });
+      }
+    }
+    },);
+   
+ }
   async VehicleData(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -1009,7 +1029,7 @@ OperatioValidationPlate(){
           ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
           ctomador: this.search_form.get('ctomador').value,
           xzona_postal: this.search_form.get('xzona_postal').value,
-          xuso: this.search_form.get('xuso').value,
+          cuso: this.search_form.get('cuso').value,
           ctipovehiculo: this.search_form.get('ctipovehiculo').value,
           nkilometraje: this.search_form.get('nkilometraje').value,
           cclase: this.search_form.get('cclase').value,
@@ -1206,7 +1226,7 @@ OperatioValidationPlate(){
             femision: form.femision,
             ncobro: form.ncobro,
             mgrua: form.mgrua,
-            xuso: form.xuso,
+            cuso: form.cuso,
             cclase: form.cclase,
             ctipovehiculo: form.ctipovehiculo,
             xzona_postal: form.xzona_postal,
@@ -1225,7 +1245,6 @@ OperatioValidationPlate(){
             payment: this.paymentList,
             accessory: this.accessoryList
           };
-          
         this.http.post( `${environment.apiUrl}/api/fleet-contract-management/create/individualContract`,params).subscribe((response : any) => {
           if (response.data.status) {
             this.ccontratoflota = response.data.ccontratoflota;
@@ -1269,6 +1288,7 @@ OperatioValidationPlate(){
     };
     await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
       if(response.data.status){
+        console.log(response.data.xclase)
         this.ccarga = response.data.ccarga;
         this.xpoliza = response.data.xpoliza;
         this.xtituloreporte = response.data.xtituloreporte;
@@ -1324,6 +1344,9 @@ OperatioValidationPlate(){
         this.xplaca = response.data.xplaca;
         this.xuso = response.data.xuso;
         this.xtipovehiculo = response.data.xtipovehiculo;
+        this.nkilometraje = response.data.nkilometraje;
+        this.xclase = response.data.xclase;
+        this.xtransmision = response.data.xtransmision;
         this.fano = response.data.fano;
         this.xserialcarroceria = response.data.xserialcarroceria;
         this.xserialmotor = response.data.xserialmotor;
@@ -1338,9 +1361,6 @@ OperatioValidationPlate(){
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
         this.xzona_postal_propietario = response.data.xzona_postal_propietario;
-        this.nkilometraje = response.data.nkilometraje;
-        this.xclase = response.data.xclase;
-        this.xtransmision = response.data.xtransmision;
         this.cestatusgeneral = response.data.cestatusgeneral;
         if(response.data.xtomador){
           this.xtomador = response.data.xtomador;
@@ -1716,7 +1736,7 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]},{text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
             ]
           }
         },
@@ -1725,7 +1745,7 @@ OperatioValidationPlate(){
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]},  {text: this.nkilometraje, border: [false, false, true, true]}]
             ]
           }
         },

@@ -36,6 +36,7 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   coberturaList: any[] = [];
   TypeVehicleList: any[] = [];
   TypeVehicle: any[] = [];
+  UtilityVehicle: any[] = [];
   ListClase: any[] = [];
   versionList: any[] = [];
   planList: any[] = [];
@@ -220,7 +221,7 @@ this.search_form = this.formBuilder.group({
   pblindaje: [''],
   bgrua:[false],
   mgrua:[''],
-  xuso:[''],
+  cuso:[''],
   clase:[''],
   nkilometraje:[''],
   ctarifa_exceso:['']
@@ -271,6 +272,7 @@ async initializeDropdownDataRequest(){
     this.getTypeVehicle();
     this.VehicleData();
     this.ClaseData();
+    this.getUtilityVehicle()
 
 
 
@@ -591,6 +593,24 @@ async getmetodologia(){
       }
       },);
   }
+  async getUtilityVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.UtilityVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.UtilityVehicle.push({ 
+            id: response.data.list[i].cuso,
+            value: response.data.list[i].xuso,
+          });
+        }
+      }
+      },);
+     
+   }
   async ClaseData(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -945,7 +965,7 @@ async getmetodologia(){
           ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
           ctomador: this.search_form.get('ctomador').value,
           xzona_postal: this.search_form.get('xzona_postal').value,
-          xuso: this.search_form.get('xuso').value,
+          cuso: this.search_form.get('cuso').value,
           ctipovehiculo: this.search_form.get('ctipovehiculo').value,
           nkilometraje: this.search_form.get('nkilometraje').value,
           cclase: this.search_form.get('cclase').value,
@@ -1081,7 +1101,7 @@ async getmetodologia(){
             pcatastrofico: form.pcatastrofico,
             pmotin:form.pmotin,
             mmotin:form.mmotin,
-            xuso:form.xuso,
+            cuso:form.cuso,
             cclase:form.cclase,
             nkilometraje:form.nkilometraje,
             pblindaje: form.pblindaje,
