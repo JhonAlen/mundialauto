@@ -5,19 +5,13 @@
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
         </div>
     </div>
-    <div class="row mt-5">
+    <!-- <div class="row mt-5">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header company-card-header">
                     <div class="row">
                         <div class="col-6">
                             {{ "BUSINESS.TRACINGS.SEARCHTRACINGS" | translate }}
-                        </div>
-                        <div class="col-6">
-                            <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
-                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                {{ "BUSINESS.TRACINGS.SEARCH" | translate }}
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -37,7 +31,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="row mt-5">
         <div class="col-sm-12">
             <div class="card">
@@ -45,6 +39,12 @@
                     <div class="row">
                         <div class="col-6">
                             {{ "BUSINESS.TRACINGS.FLEETNOTIFICATIONTRACINGSLIST" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                {{ "BUSINESS.TRACINGS.SEARCH" | translate }}
+                            </button>
                         </div>
                     </div>
                 </div>
