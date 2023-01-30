@@ -14,10 +14,10 @@
                              Marca - Modelo - Versión
                         </div>
                         <div class="col-6">
-                            <!-- <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate($event)">
+                            <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate($event)">
                                 {{ "EVENTS.NOTIFICATIONS.CREATE" | translate }}
-                            </button> -->
-                            <button  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
+                            </button> 
+                            <button  *ngIf="canEdit" class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
                                 {{ "EVENTS.NOTIFICATIONS.EDIT" | translate }}
                             </button>
                             <button *ngIf="submitted" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">

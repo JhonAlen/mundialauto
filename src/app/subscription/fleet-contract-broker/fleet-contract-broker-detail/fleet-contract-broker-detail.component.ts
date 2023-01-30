@@ -35,6 +35,9 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   corredorList: any[] = [];
   coberturaList: any[] = [];
   TypeVehicleList: any[] = [];
+  TypeVehicle: any[] = [];
+  UtilityVehicle: any[] = [];
+  ListClase: any[] = [];
   versionList: any[] = [];
   planList: any[] = [];
   CountryList: any[] = [];
@@ -188,7 +191,7 @@ this.search_form = this.formBuilder.group({
   xserialcarroceria: ['', Validators.required],
   xserialmotor: ['', Validators.required],
   xcobertura: ['', Validators.required],
-  xtipo: ['', Validators.required],
+  ctipovehiculo: ['', Validators.required],
   cplan: ['', Validators.required],
   ccorredor: ['', Validators.required],
   cmetodologiapago: [''],
@@ -218,8 +221,8 @@ this.search_form = this.formBuilder.group({
   pblindaje: [''],
   bgrua:[false],
   mgrua:[''],
-  xuso:[''],
-  xclase:[''],
+  cuso:[''],
+  clase:[''],
   nkilometraje:[''],
   ctarifa_exceso:['']
 })
@@ -266,7 +269,11 @@ async initializeDropdownDataRequest(){
     this.getCorredorData();
     this.getCountry();
     this.getLastExchangeRate();
-    this.getTypeVehicle()
+    this.getTypeVehicle();
+    this.VehicleData();
+    this.ClaseData();
+    this.getUtilityVehicle()
+
 
 
     let params = {
@@ -516,7 +523,7 @@ async getmetodologia(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params =  {
-      xtipo: this.search_form.get('xtipo').value,  
+      ctipovehiculo: this.search_form.get('ctipovehiculo').value,  
       xmarca: marca.value,
       xmodelo: modelo.value,
       cano: this.search_form.get('cano').value,
@@ -567,6 +574,61 @@ async getmetodologia(){
       }
       },);
   }
+  async VehicleData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/vehicle/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicle.push({ 
+            id: response.data.list[i].ctipovehiculo,
+            value: response.data.list[i].xtipovehiculo,
+          });
+        }
+      }
+      },);
+  }
+  async getUtilityVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.UtilityVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.UtilityVehicle.push({ 
+            id: response.data.list[i].cuso,
+            value: response.data.list[i].xuso,
+          });
+        }
+      }
+      },);
+     
+   }
+  async ClaseData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/clase/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.ListClase = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.ListClase.push({ 
+            id: response.data.list[i].cclase,
+            value: response.data.list[i].xclase,
+          });
+        }
+      }
+      },);
+  }
 
   calculation(){
     let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
@@ -596,8 +658,8 @@ async getmetodologia(){
     let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
      cplan: plan.id,
-     xtipo: this.search_form.get('xtipo').value,
-   }
+     ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+    }
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-grua`, params).subscribe((response: any) => {
        if(response.data.status){
          if(this.search_form.get('bgrua').value == true){
@@ -675,7 +737,7 @@ async getmetodologia(){
       let params = {
         cplan: metodologiaPago.id,
         cmetodologiapago: this.search_form.get('cmetodologiapago').value,
-        xtipo: this.search_form.get('xtipo').value,
+        ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
         igrua: this.search_form.get('bgrua').value
       }
         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
@@ -903,10 +965,10 @@ async getmetodologia(){
           ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
           ctomador: this.search_form.get('ctomador').value,
           xzona_postal: this.search_form.get('xzona_postal').value,
-          xuso: this.search_form.get('xuso').value,
-          xtipo: this.search_form.get('xtipo').value,
+          cuso: this.search_form.get('cuso').value,
+          ctipovehiculo: this.search_form.get('ctipovehiculo').value,
           nkilometraje: this.search_form.get('nkilometraje').value,
-          xclase: this.search_form.get('xclase').value,
+          cclase: this.search_form.get('cclase').value,
           cusuario: this.currentUser.data.cusuario,
           payment: this.paymentList,
           accessory: this.accessoryList
@@ -1012,7 +1074,7 @@ async getmetodologia(){
             xserialcarroceria: form.xserialcarroceria,
             xserialmotor: form.xserialmotor,  
             xcobertura: this.search_form.get('xcobertura').value,
-            xtipo: this.search_form.get('xtipo').value,
+            ctipovehiculo: this.search_form.get('ctipovehiculo').value,
             cplan: metodologiaPago.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,
@@ -1039,8 +1101,8 @@ async getmetodologia(){
             pcatastrofico: form.pcatastrofico,
             pmotin:form.pmotin,
             mmotin:form.mmotin,
-            xuso:form.xuso,
-            xclase:form.xclase,
+            cuso:form.cuso,
+            cclase:form.cclase,
             nkilometraje:form.nkilometraje,
             pblindaje: form.pblindaje,
             ivigencia: this.search_form.get('ivigencia').value,
