@@ -486,6 +486,7 @@ export class ProviderDetailComponent implements OnInit {
             create: true,
             cservicio: result.cservicio,
             xservicio: result.xservicio,
+            cestado: this.detail_form.get('cestado').value
           });
           this.serviceGridApi.setRowData(this.serviceList);
         }
