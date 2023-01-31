@@ -16,6 +16,7 @@ import { environment } from '@environments/environment';
 import * as pdfMake from 'pdfmake/build/pdfmake.js';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 import { Console } from 'console';
+import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 /*
 pdfMake.fonts = {
@@ -110,17 +111,11 @@ export class FleetContractManagementDetailComponent implements OnInit {
   xrif : string;
   xdomicilio : string;
   xzona_postal : string;
-  xzona_postal_propietario : string;
+  
   xtelefono : string;
   xcorreo : string;
   xestado : string;
   xciudad : string;
-  xclase: string;
-  xtransmision: string;
-  nkilometraje: string;
-  xuso: string;
-  xtipovehiculo: string;
-
 
 
 
@@ -168,6 +163,12 @@ export class FleetContractManagementDetailComponent implements OnInit {
   montorcv: boolean = true;
   cobertura: boolean = false;
   grua: boolean = false;
+  xuso: any;
+  xtipovehiculo: any;
+  xclase: any;
+  xtransmision: any;
+  xzona_postal_propietario: any;
+  nkilometraje: any;
 
 
   constructor(private formBuilder: UntypedFormBuilder, 
@@ -264,12 +265,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
       ccobertura: [''],
       xanexo: [''],
       xobservaciones: [''],
-      xtransmision: [''],
-      ctomador: [''],
-      xzona_postal: [''],
-      xtipo: [''],
-      nkilometraje: [''],
-      xclase: ['']
+      xtransmision: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -2175,7 +2171,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           }
         },
         {
-          style: 'data',
+          style: 'prueba',
           table: {
             widths: ['*'],
             body: [
@@ -2465,7 +2461,7 @@ export class FleetContractManagementDetailComponent implements OnInit {
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
+              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 / 0414-4128237 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
         },
@@ -2607,6 +2603,10 @@ export class FleetContractManagementDetailComponent implements OnInit {
           color: 'gray'
         },
         data: {
+          fontSize: 7
+        },
+        prueba: {
+          alignment: 'justify',
           fontSize: 7
         }
       }

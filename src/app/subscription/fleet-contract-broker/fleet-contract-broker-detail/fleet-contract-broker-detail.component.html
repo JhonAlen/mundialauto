@@ -136,15 +136,6 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-4 mb-4 pb-2">
-                      <div class="form-outline form-white">
-                        <label class="form-label required" for="form3Examplea8">Zona Postal</label>
-                        <input type="text" formControlName="xzona_postal" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xzona_postal').errors }" />
-                        <div *ngIf="submitted && search_form.get('xzona_postal').errors" class="invalid-feedback">
-                          <div *ngIf="search_form.get('xzona_postal').errors.required">Se requiere completar el campo</div>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -275,51 +266,36 @@
                     <div class="col-md-3 mb-4 pb-2">
                       <div class="form-outline">                        
                         <label class="form-label required" for="form3Examplev4">Uso</label>
-                        <select formControlName="xuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xuso').errors } ">
-                          <option value="PARTICULAR">PARTICULAR</option>
-                          <option value="PRIVADO">PRIVADO</option>
-                          <option value="CARGA">CARGA</option>
-                        </select>                         
-                        <div *ngIf="submitted && search_form.get('xuso').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xuso').errors.required">Se requiere completar el campo</div>
+                        <select formControlName="cuso" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cuso').errors } ">
+                          <option></option>
+                          <option *ngFor="let Utility of UtilityVehicle" value="{{ Utility.id }}">{{ Utility.value }}</option>
+                        </select>                       
+                        <div *ngIf="submitted && search_form.get('cuso').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('cuso').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-3 mb-4 pb-2">
                       <div class="form-outline">                        
                         <label class="form-label required" for="form3Examplev4">Tipo de Vehículo</label>
-                        <select formControlName="xtipo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xtipo').errors } ">
-                          <option value="PARTICULAR">PARTICULAR</option>
-                          <option value="RUSTICO">RUSTICO</option>
-                          <option value="COUPE">COUPE</option>
-                          <option value="SEDAN">SEDAN</option>
-                          <option value="PICK-UP">PICK-UP</option>
-                          <option value="CARGA">CARGA</option>
-                          <option value="MOTO">MOTO</option>
-                          <option value="TRANSPORTE URBANO">TRANSPORTE URBANO-</option>
+                        <select formControlName="ctipovehiculo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('ctipovehiculo').errors } ">
+                          <option></option>
+                          <option *ngFor="let vehicle of TypeVehicle" value="{{ vehicle.id }}">{{ vehicle.value }}</option>
                         </select>                         
-                        <div *ngIf="submitted && search_form.get('xtipo').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xtipo').errors.required">Se requiere completar el campo</div>
+                        <div *ngIf="submitted && search_form.get('ctipovehiculo').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('ctipovehiculo').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
                     <div class="col-md-3 mb-4 pb-2">
                       <div class="form-outline">                        
                         <label class="form-label required" for="form3Examplev4">Clase</label>
-                        <select formControlName="xclase" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('xclase').errors } ">
-                          <option value="AUTOMOVIL">AUTOMOVIL</option>
-                          <option value="BUSETE URBANO">BUSETE URBANO</option>
-                          <option value="CAMION">CAMION</option>
-                          <option value="CHUTO">CHUTO</option>
-                          <option value="MOTOS">MOTOS-</option>
-                          <option value="PANEL">PANEL-</option>
-                          <option value="PICK-UP">PICK-UP</option>
-                          <option value="REMOLQUE">REMOLQUE-</option>
-                          <option value="RUSTICO">RUSTICO</option>
-                          <option value="SEMI-REMOLQUE">SEMI-REMOLQUE</option>
-                        </select>                         
-                        <div *ngIf="submitted && search_form.get('xclase').errors"  class="invalid-feedback">
-                          <div *ngIf="search_form.get('xclase').errors.required">Se requiere completar el campo</div>
+                        <select formControlName="cclase" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cclase').errors } ">
+                          <option></option>
+                          <option *ngFor="let clase of ListClase" value="{{ clase.id }}">{{ clase.value }}</option>
+                        </select>                            
+                        <div *ngIf="submitted && search_form.get('cclase').errors"  class="invalid-feedback">
+                          <div *ngIf="search_form.get('cclase').errors.required">Se requiere completar el campo</div>
                         </div>
                       </div>
                     </div>
@@ -508,25 +484,6 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-12 col-md-4">
-                    <div class="form-outline">
-                        <label class="form-label" for="form3Examplev5">Tomador</label>
-                        <div >
-                        <ng-autocomplete  [data]="takersList" [searchKeyword]="keyword" 
-                                        placeholder="Seleccionar Tomador" (selected)='selectedTaker($event)'
-                                        [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                        </ng-autocomplete>
-                    
-                        <ng-template #itemTemplate let-item >
-                            <a [innerHTML]="item.value"></a>
-                        </ng-template>
-                    
-                        <ng-template #notFoundTemplate let-notFound  >
-                            <div [innerHTML]="notFound"></div>
-                        </ng-template>
-                      </div>
-                    </div>
-                  </div> 
                   <div class="col-md-2 mb-4 pb-2 mb-md-0 pb-md-0">
                     <div class="form-outline">
                       <label class="form-label required" for="form3Examplev5">Fecha de inicio</label>

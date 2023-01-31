@@ -395,13 +395,11 @@ export class NotificationServiceOrderComponent implements OnInit {
           this.popup_form.get('ccotizacion').setValue(response.data.list[i].ccotizacion);
           this.popup_form.get('ccotizacion').disable();
         }
-        console.log(this.popup_form.get('ccotizacion').value)
       }
       if(this.popup_form.get('ccotizacion').value) {
         this.listRepairOrder();
       }else{
-        window.alert('Los repuestos no han sido cotizados, no se puede generar ordenes de servicios.')
-        this.activeModal.close();
+        window.alert('¡Recuerda que el proveedor no ha cotizado!')
       }
     },
     (err) => {
@@ -409,14 +407,13 @@ export class NotificationServiceOrderComponent implements OnInit {
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
       else if(code == 404){ 
-        message = "¡Recuerda que el proveedor no ha cotizado!"; 
-        window.alert('Los repuestos no han sido cotizados, no se puede generar ordenes de servicios.')
-        this.activeModal.close();
+        //message = "¡Recuerda que el proveedor no ha cotizado!"; 
+        window.alert('¡Recuerda que el proveedor no ha cotizado!')
       }
       //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'primary';
-      this.alert.show = true;
+      // this.alert.message = message;
+      // this.alert.type = 'primary';
+      // this.alert.show = true;
     });
   }
 
@@ -987,16 +984,49 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.notificacion.xmoneda = 'Sin Moneda';
     }
 
-    this.notificacion.xdesde = this.popup_form.get('xdesde').value;
-    this.notificacion.xhacia = this.popup_form.get('xhacia').value;
-    this.notificacion.mmonto = this.popup_form.get('mmonto').value;
-    this.notificacion.xobservacion = this.popup_form.get('xobservacion').value;
-    this.notificacion.xfecha = this.popup_form.get('xfecha').value;
-    //this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
-    this.notificacion.xdanos = replacementFilter[0].value;
+    if(this.popup_form.get('xdesde').value){
+      this.notificacion.xdesde = this.popup_form.get('xdesde').value;
+    }else{
+      this.notificacion.xdesde = null;
+    }
+
+    if(this.popup_form.get('xhacia').value){
+      this.notificacion.xhacia = this.popup_form.get('xhacia').value;
+    }else{
+      this.notificacion.xhacia = null;
+    }
+
+    if(this.popup_form.get('mmonto').value){
+      this.notificacion.mmonto = this.popup_form.get('mmonto').value;
+    }else{
+      this.notificacion.mmonto = null;
+    }
+
+    if(this.popup_form.get('xobservacion').value){
+      this.notificacion.xobservacion = this.popup_form.get('xobservacion').value;
+    }else{
+      this.notificacion.xobservacion = null;
+    }
+
+    if(this.popup_form.get('xfecha').value){
+      this.notificacion.xfecha = this.popup_form.get('xfecha').value;
+    }else{
+      this.notificacion.xfecha = null;
+    }
+
+    if(this.popup_form.get('xrepuesto').value){
+      this.notificacion.xdanos = this.popup_form.get('xrepuesto').value;
+    }else{
+      this.notificacion.xdanos = 'SIN DAÑOS';
+    }
     this.notificacion.fajuste = this.popup_form.get('fajuste').value.substring(0, 10);
-    this.notificacion.cproveedor = this.popup_form.get('cproveedor').value;
-    this.notificacion.bactivo = this.popup_form.get('bactivo').value;
+    if(this.popup_form.get('cproveedor').value){
+      this.notificacion.cproveedor = this.popup_form.get('cproveedor').value;
+    }else{
+      this.notificacion.cproveedor = null;
+    }
+
+    this.notificacion.bactivo = 1
     this.notificacion.cestatusgeneral = this.popup_form.get('cestatusgeneral').value;
 
     if(this.popup_form.get('ccausaanulacion').value){
@@ -1288,14 +1318,13 @@ export class NotificationServiceOrderComponent implements OnInit {
             for(let i = 0; i < response.data.list.length; i++){
               this.replacementList.push({ id: response.data.list[i].crepuesto, value: response.data.list[i].xrepuesto});
             }
-            console.log(this.replacementList)
           }
         },
         (err) => {
           let code = err.error.data.code;
           let message;
           if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-          else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+          else if(code == 404){ message = "hola2"; }
           else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
           this.alert.message = message;
           this.alert.type = 'danger';
@@ -1322,7 +1351,7 @@ export class NotificationServiceOrderComponent implements OnInit {
           let code = err.error.data.code;
           let message;
           if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-          else if(code == 404){ message = "HTTP.ERROR.TAXESCONFIGURATION.TAXNOTFOUND"; }
+          else if(code == 404){ message = "hola1"; }
           else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
           this.alert.message = message;
           this.alert.type = 'danger';

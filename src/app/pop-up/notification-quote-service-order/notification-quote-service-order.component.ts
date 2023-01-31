@@ -47,7 +47,7 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
   code;
   danos;
   alert = { show : false, type : "", message : "" }
-  replacementDeletedRowList
+  replacementDeletedRowList;
 
   constructor(public activeModal: NgbActiveModal,
     private modalService: NgbModal,
@@ -280,8 +280,9 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
     if(this.quote.repuestos){
       for(let i = 0; i < this.quote.repuestos.length; i++){
         let repuesto = this.quote.repuestos[i].xrepuesto;
-
+        let montocotizacion = this.quote.repuestos[i].mtotalrepuesto
         repuestos.push(repuesto);
+
       }
       this.popup_form.get('xrepuesto').setValue(repuestos);
       this.popup_form.get('xrepuesto').disable();

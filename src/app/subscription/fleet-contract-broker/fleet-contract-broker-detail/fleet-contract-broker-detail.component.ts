@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { WebServiceConnectionService } from '@services/web-service-connection.service';
 import { AuthenticationService } from '@services/authentication.service';
 import { environment } from '@environments/environment';
+// import { closeUbii, initUbii } from '@ubiipagos/boton-ubii';
 import { AdministrationPaymentComponent } from '@app/pop-up/administration-payment/administration-payment.component';
 import { FleetContractIndividualAccessorysComponent } from '@app/pop-up/fleet-contract-individual-accessorys/fleet-contract-individual-accessorys.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -33,6 +34,10 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   modeloList: any[] = [];
   corredorList: any[] = [];
   coberturaList: any[] = [];
+  TypeVehicleList: any[] = [];
+  TypeVehicle: any[] = [];
+  UtilityVehicle: any[] = [];
+  ListClase: any[] = [];
   versionList: any[] = [];
   planList: any[] = [];
   CountryList: any[] = [];
@@ -147,22 +152,12 @@ export class FleetContractBrokerDetailComponent implements OnInit {
   fdesde_pol_place : Date ;
   fhasta_pol_place : Date ;
   xpoliza_place : string;
-  takersList: any[] = [];
-  xtomador : string;
-  xprofesion : string;
-  xrif : string;
-  xdomicilio : string;
-  xzona_postal : string;
-  xzona_postal_propietario : string;
-  xtelefono : string;
-  xcorreo : string;
-  xestado : string;
-  xciudad : string;
-  keyword = 'value';
-  TypeVehicleList: any[] = [];
-  xclase: string;
-  xtransmision: string;
-  nkilometraje: string;
+  xtomador: any;
+  xprofesion: any;
+  xciudad: any;
+  xrif: any;
+  xcorreo: any;
+  xzona_postal: any;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -196,6 +191,7 @@ this.search_form = this.formBuilder.group({
   xserialcarroceria: ['', Validators.required],
   xserialmotor: ['', Validators.required],
   xcobertura: ['', Validators.required],
+  ctipovehiculo: ['', Validators.required],
   cplan: ['', Validators.required],
   ccorredor: ['', Validators.required],
   cmetodologiapago: [''],
@@ -225,13 +221,10 @@ this.search_form = this.formBuilder.group({
   pblindaje: [''],
   bgrua:[false],
   mgrua:[''],
-  ctarifa_exceso: [''],  
-  ctomador: [''],
-  nkilometraje: [''],
-  xzona_postal: [''],
-  xtipo: [''],
-  xuso: [''],
-  xclase: ['']
+  cuso:[''],
+  clase:[''],
+  nkilometraje:[''],
+  ctarifa_exceso:['']
 })
 
  ;
@@ -277,7 +270,10 @@ async initializeDropdownDataRequest(){
     this.getCountry();
     this.getLastExchangeRate();
     this.getTypeVehicle();
-    this.getTakersData();
+    this.VehicleData();
+    this.ClaseData();
+    this.getUtilityVehicle()
+
 
 
     let params = {
@@ -456,27 +452,6 @@ async getPlanData(){
     }
     },);
   }
-
-  async getTypeVehicle(){
-    let params =  {
-      cpais: this.currentUser.data.cpais,
-      ccompania: this.currentUser.data.ccompania,
-    
-    };
-  
-    this.http.post(`${environment.apiUrl}/api/valrep/over-limit/type-vehicle`, params).subscribe((response: any) => {
-      if(response.data.status){
-        this.TypeVehicleList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.TypeVehicleList.push({ 
-            id: response.data.list[i].ctarifa_exceso,
-            value: response.data.list[i].xgrupo,
-          });
-        }
-      }
-      },);
-  }
-
 async getColor(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -548,7 +523,7 @@ async getmetodologia(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let params =  {
-      xtipo: this.search_form.get('xtipo').value,  
+      ctipovehiculo: this.search_form.get('ctipovehiculo').value,  
       xmarca: marca.value,
       xmodelo: modelo.value,
       cano: this.search_form.get('cano').value,
@@ -580,6 +555,81 @@ async getmetodologia(){
     });
   }
 
+  async getTypeVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/over-limit/type-vehicle`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicleList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicleList.push({ 
+            id: response.data.list[i].ctarifa_exceso,
+            value: response.data.list[i].xgrupo,
+          });
+        }
+      }
+      },);
+  }
+  async VehicleData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/vehicle/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.TypeVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.TypeVehicle.push({ 
+            id: response.data.list[i].ctipovehiculo,
+            value: response.data.list[i].xtipovehiculo,
+          });
+        }
+      }
+      },);
+  }
+  async getUtilityVehicle(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/utility`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.UtilityVehicle = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.UtilityVehicle.push({ 
+            id: response.data.list[i].cuso,
+            value: response.data.list[i].xuso,
+          });
+        }
+      }
+      },);
+     
+   }
+  async ClaseData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/clase/data`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.ListClase = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.ListClase.push({ 
+            id: response.data.list[i].cclase,
+            value: response.data.list[i].xclase,
+          });
+        }
+      }
+      },);
+  }
+
   calculation(){
     let calculo = this.search_form.get('msuma_aseg').value * this.search_form.get('pcasco').value / 100;
     this.search_form.get('mprima_casco').setValue(calculo);
@@ -605,10 +655,11 @@ async getmetodologia(){
   }
 
   OperatioValueGrua(){
-    // let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+    let plan = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
     let params = {
-      ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
-   }
+     cplan: plan.id,
+     ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
+    }
       this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-grua`, params).subscribe((response: any) => {
        if(response.data.status){
          if(this.search_form.get('bgrua').value == true){
@@ -676,7 +727,6 @@ async getmetodologia(){
       if (!this.validateForm(this.search_form)) {
           this.bpagarubii = false
           this.search_form.get('cmetodologiapago').setValue('');
-          console.log(this.validateForm(this.search_form))
           window.alert (`Debe completar los campos de la emisión antes de realizar el pago`)
         } else {
           if (this.bpagomanual == false) {
@@ -688,8 +738,7 @@ async getmetodologia(){
         cplan: metodologiaPago.id,
         cmetodologiapago: this.search_form.get('cmetodologiapago').value,
         ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
-        igrua: this.search_form.get('bgrua').value,
-        ncapacidad_p: this.search_form.get('ncapacidad_p').value
+        igrua: this.search_form.get('bgrua').value
       }
         this.http.post(`${environment.apiUrl}/api/fleet-contract-management/value-plan`, params).subscribe((response: any) => {
           if(response.data.status){
@@ -916,10 +965,10 @@ async getmetodologia(){
           ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
           ctomador: this.search_form.get('ctomador').value,
           xzona_postal: this.search_form.get('xzona_postal').value,
-          xuso: this.search_form.get('xuso').value,
-          xtipo: this.search_form.get('xtipo').value,
+          cuso: this.search_form.get('cuso').value,
+          ctipovehiculo: this.search_form.get('ctipovehiculo').value,
           nkilometraje: this.search_form.get('nkilometraje').value,
-          xclase: this.search_form.get('xclase').value,
+          cclase: this.search_form.get('cclase').value,
           cusuario: this.currentUser.data.cusuario,
           payment: this.paymentList,
           accessory: this.accessoryList
@@ -1025,6 +1074,7 @@ async getmetodologia(){
             xserialcarroceria: form.xserialcarroceria,
             xserialmotor: form.xserialmotor,  
             xcobertura: this.search_form.get('xcobertura').value,
+            ctipovehiculo: this.search_form.get('ctipovehiculo').value,
             cplan: metodologiaPago.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,
@@ -1051,18 +1101,14 @@ async getmetodologia(){
             pcatastrofico: form.pcatastrofico,
             pmotin:form.pmotin,
             mmotin:form.mmotin,
+            cuso:form.cuso,
+            cclase:form.cclase,
+            nkilometraje:form.nkilometraje,
             pblindaje: form.pblindaje,
             ivigencia: this.search_form.get('ivigencia').value,
             cproductor: this.currentUser.data.ccorredor,
             mgrua: form.mgrua,
-            ctomador: this.search_form.get('ctomador').value,
-            cusuario: this.currentUser.data.cusuario,
-            ctarifa_exceso: this.search_form.get('ctarifa_exceso').value,
-            xzona_postal: form.xzona_postal,
-            xuso: form.xuso,
-            xtipo: form.xtipo,
-            nkilometraje: form.nkilometraje,
-            xclase: form.xclase
+            ctarifa_exceso:form.ctarifa_exceso
           };
           if(this.search_form.get('xcobertura').value == 'RCV'){
             console.log(this.search_form.get('cpais').value)
@@ -1202,64 +1248,7 @@ async getmetodologia(){
         this.xplanservicios = response.data.xplanservicios;
         this.mprimatotal = response.data.mprimatotal;
         this.mprimaprorratatotal = response.data.mprimaprorratatotal;
-        this.xclase = response.data.xclase;
-        this.xtransmision = response.data.xtransmision;
         this.xcolor = response.data.xcolor;
-        this.xzona_postal_propietario = response.data.xzona_postal_propietario;
-        this.nkilometraje = response.data.nkilometraje
-        if(response.data.xtomador){
-          this.xtomador = response.data.xtomador;
-        }else{
-          this.xtomador = this.xnombrecliente;
-        }
-        
-        if(response.data.xprofesion){
-          this.xprofesion = response.data.xprofesion;
-        }else{
-          this.xprofesion = ' ';
-        }
-
-        if(response.data.xrif){
-          this.xrif = response.data.xrif;
-        }else{
-          this.xrif = this.xdocidentidadcliente;
-        }
-
-        if(response.data.xdomicilio){
-          this.xdomicilio = response.data.xdomicilio;
-        }else{
-          this.xdomicilio = this.xdireccionfiscalcliente;
-        }
-
-        if(response.data.xzona_postal){
-          this.xzona_postal = response.data.xzona_postal;
-        }else{
-          this.xzona_postal = this.xzona_postal_propietario;
-        }
-
-        if(response.data.xtelefono){
-          this.xtelefono = response.data.xtelefono;
-        }else{
-          this.xtelefono = this.xtelefonocliente;
-        }
-
-        if(response.data.xcorreo){
-          this.xcorreo = response.data.xcorreo;
-        }else{
-          this.xcorreo = this.xemailcliente;
-        }
-
-        if(response.data.xestado){
-          this.xestado = response.data.xestado;
-        }else{
-          this.xestado = this.xestadocliente;
-        }
-        
-        if(response.data.xciudad){
-          this.xciudad = response.data.xciudad;
-        }else{
-          this.xciudad = this.xciudadcliente;
-        }
         if(response.data.fnacimientopropietario){
           let dateFormat = new Date(response.data.fnacimientopropietario);
           let dd = dateFormat.getDay();
@@ -1292,39 +1281,6 @@ async getmetodologia(){
   getPaymentMethodology(cmetodologiapago) {
     let xmetodologiapago = this.metodologiaList.find(element => element.id === parseInt(cmetodologiapago));
     return xmetodologiapago.value
-  }
-
-  getTakersData(){
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params;
-    this.keyword;
-    this.http.post(`${environment.apiUrl}/api/valrep/takers`, params, options).subscribe((response: any) => {
-      if(response.data.list){
-        this.takersList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.takersList.push({ 
-            id: response.data.list[i].ctomador,
-            value: response.data.list[i].xtomador,
-          });
-          this.takersList.sort((a, b) => a.value > b.value ? 1 : -1)
-        }
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.NOTIFICATIONS.NOTIFICATIONNOTFOUND"; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
-  }
-
-  selectedTaker(event){
-    this.search_form.get('ctomador').setValue(event.id)
   }
   
   changeDateFormat(date) {
@@ -1484,7 +1440,7 @@ async getmetodologia(){
           table: {
             widths: [40, 170, 70, 70, '*', '*'],
             body: [
-              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xtomador, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: this.xprofesion, border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xrif, border: [false, false, true, false]}]
+              [{text: 'TOMADOR:', bold: true, border: [true, false, false, false]}, {text: this.xnombrecliente, border: [false, false, false, false]}, {text: 'Índole o Profesión:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'C.I. / R.I.F.:', bold: true, border: [false, false, false, false]}, {text: this.xdocidentidadcliente, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1493,7 +1449,7 @@ async getmetodologia(){
           table: {
             widths: [40, 310, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdomicilio, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestado, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1502,7 +1458,7 @@ async getmetodologia(){
           table: {
             widths: [24, 130, 40, 24, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudad, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: this.xzona_postal, border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefono, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xcorreo, border: [false, false, true, true]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, true]}, {text: this.xciudadcliente, border: [false, false, false, true]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'Teléfono:', bold: true, border: [false, false, false, true]}, {text: this.xtelefonocliente, border: [false, false, false, true]}, {text: 'E-mail:', bold: true, border: [false, false, false, true]}, {text: this.xemailcliente, border: [false, false, true, true]}]
             ]
           }
         },
@@ -1547,7 +1503,7 @@ async getmetodologia(){
           table: {
             widths: [24, 130, 40, 24, 30, 50, 24, '*'],
             body: [
-              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocliente, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [{text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1592,7 +1548,7 @@ async getmetodologia(){
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.xtransmision, border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
             ]
           }
         },
@@ -1601,7 +1557,7 @@ async getmetodologia(){
           table: {
             widths: [20, 45, 80, 75, 70, 70, 50, '*'],
             body: [
-              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: this.nkilometraje, border: [false, false, true, true]}]
+              [{text: 'USO:', bold: true, border: [true, false, false, true]}, {text: this.xuso, border: [false, false, false, true]}, {text: 'SERIAL CARROCERIA:', bold: true, border: [false, false, false, true]}, {text: this.xserialcarroceria, border: [false, false, false, true]}, {text: 'SERIAL DEL MOTOR:', bold: true, border: [false, false, false, true]}, {text: this.xserialmotor, border: [false, false, false, true]}, {text: 'KILOMETRAJE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
             ]
           }
         },
@@ -1708,7 +1664,7 @@ async getmetodologia(){
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En mi carácter de tomador de la póliza contratada con la mundial de seguros, c.a bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
+              [{text: 'En mi carácter de tomador de la póliza contratada con La Mundial de Seguros, C.A bajo fe de juramento certifico que el dinero utilizado para el pago de la prima, \n' +
                       'proviene de una fuente lícita y por lo tanto, no tiene relación alguna con el dinero, capitales, bienes, haberes, valores o títulos producto de las actividades \n' +
                       'o acciones derivadas de operaciones ilícitas previstas en las normas sobre administración de riesgos de legitimación de capitales, financiamiento al terrorismo y \n' +
                       'financiamiento de la proliferación de armas de destrucción masiva en la actividad aseguradora. El tomador y/o asegurado declara(n) recibir en este acto las \n' +
@@ -1785,7 +1741,7 @@ async getmetodologia(){
           table: {
             widths: [40, 310, 24, '*'],
             body: [
-              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdomicilio, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestado, border: [false, false, true, false]}]
+              [{text: 'DOMICILIO:', bold: true, border: [true, false, false, false]}, {text: this.xdireccionfiscalcliente, border: [false, false, false, false]}, {text: 'Estado:', bold: true, border: [false, false, false, false]}, {text: this.xestadocliente, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1839,7 +1795,7 @@ async getmetodologia(){
           table: {
             widths: [24, 134, 40, 20, 30, 50, 24, '*'],
             body: [
-              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: this.xzona_postal_propietario, border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
+              [ {text: 'Ciudad:', bold: true, border: [true, false, false, false]}, {text: this.xciudadpropietario, border: [false, false, false, false]}, {text: 'Zona Postal:', bold: true, border: [false, false, false, false]}, {text: ' ', border: [false, false, false, false]}, {text: 'Teléfono:', bold: true, border: [false, false, false, false]}, {text: this.xtelefonocelularpropietario, border: [false, false, false, false]}, {text: 'E-mail:', bold: true, border: [false, false, false, false]}, {text: this.xemailpropietario, border: [false, false, true, false]}]
             ]
           }
         },
@@ -1994,7 +1950,7 @@ async getmetodologia(){
           table: {
             widths: ['*'],
             body: [
-              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
+              [{text: 'En caso de SINIESTRO o SOLICITUD DE SERVICIO dar aviso a la brevedad posible al número telefónico: 0500-2797288 / 0414-4128237 Atención 24/7', alignment: 'center', bold: true, border: [true, false, true, true]}]
             ]
           }
         },
