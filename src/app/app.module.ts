@@ -315,6 +315,7 @@ import { PolicyCancellationsComponent } from './subscription/policy-cancellation
 import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
 import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
+import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
 import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
 
@@ -615,6 +616,7 @@ export function HttpLoaderFactory(http: HttpClient){
     CauseForCancellationComponent,
     TakersIndexComponent,
     TakersDetailComponent,
+    PendingPaymentsComponent,
     FleetContractQuotesIndexComponent,
     FleetContractQuotesDetailComponent
   ],
