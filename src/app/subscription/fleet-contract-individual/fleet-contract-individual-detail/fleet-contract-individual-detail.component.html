@@ -323,8 +323,7 @@
                     <div class="form-outline">                        
                       <label class="form-label required" for="form3Examplev4">Clase</label>
                       <select formControlName="cclase" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cclase').errors } ">
-                        <option></option>
-                        <option *ngFor="let clase of ListClase" value="{{ clase.id }}">{{ clase.value }}</option>
+                        <option *ngFor="let clase of ListClase" value="{{ clase.control }}">{{ clase.value }}</option>
                       </select>                                             
                       <div *ngIf="submitted && search_form.get('cclase').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('cclase').errors.required">Se requiere completar el campo</div>
