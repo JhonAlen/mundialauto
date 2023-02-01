@@ -601,6 +601,8 @@ async getPlanData(){
           this.ListClase.push({ 
             id: response.data.list[i].cclase,
             value: response.data.list[i].xclase,
+            control: response.data.list[i].control,
+
           });
         }
       }
@@ -684,23 +686,23 @@ async getmetodologia(){
   generateTarifa(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
+    let clase = this.ListClase.find(element => element.control === parseInt(this.search_form.get('cclase').value));
+    console.log(clase)
     let params =  {
-      ctipovehiculo: this.search_form.get('ctipovehiculo').value,  
+      xclase: clase.value,  
       xmarca: marca.value,
       xmodelo: modelo.value,
       cano: this.search_form.get('cano').value,
       xcobertura: this.search_form.get('xcobertura').value,
       
     };
+    console.log(params)
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
-        this.search_form.get('pcasco').disable();
         this.search_form.get('pmotin').setValue(response.data.ptarifa);
-        this.search_form.get('pmotin').disable();
         for(let i = 0; i < response.data.ptarifa.length; i++){
           this.search_form.get('pcatastrofico').setValue(response.data.ptarifa[1].ptarifa)
-          this.search_form.get('pcatastrofico').disable();
           this.search_form.get('pmotin').setValue(response.data.ptarifa[0].ptarifa)
         }
       }
@@ -973,6 +975,8 @@ OperatioValidationPlate(){
       let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
       let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
       let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+      let clase = this.ListClase.find(element => element.control === parseInt(this.search_form.get('cclase').value));
+
       const response = await fetch(`${environment.apiUrl}/api/fleet-contract-management/create/individualContract`, {
         "method": "POST",
         "headers": {
@@ -1032,7 +1036,7 @@ OperatioValidationPlate(){
           cuso: this.search_form.get('cuso').value,
           ctipovehiculo: this.search_form.get('ctipovehiculo').value,
           nkilometraje: this.search_form.get('nkilometraje').value,
-          cclase: this.search_form.get('cclase').value,
+          cclase: clase.id,
           cusuario: this.currentUser.data.cusuario,
           payment: this.paymentList,
           accessory: this.accessoryList
@@ -1188,6 +1192,8 @@ OperatioValidationPlate(){
         let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
         let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
         let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+        let clase = this.ListClase.find(element => element.control === parseInt(this.search_form.get('cclase').value));
+
         let params = {
             icedula: this.search_form.get('icedula').value,
             xrif_cliente: form.xrif_cliente,
@@ -1227,7 +1233,7 @@ OperatioValidationPlate(){
             ncobro: form.ncobro,
             mgrua: form.mgrua,
             cuso: form.cuso,
-            cclase: form.cclase,
+            cclase: clase.id,
             ctipovehiculo: form.ctipovehiculo,
             xzona_postal: form.xzona_postal,
             nkilometraje: form.nkilometraje,
@@ -1288,7 +1294,7 @@ OperatioValidationPlate(){
     };
     await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
       if(response.data.status){
-        console.log(response.data.xclase)
+        console.log(response.data)
         this.ccarga = response.data.ccarga;
         this.xpoliza = response.data.xpoliza;
         this.xtituloreporte = response.data.xtituloreporte;
@@ -1736,7 +1742,7 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]},{text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]},{text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.xtransmision, border: [false, false, true, true]}]
             ]
           }
         },
