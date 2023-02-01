@@ -903,7 +903,7 @@ OperatioValidationPlate(){
           mtasa_cambio: result.mtasa_cambio,
           ftasa_cambio: result.ftasa_cambio,
           cbanco_destino: result.cbanco_destino,
-          cestatusgeneral: 14
+          cestatusgeneral: 7//14
         }
 
         // if(this.paymentList){
