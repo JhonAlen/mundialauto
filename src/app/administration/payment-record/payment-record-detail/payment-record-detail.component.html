@@ -113,9 +113,9 @@
                                     <div class="col-12" >
                                         <div class="form-group">
                                             <label style="font-weight: bolder;text-align: center;">Sumatoria de Factura</label>
-                                            <input type="text" formControlName="msumafactura" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('msumafactura').errors }" style="text-align: center;">
-                                            <div *ngIf="submitted && payment_form.get('msumafactura').errors"  class="invalid-feedback">
-                                                <div *ngIf="payment_form.get('msumafactura').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
+                                            <input type="text" formControlName="sumafactura" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('sumafactura').errors }" style="text-align: center;">
+                                            <div *ngIf="submitted && payment_form.get('sumafactura').errors"  class="invalid-feedback">
+                                                <div *ngIf="payment_form.get('sumafactura').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDOBSERVATION" | translate }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -170,7 +170,7 @@
                             <form [formGroup]="payment_form">
                                 <div class="row">
                                     <!-- carta que refleja los impuestos -->
-                                    <div class="card" style= "width: 377px;margin-left: 23px;margin-bottom: 101px;">
+                                    <div class="card" style= "width: 377px;margin-left: 23px;margin-bottom: 173px;">
                                         <div class="card-header company-card-header">
                                             <div class="row">
                                                 <div class="col-6">
@@ -202,33 +202,44 @@
                                         <div class="card-header company-card-header">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    Impuestos Aplicados
+                                                    Montos calculados
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label>Retención</label>
-                                                    <input type="text" formControlName="xdocidentidad" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('xdocidentidad').errors }">
-                                                    <div *ngIf="submitted && payment_form.get('xdocidentidad').errors"  class="invalid-feedback">
-                                                    </div>
+                                                    <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototalretencion" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px; ">
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label>ISLR</label>
-                                                    <input type="text" formControlName="xproveedor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('xproveedor').errors }">
-                                                    <div *ngIf="submitted && payment_form.get('xproveedor').errors"  class="invalid-feedback">
-                                                    </div>
+                                                    <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototalislr" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px; ">
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label>IVA</label>
-                                                    <input type="text" formControlName="xproveedor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('xproveedor').errors }">
-                                                    <div *ngIf="submitted && payment_form.get('xproveedor').errors"  class="invalid-feedback">
-                                                    </div>
+                                                    <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototaliva" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px; ">
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label style="font-weight: bolder;">Subtotal Factura: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontocotizacion" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label style="font-weight: bolder;">Total Factura: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mfactura" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label style="font-weight: bolder;">Total Impuesto: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototalimpuestos" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label style="font-weight: bolder;">Total a Pagar: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototalfactura" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -236,37 +247,36 @@
 
                                     <!-- Carta que refleja el resumen. -->
 
-                                    <div class="card" style= "width: 377px;margin-left: 49px">
+                                    <div class="card" style= "width: 377px;margin-left: 49px;margin-bottom: 84px;">
                                         <div class="card-header company-card-header">
                                             <div class="row">
-                                                <div class="col-6">
-                                                    Impuestos Aplicados
+                                                <div class="col-8">
+                                                    Resumen de Desglose
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card-body">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label>Retención</label>
-                                                    <input type="text" formControlName="xdocidentidad" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('xdocidentidad').errors }">
-                                                    <div *ngIf="submitted && payment_form.get('xdocidentidad').errors"  class="invalid-feedback">
-                                                    </div>
+                                                    <label style="font-weight: bolder;">Total Factura: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mfactura" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label>ISLR</label>
-                                                    <input type="text" formControlName="xproveedor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('xproveedor').errors }">
-                                                    <div *ngIf="submitted && payment_form.get('xproveedor').errors"  class="invalid-feedback">
-                                                    </div>
+                                                    <label style="font-weight: bolder;">Total Impuesto: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototalimpuestos" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
                                                 </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label>IVA</label>
-                                                    <input type="text" formControlName="xproveedor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && payment_form.get('xproveedor').errors }">
-                                                    <div *ngIf="submitted && payment_form.get('xproveedor').errors"  class="invalid-feedback">
-                                                    </div>
+                                                    <label style="font-weight: bolder;">Total a Pagar: <input formControlName="etiquetamoneda" style="background-color:transparent;background: inherit;border: 0px;font-weight: bolder;margin-right: -167px;"><input formControlName="mmontototalfactura" style="background-color:transparent;background: inherit;border: 0px;margin-right: -162px;"></label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-9 mt-2" style="margin-left: 45px;">
+                                                    <button [disabled]="loading" class="btn company-detail-button btn-lg btn-block" type="submit" (click)="onSubmit()">
+                                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                        Procesar
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

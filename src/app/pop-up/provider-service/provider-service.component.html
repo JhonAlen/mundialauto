@@ -8,7 +8,7 @@
     <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
     <form [formGroup]="popup_form" (ngSubmit)="onSubmit(popup_form.value)">
         <div class="row">
-            <div class="col-sm-12">
+            <!-- <div class="col-sm-12">
                 <div class="form-group">
                     <label>{{ "PROVIDERS.PROVIDERS.SERVICETYPE" | translate }}</label>
                     <select formControlName="ctiposervicio" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('ctiposervicio').errors }" (change)="serviceDropdownDataRequest()">
@@ -19,7 +19,7 @@
                         <div *ngIf="popup_form.get('ctiposervicio').errors.required">{{ "PROVIDERS.PROVIDERS.REQUIREDSERVICETYPE" | translate }}</div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-sm-12">
                 <div class="form-group">
                     <label>{{ "PROVIDERS.PROVIDERS.SERVICE" | translate }}</label>

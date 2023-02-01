@@ -141,7 +141,7 @@ export class NotificationQuoteComponent implements OnInit {
 
   addServiceOrder(){
     if(this.quote){
-      let quote = {ccotizacion: this.quote, cnotificacion: this.quote.cnotificacion, cproveedor: this.quote.cproveedor, xnombre: this.quote.xnombre, repuestos: this.acceptedReplacementList, createServiceOrder: true, mmontocotizacion: this.acceptedReplacementList[0].mmontocotizacion};
+      let quote = {ccotizacion: this.quote, cnotificacion: this.quote.cnotificacion, cproveedor: this.quote.cproveedor, xnombre: this.quote.xnombre, repuestos: this.acceptedReplacementList, createServiceOrder: true};
       const modalRef = this.modalService.open(NotificationQuoteServiceOrderComponent, {size: 'xl'});
       modalRef.componentInstance.quote = quote;
       modalRef.result.then((result: any) => { 

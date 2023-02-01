@@ -294,8 +294,6 @@ export class ProviderDetailComponent implements OnInit {
             create: false,
             cservicio: request.data.services[i].cservicio,
             xservicio: request.data.services[i].xservicio,
-            ctiposervicio: request.data.services[i].ctiposervicio,
-            xtiposervicio: request.data.services[i].xtiposervicio
           });
         }
       }
@@ -488,8 +486,7 @@ export class ProviderDetailComponent implements OnInit {
             create: true,
             cservicio: result.cservicio,
             xservicio: result.xservicio,
-            ctiposervicio: result.ctiposervicio,
-            xtiposervicio: result.xtiposervicio
+            cestado: this.detail_form.get('cestado').value
           });
           this.serviceGridApi.setRowData(this.serviceList);
         }
@@ -702,8 +699,6 @@ export class ProviderDetailComponent implements OnInit {
             if (this.serviceList[i].cgrid == result.cgrid) {
               this.serviceList[i].cservicio = result.cservicio;
               this.serviceList[i].xservicio = result.xservicio;
-              this.serviceList[i].ctiposervicio = result.ctiposervicio;
-              this.serviceList[i].xtiposervicio = result.xtiposervicio;
               this.serviceGridApi.refreshCells();
               return;
             }
@@ -872,14 +867,12 @@ export class ProviderDetailComponent implements OnInit {
         delete updateServiceList[i].cgrid;
         delete updateServiceList[i].create;
         delete updateServiceList[i].xservicio;
-        delete updateServiceList[i].xtiposervicio;
       }
       let createServiceList = this.serviceList.filter((row) => { return row.create; });
       for (let i = 0; i < createServiceList.length; i++) {
         delete createServiceList[i].cgrid;
         delete createServiceList[i].create;
         delete createServiceList[i].xservicio;
-        delete createServiceList[i].xtiposervicio;
       }
       let updateContactList = this.contactList.filter((row) => { return !row.create; });
       for (let i = 0; i < updateContactList.length; i++) {
