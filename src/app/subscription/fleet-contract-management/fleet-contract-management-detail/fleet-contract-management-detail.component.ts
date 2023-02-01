@@ -411,6 +411,8 @@ export class FleetContractManagementDetailComponent implements OnInit {
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe((response: any) => {
       this.cuadro = true;
       if(response.data.status){
+        console.log(response.data)
+
         this.xnombrecliente = response.data.xnombrecliente;
         this.xdocidentidadcliente = response.data.xdocidentidadcliente;
         this.xdireccionfiscalcliente = response.data.xdireccionfiscalcliente;
