@@ -11,20 +11,16 @@
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 Buscar
                             </button>
+                            <button style="margin-left: 10px;" [disabled]="excelLoading || !excelStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="downloadFile()">
+                              <span *ngIf="excelLoading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Descargar Excel
+                          </button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <form [formGroup]="search_form">
                         <div class="row">
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
-                                    <label>Desde</label>
-                                    <input type="date" formControlName="fdesde" class="form-control" [ngClass]="{ 'is-invalid' : submitted && search_form.get('fdesde').errors }" (change)="onChangeDateFrom()">
-                                    <div *ngIf="submitted && search_form.get('fdesde').errors"  class="invalid-feedback">
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>Hasta</label>
@@ -51,7 +47,7 @@
                 </div>
                 <div class="card-body">
                     <div class="container">
-                        <ag-grid-angular style="width: 100%; height: 416px;" class="ag-theme-alpine" [rowData]="receiptList" [pagination]="false" [paginationPageSize]="9" [columnDefs]="columnDefs">
+                        <ag-grid-angular style="width: 100%; height: 528px;" class="ag-theme-alpine" [rowData]="receiptList" [pagination]="true" [paginationPageSize]="10" [columnDefs]="columnDefs">
                             <!--<ag-grid-column headerName="N°" field="nconsecutivo" [width]="55" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="N° Recibo" field="xrecibo" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>
                             <ag-grid-column headerName="N° Contrato" field="ccontratoflota" [width]="115" [sortable]="true" [resizable]="true"></ag-grid-column>

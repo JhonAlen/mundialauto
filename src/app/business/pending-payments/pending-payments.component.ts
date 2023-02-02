@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { ColDef} from 'ag-grid-community';
+import { utils, writeFileXLSX } from 'xlsx';
 
 
 @Component({
@@ -15,10 +16,13 @@ import { ColDef} from 'ag-grid-community';
 export class PendingPaymentsComponent implements OnInit {
 
   currentUser;
+  fhasta;
   search_form : UntypedFormGroup;
   searchStatus: boolean = false;
   loading: boolean = false;
   submitted: boolean = false;
+  excelLoading: boolean = false;
+  excelStatus: boolean = false;
   receiptList: any[] = [];
 
   columnDefs: ColDef[] = [
@@ -72,12 +76,13 @@ export class PendingPaymentsComponent implements OnInit {
   }
 
   onSearch(form) {
+    this.loading = true;
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      fdesde: form.fdesde,
       fhasta: form.fhasta
     };
+    this.fhasta = null;
     this.http.post(`${environment.apiUrl}/api/pending-payments/search`, params, options).subscribe((response : any) => {
       if (response.data.status){
         this.receiptList = [];
@@ -97,7 +102,11 @@ export class PendingPaymentsComponent implements OnInit {
             fhasta_rec: response.data.receipts[i].fhasta_rec*/
           })
         }
-        console.log(this.receiptList);
+        if (this.receiptList.length > 0){
+          this.excelStatus = true;
+        }
+        this.fhasta = form.fhasta;
+        this.loading = false;
       }
     },
     (err) => {
@@ -111,23 +120,22 @@ export class PendingPaymentsComponent implements OnInit {
     });
   }
 
-  onChangeDateFrom() {
-    let fhasta = this.search_form.get('fhasta').value;
-    let fdesde = this.search_form.get('fdesde').value;
-    if (fdesde != null) {
-      
-    } 
-    else {
-      this.searchStatus = false;
-    }
+  downloadFile(){
+    this.excelLoading = true;
+    let nuevoFormato = this.fhasta.split('-');
+    let fhasta = nuevoFormato[2] + '-' + nuevoFormato[1] + '-' + nuevoFormato[0];
+    let ws = utils.json_to_sheet(this.receiptList);
+    let wb = utils.book_new();
+    utils.book_append_sheet(wb, ws, "Primas Pendientes");
+    writeFileXLSX(wb, `Primas Pendientes ${fhasta}.xlsx`);
+    this.excelLoading = false;
   }
 
   onChangeDateUntil() {
     let fhasta = this.search_form.get('fhasta').value;
-    let fdesde = this.search_form.get('fdesde').value;
-    if (fhasta != null) {
-      
-    } 
+    if (fhasta) {
+        this.searchStatus = true;
+    }   
     else {
       this.searchStatus = false;
     }
