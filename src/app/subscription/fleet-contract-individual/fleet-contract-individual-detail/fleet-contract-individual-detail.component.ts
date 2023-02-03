@@ -901,7 +901,7 @@ OperatioValidationPlate(){
           mtasa_cambio: result.mtasa_cambio,
           ftasa_cambio: result.ftasa_cambio,
           cbanco_destino: result.cbanco_destino,
-          cestatusgeneral: 7//14
+          cestatusgeneral: 14
         }
 
         // if(this.paymentList){
@@ -1124,11 +1124,11 @@ OperatioValidationPlate(){
         this.search_form.get('email').setValue(response.data.xemail);
         this.search_form.get('ccorredor').setValue(response.data.ccorredor);
         this.search_form.get('xdireccionfiscal').setValue(response.data.xdireccion);
-        this.CountryList.push({ id: response.data.cpais, value: response.data.xpais});
-        this.StateList.push({ id: response.data.cestado, value: response.data.xestado});
-        this.CityList.push({ id: response.data.cciudad, value: response.data.xciudad});
         this.search_form.get('cpais').setValue(response.data.cpais);
+        this.CountryList.push({value: response.data.xpais});
+        this.getState();
         this.search_form.get('cestado').setValue(response.data.cestado);
+        this.getCity()
         this.search_form.get('cciudad').setValue(response.data.cciudad);
 
       } 
@@ -1739,7 +1739,7 @@ OperatioValidationPlate(){
           table: {
             widths: [60, 30, 30, 50, 30, 50, 60, '*'],
             body: [
-              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]},{text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.xtransmision, border: [false, false, true, true]}]
+              [{text: 'N° DE PUESTOS:', bold: true, border: [true, false, false, true]}, {'text': this.ncapacidadpasajerosvehiculo, border: [false, false, false, true]}, {text: 'CLASE:', bold: true, border: [false, false, false, true]}, {text: ' ', border: [false, false, false, true]}, {text: this.xclase, border: [false, false, false, true]},{text: 'PLACA:', bold: true, border: [false, false, false, true]}, {text: this.xplaca, border: [false, false, false, true]}, {text: 'TRANSMISIÓN:', bold: true, border: [false, false, false, true]}, {text: this.xtransmision, border: [false, false, true, true]}]
             ]
           }
         },
