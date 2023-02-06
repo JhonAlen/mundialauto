@@ -6,34 +6,72 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"> -->
 
+
+
+
+
+
+
+
  <header id="header" class="d-flex align-items-center" style="margin-bottom: -30px;">
-  <div class="container-fluid container-xl d-flex align-items-center justify-content-between" style="margin-left: -10px;">
+<div class="container-fluid container-xl d-flex align-items-center justify-content-between" style="margin-left: -10px;">
     <a href="home" class="image d-flex align-items-center">
       <img class="logocompany"/>
     </a>
-      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <!-- <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i> -->
+
+
+      <nav class="navbar navbar-expand-lg" >
+      
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+ <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-    <nav id="navbar" class="navbar">  
+            </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul *ngIf="auth" class="navbar-nav mr-auto" >
+            <li class="nav-item dropdown" *ngFor="let group of groupList">
+              
+              <a class="nav-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-transform: capitalize;">
+                {{ group.xgrupo | translate }}
+              </a>
+              
+              <div class="dropdown-menu scrollable-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{{ module.xruta }}" *ngFor="let module of group.modules" style="color: #000;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ module.xmodulo | translate }}</a>
+              </div>
+            </li>
+                  
+            <li *ngIf="auth" class="nav-item">
+              <a class="nav-link" href="inicio" (click)="logOut()" >{{ "TOOLBAR.LOGOUT" | translate }}</a>
+            </li>
+            <form [formGroup]="lang_form">
+                <select class="form-control" formControlName="langselect" (change)="changeLanguage(lang_form.value);">
+                  <option *ngFor="let lang of translate.getLangs()" value="{{ lang }}">{{ lang }}</option>
+                </select>
+            </form>
+          </ul>
+
+        </div>
+      </nav>
+      
+
+
+    <!-- <nav id="navbar" class="navbar">  
       <ul *ngIf="auth" >
-              <!-- <li class="dropdown" *ngFor="let group of groupList"><a>{{ group.xgrupo | translate }} <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-                <ul>
-                  <a routerLink="{{ module.xruta }}" *ngFor="let module of group.modules">{{ module.xmodulo | translate }}</a>
-                </ul>
-              </li> -->
-
-
-        <li class="dropdown" *ngFor="let group of groupList">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ group.xgrupo | translate }}
+        <li class="dropdown " *ngFor="let group of groupList">
+          <a class="nav-item">{{ group.xgrupo | translate }}
+           <i class="bi bi-chevron-down dropdown-indicator"></i>
           </a>
-           <ul aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-active classList" routerLink="{{ module.xruta }}" *ngFor="let module of group.modules" style="color: #4c4c4c;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ module.xmodulo | translate }}</a>
-           </ul> 
-        </li>
-
+          <ul>
+            <li *ngFor="let module of group.modules">
+              <a  routerLink="{{ module.xruta }}">{{ module.xmodulo | translate }}</a>
+            </li>
+          </ul>
+        </li> 
 
         <li *ngIf="auth" class="nav-item">
-          <a class="nav-link" href="inicio" (click)="logOut()" style="color: #fff;font-family: inherit;/* font-weight: bold; */font-size: 15px;text-transform: capitalize;;padding: 7px 12px 9px 12px;">{{ "TOOLBAR.LOGOUT" | translate }}</a>
+          <a class="nav-link" href="inicio" (click)="logOut()">{{ "TOOLBAR.LOGOUT" | translate }}</a>
         </li>
         <form [formGroup]="lang_form">
           <select class="form-control" formControlName="langselect" (change)="changeLanguage(lang_form.value);">
@@ -41,8 +79,7 @@
           </select>
       </form>
       </ul>
-    </nav>
+    </nav> -->
   </div>
 </header> 
-
 

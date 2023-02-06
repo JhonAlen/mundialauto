@@ -35,9 +35,9 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "PROVIDERS.PROVIDERS.NAME" | translate }}</label>
-                                    <input type="text" formControlName="xproveedor" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xproveedor').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xproveedor').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xproveedor').errors.required">{{ "PROVIDERS.PROVIDERS.REQUIREDNAME" | translate }}</div>
+                                    <input type="text" formControlName="xnombre" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xnombre').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xnombre').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xnombre').errors.required">{{ "PROVIDERS.PROVIDERS.REQUIREDNAME" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -83,9 +83,9 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "PROVIDERS.PROVIDERS.EMAIL" | translate }}</label>
-                                    <input type="email" formControlName="xemail" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xemail').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xemail').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('xemail').errors.pattern">{{ "PROVIDERS.PROVIDERS.EMAILPATTERNERROR" | translate }}</div>
+                                    <input type="email" formControlName="xcorreo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xcorreo').errors }">
+                                    <div *ngIf="submitted && detail_form.get('xcorreo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('xcorreo').errors.pattern">{{ "PROVIDERS.PROVIDERS.EMAILPATTERNERROR" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -107,6 +107,14 @@
                             </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
+                                    <label>Impuesto sobre la renta</label>
+                                    <input type="number" formControlName="pislr" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('pislr').errors }">
+                                    <div *ngIf="submitted && detail_form.get('pislr').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
                                     <label>{{ "PROVIDERS.PROVIDERS.RETENTIONPERCENTAGE" | translate }}</label>
                                     <input type="number" formControlName="pretencion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('pretencion').errors }">
                                     <div *ngIf="submitted && detail_form.get('pretencion').errors"  class="invalid-feedback">
@@ -125,9 +133,9 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "PROVIDERS.PROVIDERS.CREDITDAYSLIMIT" | translate }}</label>
-                                    <input type="number" formControlName="ldiascredito" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('ldiascredito').errors }">
-                                    <div *ngIf="submitted && detail_form.get('ldiascredito').errors"  class="invalid-feedback">
-                                        <div *ngIf="detail_form.get('ldiascredito').errors.required">{{ "PROVIDERS.PROVIDERS.REQUIREDCREDITDAYSLIMIT" | translate }}</div>
+                                    <input type="number" formControlName="nlimite" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('nlimite').errors }">
+                                    <div *ngIf="submitted && detail_form.get('nlimite').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('nlimite').errors.required">{{ "PROVIDERS.PROVIDERS.REQUIREDCREDITDAYSLIMIT" | translate }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +190,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12 col-md-4">
+                            <!-- <div class="col-sm-12 col-md-4">
                                 <div class="form-group form-check">
                                     <input type="checkbox" formControlName="bafiliado" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bafiliado').errors }">
                                     <label>{{ "PROVIDERS.PROVIDERS.AFILIATE" | translate }}</label>
@@ -190,7 +198,7 @@
                                         <div *ngIf="detail_form.get('bafiliado').errors.required">{{ "PROVIDERS.PROVIDERS.REQUIREDAFILIATE" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group form-check">
                                     <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bactivo').errors }">

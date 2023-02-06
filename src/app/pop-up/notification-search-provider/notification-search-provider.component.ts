@@ -83,7 +83,7 @@ export class NotificationSearchProviderComponent implements OnInit {
     let params = {
       ccompania: this.currentUser.data.ccompania,
       cproveedor: this.provider.cproveedor,
-      xservicio: form.xservicio ? form.xservicio : undefined,
+      // xservicio: form.xservicio ? form.xservicio : undefined,
       xnombre: form.xnombre ? form.xnombre : undefined
     }
     this.http.post(`${environment.apiUrl}/api/notification/search/provider`, params, options).subscribe((response : any) => {
@@ -92,7 +92,7 @@ export class NotificationSearchProviderComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.providerList.push({ 
             cproveedor: response.data.list[i].cproveedor,
-            xservicio: response.data.list[i].xservicio,
+            xdocidentidad: response.data.list[i].xdocidentidad,
             xnombre: response.data.list[i].xnombre,
             xtelefonoproveedor: response.data.list[i].xtelefonoproveedor
           });

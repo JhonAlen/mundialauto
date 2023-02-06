@@ -117,3 +117,7 @@
   .footer .footer-legal .credits a {
     color: var(--color-primary);
   }
+
+  .col-12{
+    z-index: 1
+  }

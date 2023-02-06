@@ -311,6 +311,13 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
 import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
 import { FooterComponent } from './footer/footer.component';
+import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
+import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
+import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
+import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
+import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
+import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
+import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -604,7 +611,14 @@ export function HttpLoaderFactory(http: HttpClient){
     AdministrationBillLoadingComponent,
     PolicyQuotationIndexComponent,
     PolicyQuotationDetailComponent,
-    FooterComponent
+    FooterComponent,
+    PolicyCancellationsComponent,
+    CauseForCancellationComponent,
+    TakersIndexComponent,
+    TakersDetailComponent,
+    PendingPaymentsComponent,
+    FleetContractQuotesIndexComponent,
+    FleetContractQuotesDetailComponent
   ],
   imports: [
     BrowserModule,

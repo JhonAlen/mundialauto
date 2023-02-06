@@ -814,7 +814,7 @@
             "CREATE": "Crear",
             "SEARCHCLAUSES": "Buscar Clausulas",
             "EXHIBIT": "Anexo",
-            "CLAUSES": "Clausulas",
+            "CLAUSES": "Configuración de Clausulas",
             "CLAUSESLIST": "Lista de Clausulas",
             "OBSERVATION": "Observación",
             "ACTIVE": "Activo",
@@ -824,6 +824,9 @@
             "ADDOBJETIVES": "Agregar Objetivos",
             "CREATEOBJETIVES": "Crear Objetivos",
             "OBJETIVES": "Objetivos"
+        },
+        "TAKERS": {
+            "TAKERS": "Configuración de Tomadores"
         }
     },
     "THIRDPARTIES": {
@@ -1190,6 +1193,9 @@
             "PLANTYPE": "Tipo de Plan",
             "DATEFROM": "Fecha Desde",
             "DATETO": "Fecha Hasta"
+        },
+        "TAKERS": {
+            "TAKERS": "Tomadores"
         }
     },
     "PROVIDERS": {
@@ -1818,6 +1824,9 @@
         },
         "PARENTPOLICY": {
             "PARENTPOLICY":"Póliza Matriz"
+        },
+        "POLICY-CANCELLATIONS": {
+            "POLICY-CANCELLATIONS": "Anulación de Pólizas"
         }
     },
     "EVENTS": {

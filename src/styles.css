@@ -18,6 +18,10 @@
     border-color:white;
     color: white;
 }
+.navbar{
+    position: initial;
+    z-index: 999;
+}
 
 .logocompany{
     background: url("./assets/imagenes/mundial-logo2.png") no-repeat;
