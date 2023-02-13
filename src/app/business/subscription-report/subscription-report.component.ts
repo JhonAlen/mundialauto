@@ -115,9 +115,22 @@ export class SubscriptionReportComponent implements OnInit {
             xcolor: response.data.subscriptions[i].xcolor,
             xserialcarroceria: response.data.subscriptions[i].xserialcarroceria,
             xserialmotor: response.data.subscriptions[i].xserialmotor,
-            mvaloraseguradovehiculo: response.data.subscriptions[i].mvalor
+            mvaloraseguradovehiculo: response.data.subscriptions[i].mvalor,
+            mvaloraseguradoaccesorios: response.data.subscriptions[i].mvaloraccesorios,
+            ptasaasegurada: response.data.subscriptions[i].ptasaasegurada,
+            mprimacasco: response.data.subscriptions[i].mprimacasco,
+            mriesgocatastrofico: response.data.subscriptions[i].mriesgocatastrofico,
+            mbasicarcv: response.data.subscriptions[i].mbasicarcv,
+            mexcesodelimite: response.data.subscriptions[i].mexcesodelimite,
+            mdefensapenal: response.data.subscriptions[i].mdefensapenal,
+            mapov: response.data.subscriptions[i].mapov,
+            mmotin: response.data.subscriptions[i].mmotin,
+            mtotalprimarcv: response.data.subscriptions[i].mtotalprimarcv,
+            mserviciogrua: response.data.subscriptions[i].mserviciogrua,
+            mprimatotal: response.data.subscriptions[i].mprimatotal
           })
         }
+        console.log(this.subscriptionList);
         if (this.subscriptionList.length > 0){
           this.excelStatus = true;
         }
@@ -157,23 +170,45 @@ export class SubscriptionReportComponent implements OnInit {
       { width: 20 },
       { width: 25 },
       { width: 20 },
-      { width: 20 },
+      { width: 20 },//valor aseg
       { width: 20 },
       { width: 8 },
       { width: 15 },
       { width: 20 },
-      { width: 18 },
       { width: 9 },
       { width: 13 },
       { width: 10 },
       { width: 10 },
       { width: 9 },
-      { width: 15 },
       { width: 15 },
       { width: 13 },
       { width: 15 }
     ]
-    let headers = [["Cert.", "Propietario", "Marca", "Modelo", "Sucursal", "Versión", "Año", "Tipo", "Puestos", "Placa", "Color", "Serial Carrocería", "Serial Motor", "Valor Asegurado Vehículo", "Valor Asegurado Accesorios", "Tasa Aseg", "Prima Casco", "Prima Por Gtos. Catastróficos", "Prima Gastos de Recuperación", "Básica RCV", "Exceso de Límite", "Defensa Penal", "APOV", "Prima Motín", "Prima Indemnización Diaria por Robo o Hurto", "Total Prima R.C.V", "Grúas", "Total Cía. Seguros"]];
+    let headers = [["Cert.",
+                    "Propietario", 
+                    "Marca", 
+                    "Modelo", 
+                    "Versión", 
+                    "Año", 
+                    "Tipo", 
+                    "Puestos", 
+                    "Placa", 
+                    "Color", 
+                    "Serial Carrocería", 
+                    "Serial Motor", 
+                    "Valor Asegurado Vehículo", 
+                    "Valor Asegurado Accesorios", 
+                    "Tasa Aseg", 
+                    "Prima Casco", 
+                    "Prima Por Gtos. Catastróficos", 
+                    "Básica RCV", 
+                    "Exceso de Límite", 
+                    "Defensa Penal", 
+                    "APOV", 
+                    "Prima Motín", 
+                    "Total Prima R.C.V", 
+                    "Grúas", 
+                    "Total Cía. Seguros"]];
     let ws = utils.json_to_sheet([]);
     utils.sheet_add_aoa(ws, headers);
     utils.sheet_add_json(ws, this.subscriptionList, { origin: 'A2', skipHeader: true });
