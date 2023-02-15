@@ -15,6 +15,7 @@ import { utils, writeFileXLSX } from 'xlsx';
 export class SubscriptionReportComponent implements OnInit {
 
   currentUser;
+  fdesde;
   fhasta;
   search_form : UntypedFormGroup;
   searchStatus: boolean = false;
@@ -39,18 +40,16 @@ export class SubscriptionReportComponent implements OnInit {
     { headerName: 'Serial Motor', field: 'xserialmotor', width: 140, resizable: true },
     { headerName: 'Valor Asegurado Vehículo', field: 'mvaloraseguradovehiculo', width: 140, resizable: true },
     { headerName: 'Valor Asegurado Accesorios', field: 'mvaloraseguradoaccesorios', width: 140, resizable: true },
-    { headerName: 'Tasa Aseg.', field: 'ptasaaseg', width: 140, resizable: true },
+    { headerName: 'Tasa Aseg.', field: 'ptasaasegurada', width: 140, resizable: true },
     { headerName: 'Prima Casco', field: 'mprimacasco', width: 140, resizable: true },
-    { headerName: 'Prima Por Gstos. Catastróficos', field: 'mprimagastoscatastroficos', width: 140, resizable: true },
-    { headerName: 'Prima Gastos de Recuperación', field: 'mprimagastosrecuperacion', width: 140, resizable: true },
-    { headerName: 'Básica RCV', field: 'mprimabasicarcv', width: 140, resizable: true },
-    { headerName: 'Exceso de Límite', field: 'mprimaexcesolimite', width: 140, resizable: true },
-    { headerName: 'Defensa Penal', field: 'mprimadefensapenal', width: 140, resizable: true },
-    { headerName: 'APOV', field: 'mprimaapov', width: 140, resizable: true },
-    { headerName: 'Prima Motín', field: 'mprimamotin', width: 140, resizable: true },
-    { headerName: 'Prima Indemnización Diaria Por Robo', field: 'mprimaindemnizacion', width: 140, resizable: true },
-    { headerName: 'Total Prima R.C.V.', field: 'mprimatotalrcv', width: 140, resizable: true },
-    { headerName: 'Grúas', field: 'mprimagruas', width: 140, resizable: true },
+    { headerName: 'Prima Por Gstos. Catastróficos', field: 'mriesgocatastrofico', width: 140, resizable: true },
+    { headerName: 'Básica RCV', field: 'mbasicarcv', width: 140, resizable: true },
+    { headerName: 'Exceso de Límite', field: 'mexcesodelimite', width: 140, resizable: true },
+    { headerName: 'Defensa Penal', field: 'mdefensapenal', width: 140, resizable: true },
+    { headerName: 'APOV', field: 'mapov', width: 140, resizable: true },
+    { headerName: 'Prima Motín', field: 'mmotin', width: 140, resizable: true },
+    { headerName: 'Total Prima R.C.V.', field: 'mtotalprimarcv', width: 140, resizable: true },
+    { headerName: 'Grúas', field: 'mserviciogrua', width: 140, resizable: true },
     { headerName: 'Total Prima Cía. Seguros', field: 'mprimatotal', width: 140, resizable: true }
   ];
 
@@ -115,19 +114,19 @@ export class SubscriptionReportComponent implements OnInit {
             xcolor: response.data.subscriptions[i].xcolor,
             xserialcarroceria: response.data.subscriptions[i].xserialcarroceria,
             xserialmotor: response.data.subscriptions[i].xserialmotor,
-            mvaloraseguradovehiculo: response.data.subscriptions[i].mvalor,
-            mvaloraseguradoaccesorios: response.data.subscriptions[i].mvaloraccesorios,
+            mvaloraseguradovehiculo: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mvalor),
+            mvaloraseguradoaccesorios: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mvaloraccesorios),
             ptasaasegurada: response.data.subscriptions[i].ptasaasegurada,
-            mprimacasco: response.data.subscriptions[i].mprimacasco,
-            mriesgocatastrofico: response.data.subscriptions[i].mriesgocatastrofico,
-            mbasicarcv: response.data.subscriptions[i].mbasicarcv,
-            mexcesodelimite: response.data.subscriptions[i].mexcesodelimite,
-            mdefensapenal: response.data.subscriptions[i].mdefensapenal,
-            mapov: response.data.subscriptions[i].mapov,
-            mmotin: response.data.subscriptions[i].mmotin,
-            mtotalprimarcv: response.data.subscriptions[i].mtotalprimarcv,
-            mserviciogrua: response.data.subscriptions[i].mserviciogrua,
-            mprimatotal: response.data.subscriptions[i].mprimatotal
+            mprimacasco: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mprimacasco),
+            mriesgocatastrofico: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mriesgocatastrofico),
+            mbasicarcv: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mbasicarcv),
+            mexcesodelimite: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mexcesodelimite),
+            mdefensapenal: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mdefensapenal),
+            mapov: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mapov),
+            mmotin: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mmotin),
+            mtotalprimarcv: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mtotalprimarcv),
+            mserviciogrua: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mserviciogrua),
+            mprimatotal: new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.subscriptions[i].mprimatotal)
           })
         }
         console.log(this.subscriptionList);
