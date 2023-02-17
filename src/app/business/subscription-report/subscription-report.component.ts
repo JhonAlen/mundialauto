@@ -69,7 +69,7 @@ export class SubscriptionReportComponent implements OnInit {
       let options = { headers: headers };
       let params = {
         cusuario: this.currentUser.data.cusuario,
-        cmodulo: 120
+        cmodulo: 119
       }
       this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
         if(response.data.status){
