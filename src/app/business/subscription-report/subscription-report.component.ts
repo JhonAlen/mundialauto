@@ -26,7 +26,9 @@ export class SubscriptionReportComponent implements OnInit {
   subscriptionList: any[] = [];
 
   columnDefs: ColDef[] = [
-    { headerName: 'Cert.', field: 'ccontratoflota', width: 105, resizable: true },
+    { headerName: 'Cert.', field: 'xpoliza', width: 105, resizable: true },
+    { headerName: 'Estatus', field: 'xestatus', width: 110, resizable: true },
+    { headerName: 'Usuario', field: 'xnombreusuario', width: 135, resizable: true },
     { headerName: 'Propietario', field: 'xnombrepropietario', width: 135, resizable: true },
     { headerName: 'Marca', field: 'xmarca', width: 170, resizable: true },
     { headerName: 'Modelo', field: 'xmodelo', width: 150, resizable: true },
@@ -105,7 +107,9 @@ export class SubscriptionReportComponent implements OnInit {
         this.subscriptionList = [];
         for (let i = 0; i < response.data.subscriptions.length; i++) {
           this.subscriptionList.push({
-            ccontratoflota: response.data.subscriptions[i].ccontratoflota,
+            xpoliza: response.data.subscriptions[i].xpoliza,
+            xestatus: response.data.subscriptions[i].xestatus,
+            xnombreusuario: response.data.subscriptions[i].xnombreusuario,
             xnombrepropietario: response.data.subscriptions[i].xnombrepropietario,
             xmarca: response.data.subscriptions[i].xmarca,
             xmodelo: response.data.subscriptions[i].xmodelo,
@@ -136,6 +140,7 @@ export class SubscriptionReportComponent implements OnInit {
         if (this.subscriptionList.length > 0){
           this.excelStatus = true;
         }
+        this.fdesde = form.fdesde;
         this.fhasta = form.fhasta;
         this.loading = false;
       }
@@ -154,13 +159,17 @@ export class SubscriptionReportComponent implements OnInit {
 
   downloadFile() {
     this.excelLoading = true;
-    let nuevoFormato = this.fhasta.split('-');
-    let fhasta = nuevoFormato[2] + '-' + nuevoFormato[1] + '-' + nuevoFormato[0];
+    let nuevoFormatoFdesde = this.fdesde.split('-');
+    let fdesde = nuevoFormatoFdesde[2] + '-' + nuevoFormatoFdesde[1] + '-' + nuevoFormatoFdesde[0];
+    let nuevoFormatoFhasta = this.fhasta.split('-');
+    let fhasta = nuevoFormatoFhasta[2] + '-' + nuevoFormatoFhasta[1] + '-' + nuevoFormatoFhasta[0];
 
     let wb = utils.book_new();
     //Width de cada columna del archivo
     let wsWidths = [
       { width: 6 },
+      { width: 15},
+      { width: 15},
       { width: 45 },
       { width: 15 },
       { width: 20 },
@@ -172,7 +181,7 @@ export class SubscriptionReportComponent implements OnInit {
       { width: 20 },
       { width: 25 },
       { width: 20 },
-      { width: 20 },//valor aseg
+      { width: 20 },
       { width: 20 },
       { width: 8 },
       { width: 15 },
@@ -187,6 +196,8 @@ export class SubscriptionReportComponent implements OnInit {
       { width: 15 }
     ]
     let headers = [["Cert.",
+                    "Estatus",
+                    "Póliza Emitida Por",
                     "Propietario", 
                     "Marca", 
                     "Modelo", 
@@ -216,8 +227,8 @@ export class SubscriptionReportComponent implements OnInit {
     utils.sheet_add_json(ws, this.subscriptionList, { origin: 'A2', skipHeader: true });
     ws["!cols"] = wsWidths;
 
-    utils.book_append_sheet(wb, ws, "Primas Pendientes");
-    writeFileXLSX(wb, `Primas Pendientes ${fhasta}.xlsx`);
+    utils.book_append_sheet(wb, ws, "Pólizas Suscritas");
+    writeFileXLSX(wb, `Pólizas Suscritas entre el ${fdesde} y ${fhasta}.xlsx`);
     this.excelLoading = false;
   }
 
