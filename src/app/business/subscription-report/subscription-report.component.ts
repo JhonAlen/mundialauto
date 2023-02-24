@@ -140,6 +140,7 @@ export class SubscriptionReportComponent implements OnInit {
         if (this.subscriptionList.length > 0){
           this.excelStatus = true;
         }
+        this.fdesde = form.fdesde;
         this.fhasta = form.fhasta;
         this.loading = false;
       }
@@ -180,7 +181,7 @@ export class SubscriptionReportComponent implements OnInit {
       { width: 20 },
       { width: 25 },
       { width: 20 },
-      { width: 20 },//valor aseg
+      { width: 20 },
       { width: 20 },
       { width: 8 },
       { width: 15 },
