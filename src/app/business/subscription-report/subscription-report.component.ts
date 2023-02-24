@@ -62,6 +62,7 @@ export class SubscriptionReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.search_form = this.formBuilder.group({
+      fdesde: [''],
       fhasta: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -70,7 +71,7 @@ export class SubscriptionReportComponent implements OnInit {
       let options = { headers: headers };
       let params = {
         cusuario: this.currentUser.data.cusuario,
-        cmodulo: 120
+        cmodulo: 119
       }
       this.http.post(`${environment.apiUrl}/api/security/verify-module-permission`, params, options).subscribe((response : any) => {
         if(response.data.status){
@@ -96,9 +97,11 @@ export class SubscriptionReportComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
+      fdesde: form.fdesde,
       fhasta: form.fhasta
     };
     this.fhasta = null;
+    this.fdesde = null;
     this.http.post(`${environment.apiUrl}/api/subscription-report/search`, params, options).subscribe((response : any) => {
       if (response.data.status){
         this.subscriptionList = [];
@@ -228,10 +231,48 @@ export class SubscriptionReportComponent implements OnInit {
     this.excelLoading = false;
   }
 
+  onChangeDateFrom() {
+    let fdesde = this.search_form.get('fdesde').value;
+    let fhasta = this.search_form.get('fhasta').value;
+    console.log(fdesde);
+    console.log(fhasta);
+    if (fdesde) {
+      if (fhasta) {
+        if (fdesde > fhasta) {
+          alert('La fecha desde debe de ser menor que la fecha hasta');
+          this.searchStatus = false;
+        }
+        else {
+          this.searchStatus = true;
+        }
+      }
+      else {
+        this.searchStatus = false;
+      }
+    }
+    else {
+      this.searchStatus = false;
+    }
+  }
+
   onChangeDateUntil() {
-    let fhasta = this.search_form.get('fhasta').value
+    let fhasta = this.search_form.get('fhasta').value;
+    let fdesde = this.search_form.get('fdesde').value;
+    console.log(fdesde);
+    console.log(fhasta);
     if (fhasta) {
-      this.searchStatus = true;
+      if (fdesde) {
+        if (fhasta < fdesde) {
+          alert('La fecha hasta debe de ser mayor que la fecha desde');
+          this.searchStatus = false;
+        }
+        else {
+          this.searchStatus = true;
+        }
+      }
+      else {
+        this.searchStatus = false;
+      }
     }
     else {
       this.searchStatus = false;
