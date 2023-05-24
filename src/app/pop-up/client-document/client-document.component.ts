@@ -32,7 +32,7 @@ export class ClientDocumentComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      cdocumento: ['', Validators.required],
+      cdocumento: [''],
       xarchivo: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;

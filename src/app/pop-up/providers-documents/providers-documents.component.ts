@@ -7,22 +7,20 @@ import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 
 @Component({
-  selector: 'app-administration-bill-loading',
-  templateUrl: './administration-bill-loading.component.html',
-  styleUrls: ['./administration-bill-loading.component.css']
+  selector: 'app-providers-documents',
+  templateUrl: './providers-documents.component.html',
+  styleUrls: ['./providers-documents.component.css']
 })
-export class AdministrationBillLoadingComponent implements OnInit {
+export class ProvidersDocumentsComponent implements OnInit {
 
   @ViewChild('Xarchivo', { static: false }) xarchivo: ElementRef;
-  @Input() public bill;
+  @Input() public provider;
   currentUser;
   popup_form: UntypedFormGroup;
   submitted: boolean = false;
   loading: boolean = false;
   canSave: boolean = false;
-  canSaveSettlement: boolean = false;
   isEdit: boolean = false;
-  finiquito: boolean = false;
   alert = { show : false, type : "", message : "" }
   xrutaarchivo: string;
 
@@ -33,26 +31,41 @@ export class AdministrationBillLoadingComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      xnotanotificacion: [''],
+      xobservacion: [''],
       xarchivo: [''],
-      cfiniquito: [''],
-      cnotificacion: [''],
-      corden: [''],
-      mmontofiniquito: ['']
+      xdocumento: [''],
     });
+    if(this.provider){
+      if(this.provider.type == 3){
+        this.canSave = true;
+      }else if(this.provider.type == 2){
+        console.log(this.provider)
+        this.popup_form.get('xobservacion').setValue(this.provider.xobservacion);
+        this.popup_form.get('xobservacion').disable();
+        this.xrutaarchivo = this.provider.xrutaarchivo;
+        this.canSave = false;
+        
+      }else if(this.provider.type == 1){
+        this.popup_form.get('xobservacion').setValue(this.provider.xobservacion);
+        this.xrutaarchivo = this.provider.xrutaarchivo;
+        this.canSave = true;
+        this.isEdit = true;
+      }
+    }
   }
 
   onFileSelect(event){
     const file = event.target.files[0];
     this.popup_form.get('xarchivo').setValue(file);
-    this.canSave = true;
-
   }
 
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
-
+    if (this.popup_form.invalid) {
+      this.loading = false;
+      return;
+    }
     if(!this.popup_form.get('xarchivo').value){
       this.savePopUpForm(form);
     }else{
@@ -61,6 +74,7 @@ export class AdministrationBillLoadingComponent implements OnInit {
       formData.append('agentId', '007');
       this.http.post<any>(`${environment.apiUrl}/api/upload/document`, formData).subscribe(response => {
         if(response.data.status){
+          console.log('hola')
           this.xrutaarchivo = `${environment.apiUrl}/documents/${response.data.uploadedFile.filename}`;
           this.savePopUpForm(form);
         }else{
@@ -79,8 +93,9 @@ export class AdministrationBillLoadingComponent implements OnInit {
   }
 
   savePopUpForm(form){
-    this.bill.xrutaarchivo = this.xrutaarchivo ? this.xrutaarchivo : "n/a";
-    this.activeModal.close(this.bill);
+    this.provider.xobservacion = form.xobservacion;
+    this.provider.xrutaarchivo = this.xrutaarchivo ? this.xrutaarchivo : "n/a";
+    this.activeModal.close(this.provider);
   }
 
 }

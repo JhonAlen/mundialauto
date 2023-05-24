@@ -54,12 +54,12 @@ export class PlanDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
-      ctipoplan: ['', Validators.required],
-      xplan: ['', Validators.required],
-      mcosto: ['', Validators.required],
+      ctipoplan: [''],
+      xplan: [''],
+      mcosto: [''],
       parys:[''],
       paseguradora:[''],
-      bactivo: [true, Validators.required]
+      bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){

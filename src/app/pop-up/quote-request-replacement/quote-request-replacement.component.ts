@@ -33,15 +33,15 @@ export class QuoteRequestReplacementComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      ctiporepuesto: ['', Validators.required],
-      crepuesto: ['', Validators.required],
-      ncantidad: ['', Validators.required],
-      cniveldano: ['', Validators.required],
-      bdisponible: [false, Validators.required],
-      munitariorepuesto: ['', Validators.required],
-      bdescuento: [false, Validators.required],
-      mtotalrepuesto: ['', Validators.required],
-      cmoneda: ['', Validators.required],
+      ctiporepuesto: [''],
+      crepuesto: [''],
+      ncantidad: [''],
+      cniveldano: [''],
+      bdisponible: [false],
+      munitariorepuesto: [''],
+      bdescuento: [false],
+      mtotalrepuesto: [''],
+      cmoneda: [''],
       xmoneda: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
