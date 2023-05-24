@@ -54,12 +54,12 @@ export class PlanDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
-      ctipoplan: ['', Validators.required],
-      xplan: ['', Validators.required],
-      mcosto: ['', Validators.required],
+      ctipoplan: [''],
+      xplan: [''],
+      mcosto: [''],
       parys:[''],
       paseguradora:[''],
-      bactivo: [true, Validators.required]
+      bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -165,17 +165,17 @@ export class PlanDetailComponent implements OnInit {
         this.detail_form.get('bactivo').setValue(response.data.bactivo);
         this.detail_form.get('bactivo').disable();
         this.paymentMethodologyList = [];
-        if(response.data.paymentMethodologies){
-          for(let i =0; i < response.data.paymentMethodologies.length; i++){
-            this.paymentMethodologyList.push({
-              cgrid: i,
-              create: false,
-              cmetodologiapago: response.data.paymentMethodologies[i].cmetodologiapago,
-              xmetodologiapago: response.data.paymentMethodologies[i].xmetodologiapago,
-              mmetodologiapago: response.data.paymentMethodologies[i].mmetodologiapago
-            });
-          }
-        }
+        // if(response.data.paymentMethodologies){
+        //   for(let i =0; i < response.data.paymentMethodologies.length; i++){
+        //     this.paymentMethodologyList.push({
+        //       cgrid: i,
+        //       create: false,
+        //       cmetodologiapago: response.data.paymentMethodologies[i].cmetodologiapago,
+        //       xmetodologiapago: response.data.paymentMethodologies[i].xmetodologiapago,
+        //       mmetodologiapago: response.data.paymentMethodologies[i].mmetodologiapago
+        //     });
+        //   }
+        // }
         this.insurerList = [];
         if(response.data.insurers){
           for(let i =0; i < response.data.insurers.length; i++){
@@ -217,6 +217,7 @@ export class PlanDetailComponent implements OnInit {
               coverages: coverages
             });
           }
+          this.serviceList.sort((a,b) => a.xservicio > b.xservicio ? 1 : -1);
         }
         this.serviceInsurerList = [];
         if(response.data.servicesInsurers){
@@ -246,6 +247,7 @@ export class PlanDetailComponent implements OnInit {
   editPlan(){
     this.detail_form.get('ctipoplan').enable();
     this.detail_form.get('xplan').enable();
+    this.detail_form.get('mcosto').enable();
     this.detail_form.get('parys').enable();
     this.detail_form.get('paseguradora').enable();
     this.detail_form.get('bactivo').enable();
@@ -266,25 +268,25 @@ export class PlanDetailComponent implements OnInit {
     }
   }
 
-  addPaymentMethodology(){
-    let paymentMethodology = { type: 3 };
-    const modalRef = this.modalService.open(PlanPaymentMethodologyComponent);
-    modalRef.componentInstance.paymentMethodology = paymentMethodology;
-    modalRef.result.then((result: any) => { 
-      if(result){
-        if(result.type == 3){
-          this.paymentMethodologyList.push({
-            cgrid: this.insurerList.length,
-            create: true,
-            cmetodologiapago: result.cmetodologiapago,
-            xmetodologiapago: result.xmetodologiapago,
-            mmetodologiapago: result.mmetodologiapago
-          });
-          this.paymentMethodologyGridApi.setRowData(this.paymentMethodologyList);
-        }
-      }
-    });
-  }
+  // addPaymentMethodology(){
+  //   let paymentMethodology = { type: 3 };
+  //   const modalRef = this.modalService.open(PlanPaymentMethodologyComponent);
+  //   modalRef.componentInstance.paymentMethodology = paymentMethodology;
+  //   modalRef.result.then((result: any) => { 
+  //     if(result){
+  //       if(result.type == 3){
+  //         this.paymentMethodologyList.push({
+  //           cgrid: this.insurerList.length,
+  //           create: true,
+  //           cmetodologiapago: result.cmetodologiapago,
+  //           xmetodologiapago: result.xmetodologiapago,
+  //           mmetodologiapago: result.mmetodologiapago
+  //         });
+  //         this.paymentMethodologyGridApi.setRowData(this.paymentMethodologyList);
+  //       }
+  //     }
+  //   });
+  // }
 
   addInsurer(){
     let insurer = { type: 3 };
@@ -333,52 +335,52 @@ export class PlanDetailComponent implements OnInit {
     });
   }
 
-  paymentMethodologyRowClicked(event: any){
-    let paymentMethodology = {};
-    if(this.editStatus){ 
-      paymentMethodology = { 
-        type: 1,
-        create: event.data.create, 
-        cgrid: event.data.cgrid,
-        cmetodologiapago: event.data.cmetodologiapago,
-        mmetodologiapago: event.data.mmetodologiapago,
-        delete: false
-      };
-    }else{ 
-      paymentMethodology = { 
-        type: 2,
-        create: event.data.create,
-        cgrid: event.data.cgrid,
-        cmetodologiapago: event.data.cmetodologiapago,
-        mmetodologiapago: event.data.mmetodologiapago,
-        delete: false
-      }; 
-    }
-    const modalRef = this.modalService.open(PlanPaymentMethodologyComponent);
-    modalRef.componentInstance.paymentMethodology = paymentMethodology;
-    modalRef.result.then((result: any) => {
-      if(result){
-        if(result.type == 1){
-          for(let i = 0; i < this.paymentMethodologyList.length; i++){
-            if(this.paymentMethodologyList[i].cgrid == result.cgrid){
-              this.paymentMethodologyList[i].mmetodologiapago = result.mmetodologiapago;
-              this.paymentMethodologyGridApi.refreshCells();
-              return;
-            }
-          }
-        }else if(result.type == 4){
-          if(result.delete){
-            this.paymentMethodologyDeletedRowList.push({ cmetodologiapago: result.cmetodologiapago });
-          }
-          this.paymentMethodologyList = this.paymentMethodologyList.filter((row) => { return row.cgrid != result.cgrid });
-          for(let i = 0; i < this.paymentMethodologyList.length; i++){
-            this.paymentMethodologyList[i].cgrid = i;
-          }
-          this.paymentMethodologyGridApi.setRowData(this.paymentMethodologyList);
-        }
-      }
-    });
-  }
+  // paymentMethodologyRowClicked(event: any){
+  //   let paymentMethodology = {};
+  //   if(this.editStatus){ 
+  //     paymentMethodology = { 
+  //       type: 1,
+  //       create: event.data.create, 
+  //       cgrid: event.data.cgrid,
+  //       cmetodologiapago: event.data.cmetodologiapago,
+  //       mmetodologiapago: event.data.mmetodologiapago,
+  //       delete: false
+  //     };
+  //   }else{ 
+  //     paymentMethodology = { 
+  //       type: 2,
+  //       create: event.data.create,
+  //       cgrid: event.data.cgrid,
+  //       cmetodologiapago: event.data.cmetodologiapago,
+  //       mmetodologiapago: event.data.mmetodologiapago,
+  //       delete: false
+  //     }; 
+  //   }
+  //   const modalRef = this.modalService.open(PlanPaymentMethodologyComponent);
+  //   modalRef.componentInstance.paymentMethodology = paymentMethodology;
+  //   modalRef.result.then((result: any) => {
+  //     if(result){
+  //       if(result.type == 1){
+  //         for(let i = 0; i < this.paymentMethodologyList.length; i++){
+  //           if(this.paymentMethodologyList[i].cgrid == result.cgrid){
+  //             this.paymentMethodologyList[i].mmetodologiapago = result.mmetodologiapago;
+  //             this.paymentMethodologyGridApi.refreshCells();
+  //             return;
+  //           }
+  //         }
+  //       }else if(result.type == 4){
+  //         if(result.delete){
+  //           this.paymentMethodologyDeletedRowList.push({ cmetodologiapago: result.cmetodologiapago });
+  //         }
+  //         this.paymentMethodologyList = this.paymentMethodologyList.filter((row) => { return row.cgrid != result.cgrid });
+  //         for(let i = 0; i < this.paymentMethodologyList.length; i++){
+  //           this.paymentMethodologyList[i].cgrid = i;
+  //         }
+  //         this.paymentMethodologyGridApi.setRowData(this.paymentMethodologyList);
+  //       }
+  //     }
+  //   });
+  // }
 
   insurerRowClicked(event: any){
     let insurer = {};
@@ -500,9 +502,9 @@ export class PlanDetailComponent implements OnInit {
     });
   }
 
-  onPaymentMethodologiesGridReady(event){
-    this.paymentMethodologyGridApi = event.api;
-  }
+  // onPaymentMethodologiesGridReady(event){
+  //   this.paymentMethodologyGridApi = event.api;
+  // }
 
   onInsurersGridReady(event){
     this.insurerGridApi = event.api;
@@ -524,18 +526,18 @@ export class PlanDetailComponent implements OnInit {
     let params;
     let url;
     if(this.code){
-      let updatePaymentMethodologiesList = this.paymentMethodologyList.filter((row) => { return !row.create; });
-      for(let i = 0; i < updatePaymentMethodologiesList.length; i++){
-        delete updatePaymentMethodologiesList[i].cgrid;
-        delete updatePaymentMethodologiesList[i].create;
-        delete updatePaymentMethodologiesList[i].xmetodologiapago;
-      }
-      let createPaymentMethodologiesList = this.paymentMethodologyList.filter((row) => { return row.create; });
-      for(let i = 0; i < createPaymentMethodologiesList.length; i++){
-        delete createPaymentMethodologiesList[i].cgrid;
-        delete createPaymentMethodologiesList[i].create;
-        delete createPaymentMethodologiesList[i].xmetodologiapago;
-      }
+      // let updatePaymentMethodologiesList = this.paymentMethodologyList.filter((row) => { return !row.create; });
+      // for(let i = 0; i < updatePaymentMethodologiesList.length; i++){
+      //   delete updatePaymentMethodologiesList[i].cgrid;
+      //   delete updatePaymentMethodologiesList[i].create;
+      //   delete updatePaymentMethodologiesList[i].xmetodologiapago;
+      // }
+      // let createPaymentMethodologiesList = this.paymentMethodologyList.filter((row) => { return row.create; });
+      // for(let i = 0; i < createPaymentMethodologiesList.length; i++){
+      //   delete createPaymentMethodologiesList[i].cgrid;
+      //   delete createPaymentMethodologiesList[i].create;
+      //   delete createPaymentMethodologiesList[i].xmetodologiapago;
+      // }
       let updateInsurerList = this.insurerList.filter((row) => { return !row.create; });
       for(let i = 0; i < updateInsurerList.length; i++){
         delete updateInsurerList[i].cgrid;
@@ -596,6 +598,7 @@ export class PlanDetailComponent implements OnInit {
         cplan: this.code,
         ctipoplan: form.ctipoplan,
         xplan: form.xplan,
+        mcosto: form.mcosto,
         paseguradora: form.paseguradora,        
         parys: form.parys,
         mplan: form.mplan,
@@ -603,11 +606,11 @@ export class PlanDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
-        paymentMethodologies: {
-          create: createPaymentMethodologiesList,
-          update: updatePaymentMethodologiesList,
-          delete: this.paymentMethodologyDeletedRowList
-        },
+        // paymentMethodologies: {
+        //   create: createPaymentMethodologiesList,
+        //   update: updatePaymentMethodologiesList,
+        //   delete: this.paymentMethodologyDeletedRowList
+        // },
         insurers: {
           create: createInsurerList,
           update: updateInsurerList,
@@ -621,12 +624,12 @@ export class PlanDetailComponent implements OnInit {
       };
       url = `${environment.apiUrl}/api/v2/plan/production/update`;
     }else{
-      let createPaymentMethodologiesList = this.paymentMethodologyList;
-      for(let i = 0; i < createPaymentMethodologiesList.length; i++){
-        delete createPaymentMethodologiesList[i].cgrid;
-        delete createPaymentMethodologiesList[i].create;
-        delete createPaymentMethodologiesList[i].xmetodologiapago;
-      }
+      // let createPaymentMethodologiesList = this.paymentMethodologyList;
+      // for(let i = 0; i < createPaymentMethodologiesList.length; i++){
+      //   delete createPaymentMethodologiesList[i].cgrid;
+      //   delete createPaymentMethodologiesList[i].create;
+      //   delete createPaymentMethodologiesList[i].xmetodologiapago;
+      // }
       let createInsurerList = this.insurerList;
       for(let i = 0; i < createInsurerList.length; i++){
         delete createInsurerList[i].cgrid;
@@ -659,7 +662,7 @@ export class PlanDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariocreacion: this.currentUser.data.cusuario,
-        paymentMethodologies: createPaymentMethodologiesList,
+        // paymentMethodologies: createPaymentMethodologiesList,
         insurers: createInsurerList,
         services: createServiceList
       };

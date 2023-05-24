@@ -87,6 +87,10 @@ export class NotificationDetailComponent implements OnInit {
   fcreacion;
   settlementList: any[] = [];
   settlement: {};
+  bocultar_tercero: boolean = false;
+
+
+
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -99,7 +103,7 @@ export class NotificationDetailComponent implements OnInit {
   ngOnInit(): void {
     this.detail_form = this.formBuilder.group({
       cnotificacion: [{ value: '', disabled: true }],
-      ccontratoflota: ['', Validators.required],
+      ccontratoflota: [''],
       xcliente: [{ value: '', disabled: true }],
       fdesde_pol: [{ value: '', disabled: true }],
       fhasta_pol: [{ value: '', disabled: true }],
@@ -119,30 +123,30 @@ export class NotificationDetailComponent implements OnInit {
       xdireccionpropietario: [{ value: '', disabled: true }],
       xtelefonocelularpropietario: [{ value: '', disabled: true }],
       xemailpropietario: [{ value: '', disabled: true }],
-      ctiponotificacion: ['', Validators.required],
-      ccausasiniestro: ['', Validators.required],
-      xnombre: ['', Validators.required],
-      xapellido: ['', Validators.required],
-      xtelefono: ['', Validators.required],
+      ctiponotificacion: [''],
+      ccausasiniestro: [''],
+      xnombre: [''],
+      xapellido: [''],
+      xtelefono: [''],
       xnombrealternativo: [''],
       xapellidoalternativo: [''],
       xtelefonoalternativo: [''],
-      bdano: [false, Validators.required],
-      btransitar: [false, Validators.required],
-      bdanootro: [false, Validators.required],
-      blesionado: [false, Validators.required],
-      bpropietario: [false, Validators.required],
-      fdia: ['', Validators.required],
-      fhora: ['', Validators.required],
-      cestado: ['', Validators.required],
-      cciudad: ['', Validators.required],
-      xdireccion: ['', Validators.required],
-      xdescripcion: ['', Validators.required],
-      btransito: [false, Validators.required],
-      bcarga: [false, Validators.required],
-      bpasajero: [false, Validators.required],
+      bdano: [false],
+      btransitar: [false],
+      bdanootro: [false],
+      blesionado: [false],
+      bpropietario: [false],
+      fdia: [''],
+      fhora: [''],
+      cestado: [''],
+      cciudad: [''],
+      xdireccion: [''],
+      xdescripcion: [''],
+      btransito: [false],
+      bcarga: [false],
+      bpasajero: [false],
       npasajero: [''],
-      xobservacion: ['', Validators.required],
+      xobservacion: [''],
       xtiponotificacion: [''],
       crecaudo: [''],
       xrecaudos: [''],
@@ -281,8 +285,6 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('ccontratoflota').setValue(response.data.ccontratoflota);
         this.detail_form.get('ccontratoflota').disable();
         this.detail_form.get('xcliente').setValue(response.data.xcliente);
-        console.log(response.data.fdesde_pol)
-        console.log(response.data.fhasta_pol)
         if(response.data.fdesde_pol) {
           let dateFormat = new Date(response.data.fdesde_pol).toISOString().substring(0, 10);
           this.detail_form.get('fdesde_pol').setValue(dateFormat);
@@ -732,6 +734,12 @@ export class NotificationDetailComponent implements OnInit {
     this.showSaveButton = true;
     this.editStatus = true;
     this.editBlock = true;
+
+    if(this.detail_form.get('ctiponotificacion').value == 3 || this.detail_form.get('ctiponotificacion').value == 4 || this.detail_form.get('ctiponotificacion').value == 5 || this.detail_form.get('ctiponotificacion').value == 6){
+      this.bocultar_tercero = true;
+    }else{
+      this.bocultar_tercero = false;
+    }
   }
 
   cancelSave(){
@@ -2030,6 +2038,12 @@ export class NotificationDetailComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    if(this.detail_form.get('ctiponotificacion').value == 3 || this.detail_form.get('ctiponotificacion').value == 4 || this.detail_form.get('ctiponotificacion').value == 5 || this.detail_form.get('ctiponotificacion').value == 6){
+      this.bocultar_tercero = true;
+    }else{
+      this.bocultar_tercero = false;
+    }
   }
 
   searchDocumentation(){
