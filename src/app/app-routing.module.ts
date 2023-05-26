@@ -197,6 +197,7 @@ import { TakersDetailComponent } from './configuration/takers/takers-detail/take
 import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
 import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
+import { RatesComponent } from './tables/rates/rates.component';
 
 const routes: Routes = [
  
@@ -226,6 +227,7 @@ const routes: Routes = [
   { path: 'security/department-detail/:id', component: DepartmentDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/accesory-index', component: AccesoryIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/accesory-detail', component: AccesoryDetailComponent, canActivate: [AuthGuard] },
+  { path: 'tables/rates', component: RatesComponent, canActivate: [AuthGuard] },
   { path: 'tables/accesory-detail/:id', component: AccesoryDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/business-activity-index', component: BusinessActivityIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/business-activity-detail', component: BusinessActivityDetailComponent, canActivate: [AuthGuard] },

@@ -311,6 +311,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
 import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
 import { FooterComponent } from './footer/footer.component';
+import { RatesComponent } from './tables/rates/rates.component';
 import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
 import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
@@ -618,7 +619,8 @@ export function HttpLoaderFactory(http: HttpClient){
     TakersDetailComponent,
     PendingPaymentsComponent,
     FleetContractQuotesIndexComponent,
-    FleetContractQuotesDetailComponent
+    FleetContractQuotesDetailComponent,
+    RatesComponent
   ],
   imports: [
     BrowserModule,
