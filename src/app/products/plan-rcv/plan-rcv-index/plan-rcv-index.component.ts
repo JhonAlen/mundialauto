@@ -116,12 +116,12 @@ export class PlanRcvIndexComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.planRcvList.push({ 
             cplan_rc: response.data.list[i].cplan_rc,
-            ctarifa: response.data.list[i].ctarifa,
-            xclase: response.data.list[i].xclase,
-            xtipo: response.data.list[i].xtipo,
-            xgrupo: response.data.list[i].xgrupo,
-            msuma_cosas_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_cosas_rc)}`,
-            mprima_rc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].mprima_rc)}`
+            xplan_rc: response.data.list[i].xplan_rc,
+            msuma_dc: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_dc)}`,
+            msuma_personas: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_personas)}`,
+            msuma_exceso: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_exceso)}`,
+            msuma_dp: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_dp)}`,
+            msuma_muerte: `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(response.data.list[i].msuma_muerte)}`,
           });
         }
       }
@@ -144,8 +144,7 @@ export class PlanRcvIndexComponent implements OnInit {
   }
 
   rowClicked(event: any){
-    let ctarifa = event.data.ctarifa;
-    this.router.navigate([`products/plan-rcv-detail/${event.data.cplan_rc}`], { state: ctarifa});
+    this.router.navigate([`products/plan-rcv-detail/${event.data.cplan_rc}`]);
   }
 
 }
