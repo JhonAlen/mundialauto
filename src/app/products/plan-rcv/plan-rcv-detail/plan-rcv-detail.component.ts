@@ -238,6 +238,29 @@ export class PlanRcvDetailComponent implements OnInit {
     modalRef.result.then((result: any) => { 
       if(result){
         console.log(result)
+        for(let i = 0; i < result.length; i++){
+          this.ratesList.push({
+            xclase: result[i].xclase,
+            xtipo: result[i].xtipo,
+            xgrupo: result[i].xgrupo,
+            msuma_cosas_rc: result[i].msuma_cosas_rc,
+            msuma_personas_rc: result[i].msuma_personas_rc,
+            mprima_rc: result[i].mprima_rc,
+            msuma_defensa_per: result[i].msuma_defensa_per,
+            mprima_defensa_per: result[i].mprima_defensa_per,
+            msuma_limite_ind: result[i].msuma_limite_ind,
+            mprima_limite_ind: result[i].mprima_limite_ind,
+            msuma_apov_mu: result[i].msuma_apov_mu,
+            mapov_mu: result[i].mapov_mu,
+            msuma_apov_in: result[i].msuma_apov_in,
+            mapov_in: result[i].mapov_in,
+            msuma_apov_ga: result[i].msuma_apov_ga,
+            mapov_ga: result[i].mapov_ga,
+            msuma_apov_fu: result[i].msuma_apov_fu,
+            mapov_fu: result[i].mapov_fu
+          })
+        }
+        console.log(this.ratesList)
       }
     });
   }
