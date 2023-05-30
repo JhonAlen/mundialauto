@@ -1,0 +1,378 @@
+<!-- <div class="row mt-8">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card" style= "width: 470px;height: 507px;">
+                    <div class="card-header company-card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                {{ "PRODUCTS.PLAN_RCV.GENERALINFORMATION" | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="popup_form">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>{{ "PRODUCTS.PLAN_RCV.CLASS" | translate }}</label>
+                                        <input type="text" formControlName="xclase" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xclase').errors }">
+                                        <div *ngIf="submitted && popup_form.get('xclase').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <label>{{ "PRODUCTS.PLAN_RCV.TYPE" | translate }}</label>
+                                        <input type="text" formControlName="xtipo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xtipo').errors }">
+                                        <div *ngIf="submitted && popup_form.get('xtipo').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group">
+                                        <label>{{ "PRODUCTS.PLAN_RCV.GROUP" | translate }}</label>
+                                        <input type="text" formControlName="xgrupo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xgrupo').errors }">
+                                        <div *ngIf="submitted && popup_form.get('xgrupo').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6" style="margin-left: -171px;">
+                <div class="card" style="width: 808px;">
+                    <div class="card-header company-card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                {{ "PRODUCTS.PLAN_RCV.AMOUNTS" | translate }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form [formGroup]="popup_form">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S.A. Daños a Cosas</label>
+                                        <input type="number" formControlName="msuma_cosas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_cosas_rc').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_cosas_rc').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>P.A. Daños a Personas</label>
+                                        <input type="number" formControlName="msuma_personas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mut_personas_rc').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mut_personas_rc').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>P. A. Daños a Cosas</label>
+                                        <input type="number" formControlName="mprima_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_rc').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mprima_rc').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S.A. Defensa Penal</label>
+                                        <input type="number" formControlName="msuma_defensa_per" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_defensa_per').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_defensa_per').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>Prima Defensa Penal</label>
+                                        <input type="number" formControlName="mprima_defensa_per" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_defensa_per').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mprima_defensa_per').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S.A. Exceso de Limite</label>
+                                        <input type="number" formControlName="msuma_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_limite_ind').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_limite_ind').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>Prima Exceso de Limite</label>
+                                        <input type="number" formControlName="mprima_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_limite_ind').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mprima_limite_ind').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S. A. Muerte</label>
+                                        <input type="number" formControlName="msuma_apov_mu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_mu').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_apov_mu').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>P. A. Muerte</label>
+                                        <input type="number" formControlName="mapov_mu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_mu').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mapov_mu').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S. A. Invalidez</label>
+                                        <input type="number" formControlName="msuma_apov_in" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_in').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_apov_in').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>P. A. Invalidez</label>
+                                        <input type="number" formControlName="mapov_in" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_in').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mapov_in').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S. A. Gastos Medicos</label>
+                                        <input type="number" formControlName="msuma_apov_ga" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_ga').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_apov_ga').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>P. A. Gastos</label>
+                                        <input type="number" formControlName="mapov_ga" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_ga').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mapov_ga').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>S. A. Gastos Funerario</label>
+                                        <input type="number" formControlName="msuma_apov_fu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_fu').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('msuma_apov_fu').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>P. A. Funerario</label>
+                                        <input type="number" formControlName="mapov_fu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_fu').errors }" >
+                                        <div *ngIf="submitted && popup_form.get('mapov_fu').errors"  class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="modal-header">
+    <h4 class="modal-tittle">Tarifas</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">    
+    <div style="display: -webkit-box;width: fit-content;">
+        <div class="col-sm-5" style="margin-top: 15px;"> 
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "PRODUCTS.PLAN_RCV.GENERALINFORMATION" | translate }}
+                        </div>
+                        <div class="col-6">
+                            <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit()" *ngIf="canSave">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="popup_form">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>{{ "PRODUCTS.PLAN_RCV.CLASS" | translate }}</label>
+                                    <input type="text" formControlName="xclase" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xclase').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xclase').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>{{ "PRODUCTS.PLAN_RCV.TYPE" | translate }}</label>
+                                    <input type="text" formControlName="xtipo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xtipo').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xtipo').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="form-group">
+                                    <label>{{ "PRODUCTS.PLAN_RCV.GROUP" | translate }}</label>
+                                    <input type="text" formControlName="xgrupo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xgrupo').errors }">
+                                    <div *ngIf="submitted && popup_form.get('xgrupo').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7" style="margin-top: 15px;">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row">
+                        <div class="col-6">
+                            {{ "PRODUCTS.PLAN_RCV.AMOUNTS" | translate }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="popup_form">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S.A. Daños a Cosas</label>
+                                    <input type="number" formControlName="msuma_cosas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_cosas_rc').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_cosas_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>P.A. Daños a Personas</label>
+                                    <input type="number" formControlName="msuma_personas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mut_personas_rc').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mut_personas_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>P. A. Daños a Cosas</label>
+                                    <input type="number" formControlName="mprima_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_rc').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mprima_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S.A. Defensa Penal</label>
+                                    <input type="number" formControlName="msuma_defensa_per" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_defensa_per').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_defensa_per').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Prima Defensa Penal</label>
+                                    <input type="number" formControlName="mprima_defensa_per" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_defensa_per').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mprima_defensa_per').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S.A. Exceso de Limite</label>
+                                    <input type="number" formControlName="msuma_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_limite_ind').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_limite_ind').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Prima Exceso de Limite</label>
+                                    <input type="number" formControlName="mprima_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_limite_ind').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mprima_limite_ind').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S. A. Muerte</label>
+                                    <input type="number" formControlName="msuma_apov_mu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_mu').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_apov_mu').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>P. A. Muerte</label>
+                                    <input type="number" formControlName="mapov_mu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_mu').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mapov_mu').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S. A. Invalidez</label>
+                                    <input type="number" formControlName="msuma_apov_in" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_in').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_apov_in').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>P. A. Invalidez</label>
+                                    <input type="number" formControlName="mapov_in" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_in').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mapov_in').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S. A. Gastos Medicos</label>
+                                    <input type="number" formControlName="msuma_apov_ga" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_ga').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_apov_ga').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>P. A. Gastos</label>
+                                    <input type="number" formControlName="mapov_ga" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_ga').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mapov_ga').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>S. A. Gastos Funerario</label>
+                                    <input type="number" formControlName="msuma_apov_fu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_apov_fu').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_apov_fu').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>P. A. Funerario</label>
+                                    <input type="number" formControlName="mapov_fu" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mapov_fu').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mapov_fu').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

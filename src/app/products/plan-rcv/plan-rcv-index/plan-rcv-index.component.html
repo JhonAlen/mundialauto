@@ -57,12 +57,13 @@
                 <div class="card-body">
                     <div class="container">
                         <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="planRcvList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="rowClicked($event)">
-                            <ag-grid-column headerName="C. Tarifa" field="ctarifa" [width]="100" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Clase" field="xclase" [width]="210" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Tipo" field="xtipo" [width]="215" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Grupo" field="xgrupo" [width]="258" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Daños a Personas" field="msuma_cosas_rc" [width]="215" [sortable]="true"></ag-grid-column>
-                            <ag-grid-column headerName="Daños a Cosas" field="mprima_rc" [width]="215" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Código" field="cplan_rc" [width]="85" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Plan" field="xplan_rc" [width]="230" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Daños a Cosas" field="msuma_dc" [width]="190" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Personas" field="msuma_personas" [width]="180" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Exceso" field="msuma_exceso" [width]="200" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Daños a Personas" field="msuma_dp" [width]="200" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Muerte" field="msuma_muerte" [width]="150" [sortable]="true"></ag-grid-column>
                         </ag-grid-angular>
                     </div>
                 </div>

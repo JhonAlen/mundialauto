@@ -352,12 +352,23 @@
               <div class="row" style="padding: 10px;">
                 <div class="col-md-4 mb-4 pb-2">
                   <div class="form-outline">
-                    <label class="form-label required" for="form3Examplev4">Plan de RCV</label>
+                    <label class="form-label required" for="form3Examplev4">Plan Membresía</label>
                     <select formControlName="cplan" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan').errors }" (change)="functio()">
                       <option *ngFor="let plan of planList" value="{{ plan.control }}">{{ plan.value }}</option>
                     </select>
                     <div *ngIf="submitted && search_form.get('cplan').errors" class="invalid-feedback">
                       <div *ngIf="search_form.get('cplan').errors.required">Se requiere completar el campo</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-4 pb-2" *ngIf="oculta_rcv">
+                  <div class="form-outline">
+                    <label class="form-label required" for="form3Examplev4">Plan de RCV</label>
+                    <select formControlName="cplan_rc" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && search_form.get('cplan_rc').errors }">
+                      <option *ngFor="let plan of planRcvList" value="{{ plan.control }}">{{ plan.value }}</option>
+                    </select>
+                    <div *ngIf="submitted && search_form.get('cplan_rc').errors" class="invalid-feedback">
+                      <div *ngIf="search_form.get('cplan_rc').errors.required">Se requiere completar el campo</div>
                     </div>
                   </div>
                 </div>
@@ -383,7 +394,7 @@
                     <div *ngIf="submitted && search_form.get('bgrua').errors"  class="invalid-feedback">
                         <div *ngIf="search_form.get('bgrua').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
                     </div>
-                </div>
+                  </div>
                 </div>
                 <div class="col-sm-12 col-md-4">
                   <div class="form-outline">

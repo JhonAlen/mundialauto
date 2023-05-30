@@ -320,6 +320,7 @@ import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
 import { SubscriptionReportComponent } from './business/subscription-report/subscription-report.component';
 import { ProvidersDocumentsComponent } from './pop-up/providers-documents/providers-documents.component';
+import { PlanRcvRatesComponent } from './pop-up/plan-rcv-rates/plan-rcv-rates.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -622,7 +623,8 @@ export function HttpLoaderFactory(http: HttpClient){
     FleetContractQuotesIndexComponent,
     FleetContractQuotesDetailComponent,
     SubscriptionReportComponent,
-    ProvidersDocumentsComponent
+    ProvidersDocumentsComponent,
+    PlanRcvRatesComponent
   ],
   imports: [
     BrowserModule,
