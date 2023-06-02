@@ -69,7 +69,10 @@ export class PlanRcvRatesComponent implements OnInit {
   }
 
   onSubmit(){
-    let ratesObject = {
+
+    let ratesList = [];
+
+    ratesList.push({
       xclase: this.popup_form.get('xclase').value,
       xtipo: this.popup_form.get('xtipo').value,
       xgrupo: this.popup_form.get('xgrupo').value,
@@ -88,9 +91,9 @@ export class PlanRcvRatesComponent implements OnInit {
       mapov_ga: this.popup_form.get('mapov_ga').value,
       msuma_apov_fu: this.popup_form.get('msuma_apov_fu').value,
       mapov_fu: this.popup_form.get('mapov_fu').value,
-    }
+    })
 
-    this.rates = ratesObject
+    this.rates = ratesList
 
     this.activeModal.close(this.rates);
   }

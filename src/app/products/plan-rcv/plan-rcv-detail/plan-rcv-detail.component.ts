@@ -237,7 +237,7 @@ export class PlanRcvDetailComponent implements OnInit {
     modalRef.componentInstance.rates = rates;
     modalRef.result.then((result: any) => { 
       if(result){
-        console.log(result)
+        this.ratesList = [];
         for(let i = 0; i < result.length; i++){
           this.ratesList.push({
             xclase: result[i].xclase,
@@ -260,7 +260,6 @@ export class PlanRcvDetailComponent implements OnInit {
             mapov_fu: result[i].mapov_fu
           })
         }
-        console.log(this.ratesList)
       }
     });
   }
@@ -282,25 +281,13 @@ export class PlanRcvDetailComponent implements OnInit {
         cusuario: this.currentUser.data.cusuario,
         cplan_rc: this.code,
         xplan_rc: form.xplan_rc,
-        ctarifa: this.ctarifa,
-        xclase: form.xclase,
-        xtipo: form.xtipo,
-        xgrupo: form.xgrupo,
-        msuma_cosas_rc: form.msuma_cosas_rc,
-        msuma_personas_rc: form.msuma_personas_rc,
-        mprima_rc: form.mprima_rc,
-        msuma_defensa_per: form.msuma_defensa_per,
-        mprima_defensa_per: form.mprima_defensa_per,
-        msuma_limite_ind: form.msuma_limite_ind,
-        mprima_limite_ind: form.mprima_limite_ind,
-        msuma_apov_ga: form.msuma_apov_ga,
-        msuma_apov_mu: form.msuma_apov_mu,
-        mapov_mu: form.mapov_mu,
-        msuma_apov_in: form.msuma_apov_in,
-        mapov_in: form.mapov_in,
-        mapov_ga: form.mapov_ga,
-        msuma_apov_fu: form.msuma_apov_fu,
-        mapov_fu: form.mapov_fu
+        msuma_dc: form.msuma_dc,
+        msuma_personas: form.msuma_personas,
+        msuma_exceso: form.msuma_exceso,
+        msuma_muerte: form.msuma_muerte,
+        msuma_invalidez: form.msuma_invalidez,
+        msuma_gm: form.msuma_gm,
+        msuma_gf: form.msuma_gf,
       };
       url = `${environment.apiUrl}/api/plan-rcv/update`;
     }else{
@@ -310,11 +297,11 @@ export class PlanRcvDetailComponent implements OnInit {
         msuma_dc: form.msuma_dc,
         msuma_personas: form.msuma_personas,
         msuma_exceso: form.msuma_exceso,
-        msuma_dp: form.msuma_dp,
         msuma_muerte: form.msuma_muerte,
         msuma_invalidez: form.msuma_invalidez,
         msuma_gm: form.msuma_gm,
         msuma_gf: form.msuma_gf,
+        rates: this.ratesList
       };
       url = `${environment.apiUrl}/api/plan-rcv/create`;
     }
