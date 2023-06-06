@@ -251,7 +251,23 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>S.A. Daños a Cosas</label>
+                                    <label>Grúa</label>
+                                    <input type="number" formControlName="mgrua" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mgrua').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mgrua').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>mut_cosas_rc</label>
+                                    <input type="number" formControlName="mut_cosas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mut_cosas_rc').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mut_cosas_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>msuma_cosas_rc</label>
                                     <input type="number" formControlName="msuma_cosas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_cosas_rc').errors }" >
                                     <div *ngIf="submitted && popup_form.get('msuma_cosas_rc').errors"  class="invalid-feedback">
                                     </div>
@@ -259,17 +275,57 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>P.A. Daños a Personas</label>
-                                    <input type="number" formControlName="msuma_personas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mut_personas_rc').errors }" >
+                                    <label>mut_personas_rc</label>
+                                    <input type="number" formControlName="mut_personas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mut_personas_rc').errors }" >
                                     <div *ngIf="submitted && popup_form.get('mut_personas_rc').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>P. A. Daños a Cosas</label>
+                                    <label>msuma_personas_rc</label>
+                                    <input type="number" formControlName="msuma_personas_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_personas_rc').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('msuma_personas_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>mut_prima_rc</label>
+                                    <input type="number" formControlName="mut_prima_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mut_prima_rc').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mut_prima_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>mprima_rc</label>
                                     <input type="number" formControlName="mprima_rc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_rc').errors }" >
                                     <div *ngIf="submitted && popup_form.get('mprima_rc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>mexceso_limite</label>
+                                    <input type="number" formControlName="mexceso_limite" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mexceso_limite').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mexceso_limite').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>mgastos_cat</label>
+                                    <input type="number" formControlName="mgastos_cat" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mgastos_cat').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mgastos_cat').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>mrecuperacion</label>
+                                    <input type="number" formControlName="mrecuperacion" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mrecuperacion').errors }" >
+                                    <div *ngIf="submitted && popup_form.get('mrecuperacion').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
@@ -291,7 +347,7 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>S.A. Exceso de Limite</label>
+                                    <label>msuma_limite_ind</label>
                                     <input type="number" formControlName="msuma_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('msuma_limite_ind').errors }" >
                                     <div *ngIf="submitted && popup_form.get('msuma_limite_ind').errors"  class="invalid-feedback">
                                     </div>
@@ -299,7 +355,7 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>Prima Exceso de Limite</label>
+                                    <label>mprima_limite_ind</label>
                                     <input type="number" formControlName="mprima_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('mprima_limite_ind').errors }" >
                                     <div *ngIf="submitted && popup_form.get('mprima_limite_ind').errors"  class="invalid-feedback">
                                     </div>
