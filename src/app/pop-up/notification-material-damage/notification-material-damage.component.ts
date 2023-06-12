@@ -35,6 +35,7 @@ export class NotificationMaterialDamageComponent implements OnInit {
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
       cdanomaterial: [''],
+      xmaterial: [''],
       cniveldano: [''],
       xobservacion: [''],
       ctipodocidentidad: [''],
@@ -137,6 +138,8 @@ export class NotificationMaterialDamageComponent implements OnInit {
         }else if(this.materialDamage.type == 2){
           this.popup_form.get('cdanomaterial').setValue(this.materialDamage.cdanomaterial);
           this.popup_form.get('cdanomaterial').disable();
+          this.popup_form.get('xmaterial').setValue(this.materialDamage.xmaterial);
+          this.popup_form.get('xmaterial').disable();
           this.popup_form.get('cniveldano').setValue(this.materialDamage.cniveldano);
           this.popup_form.get('cniveldano').disable();
           this.popup_form.get('xobservacion').setValue(this.materialDamage.xobservacion);
@@ -165,6 +168,7 @@ export class NotificationMaterialDamageComponent implements OnInit {
           this.canSave = false;
         }else if(this.materialDamage.type == 1){
           this.popup_form.get('cdanomaterial').setValue(this.materialDamage.cdanomaterial);
+          this.popup_form.get('xmaterial').setValue(this.materialDamage.xmaterial);
           this.popup_form.get('cniveldano').setValue(this.materialDamage.cniveldano);
           this.popup_form.get('xobservacion').setValue(this.materialDamage.xobservacion);
           this.popup_form.get('ctipodocidentidad').setValue(this.materialDamage.ctipodocidentidad);
@@ -226,6 +230,7 @@ export class NotificationMaterialDamageComponent implements OnInit {
     let damageLevelFilter = this.damageLevelList.filter((option) => { return option.id == form.cniveldano; });
     this.materialDamage.cdanomaterial = form.cdanomaterial;
     this.materialDamage.xdanomaterial = materialDamageFilter[0].value;
+    this.materialDamage.xmaterial = form.xmaterial;
     this.materialDamage.cniveldano = form.cniveldano;
     this.materialDamage.xniveldano = damageLevelFilter[0].value;
     this.materialDamage.xobservacion = form.xobservacion;

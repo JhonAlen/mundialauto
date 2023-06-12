@@ -407,6 +407,7 @@ export class NotificationDetailComponent implements OnInit {
               cdanomaterialnotificacion: response.data.materialDamages[i].cdanomaterialnotificacion,
               cdanomaterial: response.data.materialDamages[i].cdanomaterial,
               xdanomaterial: response.data.materialDamages[i].xdanomaterial,
+              xmaterial: response.data.materialDamages[i].xmaterial,
               cniveldano: response.data.materialDamages[i].cniveldano,
               xniveldano: response.data.materialDamages[i].xniveldano,
               xobservacion: response.data.materialDamages[i].xobservacion,
@@ -833,6 +834,7 @@ export class NotificationDetailComponent implements OnInit {
             create: true,
             cdanomaterial: result.cdanomaterial,
             xdanomaterial: result.xdanomaterial,
+            xmaterial: result.xmaterial,
             cniveldano: result.cniveldano,
             xniveldano: result.xniveldano,
             xobservacion: result.xobservacion,
@@ -1144,6 +1146,7 @@ export class NotificationDetailComponent implements OnInit {
         cgrid: event.data.cgrid,
         cdanomaterialnotificacion: event.data.cdanomaterialnotificacion,
         cdanomaterial: event.data.cdanomaterial,
+        xmaterial: event.data.xmaterial,
         cniveldano: event.data.cniveldano,
         xobservacion: event.data.xobservacion,
         ctipodocidentidad: event.data.ctipodocidentidad,
@@ -1165,6 +1168,7 @@ export class NotificationDetailComponent implements OnInit {
         cgrid: event.data.cgrid,
         cdanomaterialnotificacion: event.data.cdanomaterialnotificacion,
         cdanomaterial: event.data.cdanomaterial,
+        xmaterial: event.data.xmaterial,
         cniveldano: event.data.cniveldano,
         xobservacion: event.data.xobservacion,
         ctipodocidentidad: event.data.ctipodocidentidad,
@@ -1189,6 +1193,7 @@ export class NotificationDetailComponent implements OnInit {
             if(this.materialDamageList[i].cgrid == result.cgrid){
               this.materialDamageList[i].cdanomaterial = result.cdanomaterial;
               this.materialDamageList[i].xdanomaterial = result.xdanomaterial;
+              this.materialDamageList[i].xmaterial = result.xmaterial;
               this.materialDamageList[i].cniveldano = result.cniveldano;
               this.materialDamageList[i].xniveldano = result.xniveldano;
               this.materialDamageList[i].xobservacion = result.xobservacion;
@@ -1762,6 +1767,7 @@ export class NotificationDetailComponent implements OnInit {
       this.loading = false;
     },
     (err) => {
+      console.log(err)
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
