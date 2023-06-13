@@ -26,7 +26,7 @@ export class NotificationMaterialDamageComponent implements OnInit {
   stateList: any[] = [];
   cityList: any[] = [];
   alert = { show : false, type : "", message : "" }
-  idMaterialDamage: number = 0;
+  cMaterialDamage: number = 0;
 
   constructor(public activeModal: NgbActiveModal,
               private authenticationService : AuthenticationService,
@@ -139,7 +139,7 @@ export class NotificationMaterialDamageComponent implements OnInit {
         }else if(this.materialDamage.type == 2){
           this.popup_form.get('cdanomaterial').setValue(this.materialDamage.cdanomaterial);
           this.popup_form.get('cdanomaterial').disable();
-          this.setIdMaterialDamage();
+          this.setCMaterialDamage();
           this.popup_form.get('xmaterial').setValue(this.materialDamage.xmaterial);
           this.popup_form.get('xmaterial').disable();
           this.popup_form.get('cniveldano').setValue(this.materialDamage.cniveldano);
@@ -170,7 +170,7 @@ export class NotificationMaterialDamageComponent implements OnInit {
           this.canSave = false;
         }else if(this.materialDamage.type == 1){
           this.popup_form.get('cdanomaterial').setValue(this.materialDamage.cdanomaterial);
-          this.setIdMaterialDamage();
+          this.setCMaterialDamage();
           this.popup_form.get('xmaterial').setValue(this.materialDamage.xmaterial);
           this.popup_form.get('cniveldano').setValue(this.materialDamage.cniveldano);
           this.popup_form.get('xobservacion').setValue(this.materialDamage.xobservacion);
@@ -222,14 +222,13 @@ export class NotificationMaterialDamageComponent implements OnInit {
     }
   }
 
-  setIdMaterialDamage() {
+  setCMaterialDamage() {
     const cMaterialDamage =  this.popup_form.get('cdanomaterial').value;
     if (cMaterialDamage != 5) {
       this.popup_form.get('xmaterial').setValue('');
     }
 
-    this.idMaterialDamage = cMaterialDamage;
-    console.log(this.idMaterialDamage);
+    this.cMaterialDamage = cMaterialDamage;
   }
 
   onSubmit(form){

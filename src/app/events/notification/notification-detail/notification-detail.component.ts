@@ -1139,7 +1139,7 @@ export class NotificationDetailComponent implements OnInit {
 
   materialDamageRowClicked(event: any){
     let materialDamage = {};
-    if(this.editStatus && !this.editBlock){ 
+    if(this.editStatus && this.editBlock){ 
       materialDamage = { 
         type: 1,
         create: event.data.create, 
@@ -1638,6 +1638,8 @@ export class NotificationDetailComponent implements OnInit {
       let createNoteList = this.noteList.filter((row) => { return row.create; });
       let updateReplacementList = this.replacementList.filter((row) => { return !row.create; });
       let createReplacementList = this.replacementList.filter((row) => { return row.create; });
+      let updateMaterialDamageList = this.materialDamageList.filter((row) => { return !row.create; });
+      let createMaterialDamageList = this.materialDamageList.filter((row) => { return row.create; });
       let updateThirdpartyList = this.thirdpartyList.filter((row) => { return !row.create; });
       let updateProviderList = this.providerList.filter((row) => { return !row.create; });
       let createProviderList = this.providerList.filter((row) => { return row.create; });
@@ -1670,6 +1672,11 @@ export class NotificationDetailComponent implements OnInit {
           update: updateReplacementList,
           delete: this.replacementDeletedRowList
         },
+        materialDamages: {
+          create: createMaterialDamageList,
+          update: updateMaterialDamageList,
+          delete: this.materialDamageDeletedRowList
+        },
         thirdparties: {
           update: updateThirdpartyList
         },
@@ -1690,7 +1697,8 @@ export class NotificationDetailComponent implements OnInit {
         },
         settlement: {
           create: this.settlement
-        }
+        },
+        
       };
       url = `${environment.apiUrl}/api/notification/update`;
       this.sendFormData(params, url);
