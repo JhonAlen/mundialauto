@@ -1227,7 +1227,7 @@ export class NotificationDetailComponent implements OnInit {
 
   thirdpartyVehicleRowClicked(event: any){
     let thirdpartyVehicle = {};
-    if(this.editStatus && !this.editBlock){ 
+    if(this.editStatus && this.editBlock){ 
       thirdpartyVehicle = { 
         type: 1,
         create: event.data.create, 
@@ -1302,9 +1302,13 @@ export class NotificationDetailComponent implements OnInit {
     modalRef.componentInstance.thirdpartyVehicle = thirdpartyVehicle;
     modalRef.result.then((result: any) => {
       if(result){
+        console.log(result.cgrid + "result.cgrid");
+        
         if(result.type == 1){
           for(let i = 0; i < this.thirdpartyVehicleList.length; i++){
             if(this.thirdpartyVehicleList[i].cgrid == result.cgrid){
+              console.log(result);
+              
               this.thirdpartyVehicleList[i].ctipodocidentidadconductor = result.ctipodocidentidadconductor;
               this.thirdpartyVehicleList[i].xdocidentidadconductor = result.xdocidentidadconductor;
               this.thirdpartyVehicleList[i].xnombreconductor = result.xnombreconductor;
@@ -1638,9 +1642,11 @@ export class NotificationDetailComponent implements OnInit {
       let createNoteList = this.noteList.filter((row) => { return row.create; });
       let updateReplacementList = this.replacementList.filter((row) => { return !row.create; });
       let createReplacementList = this.replacementList.filter((row) => { return row.create; });
+      let updateThirdpartyList = this.thirdpartyList.filter((row) => { return !row.create; });
       let updateMaterialDamageList = this.materialDamageList.filter((row) => { return !row.create; });
       let createMaterialDamageList = this.materialDamageList.filter((row) => { return row.create; });
-      let updateThirdpartyList = this.thirdpartyList.filter((row) => { return !row.create; });
+      let updateThirdPartyVehiclesList = this.thirdpartyVehicleList.filter((row) => { return !row.create; });
+      let createThirdPartyVehiclesList = this.thirdpartyVehicleList.filter((row) => { return row.create; });
       let updateProviderList = this.providerList.filter((row) => { return !row.create; });
       let createProviderList = this.providerList.filter((row) => { return row.create; });
       let updateTracingList = this.tracingList.filter((row) => { return !row.create; });
@@ -1672,13 +1678,18 @@ export class NotificationDetailComponent implements OnInit {
           update: updateReplacementList,
           delete: this.replacementDeletedRowList
         },
+        thirdparties: {
+          update: updateThirdpartyList
+        },
         materialDamages: {
           create: createMaterialDamageList,
           update: updateMaterialDamageList,
           delete: this.materialDamageDeletedRowList
         },
-        thirdparties: {
-          update: updateThirdpartyList
+        thirdPartyVehicles: {
+          create: createThirdPartyVehiclesList,
+          update: updateThirdPartyVehiclesList,
+          delete: this.thirdpartyVehicleDeletedRowList
         },
         providers: {
           create: createProviderList,

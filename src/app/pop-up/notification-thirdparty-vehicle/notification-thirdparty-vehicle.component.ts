@@ -226,6 +226,8 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           this.popup_form.get('xobservacionconductor').setValue(this.thirdpartyVehicle.xobservacionconductor);
           this.popup_form.get('xplaca').setValue(this.thirdpartyVehicle.xplaca);
           this.popup_form.get('cmarca').setValue(this.thirdpartyVehicle.cmarca);
+          console.log(this.thirdpartyVehicle.cmarca + "this.thirdpartyVehicle.cmarca");
+          
           this.modelDropdownDataRequest();
           this.popup_form.get('cmodelo').setValue(this.thirdpartyVehicle.cmodelo);
           this.versionDropdownDataRequest();
@@ -336,7 +338,11 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
         if(response.data.status){
           this.versionList = [];
           for(let i = 0; i < response.data.list.length; i++){
-            this.versionList.push({ id: response.data.list[i].cversion, value: response.data.list[i].xversion });
+            this.versionList.push({ 
+              id: response.data.list[i].cversion, 
+              value: response.data.list[i].xversion,
+              fano: response.data.list[i].cano,
+              control: response.data.list[i].control, });
           }
           this.versionList.sort((a,b) => a.value > b.value ? 1 : -1);
         }
@@ -352,6 +358,12 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
         this.alert.show = true;
       });
     }
+  }
+
+  getDataYear(){
+    let version = this.versionList.find(element => element.control === parseInt(this.popup_form.get('cversion').value));
+    this.popup_form.get('fano').setValue(version.fano)
+    this.popup_form.get('fano').disable()
   }
 
   addReplacement(){
@@ -444,7 +456,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
     }
     let brandFilter = this.brandList.filter((option) => { return option.id == form.cmarca; });
     let modelFilter = this.modelList.filter((option) => { return option.id == form.cmodelo; });
-    let versionFilter = this.versionList.filter((option) => { return option.id == form.cversion; });
+    let version = this.versionList.find(element => element.control === parseInt(this.popup_form.get('cversion').value));
     this.thirdpartyVehicle.ctipodocidentidadconductor = form.ctipodocidentidadconductor;
     this.thirdpartyVehicle.xdocidentidadconductor = form.xdocidentidadconductor;
     this.thirdpartyVehicle.xnombreconductor = form.xnombreconductor;
@@ -458,8 +470,8 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
     this.thirdpartyVehicle.xmarca = brandFilter[0].value;
     this.thirdpartyVehicle.cmodelo = form.cmodelo;
     this.thirdpartyVehicle.xmodelo = modelFilter[0].value;
-    this.thirdpartyVehicle.cversion = form.cversion;
-    this.thirdpartyVehicle.xversion = versionFilter[0].value;
+    this.thirdpartyVehicle.cversion = version.id;
+    this.thirdpartyVehicle.xversion = version.value;
     this.thirdpartyVehicle.fano = form.fano;
     this.thirdpartyVehicle.ccolor = form.ccolor;
     this.thirdpartyVehicle.xobservacionvehiculo = form.xobservacionvehiculo;
