@@ -1340,7 +1340,7 @@ export class NotificationDetailComponent implements OnInit {
               this.thirdpartyVehicleList[i].xobservacionpropietario = result.xobservacionpropietario;
               this.thirdpartyVehicleList[i].replacements = result.replacements;
               this.thirdpartyVehicleList[i].replacementsResult = result.replacementsResult;
-              this.thirdpartyGridApi.refreshCells();
+              this.thirdpartyVehicleGridApi.refreshCells();
               return;
             }
           }
