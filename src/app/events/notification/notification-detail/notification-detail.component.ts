@@ -1302,13 +1302,9 @@ export class NotificationDetailComponent implements OnInit {
     modalRef.componentInstance.thirdpartyVehicle = thirdpartyVehicle;
     modalRef.result.then((result: any) => {
       if(result){
-        console.log(result.cgrid + "result.cgrid");
-        
         if(result.type == 1){
           for(let i = 0; i < this.thirdpartyVehicleList.length; i++){
             if(this.thirdpartyVehicleList[i].cgrid == result.cgrid){
-              console.log(result);
-              
               this.thirdpartyVehicleList[i].ctipodocidentidadconductor = result.ctipodocidentidadconductor;
               this.thirdpartyVehicleList[i].xdocidentidadconductor = result.xdocidentidadconductor;
               this.thirdpartyVehicleList[i].xnombreconductor = result.xnombreconductor;
