@@ -226,8 +226,6 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           this.popup_form.get('xobservacionconductor').setValue(this.thirdpartyVehicle.xobservacionconductor);
           this.popup_form.get('xplaca').setValue(this.thirdpartyVehicle.xplaca);
           this.popup_form.get('cmarca').setValue(this.thirdpartyVehicle.cmarca);
-          console.log(this.thirdpartyVehicle.cmarca + "this.thirdpartyVehicle.cmarca");
-          
           this.modelDropdownDataRequest();
           this.popup_form.get('cmodelo').setValue(this.thirdpartyVehicle.cmodelo);
           this.versionDropdownDataRequest();
@@ -472,7 +470,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
     this.thirdpartyVehicle.xmodelo = modelFilter[0].value;
     this.thirdpartyVehicle.cversion = version.id;
     this.thirdpartyVehicle.xversion = version.value;
-    this.thirdpartyVehicle.fano = form.fano;
+    this.thirdpartyVehicle.fano = version.fano;
     this.thirdpartyVehicle.ccolor = form.ccolor;
     this.thirdpartyVehicle.xobservacionvehiculo = form.xobservacionvehiculo;
     this.thirdpartyVehicle.ctipodocidentidadpropietario = form.ctipodocidentidadpropietario;
