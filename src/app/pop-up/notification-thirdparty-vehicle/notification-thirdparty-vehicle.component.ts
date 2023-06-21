@@ -346,7 +346,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           }
           this.versionList.sort((a,b) => a.value > b.value ? 1 : -1);
 
-          let version = this.getDataVersion(this.versionList);
+          let version = this.setDataVersion(this.versionList);
           this.popup_form.get('cversion').setValue(version.control)
         }
       },
@@ -364,7 +364,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
 
   }
 
-  getDataVersion(versionList: any[]) {
+  setDataVersion(versionList: any[]) {
     for (let version of versionList) {
       if (version.id == this.thirdpartyVehicle.cversion && version.fano == this.thirdpartyVehicle.fano) {
         return version;
