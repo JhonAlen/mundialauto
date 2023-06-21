@@ -482,7 +482,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
     this.thirdpartyVehicle.xmarca = brandFilter[0].value;
     this.thirdpartyVehicle.cmodelo = form.cmodelo;
     this.thirdpartyVehicle.xmodelo = modelFilter[0].value;
-    this.thirdpartyVehicle.cversion = version.id;
+    this.thirdpartyVehicle.cversion = version.control;
     this.thirdpartyVehicle.xversion = version.value;
     this.thirdpartyVehicle.fano = version.fano;
     this.thirdpartyVehicle.ccolor = form.ccolor;
