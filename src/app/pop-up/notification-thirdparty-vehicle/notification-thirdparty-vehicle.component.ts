@@ -23,6 +23,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
   loading: boolean = false;
   canSave: boolean = false;
   isEdit: boolean = false;
+  version: any;
   replacementList: any[] = [];
   documentTypeList: any[] = [];
   brandList: any[] = [];
@@ -182,7 +183,7 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           this.popup_form.get('cmodelo').setValue(this.thirdpartyVehicle.cmodelo);
           this.popup_form.get('cmodelo').disable();
           this.versionDropdownDataRequest();
-          this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
+          // this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
           this.popup_form.get('cversion').disable();
           this.popup_form.get('fano').setValue(this.thirdpartyVehicle.fano);
           this.popup_form.get('fano').disable();
@@ -229,8 +230,9 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
           this.modelDropdownDataRequest();
           this.popup_form.get('cmodelo').setValue(this.thirdpartyVehicle.cmodelo);
           this.versionDropdownDataRequest();
-          this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
+          // this.popup_form.get('cversion').setValue(this.thirdpartyVehicle.cversion);
           this.popup_form.get('fano').setValue(this.thirdpartyVehicle.fano);
+          this.popup_form.get('fano').disable();
           this.popup_form.get('ccolor').setValue(this.thirdpartyVehicle.ccolor);
           this.popup_form.get('xobservacionvehiculo').setValue(this.thirdpartyVehicle.xobservacionvehiculo);
           this.popup_form.get('ctipodocidentidadpropietario').setValue(this.thirdpartyVehicle.ctipodocidentidadpropietario);
@@ -343,6 +345,9 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
               control: response.data.list[i].control, });
           }
           this.versionList.sort((a,b) => a.value > b.value ? 1 : -1);
+
+          let version = this.getDataVersion(this.versionList);
+          this.popup_form.get('cversion').setValue(version.control)
         }
       },
       (err) => {
@@ -356,6 +361,15 @@ export class NotificationThirdpartyVehicleComponent implements OnInit {
         this.alert.show = true;
       });
     }
+
+  }
+
+  getDataVersion(versionList: any[]) {
+    for (let version of versionList) {
+      if (version.id == this.thirdpartyVehicle.cversion && version.fano == this.thirdpartyVehicle.fano) {
+        return version;
+      }
+    }    
   }
 
   getDataYear(){
