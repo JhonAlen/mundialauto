@@ -1712,6 +1712,7 @@ export class NotificationDetailComponent implements OnInit {
     }else{
       let tracing = { type: 3 }; 
       console.log(this.detail_form.get('crecaudo').value)
+      console.log(form.crecaudo)
       const modalRef = this.modalService.open(NotificationTracingComponent);
       modalRef.componentInstance.tracing = tracing;
       modalRef.result.then((result: any) => { 
@@ -1722,7 +1723,8 @@ export class NotificationDetailComponent implements OnInit {
               ccompania: this.currentUser.data.ccompania,
               ccontratoflota: form.ccontratoflota,
               ctiponotificacion: form.ctiponotificacion,
-              crecaudo: this.detail_form.get('crecaudo').value,
+              crecaudo: 0,
+              typecollections: form.crecaudo,
               ccausasiniestro: form.ccausasiniestro,
               xnombre: form.xnombre,
               xapellido: form.xapellido,
@@ -1757,6 +1759,7 @@ export class NotificationDetailComponent implements OnInit {
               thirdpartyVehicles: this.thirdpartyVehicleList,
               serviceOrder: this.serviceOrderList
             };
+            console.log(params);
             url = `${environment.apiUrl}/api/notification/create`;
             this.sendFormData(params, url);
           }

@@ -256,7 +256,7 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.NOTIFICATIONS.TYPECOLLECTIONS" | translate }}</label>
-                                    <select formControlName="crecaudo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('crecaudo').errors }">
+                                    <select formControlName="crecaudo" class="form-select" multiple [ngClass]="{ 'is-invalid' : submitted && detail_form.get('crecaudo').errors }">
                                         <option></option>
                                         <option *ngFor="let collections of collectionsList" value="{{ collections.crecaudo }}">{{ collections.xrecaudo }}</option>
                                     </select>
