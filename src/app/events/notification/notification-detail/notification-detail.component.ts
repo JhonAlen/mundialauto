@@ -1759,7 +1759,6 @@ export class NotificationDetailComponent implements OnInit {
               thirdpartyVehicles: this.thirdpartyVehicleList,
               serviceOrder: this.serviceOrderList
             };
-            console.log(params);
             url = `${environment.apiUrl}/api/notification/create`;
             this.sendFormData(params, url);
           }
