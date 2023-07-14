@@ -45,6 +45,7 @@ export class NotificationQuoteComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
+      console.log(this.quote + "\nlalala");
       if(this.quote){
         if(this.quote.type == 2){
         
