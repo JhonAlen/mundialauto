@@ -1640,6 +1640,7 @@ export class NotificationDetailComponent implements OnInit {
       let updateReplacementList = this.replacementList.filter((row) => { return !row.create; });
       let createReplacementList = this.replacementList.filter((row) => { return row.create; });
       let updateThirdpartyList = this.thirdpartyList.filter((row) => { return !row.create; });
+      let createThirdpartyList = this.thirdpartyList.filter((row) => { return row.create; });
       let updateMaterialDamageList = this.materialDamageList.filter((row) => { return !row.create; });
       let createMaterialDamageList = this.materialDamageList.filter((row) => { return row.create; });
       let updateThirdPartyVehiclesList = this.thirdpartyVehicleList.filter((row) => { return !row.create; });
@@ -1676,7 +1677,8 @@ export class NotificationDetailComponent implements OnInit {
           delete: this.replacementDeletedRowList
         },
         thirdparties: {
-          update: updateThirdpartyList
+          update: updateThirdpartyList,
+          create: createThirdpartyList
         },
         materialDamages: {
           create: createMaterialDamageList,
