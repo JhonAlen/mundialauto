@@ -896,6 +896,7 @@ export class NotificationDetailComponent implements OnInit {
             xobservacionpropietario: result.xobservacionpropietario,
             replacements: result.replacements
           });
+          console.log(this.thirdpartyVehicleList)
           this.thirdpartyVehicleGridApi.setRowData(this.thirdpartyVehicleList);
         }
       }
