@@ -48,7 +48,7 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
       xobservacion: [''],
-      bcerrada: [false],
+      bcerrada: [],
       mtotalcotizacion: [''],
       cmoneda: ['']
     });

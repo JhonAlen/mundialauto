@@ -828,9 +828,9 @@
                                 {{ "EVENTS.NOTIFICATIONS.QUOTESLIST" | translate }}
                             </div>
                             <div class="col-6">
-                                <button [disabled]="loading || loading_cancel || !editBlock || providerList" class="btn company-detail-button float-right mr-1" type="button" (click)="changeQuoteRequest()" *ngIf="canEdit">
+                                <button [disabled]="loading || loading_cancel || !editBlock || providerList.lenght == 0" class="btn company-detail-button float-right mr-1" type="button" (click)="addQuoteRequest()" *ngIf="canEdit">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                    {{ "EVENTS.NOTIFICATIONS.ADDPROVIDER" | translate }}
+                                    Agregar Cotización
                                 </button>
                             </div>
                         </div>

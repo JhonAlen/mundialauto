@@ -74,7 +74,7 @@ export class NotificationQuoteRequestIndexComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cproveedor: this.quote.cproveedor,
+      cnotificacion: this.quote.cnotificacion,
       fcreacion: form.fcreacion ? new Date(form.fcreacion).toUTCString() : undefined
     }
     this.http.post(`${environment.apiUrl}/api/notification/search-quote-request`, params, options).subscribe((response : any) => {

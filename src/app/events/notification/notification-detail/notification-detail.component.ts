@@ -376,9 +376,9 @@ export class NotificationDetailComponent implements OnInit {
         this.detail_form.get('xobservacion').disable();
         this.detail_form.get('xestatusgeneral').setValue(response.data.xestatusgeneral);
         this.detail_form.get('xestatusgeneral').disable();
-        if(this.showEditButton == true){
-          this.detail_form.get('bcotizacion').disable();
-        }
+        // if(this.showEditButton == true){
+        //   this.detail_form.get('bcotizacion').disable();
+        // }
         this.noteList = [];
         if (response.data.notes) {
           for (let i = 0; i < response.data.notes.length; i++) {
@@ -596,13 +596,13 @@ export class NotificationDetailComponent implements OnInit {
             });
           }
         }
-        if (this.quoteList[0]) {
-          this.bactiva_etiqueta = true;
-          this.bactiva_cotizacion = false;
-        } else {
-          this.bactiva_etiqueta = false;
-          this.bactiva_cotizacion = true;
-        }
+        // if (this.quoteList[0]) {
+        //   this.bactiva_etiqueta = true;
+        //   this.bactiva_cotizacion = false;
+        // } else {
+        //   this.bactiva_etiqueta = false;
+        //   this.bactiva_cotizacion = true;
+        // }
         this.tracingList = [];
         if (response.data.tracings) {
           for (let i = 0; i < response.data.tracings.length; i++) {
@@ -752,9 +752,9 @@ export class NotificationDetailComponent implements OnInit {
     this.editStatus = true;
     this.editBlock = true;
 
-    if(this.showEditButton == false){
-      this.detail_form.get('bcotizacion').enable();
-    }
+    // if(this.showEditButton == false){
+    //   this.detail_form.get('bcotizacion').enable();
+    // }
 
     if (this.detail_form.get('ctiponotificacion').value == 3 || this.detail_form.get('ctiponotificacion').value == 4 || this.detail_form.get('ctiponotificacion').value == 5 || this.detail_form.get('ctiponotificacion').value == 6) {
       this.bocultar_tercero = true;
@@ -947,6 +947,57 @@ export class NotificationDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  addQuoteRequest(){
+    console.log("addQuoteRequest");
+    
+    // if(this.detail_form.get('bcotizacion').value == true){
+      // let quote = { cproveedor: this.providerList}
+      let quote = { cnotificacion: this.code}
+      const modalRef = this.modalService.open(NotificationQuoteRequestIndexComponent, { size: 'xl' });
+      modalRef.componentInstance.quote = quote;
+      modalRef.result.then((result: any) => {
+
+        this.quoteListProviders = [];
+        if(result){
+          for(let j = 0; j < result.repuestos.repuestos.length; j++){
+            this.quoteList.push({
+              cproveedor: result.repuestos.cproveedor,
+              ccotizacion: result.repuestos.ccotizacion,
+              xnombre: result.repuestos.repuestos[j].xrepuesto,
+              crepuesto: result.repuestos.repuestos[j].crepuesto,
+              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+              bdisponible: result.repuestos.repuestos[j].bdisponible,
+              bdescuento: result.repuestos.repuestos[j].bdescuento,
+              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+              bcerrada: result.repuestos.bcerrada,
+              cmoneda: result.repuestos.repuestos[j].cmoneda,
+              mtotalcotizacion: result.repuestos.mtotalcotizacion,
+            })
+            this.quoteListProviders.push({
+              cproveedor: result.repuestos.cproveedor,
+              ccotizacion: result.repuestos.ccotizacion,
+              xrepuesto: result.repuestos.repuestos[j].xrepuesto,
+              crepuesto: result.repuestos.repuestos[j].crepuesto,
+              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+              bdisponible: result.repuestos.repuestos[j].bdisponible,
+              bdescuento: result.repuestos.repuestos[j].bdescuento,
+              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+              bcerrada: result.repuestos.bcerrada,
+              cmoneda: result.repuestos.repuestos[j].cmoneda,
+              mtotalcotizacion: result.repuestos.mtotalcotizacion,
+            })
+          }
+        }
+        this.quoteGridApi.setRowData(this.quoteList);
+        console.log(this.quoteList)
+        console.log(this.quoteListProviders)
+      });
+    // }
+    console.log("Exit-addQuoteRequest");
   }
 
   addTracing() {
@@ -1913,38 +1964,6 @@ export class NotificationDetailComponent implements OnInit {
     } else {
       const modalRef = this.modalService.open(NotificationServiceOrderComponent, { size: 'xl' });
       modalRef.componentInstance.notificacion = notificacion;
-    }
-  }
-
-  changeQuoteRequest(){
-    if(this.detail_form.get('bcotizacion').value == true){
-      let quote = { cproveedor: this.providerList}
-      const modalRef = this.modalService.open(NotificationQuoteRequestIndexComponent, { size: 'xl' });
-      modalRef.componentInstance.quote = quote;
-      modalRef.result.then((result: any) => {
-
-        this.quoteListProviders = [];
-        if(result){
-          for(let j = 0; j < result.repuestos.repuestos.length; j++){
-            this.quoteList.push({
-              cproveedor: result.repuestos.cproveedor,
-              ccotizacion: result.repuestos.ccotizacion,
-              xnombre: result.repuestos.repuestos[j].xrepuesto,
-              crepuesto: result.repuestos.repuestos[j].crepuesto,
-              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
-              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
-              bdisponible: result.repuestos.repuestos[j].bdisponible,
-              bdescuento: result.repuestos.repuestos[j].bdescuento,
-              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
-              bcerrada: result.repuestos.bcerrada,
-              cmoneda: result.repuestos.repuestos[j].cmoneda,
-              mtotalcotizacion: result.repuestos.mtotalcotizacion,
-            })
-          }
-          this.quoteGridApi.refreshCells();
-        }
-        console.log(this.quoteList)
-      });
     }
   }
 
