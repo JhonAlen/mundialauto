@@ -91,7 +91,8 @@ export class NotificationQuoteRequestIndexComponent implements OnInit {
             cproveedor: response.data.list[i].cproveedor,
             fcreacion: date,
             xobservacion: response.data.list[i].xobservacion,
-            xcerrada: response.data.list[i].bcerrada
+            // xcerrada: response.data.list[i].bcerrada
+            xcerrada: true
           });
         }
       }

@@ -48,7 +48,7 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
       xobservacion: [''],
-      bcerrada: [],
+      bcerrada: [true],
       mtotalcotizacion: [''],
       cmoneda: ['']
     });
@@ -221,7 +221,8 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
     this.quote2.xobservacion = form.xobservacion;
     this.quote2.repuestos = this.replacementList;
     this.quote2.mtotalcotizacion = this.popup_form.get('mtotalcotizacion').value;
-    this.quote2.bcerrada = this.popup_form.get('bcerrada').value;
+    // this.quote2.bcerrada = this.popup_form.get('bcerrada').value;
+    this.quote2.bcerrada = true;
 
     this.activeModal.close(this.quote2);
   }
