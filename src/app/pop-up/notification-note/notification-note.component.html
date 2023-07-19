@@ -11,9 +11,9 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>{{ "EVENTS.NOTIFICATIONS.NOTE" | translate }}</label>
-                    <textarea type="text" formControlName="xnotanotificacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnotanotificacion').errors }" cols="30" rows="2"></textarea>
+                    <textarea type="text" formControlName="xnotanotificacion" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('xnotanotificacion').errors }" cols="30" rows="2" required></textarea>
                     <div *ngIf="submitted && popup_form.get('xnotanotificacion').errors"  class="invalid-feedback">
-                        <div *ngIf="popup_form.get('xnotanotificacion').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDNOTE" | translate }}</div>
+                        <div *ngIf="popup_form.get('xnotanotificacion').errors.required">Nota es Requerido</div>
                     </div>
                 </div>
             </div>
