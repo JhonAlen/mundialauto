@@ -4,6 +4,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+// import {NgFor} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { NotificationVehicleComponent } from '@app/pop-up/notification-vehicle/notification-vehicle.component';
 import { NotificationNoteComponent } from '@app/pop-up/notification-note/notification-note.component';
 import { NotificationSearchReplacementComponent } from '@app/pop-up/notification-search-replacement/notification-search-replacement.component';
@@ -2140,6 +2143,10 @@ export class NotificationDetailComponent implements OnInit {
     } else {
       this.bocultar_tercero = false;
     }
+  }
+
+  logsito(collection) {
+    console.log(collection);
   }
 
   searchDocumentation() {

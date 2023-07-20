@@ -1,3 +1,9 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+
 <app-toolbar ></app-toolbar>
 <div class="container">
     <div class="row mt-5" *ngIf="alert.show">
@@ -256,6 +262,25 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.NOTIFICATIONS.TYPECOLLECTIONS" | translate }}</label>
+                                    <select formControlName="crecaudo" class="form-select selectpicker" multiple [ngClass]="{ 'is-invalid' : submitted && detail_form.get('crecaudo').errors }">
+                                        <option></option>
+                                        <option *ngFor="let collections of collectionsList" value="{{ collections.crecaudo }}">{{ collections.xrecaudo }}</option>
+                                    </select>
+                                    <div *ngIf="submitted && detail_form.get('crecaudo').errors"  class="invalid-feedback">
+                                        <div *ngIf="detail_form.get('crecaudo').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDCITY" | translate }}</div>
+                                    </div>
+                                    <!-- <mat-form-field>
+                                        <mat-label>{{ "EVENTS.NOTIFICATIONS.TYPECOLLECTIONS" | translate }}</mat-label>
+                                        <mat-select formControlName="crecaudo" multiple>
+                                          <mat-option *ngFor="let collection of collectionsList" [value]="collection" (change)="logsito(collection)">{{collection}}</mat-option>
+                                        </mat-select>
+                                      </mat-form-field> -->
+                                </div>
+                            </div>
+                            
+                            <!-- <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>{{ "EVENTS.NOTIFICATIONS.TYPECOLLECTIONS" | translate }}</label>
                                     <select formControlName="crecaudo" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('crecaudo').errors }">
                                         <option></option>
                                         <option *ngFor="let collections of collectionsList" value="{{ collections.crecaudo }}">{{ collections.xrecaudo }}</option>
@@ -264,7 +289,7 @@
                                         <div *ngIf="detail_form.get('crecaudo').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDCITY" | translate }}</div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ "EVENTS.NOTIFICATIONS.CLAIMCAUSE" | translate }}</label>
@@ -892,4 +917,6 @@
     </div>
   </footer>
 
-
+<script>
+    $('select').selectpicker();
+</script>

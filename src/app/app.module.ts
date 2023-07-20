@@ -661,7 +661,7 @@ export function HttpLoaderFactory(http: HttpClient){
       }
     }),
     AgGridModule,
-    AppRoutingModule
+    AppRoutingModule,
   ],
   providers: [
     NgbActiveModal,
