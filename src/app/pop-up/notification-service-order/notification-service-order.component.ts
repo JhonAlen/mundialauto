@@ -59,6 +59,9 @@ export class NotificationServiceOrderComponent implements OnInit {
   replacementDeletedRowList;
   cancelled: boolean = false;
   replacement: boolean = false
+  migtf: number; 
+  total: number;
+  grua: Boolean = false
 
     constructor(public activeModal: NgbActiveModal,
               private modalService: NgbModal,
@@ -135,7 +138,8 @@ export class NotificationServiceOrderComponent implements OnInit {
       xnombres: [''],
       xnombresalternativos: [''],
       xnombrespropietario: [''],
-      ccarga: ['']
+      ccarga: [''],
+      migtf: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -302,7 +306,7 @@ export class NotificationServiceOrderComponent implements OnInit {
         for(let i = 0; i < response.data.list.length; i++){
           this.serviceList.push({ servicio: response.data.list[i].cservicio, value: response.data.list[i].xservicio, ccontratoflota: response.data.list[i].ccontratoflota, ccarga: response.data.list[i].ccarga});
         }
-        //this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
+        this.serviceList.sort((a,b) => a.value > b.value ? 1 : -1);
       }
     },
     (err) => {
@@ -823,6 +827,8 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('ccausaanulacion').disable()
             this.popup_form.get('xcausaanulacion').setValue(response.data.list[0].xcausaanulacion);
             this.popup_form.get('xcausaanulacion').disable()
+            this.popup_form.get('migtf').setValue(response.data.list[0].migtf);
+            this.popup_form.get('migtf').disable()
           }
           this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion, cservicio: response.data.list[0].cservicio, corden: response.data.list[0].corden, cproveedor: response.data.list[0].cproveedor, xdireccionproveedor: response.data.list[0].xdireccionproveedor, xnombreproveedor: response.data.list[0].xnombreproveedor, cservicioadicional: response.data.list[0].cservicioadicional, xservicioadicional: response.data.list[0].xservicioadicional });
       }
@@ -1082,6 +1088,12 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    if(this.popup_form.get('cservicioadicional').value == 228 || this.popup_form.get('cservicioadicional').value == 229 || this.popup_form.get('cservicioadicional').value == 230 || this.popup_form.get('cservicioadicional').value == 231){
+      this.grua = true;
+    }else{
+      this.grua = false;
+    }
   }
 
   changeService(){
@@ -1128,6 +1140,12 @@ export class NotificationServiceOrderComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    if(this.popup_form.get('cservicio').value == 228 || this.popup_form.get('cservicio').value == 229 || this.popup_form.get('cservicio').value == 230 || this.popup_form.get('cservicio').value == 231){
+      this.grua = true;
+    }else{
+      this.grua = false;
+    }
   }
 
   getServiceOrderService(){
@@ -1176,6 +1194,8 @@ export class NotificationServiceOrderComponent implements OnInit {
           this.popup_form.get('mmontoiva').setValue(response.data.mmontoiva);
           this.popup_form.get('mtotal').setValue(response.data.mtotal);
           this.popup_form.get('xmoneda').setValue(response.data.xmoneda);
+          this.migtf = response.data.mtotalcotizacion * this.popup_form.get('migtf').value
+          this.total = this.popup_form.get('mtotal').value + this.migtf;
       }
     },
     (err) => {
@@ -1239,6 +1259,8 @@ export class NotificationServiceOrderComponent implements OnInit {
           this.popup_form.get('mmontoiva').setValue(response.data.mmontoiva);
           this.popup_form.get('mtotal').setValue(response.data.mtotal);
           this.popup_form.get('xmoneda').setValue(response.data.xmoneda);
+          this.migtf = response.data.mtotalcotizacion * this.popup_form.get('migtf').value;
+          this.total = this.popup_form.get('mtotal').value + this.migtf;
       }
     },
     (err) => {
@@ -2425,7 +2447,19 @@ export class NotificationServiceOrderComponent implements OnInit {
               width: 475,
               style: 'data',
               text: [
-                {text: 'Total:                        ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.popup_form.get('mtotal').value)} `, {text: `${this.popup_form.get('xmoneda').value}`}
+                {text: 'IGTF:                            ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.migtf)} `, {text: `${this.popup_form.get('xmoneda').value}`}
+              ]
+            }
+          ]
+        },
+        {
+          columns: [
+            {
+              alignment: 'right',
+              width: 475,
+              style: 'data',
+              text: [
+                {text: 'Total:                        ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.total)} `, {text: `${this.popup_form.get('xmoneda').value}`}
               ]
             }
           ]
@@ -2943,7 +2977,19 @@ export class NotificationServiceOrderComponent implements OnInit {
                 width: 475,
                 style: 'data',
                 text: [
-                  {text: 'Total:                        ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.popup_form.get('mtotal').value)} `, {text: `${this.popup_form.get('xmoneda').value}`}
+                  {text: 'IGTF:                            ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.migtf)} `, {text: `${this.popup_form.get('xmoneda').value}`}
+                ]
+              }
+            ]
+          },
+          {
+            columns: [
+              {
+                alignment: 'right',
+                width: 475,
+                style: 'data',
+                text: [
+                  {text: 'Total:                        ', bold: true},  `${new Intl.NumberFormat('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(this.total)} `, {text: `${this.popup_form.get('xmoneda').value}`}
                 ]
               }
             ]

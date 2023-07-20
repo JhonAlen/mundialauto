@@ -17,6 +17,7 @@ import { NotificationProviderComponent } from '@app/pop-up/notification-provider
 import { NotificationQuoteComponent } from '@app/pop-up/notification-quote/notification-quote.component';
 import { NotificationServiceOrderComponent } from '@app/pop-up/notification-service-order/notification-service-order.component';
 import { NotificationSettlementComponent } from '@app/pop-up/notification-settlement/notification-settlement.component';
+import { NotificationQuoteRequestIndexComponent } from '@app/pop-up/notification-quote-request-index/notification-quote-request-index.component';
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
 import { ignoreElements } from 'rxjs/operators';
@@ -88,7 +89,7 @@ export class NotificationDetailComponent implements OnInit {
   settlementList: any[] = [];
   settlement: {};
   bocultar_tercero: boolean = false;
-
+  quoteListProviders: any[] = [];
 
 
 
@@ -154,7 +155,8 @@ export class NotificationDetailComponent implements OnInit {
       xdocumentos: [''],
       ncantidad: [''],
       cestatusgeneral: [''],
-      ccausaanulacion: ['']
+      ccausaanulacion: [''],
+      bcotizacion: [false]
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -583,7 +585,8 @@ export class NotificationDetailComponent implements OnInit {
               pimpuesto: response.data.quotes[i].pimpuesto,
               baceptacion: response.data.quotes[i].baceptacion,
               cmoneda: response.data.quotes[i].cmoneda,
-              xmoneda: response.data.quotes[i].xmoneda
+              xmoneda: response.data.quotes[i].xmoneda,
+              migtf: response.data.quotes[i].migtf,
             });
           }
         }
@@ -1410,6 +1413,7 @@ export class NotificationDetailComponent implements OnInit {
   quoteRowClicked(event: any){
     let quote = {};
     let notificacion = this.code;
+    console.log(event.data)
     if(this.editStatus){ 
       quote = { 
         type: 1,
@@ -1422,6 +1426,7 @@ export class NotificationDetailComponent implements OnInit {
         cnotificacion: notificacion,
         baceptacion: event.data.baceptacion,
         mtotalcotizacion: event.data.mtotalcotizacion,
+        migtf: event.data.migtf,
         cimpuesto: 13,
         delete: false
       };
@@ -1437,15 +1442,17 @@ export class NotificationDetailComponent implements OnInit {
         cnotificacion: notificacion,
         baceptacion: event.data.baceptacion,
         mtotalcotizacion: event.data.mtotalcotizacion,
+        migtf: event.data.migtf,
         cimpuesto: 13,
         delete: false
       }; 
     }
- 
+    console.log(quote)
     const modalRef = this.modalService.open(NotificationQuoteComponent, {size: 'xl'});
     modalRef.componentInstance.quote = quote;
     modalRef.result.then((result: any) => {
       if(result){
+        console.log(result)
         this.serviceOrderList.push(result);
         this.serviceOrderGridApi.setRowData(this.serviceOrderList);
           for(let i = 0; i < this.quoteList.length; i++){
@@ -1552,7 +1559,8 @@ export class NotificationDetailComponent implements OnInit {
         bactivo: result.bactivo,
         ccotizacion: result.ccotizacion,
         cestatusgeneral: result.cestatusgeneral,
-        ccausaanulacion: result.ccausaanulacion
+        ccausaanulacion: result.ccausaanulacion,
+        migtf: result.migtf,
        });
        this.serviceOrderGridApi.setRowData(this.serviceOrderList);
       });
@@ -1579,7 +1587,36 @@ export class NotificationDetailComponent implements OnInit {
           cmoneda: result.cmoneda
         }
       });
-      console.log(this.settlement)
+    }
+  }
+
+  changeQuoteRequest(){
+    if(this.detail_form.get('bcotizacion').value == true){
+      let quote = { cproveedor: this.providerList}
+      const modalRef = this.modalService.open(NotificationQuoteRequestIndexComponent, { size: 'xl' });
+      modalRef.componentInstance.quote = quote;
+      modalRef.result.then((result: any) => {
+
+        this.quoteListProviders = [];
+        if(result){
+          for(let j = 0; j < result.repuestos.repuestos.length; j++){
+            this.quoteListProviders.push({
+              cproveedor: result.repuestos.cproveedor,
+              ccotizacion: result.repuestos.ccotizacion,
+              crepuesto: result.repuestos.repuestos[j].crepuesto,
+              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+              bdisponible: result.repuestos.repuestos[j].bdisponible,
+              bdescuento: result.repuestos.repuestos[j].bdescuento,
+              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+              bcerrada: result.repuestos.bcerrada,
+              cmoneda: result.repuestos.repuestos[j].cmoneda,
+              mtotalcotizacion: result.repuestos.mtotalcotizacion,
+              migtf: result.repuestos.migtf,
+            })
+          }
+        }
+      });
     }
   }
 
@@ -1666,6 +1703,7 @@ export class NotificationDetailComponent implements OnInit {
         cpais: this.currentUser.data.cpais,
         ccompania: this.currentUser.data.ccompania,
         cusuariomodificacion: this.currentUser.data.cusuario,
+        quotesProviders: this.quoteListProviders,
         notes: {
           create: createNoteList,
           update: updateNoteList,
@@ -1885,6 +1923,7 @@ export class NotificationDetailComponent implements OnInit {
       this.serviceOrderList[index].cestatusgeneral = result.cestatusgeneral;
       this.serviceOrderList[index].ccausaanulacion = result.ccausaanulacion;
       this.serviceOrderList[index].bactivo = result.bactivo;
+      this.serviceOrderList[index].migtf = result.migtf;
       this.serviceOrderList[index].edit = this.editStatus;
       this.serviceOrderGridApi.refreshCells();
       return;
