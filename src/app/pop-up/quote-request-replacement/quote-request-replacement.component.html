@@ -74,7 +74,7 @@
             <div class="col-12">
                 <div class="form-group">
                     <label>{{ "PROVIDERS.QUOTEREQUESTS.COIN" | translate }}</label>
-                    <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cmoneda').errors }">
+                    <select formControlName="cmoneda" class="form-control" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('cmoneda').errors }" (change)="igtf()">
                         <option></option>
                         <option *ngFor="let coin of coinList" value="{{ coin.id }}">{{ coin.value }}</option>
                     </select>
@@ -83,15 +83,27 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="form-group form-check">
-                    <input type="checkbox" formControlName="bdescuento" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('bdescuento').errors }">
-                    <label>{{ "PROVIDERS.QUOTEREQUESTS.DISCOUNT" | translate }}</label>
-                    <div *ngIf="submitted && popup_form.get('bdescuento').errors"  class="invalid-feedback">
-                        <div *ngIf="popup_form.get('bdescuento').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDDISCOUNT" | translate }}</div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group form-check">
+                        <input type="checkbox" formControlName="bdescuento" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('bdescuento').errors }">
+                        <label>{{ "PROVIDERS.QUOTEREQUESTS.DISCOUNT" | translate }}</label>
+                        <div *ngIf="submitted && popup_form.get('bdescuento').errors"  class="invalid-feedback">
+                            <div *ngIf="popup_form.get('bdescuento').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDDISCOUNT" | translate }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12" *ngIf="activateIgtf">
+                    <div class="form-group form-check">
+                        <input type="checkbox" formControlName="bigtf" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('bigtf').errors }" (change)="calculateIgtf()">
+                        <label>¿Incluye IGTF?</label>
+                        <div *ngIf="submitted && popup_form.get('bigtf').errors"  class="invalid-feedback">
+                            <div *ngIf="popup_form.get('bigtf').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDDISCOUNT" | translate }}</div>
+                        </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-12">
                 <div class="form-group">
                     <label>{{ "PROVIDERS.QUOTEREQUESTS.REPLACEMENTTOTALAMOUNT" | translate }}</label>
