@@ -1046,19 +1046,11 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   changeAditionalService(){
 
-    if(this.popup_form.get('cservicioadicional').value != 228){
-      this.popup_form.get('xdesde').disable();
-      this.popup_form.get('xhacia').disable();
-      this.popup_form.get('mmonto').disable();
-      this.popup_form.get('cmoneda').disable();
-      this.popup_form.get('xmoneda').disable();
-    }else{
-      this.popup_form.get('xdesde').enable();
-      this.popup_form.get('xhacia').enable();
-      this.popup_form.get('mmonto').enable();
-      this.popup_form.get('cmoneda').enable();
-      this.popup_form.get('xmoneda').disable();
-    }
+    this.popup_form.get('xdesde').enable();
+    this.popup_form.get('xhacia').enable();
+    this.popup_form.get('mmonto').enable();
+    this.popup_form.get('cmoneda').enable();
+    
     if(this.popup_form.get('cservicioadicional').value){
       this.popup_form.get('xservicio').value == this.popup_form.get('xservicioadicional').value;
     }
@@ -1097,19 +1089,11 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   changeService(){
-    if(this.popup_form.get('cservicio').value != 228){
-      this.popup_form.get('xdesde').disable();
-      this.popup_form.get('xhacia').disable();
-      this.popup_form.get('mmonto').disable();
-      this.popup_form.get('cmoneda').disable();
-      this.popup_form.get('xmoneda').disable();
-    }else{
-      this.popup_form.get('xdesde').enable();
-      this.popup_form.get('xhacia').enable();
-      this.popup_form.get('mmonto').enable();
-      this.popup_form.get('cmoneda').enable();
-      this.popup_form.get('xmoneda').disable();
-    }
+    this.popup_form.get('xdesde').enable();
+    this.popup_form.get('xhacia').enable();
+    this.popup_form.get('mmonto').enable();
+    this.popup_form.get('cmoneda').enable();
+
     if(this.popup_form.get('cservicioadicional').value){
       this.popup_form.get('xservicio').value == this.popup_form.get('xservicioadicional').value;
     }
