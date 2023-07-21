@@ -615,6 +615,8 @@ export class NotificationDetailComponent implements OnInit {
         }
         this.serviceOrderList = [];
         let xservicio;
+        let fajuste; 
+        let cservicio;
         if(response.data.serviceOrder){
           for(let i = 0; i < response.data.serviceOrder.length; i++){
             if(response.data.serviceOrder[i].xservicio){
@@ -622,18 +624,30 @@ export class NotificationDetailComponent implements OnInit {
             }else{
               xservicio = response.data.serviceOrder[i].xservicioadicional
             }
+            
+            if(response.data.serviceOrder[i].fajuste){
+              fajuste = response.data.serviceOrder[i].fajuste.substring(0,10)
+            }else{
+              fajuste = fajuste
+            }
+
+            if(response.data.serviceOrder[i].cservicio){
+              cservicio = response.data.serviceOrder[i].cservicio
+            }else{
+              cservicio = response.data.serviceOrder[i].cservicioadicional
+            }
             this.serviceOrderList.push({
               cgrid: i,
               createServiceOrder: false,
               cnotificacion: response.data.serviceOrder[i].cnotificacion,
               corden: response.data.serviceOrder[i].corden,
-              cservicio: response.data.serviceOrder[i].cservicio,
+              cservicio: cservicio,
               cservicioadicional: response.data.serviceOrder[i].cservicioadicional,
               xservicio: xservicio,
               xobservacion: response.data.serviceOrder[i].xobservacion,
               xfecha: response.data.serviceOrder[i].xfecha,
               xdanos: response.data.serviceOrder[i].xdanos,
-              fajuste: response.data.serviceOrder[i].fajuste.substring(0,10),
+              fajuste: fajuste,
               xdesde: response.data.serviceOrder[i].xdesde,
               xhacia: response.data.serviceOrder[i].xhacia,
               mmonto: response.data.serviceOrder[i].mmonto,
@@ -644,6 +658,7 @@ export class NotificationDetailComponent implements OnInit {
             });
           }
         }
+        console.log(this.serviceOrderList)
       }
       this.loading_cancel = false;
     }, 
@@ -1838,6 +1853,23 @@ export class NotificationDetailComponent implements OnInit {
 
   serviceOrderRowClicked(event: any){
     let notificacion = {};
+    let fajuste;
+    let cservicio; 
+
+    if(event.data.fajuste){
+      fajuste = event.data.fajuste.substring(0, 10)
+    }else{
+      fajuste = fajuste
+    }
+
+    // if(event.data.cservicio){
+    //   cservicio = response.data.serviceOrder[i].cservicio
+    // }else{
+    //   cservicio = response.data.serviceOrder[i].cservicioadicional
+    // }
+
+    console.log(event.data.xservicio)
+
     if(this.editStatus){ 
       notificacion = { 
         edit: true,
@@ -1855,7 +1887,7 @@ export class NotificationDetailComponent implements OnInit {
         xdanos: event.data.xdanos,
         xobservacion: event.data.xobservacion,
         xfecha: event.data.xfecha,
-        fajuste: event.data.fajuste.substring(0, 10),
+        fajuste: fajuste,
         xdesde: event.data.xdesde,
         xhacia: event.data.xhacia,
         mmonto: event.data.mmonto,
@@ -1878,6 +1910,7 @@ export class NotificationDetailComponent implements OnInit {
         cnotificacion: event.data.cnotificacion,
         corden: event.data.corden,
         cservicioadicional: event.data.cservicioadicional,
+        cservicio: event.data.cservicio,
         xservicio: event.data.xservicio,
         xservicioadicional: event.data.xservicioadicional,
         xnombre: event.data.xnombre,
@@ -1885,7 +1918,7 @@ export class NotificationDetailComponent implements OnInit {
         xdanos: event.data.xdanos,
         xobservacion: event.data.xobservacion,
         xfecha: event.data.xfecha,
-        fajuste: event.data.fajuste.substring(0, 10),
+        fajuste: fajuste,
         xdesde: event.data.xdesde,
         xhacia: event.data.xhacia,
         mmonto: event.data.mmonto,
@@ -1914,7 +1947,7 @@ export class NotificationDetailComponent implements OnInit {
       this.serviceOrderList[index].xobservacion = result.xobservacion;
       this.serviceOrderList[index].xdanos = result.xdanos;
       this.serviceOrderList[index].xfecha = result.xfecha;
-      this.serviceOrderList[index].fajuste = result.fajuste.substring(0, 10);
+      this.serviceOrderList[index].fajuste = result.fajuste;
       this.serviceOrderList[index].xdesde = result.xdesde;
       this.serviceOrderList[index].xhacia = result.xhacia;
       this.serviceOrderList[index].mmonto = result.mmonto;
