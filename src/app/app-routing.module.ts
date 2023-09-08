@@ -198,6 +198,7 @@ import { PendingPaymentsComponent } from './business/pending-payments/pending-pa
 import { SubscriptionReportComponent } from './business/subscription-report/subscription-report.component';
 import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
+import { FinancingComponent } from './financing/financing.component';
 
 const routes: Routes = [
  
@@ -485,6 +486,7 @@ const routes: Routes = [
   { path: 'subscription/fleet-contract-quotes-detail', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-quotes-detail/:id', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
   { path: 'sign-in', component: SignInComponent },
+  { path: 'financing', component: FinancingComponent, canActivate: [AuthGuard] },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
 
 ];

@@ -323,6 +323,7 @@ import { ProvidersDocumentsComponent } from './pop-up/providers-documents/provid
 import { PlanRcvRatesComponent } from './pop-up/plan-rcv-rates/plan-rcv-rates.component';
 import { NotificationQuoteRequestIndexComponent } from './pop-up/notification-quote-request-index/notification-quote-request-index.component';
 import { NotificationQuoteRequestDetailComponent } from './pop-up/notification-quote-request-detail/notification-quote-request-detail.component';
+import { FinancingComponent } from './financing/financing.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -628,7 +629,8 @@ export function HttpLoaderFactory(http: HttpClient){
     ProvidersDocumentsComponent,
     PlanRcvRatesComponent,
     NotificationQuoteRequestIndexComponent,
-    NotificationQuoteRequestDetailComponent
+    NotificationQuoteRequestDetailComponent,
+    FinancingComponent,
   ],
   imports: [
     BrowserModule,
