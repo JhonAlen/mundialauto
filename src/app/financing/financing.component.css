@@ -7,3 +7,40 @@ footer{
 h3,h6{
     color: white;
 }
+.table-responsive {
+    overflow-x: unset;
+}
+
+.items{
+    width: 11%;
+}
+.sessions{
+    width: 5%;
+}
+.item{
+    width: 5%;
+}
+.grupo{
+   width: 20%; 
+}
+
+
+
+.card .table td, .card .table th {
+    /* padding-left: 1.5rem; */
+    /* padding-right: 1.5rem; */
+    font-size: 11px;
+}
+
+.table th, .table td {
+    padding: 7px;
+    vertical-align: top;
+    border-top: 1px solid #e9ecef;
+}
+
+.card-header2{
+    background-color: #fff;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}

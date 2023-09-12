@@ -134,6 +134,49 @@
         </div>
     </div>
 </div>
+<div class="row ml-4" style="--bs-gutter-x: 2.8rem;margin-top: 15px;" *ngIf="activeProviders">
+  <div class="col-9">
+    <div class="card shadow">
+      <div class="card-header2 border-0">
+        <h2 class="mb-0">Proveedores</h2>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table align-items-center table-flush">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Proveedor</th>
+              <th scope="col">Número</th>
+              <th scope="col" class="items">Precio</th>
+              <th scope="col" class="sessions">Elegir</th> 
+            </tr>
+          </thead>
+          <tbody *ngIf="providerList && providerList.length > 0">
+            <tr *ngFor="let provider of providerList">
+              <td>
+                <strong class="mt-3">{{provider.xproveedor}}</strong>
+              </td>
+          
+              <td>
+                <strong class="mt-3">{{provider.xtelefono}}</strong>
+              </td>
+          
+              <td class="items">
+                <input type="number" formControlName="mprecio" class="form-control form-control-alternative" />
+              </td>
+
+              <td class="sessions">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>    
     <div class="container">       

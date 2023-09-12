@@ -24,6 +24,7 @@ export class FinancingComponent implements OnInit {
   vehiclePropietaryList: any[] = [];
   serviceList: any[] = [];
   replacementList: any[] = [];
+  providerList: any[] = [];
   keyword = 'value';
 
   documento : string
@@ -32,6 +33,7 @@ export class FinancingComponent implements OnInit {
   detallecarro: string
   auth : boolean = true;
   replacement: boolean = false;
+  activeProviders: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -45,8 +47,8 @@ export class FinancingComponent implements OnInit {
       cvehiculopropietario: [''],
       cservicio: [''],
       crepuesto: [''],
-      xemail: [''],
-      // xplaca: [''],
+      mprecio: [''],
+      prueba: [''],
       // xcausasiniestro: [''],
       // xvehiculo: ['']
     });
@@ -203,7 +205,9 @@ export class FinancingComponent implements OnInit {
     this.financing_form.get('cservicio').setValue(event.id)
     
     if(this.financing_form.get('cservicio').value == 253){
+      this.getProviderFromService();
       this.replacement = true;
+      this.activeProviders = true;
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
       let params = {
@@ -231,12 +235,48 @@ export class FinancingComponent implements OnInit {
         this.alert.show = true;
       });
     }else{
+      this.activeProviders = true;
       this.replacement = false;
+      this.getProviderFromService();
     }
   }
 
   async dataReplacement(event){
     this.financing_form.get('crepuesto').setValue(event.id)
+  }
+
+  getProviderFromService(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cservicio: this.financing_form.get('cservicio').value
+    };
+    
+    this.http.post(`${environment.apiUrl}/api/financing/provider-financing`, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        this.providerList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.providerList.push({ 
+            cproveedor: response.data.list[i].cproveedor, 
+            xproveedor: response.data.list[i].xproveedor,
+            xtelefono: response.data.list[i].xtelefono,
+            cservicio: response.data.list[i].cservicio,
+            xservicio: response.data.list[i].xservicio,
+          });
+        }
+        this.providerList.sort((a, b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = err.error.data.message; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   logOut(){ this.authenticationService.logout();}
