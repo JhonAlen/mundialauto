@@ -5,7 +5,7 @@
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
         </div>
     </div>
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header company-card-header">
@@ -31,12 +31,76 @@
                 </div>
                 <div class="card-body">
                     <form [formGroup]="detail_form">
-                        <div class="row">
+                        <div class="col-sm-12 col-md-6 container">
+                            <div class="form-group">
+                                <label style="margin-left: 233px;">Nombre del Plan</label>
+                                <input type="text" formControlName="xplan_rc" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xplan_rc').errors }">
+                                <div *ngIf="submitted && detail_form.get('xplan_rc').errors"  class="invalid-feedback">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 64px;">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ "PRODUCTS.PLAN_RCV.PLAN" | translate }}</label>
-                                    <input type="text" formControlName="xplan_rc" class="form-control" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('xplan_rc').errors }">
-                                    <div *ngIf="submitted && detail_form.get('xplan_rc').errors"  class="invalid-feedback">
+                                    <label>Suma Asegurada Daños a Cosas</label>
+                                    <input type="number" formControlName="msuma_dc" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_dc').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_dc').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada Personas</label>
+                                    <input type="number" formControlName="msuma_personas" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_personas').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_personas').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada Exceso</label>
+                                    <input type="number" formControlName="msuma_exceso" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_exceso').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_exceso').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada Defensa Penal</label>
+                                    <input type="number" formControlName="msuma_dp" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_dp').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_dp').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada Muerte</label>
+                                    <input type="number" formControlName="msuma_muerte" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_muerte').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_muerte').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada Invalidez</label>
+                                    <input type="number" formControlName="msuma_invalidez" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_invalidez').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_invalidez').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada GM</label>
+                                    <input type="number" formControlName="msuma_gm" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_gm').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_gm').errors"  class="invalid-feedback">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label>Suma Asegurada Gastos Funerario</label>
+                                    <input type="number" formControlName="msuma_gf" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('msuma_gf').errors }" >
+                                    <div *ngIf="submitted && detail_form.get('msuma_gf').errors"  class="invalid-feedback">
                                     </div>
                                 </div>
                             </div>
@@ -47,7 +111,38 @@
         </div>
     </div>
     <br>
-    <div class="row mt-8">
+    <div class="row mt-3">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header company-card-header">
+                    <div class="row" style="margin-left: 581px;">
+                        <div class="col-3">
+                            <p><b>Lista de Tarifas</b></p>
+                        </div>
+                        <div class="col-3" style="margin-left: 317px;">
+                            <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addRates()" *ngIf="canEdit || canCreate">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                Agregar Tarifas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <ag-grid-angular style="width: 100%; height: 400px;" class="ag-theme-alpine" [rowData]="ratesList" [pagination]="true" [paginationAutoPageSize]="true" rowSelection="single" (rowClicked)="ratesRowClicked($event)" (gridReady)="onRatesGridReady($event)">
+                            <ag-grid-column headerName="Clase" field="xclase" [width]="220" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Tipo" field="xtipo" [width]="230" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Grupo" field="xgrupo" [width]="190" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Daños a Cosas" field="msuma_cosas_rc" [width]="180" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Suma Daños a Personas" field="msuma_personas_rc" [width]="200" [sortable]="true"></ag-grid-column>
+                            <ag-grid-column headerName="Prima Daños a Cosas" field="mprima_rc" [width]="200" [sortable]="true"></ag-grid-column>
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="row mt-8" *ngIf="bocultar">
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-6">
@@ -161,7 +256,7 @@
                                     </div>
                                     <div class="col-sm-12 col-md-4">
                                         <div class="form-group">
-                                            <label>Defensa Penal</label>
+                                            <label>Prima Exceso de Limite</label>
                                             <input type="number" formControlName="mprima_limite_ind" class="form-control" size="7" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('mprima_limite_ind').errors }" >
                                             <div *ngIf="submitted && detail_form.get('mprima_limite_ind').errors"  class="invalid-feedback">
                                             </div>
@@ -238,7 +333,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 <br>
 <br>

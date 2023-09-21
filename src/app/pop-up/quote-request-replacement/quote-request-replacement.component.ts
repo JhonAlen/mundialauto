@@ -24,6 +24,7 @@ export class QuoteRequestReplacementComponent implements OnInit {
   replacementList: any[] = [];
   damageLevelList: any[] = [];
   coinList: any[] = [];
+  activateIgtf: boolean = false;
   alert = { show : false, type : "", message : "" }
 
   constructor(public activeModal: NgbActiveModal,
@@ -33,16 +34,18 @@ export class QuoteRequestReplacementComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      ctiporepuesto: ['', Validators.required],
-      crepuesto: ['', Validators.required],
-      ncantidad: ['', Validators.required],
-      cniveldano: ['', Validators.required],
-      bdisponible: [false, Validators.required],
-      munitariorepuesto: ['', Validators.required],
-      bdescuento: [false, Validators.required],
-      mtotalrepuesto: ['', Validators.required],
-      cmoneda: ['', Validators.required],
-      xmoneda: ['']
+      ctiporepuesto: [''],
+      crepuesto: [''],
+      ncantidad: [''],
+      cniveldano: [''],
+      bdisponible: [false],
+      munitariorepuesto: [''],
+      bdescuento: [false],
+      mtotalrepuesto: [''],
+      cmoneda: [''],
+      xmoneda: [''],
+      bigtf: [false],
+      migtf: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -125,6 +128,10 @@ export class QuoteRequestReplacementComponent implements OnInit {
           this.popup_form.get('cniveldano').disable();
           this.popup_form.get('bdisponible').setValue(this.replacement.bdisponible);
           this.popup_form.get('munitariorepuesto').setValue(this.replacement.munitariorepuesto);
+          this.popup_form.get('cmoneda').setValue(this.replacement.cmoneda);
+          this.popup_form.get('cmoneda').disable();
+          this.popup_form.get('xmoneda').setValue(this.replacement.xmoneda);
+          this.popup_form.get('xmoneda').disable();
           this.searchCoin();
           this.popup_form.get('bdescuento').setValue(this.replacement.bdescuento);
           this.popup_form.get('mtotalrepuesto').setValue(this.replacement.mtotalrepuesto);
@@ -151,10 +158,12 @@ export class QuoteRequestReplacementComponent implements OnInit {
       this.popup_form.get('bdescuento').disable();
       this.popup_form.get('mtotalrepuesto').setValue('');
       this.popup_form.get('mtotalrepuesto').disable();
+      this.popup_form.get('cmoneda').disable();
     }else{
       this.popup_form.get('munitariorepuesto').enable();
       this.popup_form.get('bdescuento').enable();
       this.popup_form.get('mtotalrepuesto').enable();
+      this.popup_form.get('cmoneda').enable();
     }
   }
 
@@ -219,6 +228,29 @@ export class QuoteRequestReplacementComponent implements OnInit {
     });
   }
 
+  igtf(){
+    if(this.popup_form.get('cmoneda').value == 2){
+      this.activateIgtf = true;
+    }else{
+      this.activateIgtf = false;
+    }
+  }
+
+  calculateIgtf(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpais: this.currentUser.data.cpais,
+      cimpuesto: 6
+    };
+    this.http.post(`${environment.apiUrl}/api/tax/configuration/detail`, params, options).subscribe((response : any) => {
+      if(response.data.status){
+        let igtf = response.data.pimpuesto / 100
+        this.popup_form.get('migtf').setValue(igtf);
+      }
+    })
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -232,6 +264,7 @@ export class QuoteRequestReplacementComponent implements OnInit {
     this.replacement.mtotalrepuesto = form.mtotalrepuesto;
     this.replacement.cmoneda = form.cmoneda;
     this.replacement.xmoneda = form.xmoneda;
+    this.replacement.migtf = this.popup_form.get('migtf').value;
     this.activeModal.close(this.replacement);
   }
 

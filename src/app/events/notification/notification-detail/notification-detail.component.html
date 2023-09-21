@@ -646,7 +646,7 @@
                                 {{ "EVENTS.NOTIFICATIONS.THIRDPARTIESLIST" | translate }}
                             </div>
                             <div class="col-6">
-                                <button [disabled]="loading || loading_cancel || !editStatus || editBlock" class="btn company-detail-button float-right mr-1" type="button" (click)="addThirdparty()" *ngIf="canEdit || canCreate">
+                                <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addThirdparty()" *ngIf="canEdit || canCreate || bocultar_tercero">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.NOTIFICATIONS.ADDTHIRDPARTY" | translate }}
                                 </button>
@@ -699,7 +699,7 @@
                                 {{ "EVENTS.NOTIFICATIONS.MATERIALDAMAGESLIST" | translate }}
                             </div>
                             <div class="col-6">
-                                <button [disabled]="loading || loading_cancel || !editStatus || editBlock" class="btn company-detail-button float-right mr-1" type="button" (click)="addMaterialDamage()" *ngIf="canEdit || canCreate">
+                                <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addMaterialDamage()" *ngIf="canEdit || canCreate || bocultar_tercero">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.NOTIFICATIONS.ADDMATERIALDAMAGE" | translate }}
                                 </button>
@@ -726,7 +726,7 @@
                                 {{ "EVENTS.NOTIFICATIONS.THIRDPARTIESVEHICLESLIST" | translate }}
                             </div>
                             <div class="col-6">
-                                <button [disabled]="loading || loading_cancel || !editStatus || editBlock" class="btn company-detail-button float-right mr-1" type="button" (click)="addThirdpartyVehicle()" *ngIf="canEdit || canCreate">
+                                <button [disabled]="loading || loading_cancel || !editStatus" class="btn company-detail-button float-right mr-1" type="button" (click)="addThirdpartyVehicle()" *ngIf="canEdit || canCreate || bocultar_tercero">
                                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                     {{ "EVENTS.NOTIFICATIONS.ADDTHIRDPARTYVEHICLE" | translate }}
                                 </button>
@@ -780,6 +780,19 @@
                         <div class="row">
                             <div class="col-6">
                                 {{ "EVENTS.NOTIFICATIONS.QUOTESLIST" | translate }}
+                            </div>
+                            <div class="col-6">
+                                <div class="form-check form-switch">
+                                  <label style="margin-left: 270px;">Desea registrar la cotización?</label>
+                                  <div class="row">
+                                    <p class="col-2" [ngStyle]="{ 'opacity': canEdit ? 1 : 0.5 }" style="text-align: right;margin-left: 275px;">No</p>
+                                    <input type="checkbox" formControlName="bcotizacion" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && detail_form.get('bcotizacion').errors }" style="margin-left: 365px;" [disabled]="!showEditButton" (change)="changeQuoteRequest()">
+                                    <p class="col-2" style="margin-left: 36px;">Si</p>
+                                  </div>
+                                  <div *ngIf="submitted && detail_form.get('bcotizacion').errors" class="invalid-feedback">
+                                    <div *ngIf="detail_form.get('bcotizacion').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDINJURED" | translate }}</div>
+                                  </div>
+                                </div>
                             </div>
                         </div>
                     </div>

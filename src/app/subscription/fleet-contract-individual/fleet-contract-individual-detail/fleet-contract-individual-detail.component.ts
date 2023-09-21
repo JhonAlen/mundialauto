@@ -40,6 +40,7 @@ export class FleetContractIndividualDetailComponent implements OnInit {
   versionList: any[] = [];
   corredorList: any[] = [];
   planList: any[] = [];
+  planRcvList: any[] = [];
   CountryList: any[] = [];
   StateList: any[] = [];
   CityList:  any[] = [];
@@ -165,10 +166,11 @@ export class FleetContractIndividualDetailComponent implements OnInit {
  xcorreo : string;
  xestado : string;
  xciudad : string;
-  xtransmision: any;
-  nkilometraje: any;
-  xzona_postal_propietario: any;
-  xclase: any;
+ xtransmision: any;
+ nkilometraje: any;
+ xzona_postal_propietario: any;
+ xclase: any;
+ oculta_rcv: boolean = false;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private _formBuilder: FormBuilder,
@@ -180,27 +182,28 @@ export class FleetContractIndividualDetailComponent implements OnInit {
 
 async ngOnInit(): Promise<void>{
     this.search_form = this.formBuilder.group({
-      xnombre: ['', Validators.required],
-      xapellido: ['', Validators.required],
-      cano: ['', Validators.required],
-      xcolor: ['', Validators.required],
-      cmarca: ['', Validators.required],
-      cmodelo: ['', Validators.required],
-      cversion: ['', Validators.required],
-      xrif_cliente:['', Validators.required],
-      email: ['', Validators.required],
+      xnombre: [''],
+      xapellido: [''],
+      cano: [''],
+      xcolor: [''],
+      cmarca: [''],
+      cmodelo: [''],
+      cversion: [''],
+      xrif_cliente:[''],
+      email: [''],
       xtelefono_prop:[''],
-      xdireccionfiscal: ['', Validators.required],
-      xserialmotor: ['', Validators.required],
-      xserialcarroceria: ['', Validators.required],
-      xplaca: ['', Validators.required],
-      xtelefono_emp: ['', Validators.required],
-      cplan: ['', Validators.required],
-      ccorredor:['', Validators.required],
-      xcobertura: ['', Validators.required],
-      ctarifa_exceso: ['', Validators.required],
-      ncapacidad_p: ['', Validators.required],
-      cmetodologiapago: ['', Validators.required],
+      xdireccionfiscal: [''],
+      xserialmotor: [''],
+      xserialcarroceria: [''],
+      xplaca: [''],
+      xtelefono_emp: [''],
+      cplan: [''],
+      cplan_rc: [''],
+      ccorredor:[''],
+      xcobertura: [''],
+      ctarifa_exceso: [''],
+      ncapacidad_p: [''],
+      cmetodologiapago: [''],
       msuma_aseg:[''],
       pcasco:[''],
       mprima_casco:[''],
@@ -217,12 +220,12 @@ async ngOnInit(): Promise<void>{
       mmotin:[''],
       pblindaje:[''],
       tarifas:[''],
-      cestado:['', Validators.required],
-      cciudad:['', Validators.required],
-      icedula:['', Validators.required],
-      femision:['', Validators.required],
+      cestado:[''],
+      cciudad:[''],
+      icedula:[''],
+      femision:[''],
       ivigencia:[''],
-      cpais:['', Validators.required],
+      cpais:[''],
       xpago: [''],
       ncobro:[''],
       ccodigo_ubii:[''],
@@ -239,6 +242,7 @@ async ngOnInit(): Promise<void>{
       ctipovehiculo: [''],
       xzona_postal:[''],
       nkilometraje: [''],
+      brcv: [false]
     });
 
     this.currentUser = this.authenticationService.currentUserValue;
@@ -296,7 +300,8 @@ async initializeDropdownDataRequest(){
     this.getTakersData();
     this.VehicleData();
     this.ClaseData();
-    this.getUtilityVehicle()
+    this.getUtilityVehicle();
+    this.getPlanRcvData();
 
     let params = {
       cpais: this.currentUser.data.cpais,
@@ -320,6 +325,12 @@ async initializeDropdownDataRequest(){
         this.marcaList.sort((a, b) => a.value > b.value ? 1 : -1)
       }
   }
+
+  onInputToUpper(event: any): void {
+    const inputValue = event.target.value;
+    event.target.value = inputValue.toUpperCase();
+  }
+  
   async getLastExchangeRate() {
     let params = {};
     this.http.post(`${environment.apiUrl}/api/administration/last-exchange-rate`, params).subscribe((response: any) => {
@@ -532,6 +543,28 @@ async getPlanData(){
     }
     },);
   }
+
+  async getPlanRcvData(){
+    let params =  {
+      cpais: this.currentUser.data.cpais,
+      ccompania: this.currentUser.data.ccompania,
+    };
+  
+    this.http.post(`${environment.apiUrl}/api/valrep/planrcv-type`, params).subscribe((response: any) => {
+      if(response.data.status){
+        this.planRcvList = [];
+        for(let i = 0; i < response.data.list.length; i++){
+          this.planRcvList.push({ 
+            id: response.data.list[i].cplan_rc,
+            value: response.data.list[i].xplan_rc,
+            control: response.data.list[i].control
+          });
+        }
+        this.planRcvList.sort((a, b) => a.id > b.id ? 1 : -1)
+      }
+      },);
+    }
+
   async getTypeVehicle(){
     let params =  {
       cpais: this.currentUser.data.cpais,
@@ -847,6 +880,7 @@ OperatioValidationPlate(){
       this.modalidad = true;
       this.montorcv = true;
       this.bemitir = false;
+      this.oculta_rcv = true;
       if(this.currentUser.data.crol == 3,17,18){
         this.bemitir = true;
       }
@@ -871,6 +905,7 @@ OperatioValidationPlate(){
       this.modalidad = false;
       this.montorcv = false;
       this.bemitir = true;
+      this.oculta_rcv = true;
     }
   }
 
@@ -1110,6 +1145,14 @@ OperatioValidationPlate(){
 
  }
 
+ changeRcv(){
+    if(this.search_form.get('brcv').value == true){
+      this.oculta_rcv = true;
+    }else{
+      this.oculta_rcv = false;
+    }
+ }
+
   Validation(){
     let params =  {
       xdocidentidad: this.search_form.get('xrif_cliente').value,
@@ -1190,6 +1233,7 @@ OperatioValidationPlate(){
         let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
         let version = this.versionList.find(element => element.control === parseInt(this.search_form.get('cversion').value));
         let metodologiaPago = this.planList.find(element => element.control === parseInt(this.search_form.get('cplan').value));
+        let planRcv = this.planRcvList.find(element => element.control === parseInt(this.search_form.get('cplan_rc').value));
         let clase = this.ListClase.find(element => element.control === parseInt(this.search_form.get('cclase').value));
 
         let params = {
@@ -1226,6 +1270,7 @@ OperatioValidationPlate(){
             mmotin: form.mmotin,
             pblindaje: form.pblindaje,
             cplan: metodologiaPago.id,
+            cplan_rc: planRcv.id,
             cmetodologiapago: this.search_form.get('cmetodologiapago').value,
             femision: form.femision,
             ncobro: form.ncobro,

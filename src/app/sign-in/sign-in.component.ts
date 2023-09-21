@@ -28,8 +28,8 @@ export class SignInComponent implements OnInit {
 
   ngOnInit(): void {
     this.signin_form = this.formBuilder.group({
-      xemail : ['', Validators.required],
-      xcontrasena : ['', Validators.required]
+      xemail : [''],
+      xcontrasena : ['']
     });
   }
 
@@ -42,8 +42,16 @@ export class SignInComponent implements OnInit {
     }
     this.authenticationService.login(form.xemail, form.xcontrasena).pipe(first()).subscribe((data : any) => {
       this.loading = false;
-      if(data.data.ccorredor == null ){ this.router.navigate(['/home']).then(() =>{ window.location.reload(); });}
-      else if(data.data.ccorredor){ this.router.navigate(['/subscription/fleet-contract-broker-detail']).then(() =>{ window.location.reload(); }); }
+      console.log(data.data)
+      if(data.data.ccorredor == null ){ 
+        if(data.data.crol == 19){
+          this.router.navigate(['/financing']).then(() =>{ window.location.reload(); }); 
+        }else{
+          this.router.navigate(['/home']).then(() =>{ window.location.reload(); });
+        }
+      }else if(data.data.ccorredor){ 
+        this.router.navigate(['/subscription/fleet-contract-broker-detail']).then(() =>{ window.location.reload(); }); 
+      }
     },
     
     (err) => {

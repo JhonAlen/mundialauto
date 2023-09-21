@@ -319,6 +319,12 @@ import { TakersDetailComponent } from './configuration/takers/takers-detail/take
 import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
 import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
+import { SubscriptionReportComponent } from './business/subscription-report/subscription-report.component';
+import { ProvidersDocumentsComponent } from './pop-up/providers-documents/providers-documents.component';
+import { PlanRcvRatesComponent } from './pop-up/plan-rcv-rates/plan-rcv-rates.component';
+import { NotificationQuoteRequestIndexComponent } from './pop-up/notification-quote-request-index/notification-quote-request-index.component';
+import { NotificationQuoteRequestDetailComponent } from './pop-up/notification-quote-request-detail/notification-quote-request-detail.component';
+import { FinancingComponent } from './financing/financing.component';
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -620,7 +626,13 @@ export function HttpLoaderFactory(http: HttpClient){
     PendingPaymentsComponent,
     FleetContractQuotesIndexComponent,
     FleetContractQuotesDetailComponent,
-    RatesComponent
+    RatesComponent,
+    SubscriptionReportComponent,
+    ProvidersDocumentsComponent,
+    PlanRcvRatesComponent,
+    NotificationQuoteRequestIndexComponent,
+    NotificationQuoteRequestDetailComponent,
+    FinancingComponent,
   ],
   imports: [
     BrowserModule,

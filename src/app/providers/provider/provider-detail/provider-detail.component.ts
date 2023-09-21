@@ -25,6 +25,8 @@ import { ProviderStateComponent } from '@app/pop-up/provider-state/provider-stat
 import { ProviderBrandComponent } from '@app/pop-up/provider-brand/provider-brand.component';
 import { ProviderServiceComponent } from '@app/pop-up/provider-service/provider-service.component';
 import { ProviderContactComponent } from '@app/pop-up/provider-contact/provider-contact.component';
+import { ProvidersDocumentsComponent } from '@app/pop-up/providers-documents/providers-documents.component';
+
 
 @Component({
   selector: 'app-provider-detail',
@@ -38,6 +40,7 @@ export class ProviderDetailComponent implements OnInit {
   private stateGridApi;
   private contactGridApi;
   private serviceGridApi;
+  private documentGridApi;
   sub;
   currentUser;
   detail_form: UntypedFormGroup;
@@ -67,6 +70,7 @@ export class ProviderDetailComponent implements OnInit {
   brandDeletedRowList: any[] = [];
   serviceDeletedRowList: any[] = [];
   contactDeletedRowList: any[] = [];
+  documentList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
@@ -271,7 +275,8 @@ export class ProviderDetailComponent implements OnInit {
             cgrid: i,
             create: false,
             cestado: request.data.states[i].cestado,
-            xestado: request.data.states[i].xestado
+            xestado: request.data.states[i].xestado,
+            xpais: request.data.states[i].xpais
           });
         }
       }
@@ -294,6 +299,7 @@ export class ProviderDetailComponent implements OnInit {
             create: false,
             cservicio: request.data.services[i].cservicio,
             xservicio: request.data.services[i].xservicio,
+            xtiposervicio: request.data.services[i].xtiposervicio
           });
         }
       }
@@ -314,6 +320,18 @@ export class ProviderDetailComponent implements OnInit {
             xtelefonooficina: request.data.contacts[i].xtelefonooficina ? request.data.contacts[i].xtelefonooficina : undefined,
             xtelefonocasa: request.data.contacts[i].xtelefonocasa ? request.data.contacts[i].xtelefonocasa : undefined,
             xfax: request.data.contacts[i].xfax ? request.data.contacts[i].xfax : undefined,
+          });
+        }
+      }
+      this.documentList = [];
+      if (request.data.documents) {
+        for (let i = 0; i < request.data.documents.length; i++) {
+          this.documentList.push({
+            cgrid: i,
+            create: false,
+            id: request.data.documents[i].id,
+            xobservacion: request.data.documents[i].xobservacion,
+            xrutaarchivo: request.data.documents[i].xruta
           });
         }
       }
@@ -395,6 +413,65 @@ export class ProviderDetailComponent implements OnInit {
             xprincipal: result.bprincipal ? this.translate.instant("DROPDOWN.YES") : this.translate.instant("DROPDOWN.NO")
           });
           this.bankGridApi.setRowData(this.bankList);
+        }
+      }
+    });
+  }
+
+  addDocument(){
+    let provider = { type: 3 };
+    const modalRef = this.modalService.open(ProvidersDocumentsComponent);
+    modalRef.componentInstance.provider = provider;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        this.documentList.push({
+          cgrid: this.documentList.length,
+          create: true,
+          xobservacion: result.xobservacion,
+          xrutaarchivo: result.xrutaarchivo
+        });
+        this.documentGridApi.setRowData(this.documentList);
+      }
+      console.log(this.documentList)
+    });
+  }
+
+  documentRowClicked(event: any){
+    let provider = {}
+    if(this.editStatus){ 
+      provider = { 
+        type: 1,
+        create: event.data.create, 
+        cgrid: event.data.cgrid,
+        id: event.data.id,
+        xobservacion: event.data.xobservacion,
+        xrutaarchivo: event.data.xrutaarchivo,
+        delete: false
+      };
+    }else{ 
+      provider = { 
+        type: 2,
+        create: event.data.create,
+        cgrid: event.data.cgrid,
+        id: event.data.id,
+        xobservacion: event.data.xobservacion,
+        xrutaarchivo: event.data.xrutaarchivo,
+        delete: false
+      }; 
+    }
+    const modalRef = this.modalService.open(ProvidersDocumentsComponent);
+    modalRef.componentInstance.provider = provider;
+    modalRef.result.then((result: any) => {
+      if(result){
+        if(result.type == 1){
+          for(let i = 0; i < this.documentList.length; i++){
+            if(this.documentList[i].cgrid == result.cgrid){
+              this.documentList[i].xobservacion = result.xobservacion;
+              this.documentList[i].xrutaarchivo = result.xrutaarchivo;
+              this.documentGridApi.refreshCells();
+              return;
+            }
+          }
         }
       }
     });
@@ -587,40 +664,32 @@ export class ProviderDetailComponent implements OnInit {
         cestado: event.data.cestado,
         delete: false
       };
-    } else {
-      state = {
-        type: 2,
-        create: event.data.create,
-        cgrid: event.data.cgrid,
-        cestado: event.data.cestado,
-        delete: false
-      };
-    }
-    const modalRef = this.modalService.open(ProviderStateComponent);
-    modalRef.componentInstance.state = state;
-    modalRef.result.then((result: any) => {
-      if (result) {
-        if (result.type == 1) {
-          for (let i = 0; i < this.stateProviderList.length; i++) {
-            if (this.stateProviderList[i].cgrid == result.cgrid) {
-              this.stateProviderList[i].cestado = result.cestado;
-              this.stateProviderList[i].xestado = result.xestado;
-              this.stateGridApi.refreshCells();
-              return;
+      const modalRef = this.modalService.open(ProviderStateComponent);
+      modalRef.componentInstance.state = state;
+      modalRef.result.then((result: any) => {
+        if (result) {
+          if (result.type == 1) {
+            for (let i = 0; i < this.stateProviderList.length; i++) {
+              if (this.stateProviderList[i].cgrid == result.cgrid) {
+                this.stateProviderList[i].cestado = result.cestado;
+                this.stateProviderList[i].xestado = result.xestado;
+                this.stateGridApi.refreshCells();
+                return;
+              }
             }
+          } else if (result.type == 4) {
+            if (result.delete) {
+              this.stateDeletedRowList.push({ cestado: result.cestado });
+            }
+            this.stateProviderList = this.stateProviderList.filter((row) => { return row.cgrid != result.cgrid });
+            for (let i = 0; i < this.stateProviderList.length; i++) {
+              this.stateProviderList[i].cgrid = i;
+            }
+            this.stateGridApi.setRowData(this.stateProviderList);
           }
-        } else if (result.type == 4) {
-          if (result.delete) {
-            this.stateDeletedRowList.push({ cestado: result.cestado });
-          }
-          this.stateProviderList = this.stateProviderList.filter((row) => { return row.cgrid != result.cgrid });
-          for (let i = 0; i < this.stateProviderList.length; i++) {
-            this.stateProviderList[i].cgrid = i;
-          }
-          this.stateGridApi.setRowData(this.stateProviderList);
         }
-      }
-    });
+      });
+    }
   }
 
   brandRowClicked(event: any) {
@@ -680,41 +749,33 @@ export class ProviderDetailComponent implements OnInit {
         ctiposervicio: event.data.ctiposervicio,
         delete: false
       };
-    } else {
-      service = {
-        type: 2,
-        create: event.data.create,
-        cgrid: event.data.cgrid,
-        cservicio: event.data.cservicio,
-        ctiposervicio: event.data.ctiposervicio,
-        delete: false
-      };
-    }
-    const modalRef = this.modalService.open(ProviderServiceComponent);
-    modalRef.componentInstance.service = service;
-    modalRef.result.then((result: any) => {
-      if (result) {
-        if (result.type == 1) {
-          for (let i = 0; i < this.serviceList.length; i++) {
-            if (this.serviceList[i].cgrid == result.cgrid) {
-              this.serviceList[i].cservicio = result.cservicio;
-              this.serviceList[i].xservicio = result.xservicio;
-              this.serviceGridApi.refreshCells();
-              return;
+      const modalRef = this.modalService.open(ProviderServiceComponent);
+      modalRef.componentInstance.service = service;
+      modalRef.result.then((result: any) => {
+        if (result) {
+          if (result.type == 1) {
+            for (let i = 0; i < this.serviceList.length; i++) {
+              if (this.serviceList[i].cgrid == result.cgrid) {
+                this.serviceList[i].cservicio = result.cservicio;
+                this.serviceList[i].xservicio = result.xservicio;
+                this.serviceGridApi.refreshCells();
+                return;
+              }
             }
+          } else if (result.type == 4) {
+            if (result.delete) {
+              this.serviceDeletedRowList.push({ cservicio: result.cservicio });
+            }
+            this.serviceList = this.serviceList.filter((row) => { return row.cgrid != result.cgrid });
+            for (let i = 0; i < this.serviceList.length; i++) {
+              this.serviceList[i].cgrid = i;
+            }
+            this.serviceGridApi.setRowData(this.serviceList);
           }
-        } else if (result.type == 4) {
-          if (result.delete) {
-            this.serviceDeletedRowList.push({ cservicio: result.cservicio });
-          }
-          this.serviceList = this.serviceList.filter((row) => { return row.cgrid != result.cgrid });
-          for (let i = 0; i < this.serviceList.length; i++) {
-            this.serviceList[i].cgrid = i;
-          }
-          this.serviceGridApi.setRowData(this.serviceList);
         }
-      }
-    });
+      });
+    }
+    
   }
 
   contactRowClicked(event: any) {
@@ -812,6 +873,10 @@ export class ProviderDetailComponent implements OnInit {
     this.contactGridApi = event.api;
   }
 
+  onDocumentGridReady(event){
+    this.documentGridApi = event.api;
+  }
+
   async onSubmit(form): Promise<void> {
     this.submitted = true;
     this.loading = true;
@@ -876,7 +941,6 @@ export class ProviderDetailComponent implements OnInit {
       }
       let updateContactList = this.contactList.filter((row) => { return !row.create; });
       for (let i = 0; i < updateContactList.length; i++) {
-        console.log(updateContactList[i]);
         delete updateContactList[i].cgrid;
         delete updateContactList[i].create;
         updateContactList[i].xcargo ? false : delete updateContactList[i].xcargo;
@@ -886,7 +950,6 @@ export class ProviderDetailComponent implements OnInit {
       }
       let createContactList = this.contactList.filter((row) => { return row.create; });
       for (let i = 0; i < createContactList.length; i++) {
-        console.log(createContactList[i]);
         delete createContactList[i].cgrid;
         delete createContactList[i].create;
         createContactList[i].xcargo ? false : delete createContactList[i].xcargo;
@@ -894,6 +957,8 @@ export class ProviderDetailComponent implements OnInit {
         createContactList[i].xtelefonocasa ? false : delete createContactList[i].xtelefonocasa;
         createContactList[i].xfax ? false : delete createContactList[i].xfax;
       }
+      let updateDocumentList = this.documentList.filter((row) => { return !row.create; });
+      let createDocumentList = this.documentList.filter((row) => { return row.create; });
       params = {
         permissionData: {
           cusuario: this.currentUser.data.cusuario,
@@ -941,6 +1006,10 @@ export class ProviderDetailComponent implements OnInit {
           create: createContactList,
           update: updateContactList,
           delete: this.contactDeletedRowList
+        },
+        documentos: {
+          create: createDocumentList,
+          update: updateDocumentList
         }
       };
       // url = `${environment.apiUrl}/api/v2/provider/production/update`;
@@ -975,7 +1044,6 @@ export class ProviderDetailComponent implements OnInit {
       }
       let createContactList = this.contactList;
       for (let i = 0; i < createContactList.length; i++) {
-        console.log(createContactList[i]);
         delete createContactList[i].cgrid;
         delete createContactList[i].create;
         createContactList[i].xcargo ? false : delete createContactList[i].xcargo;
@@ -1009,7 +1077,8 @@ export class ProviderDetailComponent implements OnInit {
         states: createStateList,
         brands: createBrandList,
         services: createServiceList,
-        contacts: createContactList
+        contacts: createContactList,
+        documentos: this.documentList,
       };
       // url = `${environment.apiUrl}/api/v2/provider/production/create`;
       request = await this.webService.createProvider(params);

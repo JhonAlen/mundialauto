@@ -35,8 +35,8 @@ export class NotificationProviderComponent implements OnInit {
 
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
-      cproveedor: ['', Validators.required],
-      xobservacion: ['', Validators.required]
+      cproveedor: [''],
+      xobservacion: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -47,7 +47,7 @@ export class NotificationProviderComponent implements OnInit {
         ccompania: this.currentUser.data.ccompania,
         cproveedor: this.provider.cproveedor
       };
-      this.http.post(`${environment.apiUrl}/api/valrep/provider`, params, options).subscribe((response : any) => {
+      this.http.post(`${environment.apiUrl}/api/valrep/provider-event`, params, options).subscribe((response : any) => {
         if(response.data.status){
           for(let i = 0; i < response.data.list.length; i++){
             this.providerList.push({ id: response.data.list[i].cproveedor, value: response.data.list[i].xnombre });

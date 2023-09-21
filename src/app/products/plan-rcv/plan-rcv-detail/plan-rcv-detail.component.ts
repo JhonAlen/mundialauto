@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PlanRcvRatesComponent } from '@app/pop-up/plan-rcv-rates/plan-rcv-rates.component';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
@@ -15,6 +16,7 @@ import { environment } from '@environments/environment';
 })
 export class PlanRcvDetailComponent implements OnInit {
 
+  private ratesGridApi;
   sub;
   currentUser;
   detail_form: UntypedFormGroup;
@@ -39,6 +41,8 @@ export class PlanRcvDetailComponent implements OnInit {
   insurerDeletedRowList: any[] = [];
   serviceDeletedRowList: any[] = [];
   ctarifa;
+  bocultar: boolean = false;
+  ratesList: any[] = [];
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -46,9 +50,6 @@ export class PlanRcvDetailComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private modalService : NgbModal) { 
-                if (this.router.getCurrentNavigation().extras.state) {
-                  this.ctarifa = this.router.getCurrentNavigation().extras.state; 
-                }
               }
 
   ngOnInit(): void {
@@ -74,6 +75,14 @@ export class PlanRcvDetailComponent implements OnInit {
       mapov_ga: [''],
       msuma_apov_fu: [''],
       mapov_fu: [''],
+      msuma_dc: [''],
+      msuma_personas: [''],
+      msuma_exceso: [''],
+      msuma_dp: [''],
+      msuma_muerte: [''],
+      msuma_invalidez: [''],
+      msuma_gm: [''],
+      msuma_gf: [''],
       bactivo: [true]
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -117,8 +126,10 @@ export class PlanRcvDetailComponent implements OnInit {
           return;
         }
         this.getPlanData();
+        this.bocultar = true;
         if(this.canEdit){ this.showEditButton = true; }
       }else{
+        this.bocultar = false;
         if(!this.canCreate){
           this.router.navigate([`/permission-error`]);
           return;
@@ -134,50 +145,60 @@ export class PlanRcvDetailComponent implements OnInit {
     let options = { headers: headers };
     let params = {
       cplan_rc: this.code,
-      ctarifa: this.ctarifa
     };
     this.http.post(`${environment.apiUrl}/api/plan-rcv/detail`, params, options).subscribe((response : any) => {
       if(response.data.status){
         this.detail_form.get('xplan_rc').setValue(response.data.xplan_rc);
         this.detail_form.get('xplan_rc').disable();
-        this.detail_form.get('ctarifa').setValue(response.data.ctarifa);
-        this.detail_form.get('ctarifa').disable();
-        this.detail_form.get('xclase').setValue(response.data.xclase);
-        this.detail_form.get('xclase').disable();
-        this.detail_form.get('xtipo').setValue(response.data.xtipo);
-        this.detail_form.get('xtipo').disable();
-        this.detail_form.get('xgrupo').setValue(response.data.xgrupo);
-        this.detail_form.get('xgrupo').disable();
-        this.detail_form.get('msuma_cosas_rc').setValue(response.data.msuma_cosas_rc);
-        this.detail_form.get('msuma_cosas_rc').disable();
-        this.detail_form.get('msuma_personas_rc').setValue(response.data.msuma_personas_rc);
-        this.detail_form.get('msuma_personas_rc').disable();
-        this.detail_form.get('mprima_rc').setValue(response.data.mprima_rc);
-        this.detail_form.get('mprima_rc').disable();
-        this.detail_form.get('msuma_defensa_per').setValue(response.data.msuma_defensa_per);
-        this.detail_form.get('msuma_defensa_per').disable();
-        this.detail_form.get('mprima_defensa_per').setValue(response.data.mprima_defensa_per);
-        this.detail_form.get('mprima_defensa_per').disable();
-        this.detail_form.get('msuma_limite_ind').setValue(response.data.msuma_limite_ind);
-        this.detail_form.get('msuma_limite_ind').disable();
-        this.detail_form.get('mprima_limite_ind').setValue(response.data.mprima_limite_ind);
-        this.detail_form.get('mprima_limite_ind').disable();
-        this.detail_form.get('msuma_apov_mu').setValue(response.data.msuma_apov_mu);
-        this.detail_form.get('msuma_apov_mu').disable();
-        this.detail_form.get('mapov_mu').setValue(response.data.mapov_mu);
-        this.detail_form.get('mapov_mu').disable();
-        this.detail_form.get('msuma_apov_in').setValue(response.data.msuma_apov_in);
-        this.detail_form.get('msuma_apov_in').disable();
-        this.detail_form.get('mapov_in').setValue(response.data.mapov_in);
-        this.detail_form.get('mapov_in').disable();
-        this.detail_form.get('msuma_apov_ga').setValue(response.data.msuma_apov_ga);
-        this.detail_form.get('msuma_apov_ga').disable();
-        this.detail_form.get('mapov_ga').setValue(response.data.mapov_ga);
-        this.detail_form.get('mapov_ga').disable();
-        this.detail_form.get('msuma_apov_fu').setValue(response.data.msuma_apov_fu);
-        this.detail_form.get('msuma_apov_fu').disable();
-        this.detail_form.get('mapov_fu').setValue(response.data.mapov_fu);
-        this.detail_form.get('mapov_fu').disable();
+        this.detail_form.get('msuma_dc').setValue(response.data.msuma_dc);
+        this.detail_form.get('msuma_dc').disable();
+        this.detail_form.get('msuma_personas').setValue(response.data.msuma_personas);
+        this.detail_form.get('msuma_personas').disable();
+        this.detail_form.get('msuma_exceso').setValue(response.data.msuma_exceso);
+        this.detail_form.get('msuma_exceso').disable();
+        this.detail_form.get('msuma_dp').setValue(response.data.msuma_dp);
+        this.detail_form.get('msuma_dp').disable();
+        this.detail_form.get('msuma_muerte').setValue(response.data.msuma_muerte);
+        this.detail_form.get('msuma_muerte').disable();
+        this.detail_form.get('msuma_invalidez').setValue(response.data.msuma_invalidez);
+        this.detail_form.get('msuma_invalidez').disable();
+        this.detail_form.get('msuma_gm').setValue(response.data.msuma_gm);
+        this.detail_form.get('msuma_gm').disable();
+        this.detail_form.get('msuma_gf').setValue(response.data.msuma_gf);
+        this.detail_form.get('msuma_gf').disable();
+        this.ratesList = [];
+        if(response.data.rates){
+          for(let i = 0; i < response.data.rates.length; i++){
+            this.ratesList.push({
+              ctarifa: i + 1,
+              xclase: response.data.rates[i].xclase,
+              xtipo: response.data.rates[i].xtipo,
+              xgrupo: response.data.rates[i].xgrupo,
+              mgrua: response.data.rates[i].mgrua,
+              mut_cosas_rc: response.data.rates[i].mut_cosas_rc,
+              msuma_cosas_rc: response.data.rates[i].msuma_cosas_rc,
+              mut_personas_rc: response.data.rates[i].mut_personas_rc,
+              msuma_personas_rc: response.data.rates[i].msuma_personas_rc,
+              mut_prima_rc: response.data.rates[i].mut_prima_rc,
+              mprima_rc: response.data.rates[i].mprima_rc,
+              mexceso_limite: response.data.rates[i].mexceso_limite,
+              mgastos_cat: response.data.rates[i].mgastos_cat,
+              mrecuperacion: response.data.rates[i].mrecuperacion,
+              msuma_defensa_per: response.data.rates[i].msuma_defensa_per,
+              mprima_defensa_per: response.data.rates[i].mprima_defensa_per,
+              msuma_limite_ind: response.data.rates[i].msuma_limite_ind,
+              mprima_limite_ind: response.data.rates[i].mprima_limite_ind,
+              msuma_apov_ga: response.data.rates[i].msuma_apov_ga,
+              msuma_apov_mu: response.data.rates[i].msuma_apov_mu,
+              mapov_mu: response.data.rates[i].mapov_mu,
+              msuma_apov_in: response.data.rates[i].msuma_apov_in,
+              mapov_in: response.data.rates[i].mapov_in,
+              mapov_ga: response.data.rates[i].mapov_ga,
+              msuma_apov_fu: response.data.rates[i].msuma_apov_fu,
+              mapov_fu: response.data.rates[i].mapov_fu
+            })
+          }
+        }
       }
     },
     (err) => {
@@ -194,24 +215,14 @@ export class PlanRcvDetailComponent implements OnInit {
 
   editPlan(){
     this.detail_form.get('xplan_rc').enable();
-    this.detail_form.get('xclase').enable();
-    this.detail_form.get('xtipo').enable();
-    this.detail_form.get('xgrupo').enable();
-    this.detail_form.get('msuma_cosas_rc').enable();
-    this.detail_form.get('msuma_personas_rc').enable();
-    this.detail_form.get('mprima_rc').enable();
-    this.detail_form.get('msuma_defensa_per').enable();
-    this.detail_form.get('mprima_defensa_per').enable();
-    this.detail_form.get('msuma_limite_ind').enable();
-    this.detail_form.get('mprima_limite_ind').enable();
-    this.detail_form.get('msuma_apov_ga').enable();
-    this.detail_form.get('msuma_apov_mu').enable();
-    this.detail_form.get('mapov_mu').enable();
-    this.detail_form.get('msuma_apov_in').enable();
-    this.detail_form.get('mapov_in').enable();
-    this.detail_form.get('mapov_ga').enable();
-    this.detail_form.get('msuma_apov_fu').enable();
-    this.detail_form.get('mapov_fu').enable();
+    this.detail_form.get('msuma_dc').enable();
+    this.detail_form.get('msuma_personas').enable();
+    this.detail_form.get('msuma_exceso').enable();
+    this.detail_form.get('msuma_dp').enable();
+    this.detail_form.get('msuma_muerte').enable();
+    this.detail_form.get('msuma_invalidez').enable();
+    this.detail_form.get('msuma_gm').enable();
+    this.detail_form.get('msuma_gf').enable();
     this.showEditButton = false;
     this.showSaveButton = true;
     this.editStatus = true;
@@ -229,6 +240,157 @@ export class PlanRcvDetailComponent implements OnInit {
     }
   }
 
+  addRates(){
+    let rates = { type: 3 };
+    const modalRef = this.modalService.open(PlanRcvRatesComponent, {size: 'xl'});
+    modalRef.componentInstance.rates = rates;
+    modalRef.result.then((result: any) => { 
+      if(result){
+        for(let i = 0; i < result.length; i++){
+            this.ratesList.push({
+              create: true,
+              ctarifa: this.ratesList.length + 1,
+              xclase: result[i].xclase,
+              xtipo: result[i].xtipo,
+              xgrupo: result[i].xgrupo,
+              mgrua: result[i].mgrua,
+              mut_cosas_rc: result[i].mut_cosas_rc,
+              msuma_cosas_rc: result[i].msuma_cosas_rc,
+              mut_personas_rc: result[i].mut_personas_rc,
+              msuma_personas_rc: result[i].msuma_personas_rc,
+              mut_prima_rc: result[i].mut_prima_rc,
+              mprima_rc: result[i].mprima_rc,
+              mexceso_limite: result[i].mprima_rc,
+              mgastos_cat: result[i].mgastos_cat,
+              mrecuperacion: result[i].mrecuperacion,
+              msuma_defensa_per: result[i].msuma_defensa_per,
+              mprima_defensa_per: result[i].mprima_defensa_per,
+              msuma_limite_ind: result[i].msuma_limite_ind,
+              mprima_limite_ind: result[i].mprima_limite_ind,
+              msuma_apov_mu: result[i].msuma_apov_mu,
+              mapov_mu: result[i].mapov_mu,
+              msuma_apov_in: result[i].msuma_apov_in,
+              mapov_in: result[i].mapov_in,
+              msuma_apov_ga: result[i].msuma_apov_ga,
+              mapov_ga: result[i].mapov_ga,
+              msuma_apov_fu: result[i].msuma_apov_fu,
+              mapov_fu: result[i].mapov_fu
+            })
+          this.ratesGridApi.setRowData(this.ratesList);
+        }
+      }
+    });
+  }
+
+  ratesRowClicked(event: any){
+    let rates = {}
+    if(this.editStatus){
+      rates = {
+        type: 1,
+        create: false,
+        cgrid: event.data.cgrid,
+        ctarifa: event.data.ctarifa,
+        xclase: event.data.xclase,
+        xtipo: event.data.xtipo,
+        xgrupo: event.data.xgrupo,
+        mgrua: event.data.mgrua,
+        mut_cosas_rc: event.data.mut_cosas_rc,
+        msuma_cosas_rc: event.data.msuma_cosas_rc,
+        mut_personas_rc: event.data.mut_personas_rc,
+        msuma_personas_rc: event.data.msuma_personas_rc,
+        mut_prima_rc: event.data.mut_prima_rc,
+        mprima_rc: event.data.mprima_rc,
+        mexceso_limite: event.data.mprima_rc,
+        mgastos_cat: event.data.mgastos_cat,
+        mrecuperacion: event.data.mrecuperacion,
+        msuma_defensa_per: event.data.msuma_defensa_per,
+        mprima_defensa_per: event.data.mprima_defensa_per,
+        msuma_limite_ind: event.data.msuma_limite_ind,
+        mprima_limite_ind: event.data.mprima_limite_ind,
+        msuma_apov_mu: event.data.msuma_apov_mu,
+        mapov_mu: event.data.mapov_mu,
+        msuma_apov_in: event.data.msuma_apov_in,
+        mapov_in: event.data.mapov_in,
+        msuma_apov_ga: event.data.msuma_apov_ga,
+        mapov_ga: event.data.mapov_ga,
+        msuma_apov_fu: event.data.msuma_apov_fu,
+        mapov_fu: event.data.mapov_fu
+      }
+    }else{
+      rates = {
+        type: 2,
+        create: false, 
+        cgrid: event.data.cgrid,
+        ctarifa: event.data.ctarifa,
+        xclase: event.data.xclase,
+        xtipo: event.data.xtipo,
+        xgrupo: event.data.xgrupo,
+        mgrua: event.data.mgrua,
+        mut_cosas_rc: event.data.mut_cosas_rc,
+        msuma_cosas_rc: event.data.msuma_cosas_rc,
+        mut_personas_rc: event.data.mut_personas_rc,
+        msuma_personas_rc: event.data.msuma_personas_rc,
+        mut_prima_rc: event.data.mut_prima_rc,
+        mprima_rc: event.data.mprima_rc,
+        mexceso_limite: event.data.mprima_rc,
+        mgastos_cat: event.data.mgastos_cat,
+        mrecuperacion: event.data.mrecuperacion,
+        msuma_defensa_per: event.data.msuma_defensa_per,
+        mprima_defensa_per: event.data.mprima_defensa_per,
+        msuma_limite_ind: event.data.msuma_limite_ind,
+        mprima_limite_ind: event.data.mprima_limite_ind,
+        msuma_apov_mu: event.data.msuma_apov_mu,
+        mapov_mu: event.data.mapov_mu,
+        msuma_apov_in: event.data.msuma_apov_in,
+        mapov_in: event.data.mapov_in,
+        msuma_apov_ga: event.data.msuma_apov_ga,
+        mapov_ga: event.data.mapov_ga,
+        msuma_apov_fu: event.data.msuma_apov_fu,
+        mapov_fu: event.data.mapov_fu
+      }
+    }
+    const modalRef = this.modalService.open(PlanRcvRatesComponent, {size: 'xl'});
+    modalRef.componentInstance.rates = rates;
+    modalRef.result.then((result: any) => {
+      if(result){
+        for(let i = 0; i < result.length; i++){
+          let index = this.ratesList.findIndex(el=> el.ctarifa == result[i].ctarifa);
+          console.log(index)
+          this.ratesList[index].xclase = result[i].xclase;
+          this.ratesList[index].xtipo = result[i].xtipo;
+          this.ratesList[index].xgrupo = result[i].xgrupo;
+          this.ratesList[index].mgrua = result[i].mgrua;
+          this.ratesList[index].mut_cosas_rc = result[i].mut_cosas_rc;
+          this.ratesList[index].msuma_cosas_rc = result[i].msuma_cosas_rc;
+          this.ratesList[index].mut_personas_rc = result[i].mut_personas_rc;
+          this.ratesList[index].msuma_personas_rc = result[i].msuma_personas_rc;
+          this.ratesList[index].mut_prima_rc = result[i].mut_prima_rc;
+          this.ratesList[index].mprima_rc = result[i].mprima_rc;
+          this.ratesList[index].mexceso_limite = result[i].mexceso_limite;
+          this.ratesList[index].mgastos_cat = result[i].mgastos_cat;
+          this.ratesList[index].mrecuperacion = result[i].mrecuperacion;
+          this.ratesList[index].msuma_defensa_per = result[i].msuma_defensa_per;
+          this.ratesList[index].mprima_defensa_per = result[i].mprima_defensa_per;
+          this.ratesList[index].msuma_limite_ind = result[i].msuma_limite_ind;
+          this.ratesList[index].mprima_limite_ind = result[i].mprima_limite_ind;
+          this.ratesList[index].msuma_apov_mu = result[i].msuma_apov_mu;
+          this.ratesList[index].mapov_mu = result[i].mapov_mu;
+          this.ratesList[index].msuma_apov_in = result[i].msuma_apov_in;
+          this.ratesList[index].mapov_in = result[i].mapov_in;
+          this.ratesList[index].msuma_apov_ga = result[i].msuma_apov_ga;
+          this.ratesList[index].mapov_ga = result[i].mapov_ga;
+          this.ratesList[index].msuma_apov_fu = result[i].msuma_apov_fu;
+          this.ratesList[index].mapov_fu = result[i].mapov_fu;
+          this.ratesGridApi.refreshCells();
+        }
+      }
+    });
+  }
+
+  onRatesGridReady(event){
+    this.ratesGridApi = event.api;
+  }
+
   onSubmit(form){
     this.submitted = true;
     this.loading = true;
@@ -241,39 +403,48 @@ export class PlanRcvDetailComponent implements OnInit {
     let params;
     let url;
 
+    let createRatesList = this.ratesList.filter((row) => { return row.create; });
+    let updateRatesList = this.ratesList.filter((row) => { return !row.create; });
+
     if(this.code){
       params = {
         cusuario: this.currentUser.data.cusuario,
         cplan_rc: this.code,
         xplan_rc: form.xplan_rc,
-        ctarifa: this.ctarifa,
-        xclase: form.xclase,
-        xtipo: form.xtipo,
-        xgrupo: form.xgrupo,
-        msuma_cosas_rc: form.msuma_cosas_rc,
-        msuma_personas_rc: form.msuma_personas_rc,
-        mprima_rc: form.mprima_rc,
-        msuma_defensa_per: form.msuma_defensa_per,
-        mprima_defensa_per: form.mprima_defensa_per,
-        msuma_limite_ind: form.msuma_limite_ind,
-        mprima_limite_ind: form.mprima_limite_ind,
-        msuma_apov_ga: form.msuma_apov_ga,
-        msuma_apov_mu: form.msuma_apov_mu,
-        mapov_mu: form.mapov_mu,
-        msuma_apov_in: form.msuma_apov_in,
-        mapov_in: form.mapov_in,
-        mapov_ga: form.mapov_ga,
-        msuma_apov_fu: form.msuma_apov_fu,
-        mapov_fu: form.mapov_fu
+        msuma_dc: form.msuma_dc,
+        msuma_personas: form.msuma_personas,
+        msuma_exceso: form.msuma_exceso,
+        msuma_muerte: form.msuma_muerte,
+        msuma_invalidez: form.msuma_invalidez,
+        msuma_gm: form.msuma_gm,
+        msuma_gf: form.msuma_gf,
+        rates: {
+          create: createRatesList,
+          update: updateRatesList
+        }
       };
       url = `${environment.apiUrl}/api/plan-rcv/update`;
+    }else{
+      params = {
+        cusuario: this.currentUser.data.cusuario,
+        xplan_rc: form.xplan_rc,
+        msuma_dc: form.msuma_dc,
+        msuma_personas: form.msuma_personas,
+        msuma_exceso: form.msuma_exceso,
+        msuma_muerte: form.msuma_muerte,
+        msuma_invalidez: form.msuma_invalidez,
+        msuma_gm: form.msuma_gm,
+        msuma_gf: form.msuma_gf,
+        rates: this.ratesList
+      };
+      url = `${environment.apiUrl}/api/plan-rcv/create`;
     }
     this.http.post(url, params, options).subscribe((response: any) => {
       if(response.data.status){
         if(this.code){
           location.reload();
         }else{
-          this.router.navigate([`/plan-rcv/plan-rcv-detail/${response.data.cplan_rc}`]);
+          this.router.navigate([`/products/plan-rcv-detail/${response.data.cplan_rc}`]);
         }
       }else{
         let condition = response.data.condition;

@@ -7,3 +7,6 @@ footer{
 h3,h6{
     color: white;
 }
+.text-center {
+    text-align: center;
+  }

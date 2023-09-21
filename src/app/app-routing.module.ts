@@ -195,9 +195,11 @@ import { PolicyCancellationsComponent } from './subscription/policy-cancellation
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
 import { TakersDetailComponent } from './configuration/takers/takers-detail/takers-detail.component';
 import { PendingPaymentsComponent } from './business/pending-payments/pending-payments.component';
+import { SubscriptionReportComponent } from './business/subscription-report/subscription-report.component';
 import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
 import { RatesComponent } from './tables/rates/rates.component';
+import { FinancingComponent } from './financing/financing.component';
 
 const routes: Routes = [
  
@@ -481,10 +483,12 @@ const routes: Routes = [
   { path: 'configuration/takers-detail', component: TakersDetailComponent, canActivate: [AuthGuard] },
   { path: 'configuration/takers-detail/:id', component: TakersDetailComponent, canActivate: [AuthGuard] },
   { path: 'business/pending-payments', component: PendingPaymentsComponent, canActivate: [AuthGuard] },
+  { path: 'business/subscription-report', component: SubscriptionReportComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-quotes-index', component: FleetContractQuotesIndexComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-quotes-detail', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-quotes-detail/:id', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
   { path: 'sign-in', component: SignInComponent },
+  { path: 'financing', component: FinancingComponent, canActivate: [AuthGuard] },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
 
 ];

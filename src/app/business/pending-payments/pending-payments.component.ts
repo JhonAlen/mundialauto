@@ -45,7 +45,6 @@ export class PendingPaymentsComponent implements OnInit {
 
   ngOnInit(): void {
     this.search_form = this.formBuilder.group({
-      fdesde: [''],
       fhasta: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -132,7 +131,7 @@ export class PendingPaymentsComponent implements OnInit {
     let fhasta = nuevoFormato[2] + '-' + nuevoFormato[1] + '-' + nuevoFormato[0];
 
     let wb = utils.book_new();
-    //Width de casa columna del archivo
+    //Width de cada columna del archivo
     let wsWidths = [
       { width: 15 },
       { width: 8 },
