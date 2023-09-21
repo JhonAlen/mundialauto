@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { first } from 'rxjs/operators';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormArray} from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,8 @@ export class FinancingComponent implements OnInit {
   vehiclePropietaryList: any[] = [];
   serviceList: any[] = [];
   replacementList: any[] = [];
-  providerList: any[] = [];
+  providerList = [];
+  stateList: any[] = [];
   keyword = 'value';
 
   documento : string
@@ -34,6 +35,12 @@ export class FinancingComponent implements OnInit {
   auth : boolean = true;
   replacement: boolean = false;
   activeProviders: boolean = false;
+  activateLoader: boolean = false;
+  activateError: boolean = false;
+  errorMessage: string;
+
+  currentPage = 1;
+  itemsPerPage = 5;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -48,7 +55,7 @@ export class FinancingComponent implements OnInit {
       cservicio: [''],
       crepuesto: [''],
       mprecio: [''],
-      prueba: [''],
+      cestado: ['']
       // xcausasiniestro: [''],
       // xvehiculo: ['']
     });
@@ -139,6 +146,29 @@ export class FinancingComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+     //Buscar Estados
+     this.http.post(`${environment.apiUrl}/api/valrep/state`, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        for(let i = 0; i < response.data.list.length; i++){
+          this.stateList.push({ 
+            id: response.data.list[i].cestado, 
+            value: response.data.list[i].xestado
+          });
+        }
+        this.stateList.sort((a, b) => a.value > b.value ? 1 : -1);
+      }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
+    });
   }
 
   async getSearchVehicle(event){
@@ -205,9 +235,7 @@ export class FinancingComponent implements OnInit {
     this.financing_form.get('cservicio').setValue(event.id)
     
     if(this.financing_form.get('cservicio').value == 253){
-      this.getProviderFromService();
       this.replacement = true;
-      this.activeProviders = true;
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
       let options = { headers: headers };
       let params = {
@@ -235,9 +263,7 @@ export class FinancingComponent implements OnInit {
         this.alert.show = true;
       });
     }else{
-      this.activeProviders = true;
       this.replacement = false;
-      this.getProviderFromService();
     }
   }
 
@@ -245,39 +271,60 @@ export class FinancingComponent implements OnInit {
     this.financing_form.get('crepuesto').setValue(event.id)
   }
 
+  getStateCode(event){
+    this.financing_form.get('cestado').setValue(event.id);
+
+    if(this.financing_form.get('cestado').value){
+      this.activeProviders = true;
+      this.getProviderFromService();
+    }else{
+      this.activeProviders = false;
+    }
+  }
+
   getProviderFromService(){
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-      cservicio: this.financing_form.get('cservicio').value
+      cservicio: this.financing_form.get('cservicio').value,
+      cestado: this.financing_form.get('cestado').value
     };
-    
+    this.activateLoader = true;
+    this.activateError = false;
+    this.providerList = [];
     this.http.post(`${environment.apiUrl}/api/financing/provider-financing`, params, options).subscribe((response: any) => {
       if(response.data.status){
-        this.providerList = [];
-        for(let i = 0; i < response.data.list.length; i++){
-          this.providerList.push({ 
-            cproveedor: response.data.list[i].cproveedor, 
-            xproveedor: response.data.list[i].xproveedor,
-            xtelefono: response.data.list[i].xtelefono,
-            cservicio: response.data.list[i].cservicio,
-            xservicio: response.data.list[i].xservicio,
-          });
-        }
-        this.providerList.sort((a, b) => a.value > b.value ? 1 : -1);
+        this.providerList = response.data.list
+        this.activateLoader = false;
       }
     },
     (err) => {
       let code = err.error.data.code;
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = err.error.data.message; }
-      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      else if(code == 404){ 
+        this.activateLoader = false;
+        this.activateError = true;
+        this.errorMessage = "No se encontro información con los parámetros seleccionados"
+      }
+      else if(code == 500){ 
+        this.activateLoader = false;
+        this.activateError = true;
+        this.errorMessage = "Ha ocurrido un error interno en el servidor. Pedimos disculpas por los inconvenientes."
+       }
       this.alert.message = message;
       this.alert.type = 'danger';
       this.alert.show = true;
     });
   }
+
+  get pagedProviderList() {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    return this.providerList.slice(startIndex, endIndex);
+  }
+
+
 
   logOut(){ this.authenticationService.logout();}
 

@@ -7,232 +7,202 @@
     </div>
 
 </header>
-<div class="ml-5" style="width: 92%;">
+<!-- <div class="ml-5" style="width: 92%;">
     <div class="row mt-5" *ngIf="alert.show">
         <div class="col-sm-12 col-md-6 mx-auto">
             <ngb-alert *ngIf="alert.show" [type]="alert.type" (close)="alert.show = false;">{{ alert.message | translate }}</ngb-alert>
         </div>
-    </div>
+    </div>-->
 
-    <div class="row mt-3">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header company-card-header">
-                    <div class="row">
-
-                    </div>
-                </div>
-                <div class="card-body">
-                    <form [formGroup]="financing_form">
-                        <div class="row">
-                            <div class="col-lg-3">
-                                <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Propietarios</label>
-                                    <div >
-                                    <ng-autocomplete  [data]="propietaryList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Propietario" (selected)='getSearchVehicle($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                                    </ng-autocomplete>
-                                
-                                    <ng-template #itemTemplate let-item >
-                                        <a [innerHTML]="item.value"></a>
-                                    </ng-template>
-                                
-                                    <ng-template #notFoundTemplate let-notFound  >
-                                        <div [innerHTML]="notFound"></div>
-                                    </ng-template>
-                                  </div>
-                                </div>
-                            </div> 
-                            <div class="col-lg-3">
-                                <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Vehículo del Propietario</label>
-                                    <div >
-                                    <ng-autocomplete  [data]="vehiclePropietaryList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Vehiculo" (selected)='getSearchInfoPropietary($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                                    </ng-autocomplete>
-                                
-                                    <ng-template #itemTemplate let-item >
-                                        <a [innerHTML]="item.value"></a>
-                                    </ng-template>
-                                
-                                    <ng-template #notFoundTemplate let-notFound  >
-                                        <div [innerHTML]="notFound"></div>
-                                    </ng-template>
-                                  </div>
-                                </div>
-                            </div> 
-                            <div class="col-lg-2">
-                                <div class="form-outline form-white">
-                                  <strong class="form-label required" for="form3Examplea8">Identificación</strong>
-                                  <p class="mt-3">{{documento}}</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-2">
-                                <div class="form-outline form-white">
-                                  <strong class="form-label required" for="form3Examplea8">Teléfono</strong>
-                                    <p class="mt-3">{{telefono}}</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-2">
-                                <div class="form-outline form-white">
-                                  <strong class="form-label required" for="form3Examplea8">Correo</strong>
-                                    <p class="mt-3 text-lowercase">{{correo}}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-lg-3">
-                                <div class="form-outline form-white">
-                                  <strong class="form-label required" for="form3Examplea8">Modelo - Versión</strong>
-                                    <p class="mt-3 text-lowercase">{{detallecarro}}</p>
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Servicio</label>
-                                    <div >
-                                    <ng-autocomplete  [data]="serviceList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Servicio" (selected)='getReplacement($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                                    </ng-autocomplete>
-                                
-                                    <ng-template #itemTemplate let-item >
-                                        <a [innerHTML]="item.value"></a>
-                                    </ng-template>
-                                
-                                    <ng-template #notFoundTemplate let-notFound  >
-                                        <div [innerHTML]="notFound"></div>
-                                    </ng-template>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3" *ngIf="replacement">
-                                <div class="form-outline">
-                                    <label class="form-label" for="form3Examplev5">Repuestos</label>
-                                    <div >
-                                    <ng-autocomplete  [data]="replacementList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Repuesto" (selected)='dataReplacement($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                                    </ng-autocomplete>
-                                
-                                    <ng-template #itemTemplate let-item >
-                                        <a [innerHTML]="item.value"></a>
-                                    </ng-template>
-                                
-                                    <ng-template #notFoundTemplate let-notFound  >
-                                        <div [innerHTML]="notFound"></div>
-                                    </ng-template>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="card-propietary ml-4">
+  <div class="title">
+      <p class="title-text">
+          Información del Propietario
+      </p>
+  </div>
+  <div class="data">
+    <div class="range">
+        <div class="fill" style="margin-top: -15px;">
         </div>
     </div>
-</div>
-<div class="row ml-4" style="--bs-gutter-x: 2.8rem;margin-top: 15px;" *ngIf="activeProviders">
-  <div class="col-9">
-    <div class="card shadow">
-      <div class="card-header2 border-0">
-        <h2 class="mb-0">Proveedores</h2>
+    <form [formGroup]="financing_form">
+      <div class="row">
+        <div class="col-lg-3">
+            <div class="form-outline">
+                <strong class="form-label" for="form3Examplev5">Propietarios</strong>
+                <div >
+                <ng-autocomplete  [data]="propietaryList" [searchKeyword]="keyword" 
+                                placeholder="Seleccionar Propietario" (selected)='getSearchVehicle($event)'
+                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                </ng-autocomplete>
+            
+                <ng-template #itemTemplate let-item >
+                    <a [innerHTML]="item.value"></a>
+                </ng-template>
+            
+                <ng-template #notFoundTemplate let-notFound  >
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
+              </div>
+            </div>
+        </div> 
+        <div class="col-lg-3">
+          <div class="form-outline">
+              <strong class="form-label" for="form3Examplev5">Vehículo del Propietario</strong>
+              <div >
+              <ng-autocomplete  [data]="vehiclePropietaryList" [searchKeyword]="keyword" 
+                              placeholder="Seleccionar Vehiculo" (selected)='getSearchInfoPropietary($event)'
+                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+              </ng-autocomplete>
+          
+              <ng-template #itemTemplate let-item >
+                  <a [innerHTML]="item.value"></a>
+              </ng-template>
+          
+              <ng-template #notFoundTemplate let-notFound  >
+                  <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>    
+          </div>
+        </div> 
+        <div class="col-lg-2">
+            <div class="form-outline form-white">
+              <strong class="form-label required" for="form3Examplea8">Identificación</strong>
+              <p class="mt-3">{{documento}}</p>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-outline form-white">
+              <strong class="form-label required" for="form3Examplea8">Teléfono</strong>
+                <p class="mt-3">{{telefono}}</p>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="form-outline form-white">
+              <strong class="form-label required" for="form3Examplea8">Correo</strong>
+                <p class="mt-3 text-lowercase">{{correo}}</p>
+            </div>
+        </div>
       </div>
+      <div class="row mt-3">
+        <div class="col-lg-3">
+            <div class="form-outline form-white">
+              <strong class="form-label required" for="form3Examplea8">Modelo - Versión</strong>
+                <p class="mt-3 text-lowercase">{{detallecarro}}</p>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-outline">
+                <strong class="form-label" for="form3Examplev5">Servicio</strong>
+                <div >
+                <ng-autocomplete  [data]="serviceList" [searchKeyword]="keyword" 
+                                placeholder="Seleccionar Servicio" (selected)='getReplacement($event)'
+                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                </ng-autocomplete>
+            
+                <ng-template #itemTemplate let-item >
+                    <a [innerHTML]="item.value"></a>
+                </ng-template>
+            
+                <ng-template #notFoundTemplate let-notFound  >
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
+              </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+          <div class="form-outline">
+              <strong class="form-label" for="form3Examplev5">Estado</strong>
+              <div >
+              <ng-autocomplete  [data]="stateList" [searchKeyword]="keyword" 
+                              placeholder="Seleccionar Estado" (selected)='getStateCode($event)'
+                              [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+              </ng-autocomplete>
+          
+              <ng-template #itemTemplate let-item >
+                  <a [innerHTML]="item.value"></a>
+              </ng-template>
+          
+              <ng-template #notFoundTemplate let-notFound  >
+                  <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+          </div>
+      </div>
+        <div class="col-lg-3" *ngIf="replacement">
+            <div class="form-outline">
+                <strong class="form-label" for="form3Examplev5">Repuestos</strong>
+                <div >
+                <ng-autocomplete  [data]="replacementList" [searchKeyword]="keyword" 
+                                placeholder="Seleccionar Repuesto" (selected)='dataReplacement($event)'
+                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                </ng-autocomplete>
+            
+                <ng-template #itemTemplate let-item >
+                    <a [innerHTML]="item.value"></a>
+                </ng-template>
+            
+                <ng-template #notFoundTemplate let-notFound  >
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
+              </div>
+            </div>
+        </div>
+        <!-- <div class="image-container"></div> -->
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row ml-2">
+  <div class="col">
+    <div class="card-provider" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="activeProviders">
+      <p class="title">Lista de Proveedores</p>
+      <div class="user__container">
+        <form [formGroup]="financing_form">
+          <div class="card-error container registration-form" *ngIf="activateError">
+            <a class="card1">
+             <p>Error</p>
+             <p class="small">{{this.errorMessage}}</p>
+             <div class="go-corner">
+               <div class="go-arrow">
+                 →
+               </div>
+             </div>
+           </a>
+         </div>
+        <div class="loader container registration-form" *ngIf="activateLoader"></div>
 
-      <div class="table-responsive">
-        <table class="table align-items-center table-flush">
-          <thead class="thead-light">
+        <table style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
+          <thead class="thead-light"> 
             <tr>
               <th scope="col">Proveedor</th>
-              <th scope="col">Número</th>
-              <th scope="col" class="items">Precio</th>
-              <th scope="col" class="sessions">Elegir</th> 
+              <th scope="col">Teléfono</th>
+              <th scope="col">Monto</th>
+              <th scope="col">Elección</th>
             </tr>
           </thead>
-          <tbody *ngIf="providerList && providerList.length > 0">
-            <tr *ngFor="let provider of providerList">
-              <td>
-                <strong class="mt-3">{{provider.xproveedor}}</strong>
-              </td>
-          
-              <td>
-                <strong class="mt-3">{{provider.xtelefono}}</strong>
-              </td>
-          
+          <tbody>
+            <tr *ngFor="let provider of pagedProviderList">
+              <td>{{ provider.xproveedor }}</td>
+              <td>{{ provider.xtelefono }}</td>
               <td class="items">
                 <input type="number" formControlName="mprecio" class="form-control form-control-alternative" />
               </td>
-
-              <td class="sessions">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                </div>
-              </td>
+              <td><button class="follow">Elegir</button></td>
             </tr>
           </tbody>
         </table>
+        <div style="display: grid;place-items: center;margin-top: 27px;">
+          <ngb-pagination [(page)]="currentPage" [pageSize]="itemsPerPage" [collectionSize]="providerList.length" [maxSize]="5" [rotate]="true"></ngb-pagination>
+        </div>
+      </form>
       </div>
     </div>
   </div>
+  
+  <div class="col">
+
+  </div>
 </div>
 
-<footer>    
-    <div class="container">       
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="footer-widget">
-            <h3 style="margin-right: 110px;">Horario</h3>
-            <div class="footer-widget-content">
-              <div class="open-time ">
-                  <ul class="opening-time">
-                    <li><span></span><h6>Horario disponible de Lunes a Viernes</h6>
-                    <li><span></span><h6><strong>A partir de :</strong> 8am - 4pm</h6>
-                  </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="footer-widget" style="margin-top: 50px;text-align: -webkit-center;">
-            <h6 >Copyright© CompuAmerica 2022.</h6>
-            <div class="footer-widget-content">
-                <br>
-                <h6>6 C. Negrín, Caracas 1050, Frente al CC. El Recreo. Distrito Capital</h6>
-                <div class="footer-social">
-            </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="footer-widget">
-            <h3>Redes Sociales</h3>
-            <div class="footer-widget-content" style=" text-align: -webkit-center;">
-              <div class="images-gellary">
-                <p></p>
-                <table style="margin-left: 25px;">
-                  <tr>
-                    <td>
-                      <ul>
-                        <li ><a href="https://www.facebook.com/Mundial Autos-Sas-107360681039695" target="_blank"><img  style="border-radius: 6px;background-color: #ffffff7d;" src="./assets/imagenes/facebook.png" alt="Instagram 01" width="40px" height="40px"></a></li>
-                        <br>
-                        <li><a href="https://www.instagram.com/Mundial Autoss.vzla/?hl=es-la" target="_blank"><img style="background-color: #ffffff7d;border-radius: 15px;" src="./assets/imagenes/instagram.png" alt="Instagram 02" width="40px" height="40px"></a></li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul>
-                        <li style="border-radius: 15px;"><a  href="https://twitter.com/Mundial Autos" target="_blank"><img style="background-color: #ffffff7d;" src="./assets/imagenes/twitter.png" alt="Instagram 01" width="40px" height="40px"></a></li>
-                        <br>
-                        <li style="border-radius: 15px;"><a href="https://co.linkedin.com/company/linkedin-com-company-Mundial Autossas" target="_blank"><img  style="background-color: #ffffff7d"src="./assets/imagenes/linkedin.png"  width="40px" height="40px"></a></li>
-                      </ul>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+<app-footer></app-footer>
