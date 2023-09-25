@@ -39,8 +39,12 @@ export class FinancingComponent implements OnInit {
   activateError: boolean = false;
   errorMessage: string;
 
+
+  Mountfinancing : number
+  Mounts = []
   currentPage = 1;
   itemsPerPage = 5;
+  sumofamounts: any;
 
   constructor(private formBuilder: UntypedFormBuilder, 
               private authenticationService : AuthenticationService,
@@ -49,6 +53,7 @@ export class FinancingComponent implements OnInit {
               private translate: TranslateService) { }
 
   ngOnInit(): void {
+    this.Mountfinancing = 300
     this.financing_form = this.formBuilder.group({
       cpropietario: [''],
       cvehiculopropietario: [''],
@@ -244,6 +249,8 @@ export class FinancingComponent implements OnInit {
   async getReplacement(event){
     this.financing_form.get('cservicio').setValue(event.id)
     
+    this.getProviderFromService()
+
     if(this.financing_form.get('cservicio').value == 253){
       this.replacement = true;
       let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -278,41 +285,45 @@ export class FinancingComponent implements OnInit {
     }
   }
 
-  getStateCode(event){
-    this.financing_form.get('cestado').setValue(event.id);
-
-    if(this.financing_form.get('cestado').value){
-      this.activeProviders = true;
-      this.getProviderFromService();
-    }else{
-      this.activeProviders = false;
-    }
-  }
-
   getProviderFromService(){
+
+    console.log(this.financing_form.value)
+
+    this.activeProviders = true;
+
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
       cservicio: this.financing_form.get('cservicio').value,
-      cestado: this.financing_form.get('cestado').value
+      cestado: this.financing_form.get('cestado').value.id
     };
     this.activateLoader = true;
     this.activateError = false;
     this.providerList = [];
     this.http.post(`${environment.apiUrl}/api/financing/provider-financing`, params, options).subscribe((response: any) => {
       if(response.data.status){
+
+        const creds = this.financing_form.controls.proveedores as FormArray;
+
+        while (creds.length !== 0) {
+          creds.removeAt(0)
+        }
+
         for(let i = 0; i < response.data.list.length; i++){
           this.proveedores.push(
             this.formBuilder.group({
             cproveedor :response.data.list[i].cproveedor,
             xproveedor :response.data.list[i].xproveedor,
+            xtelefono :response.data.list[i].xtelefono,
             xrepuesto :'',
             crepuesto :'',
             monto:'',
             cantidad:'',
+
             })
           )
         }
+
         this.providerList = response.data.list
         this.activateLoader = false;
       }
@@ -343,8 +354,38 @@ export class FinancingComponent implements OnInit {
     return this.providerList.slice(startIndex, endIndex);
   }
 
+  addpprovider(i : any){
 
+    const creds = this.financing_form.controls.proveedores as FormArray;
 
-  logOut(){ this.authenticationService.logout();}
+    this.proveedores_seleccionados.push(
+      this.formBuilder.group({
+      cproveedor : creds.at(i).get('cproveedor').value,
+      xproveedor : creds.at(i).get('xproveedor').value,
+      xtelefono : creds.at(i).get('xtelefono').value,
+      xrepuesto : creds.at(i).get('xrepuesto').value,
+      crepuesto : creds.at(i).get('crepuesto').value.id,
+      monto : creds.at(i).get('monto').value,
+      cantidad : creds.at(i).get('cantidad').value,
+      cservicio : this.financing_form.get('cservicio').value
+      })
+    )
+
+    this.Mounts.push(creds.at(i).get('monto').value)
+
+    
+    this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
+
+    console.log(this.financing_form.value)
+  }
+  removeprovider(i : any){
+    this.proveedores_seleccionados.removeAt(i);
+    this.Mounts.splice(i, 1)
+    this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
+  }
+
+  logOut(){
+    this.authenticationService.logout();
+  }
 
 }

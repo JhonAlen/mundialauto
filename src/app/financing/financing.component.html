@@ -91,13 +91,20 @@
                   <p class="mt-3 text-lowercase">{{detallecarro}}</p>
               </div>
           </div>
+
+
           <div class="col-lg-3">
             <div class="form-outline">
                 <strong class="form-label" for="form3Examplev5">Estado</strong>
                 <div >
-                <ng-autocomplete  [data]="stateList" [searchKeyword]="keyword" 
-                                placeholder="Seleccionar Estado" (selected)='getStateCode($event)'
-                                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                <ng-autocomplete  
+                    [data]="stateList" 
+                    [searchKeyword]="keyword" 
+
+                    placeholder="Seleccionar Estado"
+                    formControlName="cestado"
+                    [itemTemplate]="itemTemplate" 
+                    [notFoundTemplate]="notFoundTemplate">                                 
                 </ng-autocomplete>
             
                 <ng-template #itemTemplate let-item >
@@ -110,24 +117,29 @@
               </div>
             </div>
           </div>
+
           <div class="col-lg-3">
-              <div class="form-outline">
-                  <strong class="form-label" for="form3Examplev5">Servicio</strong>
-                  <div >
-                  <ng-autocomplete  [data]="serviceList" [searchKeyword]="keyword" 
-                                  placeholder="Seleccionar Servicio" (selected)='getReplacement($event)'
-                                  [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
-                  </ng-autocomplete>
-              
-                  <ng-template #itemTemplate let-item >
-                      <a [innerHTML]="item.value"></a>
-                  </ng-template>
-              
-                  <ng-template #notFoundTemplate let-notFound  >
-                      <div [innerHTML]="notFound"></div>
-                  </ng-template>
-                </div>
+            <div class="form-outline">
+                <strong class="form-label" for="form3Examplev5">Servicio</strong>
+                <div >
+                <ng-autocomplete  
+                  [data]="serviceList"
+                  [searchKeyword]="keyword" 
+                  placeholder="Seleccionar Servicio" 
+
+                  (selected)='getReplacement($event)'
+                  [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                </ng-autocomplete>
+            
+                <ng-template #itemTemplate let-item >
+                    <a [innerHTML]="item.value"></a>
+                </ng-template>
+            
+                <ng-template #notFoundTemplate let-notFound  >
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
               </div>
+            </div>
           </div>
 
           <!-- <div class="image-container"></div> -->
@@ -135,12 +147,10 @@
     </div>
   </div>
   <div class=" ml-2">
-    <div class="col">
-      <div class="card-provider" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="activeProviders">
-        <p class="title">Lista de Proveedores</p>
-        <div class="user__container">
+      <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="activeProviders">
+        <div class="row ">
 
-            <div class="card-error container registration-form" *ngIf="activateError">
+          <div class="card-error container registration-form" *ngIf="activateError">
               <a class="card1">
               <p>Error</p>
               <p class="small">{{this.errorMessage}}</p>
@@ -153,16 +163,18 @@
           </div>
           <div class="loader container registration-form" *ngIf="activateLoader"></div>
 
-          <div formArrayName="proveedores" >
-            <table style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
+          <div formArrayName="proveedores" class="col-lg-8" >
+            <p class="title">Lista de Proveedores</p>
+            <table class="table-responsive" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
               <thead class="thead-light"> 
                 <tr>
                   <th scope="col">Proveedor</th>
                   <th scope="col">Teléfono</th>
-                  <th scope="col" *ngIf="replacement" >Repuestos</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Monto</th>
-                  <th scope="col">Elección</th>
+
+                  <th scope="col"  *ngIf="replacement" >Repuestos</th>
+                  <th scope="col"  *ngIf="replacement">Cantidad</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody *ngFor="let creds of proveedores.controls; let i=index">
@@ -172,10 +184,9 @@
 
                   <td>{{ creds.value.xtelefono }}</td>
 
+
                   <td *ngIf="replacement">
-                    <div class="col-lg-3" >
-                      <div class="form-outline">
-                          <strong class="form-label">Repuestos</strong>
+    
                           <div >
                           <ng-autocomplete  
                           [data]="replacementList" 
@@ -194,11 +205,10 @@
                               <div [innerHTML]="notFound"></div>
                           </ng-template>
                         </div>
-                      </div>
-                  </div>
+
                   </td>
 
-                  <td class="items">
+                  <td class="items" *ngIf="replacement">
                     <input type="number" formControlName="cantidad" class="form-control form-control-alternative" />
                   </td>
 
@@ -206,39 +216,85 @@
                     <input type="number" formControlName="monto" class="form-control form-control-alternative" />
                   </td>
 
-                  <td><button class="follow">Elegir</button></td>
+                  <td><button class="follow" (click)="addpprovider(i)">Seleccionar</button></td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <div style="display: grid;place-items: center;margin-top: 27px;">
-            <ngb-pagination [(page)]="currentPage" [pageSize]="itemsPerPage" [collectionSize]="providerList.length" [maxSize]="5" [rotate]="true"></ngb-pagination>
+
+          <div formArrayName="proveedores_seleccionados" class="col-lg-4" >
+            <p class="title">Lista de Proveedores seleccionados</p>
+            <table class="table-responsive" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
+              <thead class="thead-light"> 
+                <tr>
+                  <th scope="col">Proveedor</th>
+                  <th scope="col">Teléfono</th>
+
+                  <th scope="col"  *ngIf="replacement" >Repuestos</th>
+                  <th scope="col"  *ngIf="replacement">Cantidad</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let creds of proveedores_seleccionados.controls; let i=index">
+                <tr  [formGroupName]="i">
+
+                  <td>{{ creds.value.xproveedor }}</td>
+
+                  <td>{{ creds.value.xtelefono }}</td>
+
+
+                  <td *ngIf="replacement">
+    
+                    {{ creds.value.xrepuesto }}
+
+                  </td>
+
+                  <td class="items" *ngIf="replacement">
+                    {{ creds.value.cantidad }}
+                  </td>
+
+                  <td class="items">
+                    {{ creds.value.monto }}
+                  </td>
+
+                  <td><button class="follow" (click)="removeprovider(i)">Eliminar</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="mt-1 col-4" style="margin-left: auto;">
+              <div class="pricingTable ">
+                <div class="pricing_heading">
+                    <h3 class="title"></h3>
+                    <span class="value">
+                      Financiar {{Mountfinancing}} $
+                      Total {{ sumofamounts}}
+                    </span>
+                </div>
+                <div class="content">
+                    <ul>
+                        <li>Lorem ipsum</li>
+                        <li>Lorem ipsum</li>
+                        <li>Lorem ipsum</li>
+                        <li>Lorem ipsum</li>
+                        <li>Lorem ipsum</li>
+                    </ul>
+                    <div class="link">
+                        <a href="#">sign up</a>
+                    </div>
+                </div>
+              </div>
+            </div>
           </div>
+          <!-- <div style="display: grid;place-items: center;margin-top: 27px;">
+            <ngb-pagination [(page)]="currentPage" [pageSize]="itemsPerPage" [collectionSize]="providerList.length" [maxSize]="5" [rotate]="true"></ngb-pagination>
+          </div> -->
 
         </div>
       </div>
-    </div>
-    <div class="flex flex-col bg-white rounded-3xl position-fixed">
-      <div class="px-6 py-8 sm:p-10 sm:pb-6">
-        <div class="grid items-center justify-center w-full grid-cols-1 text-left">
-          <div>
-            <h2 class=
-            "text-lg font-medium tracking-tighter text-gray-600 lg:text-3xl">
-            Starter</h2>
-            <p class="mt-2 text-sm text-gray-500">Suitable to grow steadily.</p>
-          </div>
-          <div class="mt-6">
-            <p><span class="text-5xl font-light tracking-tight text-black">$25</span>
-            <span class="text-base font-medium text-gray-500">/mo</span></p>
-          </div>
-        </div>
-      </div>
-      <div class="flex px-6 pb-8 sm:px-8">
-        <a aria-describedby="tier-company" class=
-        "items-center justify-center w-full px-6 py-2.5 text-center text-white duration-200 bg-black border-2 border-black rounded-full nline-flex hover:bg-transparent hover:border-black hover:text-black focus:outline-none focus-visible:outline-black text-sm focus-visible:ring-black"
-        href="#">Get started</a>
-      </div>
-    </div>
   </div>
+
+
 </form>
 <app-footer></app-footer>
