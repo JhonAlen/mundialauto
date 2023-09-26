@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, FormArray} from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { AuthenticationService } from '@app/_services/authentication.service';
 import { environment } from '@environments/environment';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-financing',
@@ -15,6 +16,7 @@ import { environment } from '@environments/environment';
 })
 export class FinancingComponent implements OnInit {
 
+  @ViewChild('bankModal') bankModal: any;
   currentUser;
   financing_form : UntypedFormGroup;
   loading: boolean = false;
@@ -37,7 +39,14 @@ export class FinancingComponent implements OnInit {
   activeProviders: boolean = false;
   activateLoader: boolean = false;
   activateError: boolean = false;
+  isModalActive: boolean = false; 
+  activateFirst: boolean = false; 
+  activateSecond: boolean = false; 
+  activateThree: boolean = false; 
   errorMessage: string;
+  messageModal: string;
+  messageModal2: string;
+  propietary: string;
 
 
   Mountfinancing : number
@@ -50,7 +59,8 @@ export class FinancingComponent implements OnInit {
               private authenticationService : AuthenticationService,
               private http: HttpClient,
               private router: Router,
-              private translate: TranslateService) { }
+              private translate: TranslateService,
+              private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.Mountfinancing = 300
@@ -188,6 +198,7 @@ export class FinancingComponent implements OnInit {
 
   async getSearchVehicle(event){
     this.financing_form.get('cpropietario').setValue(event.id)
+    this.propietary = event.value;
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -216,6 +227,10 @@ export class FinancingComponent implements OnInit {
       this.alert.type = 'danger';
       this.alert.show = true;
     });
+
+    this.messageModal = `¿${this.propietary} Posee cuenta en Bangente?`;
+    this.messageModal2 = `Le agradecemos por su interés en nuestros servicios financieros. Para continuar con el proceso de solicitud de crédito, le solicitamos que verifique si ya dispone de una cuenta en Bangente.`;
+    this.openBankModal();
   }
 
   async getSearchInfoPropietary(event){
@@ -382,6 +397,50 @@ export class FinancingComponent implements OnInit {
     this.proveedores_seleccionados.removeAt(i);
     this.Mounts.splice(i, 1)
     this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
+  }
+
+  openBankModal() {
+    this.isModalActive = true;
+    this.activateFirst = true;
+    const modalRef = this.modalService.open(this.bankModal, { centered: true });
+
+    modalRef.result.then((result) => {
+      this.logOut()
+    }).catch((reason) => {
+      console.log('Modal cerrado sin exclusión:', reason);
+    });
+  }
+
+  showAlternativeMessage(){
+    this.activateFirst = false;
+    this.activateSecond = true;
+    this.messageModal = `¿Desea aperturar una cuenta corriente en Bangente?`;
+    this.messageModal2 = `Si aún no cuenta con una cuenta en nuestra institución, le invitamos a abrir una cuenta para poder iniciar el proceso de solicitud de crédito.`;
+  }
+
+  showAlternativeMessageLogout(){
+    this.activateFirst = false;
+    this.activateSecond = false;
+    this.activateThree = true;
+    this.messageModal = `El proceso ha concluido`;
+    this.messageModal2 = ` Para continuar con la solicitud de financiamiento, es necesario disponer de una cuenta activa en Bangente.`;
+  }
+
+  closeModal() {
+    this.isModalActive = false;
+  }
+
+  generateExcel(){
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpropietario: this.financing_form.get('cpropietario').value
+    };
+    this.http.post(`${environment.apiUrl}/api/financing/propietary-bangente`, params, options).subscribe((response: any) => {
+      if(response.data.status){
+
+      }
+    })
   }
 
   logOut(){

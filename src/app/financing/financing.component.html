@@ -294,7 +294,115 @@
         </div>
       </div>
   </div>
-
-
 </form>
+
+<ng-template #bankModal let-modal>
+  <div class="modal fade" [ngClass]="{ 'show': isModalActive }" style="display: block;" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close d-flex align-items-center justify-content-center" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true" class="ion-ios-close"></span>
+          </button>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-6 d-flex">
+            <div class="modal-body p-5 img d-flex image-container2"></div>
+          </div>
+          <div class="col-md-6 d-flex">
+            <div class="modal-body d-flex align-items-center">
+              <div class="text w-100 text-center py-5">
+                <h2 class="mb-0"><span>{{this.messageModal}}</span></h2>
+                <p></p>
+                <p class="mb-4">{{this.messageModal2}}</p>
+                <div class="modal-footer" *ngIf="activateFirst">
+                    <button type="button" class="btn btn-primary mx-auto" style="width: 16%;background: #25255f;border: #25255f;" (click)="modal.dismiss()">Sí </button>
+                    <button type="button" class="btn btn-danger mx-auto" (click)="showAlternativeMessage()">No</button>
+                </div>
+                <div class="modal-footer" *ngIf="activateSecond">
+                  <button type="button" class="btn btn-primary mx-auto" style="width: 16%;background: #25255f;border: #25255f;" (click)="generateExcel()">Sí </button>
+                  <button type="button" class="btn btn-danger mx-auto" (click)="showAlternativeMessageLogout()">No</button>
+                </div>
+                <div class="modal-footer" *ngIf="activateThree">
+                  <button type="button" class="btn btn-primary mx-auto" style="width: 26%;background: #25255f;border: #25255f;" (click)="modal.close()">Aceptar </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- <ng-template #BankOpening let-modal>
+  <div class="modal fade" [ngClass]="{ 'show': isModalBankOpeningActive }" style="display: block;" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close d-flex align-items-center justify-content-center" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true" class="ion-ios-close"></span>
+          </button>
+        </div>
+        <div class="row no-gutters">
+          <div class="col-md-6 d-flex">
+            <div class="modal-body p-5 img d-flex image-container2"></div>
+          </div>
+          <div class="col-md-6 d-flex">
+            <div class="modal-body d-flex align-items-center">
+              <div class="text w-100 text-center py-5">
+                <h2 class="mb-0"><span>¿Desea aperturar una cuenta corriente en Bancagente?</span></h2>
+                <p></p>
+                <p class="mb-4">Si aún no cuenta con una cuenta en nuestra institución, le invitamos a abrir una cuenta para poder iniciar el proceso de solicitud de crédito.</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary mx-auto" style="width: 16%;background: #25255f;border: #25255f;" (click)="modal.dismiss()">Sí </button>
+                    <button type="button" class="btn btn-danger mx-auto" (click)="modal.close('No')">No</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #LogOutModal let-modal>
+  <div class="modal fade" [ngClass]="{ 'show': out }" style="display: block;" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content rounded-0">
+        <div class="modal-body p-4 px-5">
+
+          
+          <div class="main-content text-center">
+              
+              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true"><span class="icon-close2"></span></span>
+                </a>
+
+              <div class="warp-icon mb-4">
+                <span class="icon-lock2"></span>
+              </div>
+              <form action="#">
+                <label for="">This link is password protected</label>
+                <p class="mb-4">All their equipment and instruments are alive. The sky was cloudless and of a deep dark blue.</p>
+                <div class="form-group mb-4">
+                  <input type="password" class="form-control text-center" placeholder="Enter password">
+                </div>
+
+                <div class="d-flex">
+                  <div class="mx-auto">
+                  <a href="#" class="btn btn-primary">Submit</a>
+                  </div>
+                </div>
+              </form>
+            
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template> -->
+
 <app-footer></app-footer>
