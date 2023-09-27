@@ -16,9 +16,20 @@
 <form [formGroup]="financing_form">
   <div class="card-propietary ml-4">
     <div class="title">
-        <p class="title-text">
+      <div class="row">
+        <div class="col-6">
+          <p class="title-text">
             Información del Propietario
-        </p>
+          </p>
+        </div>
+        <div class="col-6 image-coin" *ngIf="activateCoin" style="margin-left: 465px"> 
+          <p class="title-mount">
+            {{Mountfinancing}}$
+          </p>
+        </div>
+      </div>
+
+
     </div>
     <div class="data">
       <div class="range">
@@ -64,7 +75,16 @@
                 </ng-template>
               </div>    
             </div>
-          </div> 
+          </div>
+          <div class="col-lg-2">
+            <div class="form-outline">
+              <strong class="form-label required" for="form3Examplea8">Tipo</strong>
+              <select formControlName="xvehiculo" class="form-control form-control-lg" [ngClass]="{ 'is-invalid' : submitted && financing_form.get('xvehiculo').errors } " (change)="mountQuotes()">
+                <option value="Vehiculo">Vehiculo</option>
+                <option value="Motocicleta">Motocicleta</option>
+              </select>                      
+            </div> 
+          </div>
           <div class="col-lg-2">
               <div class="form-outline form-white">
                 <strong class="form-label required" for="form3Examplea8">Identificación</strong>
@@ -77,14 +97,15 @@
                   <p class="mt-3">{{telefono}}</p>
               </div>
           </div>
-          <div class="col-lg-2">
-              <div class="form-outline form-white">
-                <strong class="form-label required" for="form3Examplea8">Correo</strong>
-                  <p class="mt-3 text-lowercase">{{correo}}</p>
-              </div>
-          </div>
         </div>
         <div class="row mt-3">
+          <div class="col-lg-2">
+            <div class="form-outline form-white">
+              <strong class="form-label required" for="form3Examplea8">Correo</strong>
+                <p class="mt-3 text-lowercase">{{correo}}</p>
+            </div>
+        </div>
+
           <div class="col-lg-3">
               <div class="form-outline form-white">
                 <strong class="form-label required" for="form3Examplea8">Modelo - Versión</strong>
@@ -146,8 +167,8 @@
         </div>
     </div>
   </div>
-  <div class=" ml-2">
-      <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="activeProviders">
+  <!-- <div class=" ml-2">
+      <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;width: 99%;" *ngIf="activeProviders">
         <div class="row ">
 
           <div class="card-error container registration-form" *ngIf="activateError">
@@ -220,18 +241,167 @@
                 </tr>
               </tbody>
             </table>
-          </div>
+           </div> -->
 
-          <div formArrayName="proveedores_seleccionados" class="col-lg-4" >
+          <!-- <div style="display: grid;place-items: center;margin-top: 27px;">
+            <ngb-pagination [(page)]="currentPage" [pageSize]="itemsPerPage" [collectionSize]="providerList.length" [maxSize]="5" [rotate]="true"></ngb-pagination>
+          </div> -->
+          <!-- <div class="row">
+            <div formArrayName="proveedores_seleccionados" class="col-lg-4" *ngIf="providerSelected">
+              <p class="title">Lista de Proveedores seleccionados</p>
+              <table class="table-responsive" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
+                <thead class="thead-light">  -->
+                  <!-- <tr> -->
+                    <!-- <th scope="col">Proveedor</th> -->
+  
+                    <!-- <th scope="col"  *ngIf="replacement" >Repuestos</th>
+                    <th scope="col"  *ngIf="replacement">Cantidad</th> -->
+                    <!-- <th scope="col">Precio</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody *ngFor="let creds of proveedores_seleccionados.controls; let i=index">
+                  <tr  [formGroupName]="i">
+  
+                    <td>{{ creds.value.xproveedor }}</td> -->
+  
+  
+                    <!-- <td *ngIf="replacement">
+      
+                      {{ creds.value.xrepuesto }}
+  
+                    </td>
+  
+                    <td class="items" *ngIf="replacement">
+                      {{ creds.value.cantidad }}
+                    </td> -->
+  
+                    <!-- <td class="items">
+                      {{ creds.value.monto }}
+                    </td>
+  
+                    <td><button class="follow" (click)="removeprovider(i)">Eliminar</button></td>
+                  </tr>
+                </tbody>
+              </table>
+   -->
+              <!-- <div style="margin-left: auto;">
+                <div class="pricingTable ">
+                  <div class="pricing_heading">
+                      <h3 class="title"></h3>
+                      <span class="value">
+                        Financiar {{Mountfinancing}} $
+                        Total {{ sumofamounts}}
+                      </span>
+                  </div>
+                  <div class="content">
+                      <ul>
+                          <li>Lorem ipsum</li>
+                          <li>Lorem ipsum</li>
+                          <li>Lorem ipsum</li>
+                          <li>Lorem ipsum</li>
+                          <li>Lorem ipsum</li>
+                      </ul>
+                      <div class="link">
+                          <a href="#">sign up</a>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+  <!-- </div> --> 
+
+  <div class="ml-4" *ngIf="activeProviders">
+    <div class="row" style="width: 100%;">
+      <div class="col-md-6" *ngIf="activeProviders">
+        <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;">
+          <div class="card-error container registration-form" *ngIf="activateError">
+            <a class="card1">
+            <p>Error</p>
+            <p class="small">{{this.errorMessage}}</p>
+            <div class="go-corner">
+              <div class="go-arrow">
+                →
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="loader container registration-form" *ngIf="activateLoader"></div>
+
+        <div formArrayName="proveedores" class="col-lg-12" >
+          <p class="title">Lista de Proveedores</p>
+          <table class="table-responsive" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
+            <thead class="thead-light"> 
+              <tr>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Teléfono</th>
+
+                <th scope="col"  *ngIf="replacement" >Repuestos</th>
+                <th scope="col"  *ngIf="replacement">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let creds of proveedores.controls; let i=index">
+              <tr  [formGroupName]="i">
+
+                <td>{{ creds.value.xproveedor }}</td>
+
+                <td>{{ creds.value.xtelefono }}</td>
+
+
+                <td *ngIf="replacement">
+  
+                        <div >
+                        <ng-autocomplete  
+                        [data]="replacementList" 
+                        [searchKeyword]="keyword" 
+                        formControlName="crepuesto"
+                        placeholder="Seleccionar Repuesto" 
+                        [itemTemplate]="itemTemplate" 
+                        [notFoundTemplate]="notFoundTemplate">                                 
+                        </ng-autocomplete>
+                    
+                        <ng-template #itemTemplate let-item >
+                            <a [innerHTML]="item.value"></a>
+                        </ng-template>
+                    
+                        <ng-template #notFoundTemplate let-notFound  >
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+
+                </td>
+
+                <td class="items" *ngIf="replacement">
+                  <input type="number" formControlName="cantidad" class="form-control form-control-alternative" />
+                </td>
+
+                <td class="items">
+                  <input type="number" formControlName="monto" class="form-control form-control-alternative" />
+                </td>
+
+                <td><button class="follow" (click)="addpprovider(i)">Seleccionar</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;">
+          <div formArrayName="proveedores_seleccionados" class="col-lg-12" *ngIf="providerSelected">
             <p class="title">Lista de Proveedores seleccionados</p>
             <table class="table-responsive" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
               <thead class="thead-light"> 
                 <tr>
                   <th scope="col">Proveedor</th>
-                  <th scope="col">Teléfono</th>
 
-                  <th scope="col"  *ngIf="replacement" >Repuestos</th>
-                  <th scope="col"  *ngIf="replacement">Cantidad</th>
+                  <!-- <th scope="col"  *ngIf="replacement" >Repuestos</th>
+                  <th scope="col"  *ngIf="replacement">Cantidad</th> -->
                   <th scope="col">Precio</th>
                   <th scope="col"></th>
                 </tr>
@@ -241,10 +411,8 @@
 
                   <td>{{ creds.value.xproveedor }}</td>
 
-                  <td>{{ creds.value.xtelefono }}</td>
 
-
-                  <td *ngIf="replacement">
+                  <!-- <td *ngIf="replacement">
     
                     {{ creds.value.xrepuesto }}
 
@@ -252,7 +420,7 @@
 
                   <td class="items" *ngIf="replacement">
                     {{ creds.value.cantidad }}
-                  </td>
+                  </td> -->
 
                   <td class="items">
                     {{ creds.value.monto }}
@@ -268,32 +436,25 @@
                 <div class="pricing_heading">
                     <h3 class="title"></h3>
                     <span class="value">
-                      Financiar {{Mountfinancing}} $
-                      Total {{ sumofamounts}}
+                      Financiamiento del 50%
+                      <!-- Total {{ sumofamounts}} -->
                     </span>
                 </div>
                 <div class="content">
-                    <ul>
-                        <li>Lorem ipsum</li>
-                        <li>Lorem ipsum</li>
-                        <li>Lorem ipsum</li>
-                        <li>Lorem ipsum</li>
-                        <li>Lorem ipsum</li>
-                    </ul>
-                    <div class="link">
-                        <a href="#">sign up</a>
-                    </div>
+                  <ul>
+                    <li *ngFor="let item of financingList">
+                        {{ item.xtitulo }}: {{ item.xmonto_financiado }}$
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-          <!-- <div style="display: grid;place-items: center;margin-top: 27px;">
-            <ngb-pagination [(page)]="currentPage" [pageSize]="itemsPerPage" [collectionSize]="providerList.length" [maxSize]="5" [rotate]="true"></ngb-pagination>
-          </div> -->
-
         </div>
       </div>
+    </div>
   </div>
+
 </form>
 
 <ng-template #bankModal let-modal>
@@ -311,7 +472,17 @@
           </div>
           <div class="col-md-6 d-flex">
             <div class="modal-body d-flex align-items-center">
-              <div class="text w-100 text-center py-5">
+              <div class="text w-100 text-center py-5" *ngIf="loading">
+                <div id="container">
+                  <label class="loading-title">Cargando ...</label>
+                  <span class="loading-circle sp1">
+                    <span class="loading-circle sp2">
+                      <span class="loading-circle sp3"></span>
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="text w-100 text-center py-5" *ngIf="modalBan">
                 <h2 class="mb-0"><span>{{this.messageModal}}</span></h2>
                 <p></p>
                 <p class="mb-4">{{this.messageModal2}}</p>
@@ -326,37 +497,8 @@
                 <div class="modal-footer" *ngIf="activateThree">
                   <button type="button" class="btn btn-primary mx-auto" style="width: 26%;background: #25255f;border: #25255f;" (click)="modal.close()">Aceptar </button>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
-
-<!-- <ng-template #BankOpening let-modal>
-  <div class="modal fade" [ngClass]="{ 'show': isModalBankOpeningActive }" style="display: block;" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close d-flex align-items-center justify-content-center" (click)="closeModal()" aria-label="Close">
-            <span aria-hidden="true" class="ion-ios-close"></span>
-          </button>
-        </div>
-        <div class="row no-gutters">
-          <div class="col-md-6 d-flex">
-            <div class="modal-body p-5 img d-flex image-container2"></div>
-          </div>
-          <div class="col-md-6 d-flex">
-            <div class="modal-body d-flex align-items-center">
-              <div class="text w-100 text-center py-5">
-                <h2 class="mb-0"><span>¿Desea aperturar una cuenta corriente en Bancagente?</span></h2>
-                <p></p>
-                <p class="mb-4">Si aún no cuenta con una cuenta en nuestra institución, le invitamos a abrir una cuenta para poder iniciar el proceso de solicitud de crédito.</p>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary mx-auto" style="width: 16%;background: #25255f;border: #25255f;" (click)="modal.dismiss()">Sí </button>
-                    <button type="button" class="btn btn-danger mx-auto" (click)="modal.close('No')">No</button>
+                <div class="modal-footer" *ngIf="activateFour">
+                  <button type="button" class="btn btn-primary mx-auto" style="width: 26%;background: #25255f;border: #25255f;" (click)="modal.close()">Aceptar </button>
                 </div>
               </div>
             </div>
@@ -366,43 +508,5 @@
     </div>
   </div>
 </ng-template>
-
-<ng-template #LogOutModal let-modal>
-  <div class="modal fade" [ngClass]="{ 'show': out }" style="display: block;" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content rounded-0">
-        <div class="modal-body p-4 px-5">
-
-          
-          <div class="main-content text-center">
-              
-              <a href="#" class="close-btn" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true"><span class="icon-close2"></span></span>
-                </a>
-
-              <div class="warp-icon mb-4">
-                <span class="icon-lock2"></span>
-              </div>
-              <form action="#">
-                <label for="">This link is password protected</label>
-                <p class="mb-4">All their equipment and instruments are alive. The sky was cloudless and of a deep dark blue.</p>
-                <div class="form-group mb-4">
-                  <input type="password" class="form-control text-center" placeholder="Enter password">
-                </div>
-
-                <div class="d-flex">
-                  <div class="mx-auto">
-                  <a href="#" class="btn btn-primary">Submit</a>
-                  </div>
-                </div>
-              </form>
-            
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template> -->
 
 <app-footer></app-footer>

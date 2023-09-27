@@ -28,6 +28,7 @@ export class FinancingComponent implements OnInit {
   replacementList: any[] = [];
   providerList = [];
   stateList: any[] = [];
+  financingList: any[] = [];
   keyword = 'value';
 
   documento : string
@@ -43,11 +44,16 @@ export class FinancingComponent implements OnInit {
   activateFirst: boolean = false; 
   activateSecond: boolean = false; 
   activateThree: boolean = false; 
+  activateFour: boolean = false; 
+  modalBan: boolean = true; 
+  providerSelected: boolean = false; 
+  activateCoin: boolean = false; 
   errorMessage: string;
   messageModal: string;
   messageModal2: string;
   propietary: string;
-
+  mountsSubTotal: 0;
+  mountsFlat: 0
 
   Mountfinancing : number
   Mounts = []
@@ -63,7 +69,6 @@ export class FinancingComponent implements OnInit {
               private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.Mountfinancing = 300
     this.financing_form = this.formBuilder.group({
       cpropietario: [''],
       cvehiculopropietario: [''],
@@ -73,7 +78,7 @@ export class FinancingComponent implements OnInit {
       cestado: [''],
       proveedores_seleccionados :  this.formBuilder.array([]),
       proveedores :  this.formBuilder.array([]),
-      // xcausasiniestro: [''],
+      xvehiculo: [''],
       // xvehiculo: ['']
     });
     this.currentUser = this.authenticationService.currentUserValue;
@@ -370,14 +375,13 @@ export class FinancingComponent implements OnInit {
   }
 
   addpprovider(i : any){
-
+    this.providerSelected = true;
     const creds = this.financing_form.controls.proveedores as FormArray;
 
     this.proveedores_seleccionados.push(
       this.formBuilder.group({
       cproveedor : creds.at(i).get('cproveedor').value,
       xproveedor : creds.at(i).get('xproveedor').value,
-      xtelefono : creds.at(i).get('xtelefono').value,
       xrepuesto : creds.at(i).get('xrepuesto').value,
       crepuesto : creds.at(i).get('crepuesto').value.id,
       monto : creds.at(i).get('monto').value,
@@ -391,8 +395,39 @@ export class FinancingComponent implements OnInit {
     
     this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
 
-    console.log(this.financing_form.value)
+    if(this.proveedores_seleccionados){
+      let mitad = this.Mountfinancing * 0.5;
+
+      if(this.sumofamounts > mitad){
+        console.log('No se Puede')
+      }else{
+        let compra = 0;
+        let inicial = 0;
+        let financiamiento = 0;
+        let financiamiento_Red;
+        let financing = 0;
+
+        compra = this.sumofamounts;
+        inicial = compra * 0.5;
+        financiamiento = (compra - inicial) / (1 - 0.10);
+        financiamiento_Red = financiamiento.toFixed(2);
+        financing = parseFloat(financiamiento_Red);
+
+        this.financingList = [];
+
+        for (let i = 1; i <= 3; i++) {
+          const xtitulo = `Cuota n° ${i} - `; 
+          const xmonto = financing / 3;
+          const xmonto_financiado = xmonto.toFixed(2);
+          this.financingList.push({ xtitulo, xmonto_financiado });
+        }
+        
+        console.log(this.financingList);
+
+      }
+    }
   }
+
   removeprovider(i : any){
     this.proveedores_seleccionados.removeAt(i);
     this.Mounts.splice(i, 1)
@@ -431,6 +466,8 @@ export class FinancingComponent implements OnInit {
   }
 
   generateExcel(){
+    this.loading = true;
+    this.modalBan = false;
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
@@ -438,9 +475,26 @@ export class FinancingComponent implements OnInit {
     };
     this.http.post(`${environment.apiUrl}/api/financing/propietary-bangente`, params, options).subscribe((response: any) => {
       if(response.data.status){
-
+        this.loading = false;
+        this.modalBan = true;
+        this.activateFirst = false;
+        this.activateSecond = false;
+        this.activateThree = false;
+        this.activateFour = true;
+        this.messageModal = `Solicitud enviada exitosamente.`;
+        this.messageModal2 = `Estamos trabajando diligentemente en su solicitud y nos pondremos en contacto con el afiliado pronto para dar seguimiento a su proceso.`;
       }
     })
+  }
+
+  mountQuotes(){
+    if(this.financing_form.get('xvehiculo').value == 'Vehiculo'){
+      this.Mountfinancing = 300
+      this.activateCoin = true;
+    }else{
+      this.Mountfinancing = 150
+      this.activateCoin = true;
+    }
   }
 
   logOut(){
