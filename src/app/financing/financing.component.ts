@@ -48,12 +48,15 @@ export class FinancingComponent implements OnInit {
   modalBan: boolean = true; 
   providerSelected: boolean = false; 
   activateCoin: boolean = false; 
+  showError: boolean = false; 
   errorMessage: string;
   messageModal: string;
   messageModal2: string;
   propietary: string;
   mountsSubTotal: 0;
-  mountsFlat: 0
+  mountsFlat: 0;
+  alertMessage: string = '';
+  half: number;
 
   Mountfinancing : number
   Mounts = []
@@ -353,9 +356,14 @@ export class FinancingComponent implements OnInit {
       let message;
       if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
       else if(code == 404){ 
+        this.alert.show = true;
+        this.alertMessage = `No se encontro información con los parámetros seleccionados`;
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+        }, 3000);
         this.activateLoader = false;
-        this.activateError = true;
-        this.errorMessage = "No se encontro información con los parámetros seleccionados"
+        this.activeProviders = false;
       }
       else if(code == 500){ 
         this.activateLoader = false;
@@ -395,11 +403,19 @@ export class FinancingComponent implements OnInit {
     
     this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
 
-    if(this.proveedores_seleccionados){
-      let mitad = this.Mountfinancing * 0.5;
+    let mitad_monto_cartera = this.Mountfinancing * 0.5;
 
-      if(this.sumofamounts > mitad){
-        console.log('No se Puede')
+    this.half = this.sumofamounts * 0.5
+
+    if(this.proveedores_seleccionados){
+      if(this.sumofamounts > mitad_monto_cartera){
+        this.alert.show = true;
+        this.alertMessage = `El sub-total ha superado el monto de financiamiento de ${mitad_monto_cartera}$`;
+        this.showError = true;
+        setTimeout(() => {
+          this.showError = false;
+          this.removeprovider(i)
+        }, 3000);
       }else{
         let compra = 0;
         let inicial = 0;
@@ -413,17 +429,25 @@ export class FinancingComponent implements OnInit {
         financiamiento_Red = financiamiento.toFixed(2);
         financing = parseFloat(financiamiento_Red);
 
+        this.Mountfinancing = this.Mountfinancing - financing;
+
+        this.Mountfinancing.toFixed(2);
+
         this.financingList = [];
 
         for (let i = 1; i <= 3; i++) {
-          const xtitulo = `Cuota n° ${i} - `; 
+          const xtitulo = `Cuota n° ${i}`;
           const xmonto = financing / 3;
           const xmonto_financiado = xmonto.toFixed(2);
-          this.financingList.push({ xtitulo, xmonto_financiado });
+  
+          const today = new Date();
+          const fifteenDaysLater = new Date(today);
+          fifteenDaysLater.setDate(today.getDate() + (i - 1) * 15);
+  
+          const formattedDate = `${fifteenDaysLater.getDate().toString().padStart(2, '0')}/${(fifteenDaysLater.getMonth() + 1).toString().padStart(2, '0')}/${fifteenDaysLater.getFullYear()}`;
+  
+          this.financingList.push({ xtitulo, fechaCuota: formattedDate, xmonto_financiado });
         }
-        
-        console.log(this.financingList);
-
       }
     }
   }
@@ -432,6 +456,7 @@ export class FinancingComponent implements OnInit {
     this.proveedores_seleccionados.removeAt(i);
     this.Mounts.splice(i, 1)
     this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
+    this.financingList = [];
   }
 
   openBankModal() {

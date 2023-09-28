@@ -867,9 +867,44 @@ h3,h6{
   height: 38px;
 }
 
+.image-creditor {
+  background-image: url(../../assets/imagenes/acreedor.png);
+  background-size: cover;
+  background-repeat: round;
+  width: 3%;
+  height: 38px;
+}
+
+.image-beneficiary {
+  background-image: url(../../assets/imagenes/beneficiario.png);
+  background-size: cover;
+  background-repeat: round;
+  width: 3%;
+  height: 38px;
+}
+
 .title-mount {
   margin-left: 2.2rem;
   color: #374151;
   font-size: 18px;
   font-size: x-large;
+}
+
+.title-finan {
+  margin-left: 2.2rem;
+  font-size: 18px;
+  font-size: small;
+}
+
+.alert-fixed-top {
+  position: fixed;
+  top: 30px;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  transition: transform 0.3s ease;
+  font-size: 20px;
+  padding: 8px 16px;
+}
+.alert-fixed-top.show {
+  transform: translateY(0);
 }
