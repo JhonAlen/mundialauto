@@ -907,3 +907,17 @@ h3,h6{
 .alert-fixed-top.show {
   transform: translateY(0);
 }
+.pricingTableButton{
+  border: none;
+  border-radius: 25px;
+  background:#EF476F;
+  color: white;
+  padding: 8px 15px;
+  font-weight: 700;
+  width: 52%;
+}
+.pricingTableButton:hover {
+  color: #fff;
+  background: #06D6A0;
+  border: 1px solid #06D6A0;
+}

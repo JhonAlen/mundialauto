@@ -59,6 +59,7 @@ export class FinancingComponent implements OnInit {
   half: number;
 
   Mountfinancing : number
+  MountfinancingDisable : number
   Mounts = []
   currentPage = 1;
   itemsPerPage = 5;
@@ -310,8 +311,6 @@ export class FinancingComponent implements OnInit {
 
   getProviderFromService(){
 
-    console.log(this.financing_form.value)
-
     this.activeProviders = true;
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -400,7 +399,6 @@ export class FinancingComponent implements OnInit {
 
     this.Mounts.push(creds.at(i).get('monto').value)
 
-    
     this.sumofamounts = this.Mounts.reduce((a, b) => a + b, 0);
 
     let mitad_monto_cartera = this.Mountfinancing * 0.5;
@@ -429,25 +427,33 @@ export class FinancingComponent implements OnInit {
         financiamiento_Red = financiamiento.toFixed(2);
         financing = parseFloat(financiamiento_Red);
 
-        this.Mountfinancing = this.Mountfinancing - financing;
+        this.MountfinancingDisable = this.Mountfinancing - this.sumofamounts;
 
-        this.Mountfinancing.toFixed(2);
+        this.MountfinancingDisable.toFixed(2);
 
         this.financingList = [];
 
+        const today = new Date();
+        
+        const nextFifteenth = new Date(today);
+        nextFifteenth.setDate(15);
+        
+        if (today.getDate() > 15) {
+          nextFifteenth.setMonth(nextFifteenth.getMonth() + 1);
+        }
+        
         for (let i = 1; i <= 3; i++) {
           const xtitulo = `Cuota n° ${i}`;
           const xmonto = financing / 3;
           const xmonto_financiado = xmonto.toFixed(2);
-  
-          const today = new Date();
-          const fifteenDaysLater = new Date(today);
-          fifteenDaysLater.setDate(today.getDate() + (i - 1) * 15);
-  
-          const formattedDate = `${fifteenDaysLater.getDate().toString().padStart(2, '0')}/${(fifteenDaysLater.getMonth() + 1).toString().padStart(2, '0')}/${fifteenDaysLater.getFullYear()}`;
-  
-          this.financingList.push({ xtitulo, fechaCuota: formattedDate, xmonto_financiado });
+        
+          const formattedDate = `${(nextFifteenth.getDate()+ (i - 1)).toString().padStart(2, '0')}/${(nextFifteenth.getMonth() + 1).toString().padStart(2, '0')}/${nextFifteenth.getFullYear()}`;
+        
+          this.financingList.push({ xtitulo, fechaCuota: formattedDate, xmonto_financiado, ncuotas: i });
+        
+          nextFifteenth.setDate(nextFifteenth.getDate() + 15);
         }
+
       }
     }
   }
@@ -467,7 +473,7 @@ export class FinancingComponent implements OnInit {
     modalRef.result.then((result) => {
       this.logOut()
     }).catch((reason) => {
-      console.log('Modal cerrado sin exclusión:', reason);
+
     });
   }
 
@@ -520,6 +526,29 @@ export class FinancingComponent implements OnInit {
       this.Mountfinancing = 150
       this.activateCoin = true;
     }
+  }
+
+  onSubmit(form){
+    console.log(this.proveedores_seleccionados.value)
+    console.log(this.financingList)
+    console.log(form)
+    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    let options = { headers: headers };
+    let params = {
+      cpropietario: form.cpropietario,
+      xvehiculo: form.xvehiculo,
+      cvehiculopropietario: form.cvehiculopropietario,
+      cestado: this.financing_form.get('cestado').value,
+      cservicio: form.cservicio,
+      mmonto_cartera: this.Mountfinancing,
+      proveedores: this.proveedores_seleccionados,
+      financiamiento: this.financingList
+    };
+    this.http.post(`${environment.apiUrl}/api/financing/create`, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        console.log('listo')
+      }
+    })
   }
 
   logOut(){

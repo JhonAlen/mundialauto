@@ -206,8 +206,8 @@
           </table>
 
           <div class="row py-3">
-            <div class="col-4" style="margin-left: 305px;">
-              <p><strong>Total:</strong> {{this.sumofamounts}}$</p>
+            <div class="col-5" style="margin-left: 213px;">
+              <p><strong>Costo Total de los Servicios:</strong> {{this.sumofamounts}}$</p>
             </div>
           </div>
         </div>
@@ -295,7 +295,7 @@
                       <div class="row">
                         <div class="col-12 ">
                           <p style="font-size: x-large;">Financiamiento del 50% de
-                          <img src="../../assets/imagenes/coin.png" style="width: 6%;margin-left: 7px;">{{Mountfinancing}}$$</p>
+                          <img src="../../assets/imagenes/coin.png" style="width: 6%;margin-left: 7px;">{{Mountfinancing}}$</p>
                           
                         </div>
                       </div>
@@ -303,11 +303,11 @@
                       <div class="row" *ngIf="providerSelected">
                         <div class="col-6 ">
                           <img src="../../assets/imagenes/acreedor.png" style="width: 20%;margin-left: 24px;">
-                          <p class="title-finan">Acreedores: {{this.half}}$</p>
+                          <p class="title-finan">Acreedor: {{this.half}}$</p>
                         </div>
                         <div class="col-5">
                           <img src="../../assets/imagenes/beneficiario.png" style="width: 24%;margin-left: 24px;">
-                          <p class="title-finan">Beneficiarios: {{this.half}}$</p>
+                          <p class="title-finan">Beneficiario: {{this.half}}$</p>
                         </div>
                       </div>
                     </span>
@@ -320,6 +320,9 @@
                   </ul>
                 </div>
               </div>
+            </div>
+            <div class="container" style="display: grid;place-items: center;margin-bottom: 10px; margin-top: 20px;">
+              <button class="pricingTableButton" (click)="onSubmit(financing_form.value)">Financiar</button>
             </div>
         </div>
       </div>
