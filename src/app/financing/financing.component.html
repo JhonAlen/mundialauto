@@ -18,7 +18,25 @@
   </div>
 <form [formGroup]="financing_form">
   <div class="card-propietary ml-4">
-    <div class="title">
+    <div class="loader container registration-form" *ngIf="activateLoaderUp"></div>
+
+    <div class="row justify-content-center" *ngIf="check">
+      <div class="card-check"> 
+        <div class="header-check"> 
+          <div class="image-check">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <path stroke-linejoin="round" stroke-linecap="round" stroke-width="1.5" stroke="#000000" d="M20 7L9.00004 18L3.99994 13"></path> </g></svg>
+            </div> 
+            <div class="content-check">
+               <span class="title">{{this.messageSuccess}}</span> 
+            </div> 
+               <div class="actions-check">
+                  <button type="button" class="history-check" (click)="close()">Aceptar</button> 
+              </div> 
+          </div> 
+      </div>              
+    </div>
+
+    <div class="title" *ngIf="dataEnable">
       <div class="row">
         <div class="col-6">
           <p class="title-text">
@@ -26,10 +44,8 @@
           </p>
         </div>
       </div>
-
-
     </div>
-    <div class="data">
+    <div class="data" *ngIf="dataEnable">
       <div class="range">
           <div class="fill" style="margin-top: -15px;">
           </div>
@@ -322,13 +338,12 @@
               </div>
             </div>
             <div class="container" style="display: grid;place-items: center;margin-bottom: 10px; margin-top: 20px;">
-              <button class="pricingTableButton" (click)="onSubmit(financing_form.value)">Financiar</button>
+              <button class="pricingTableButton" (click)="onSubmit()">Financiar</button>
             </div>
         </div>
       </div>
     </div>
   </div>
-
 </form>
 
 <ng-template #bankModal let-modal>

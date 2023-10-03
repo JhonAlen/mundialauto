@@ -38,6 +38,7 @@ export class FinancingComponent implements OnInit {
   auth : boolean = true;
   replacement: boolean = false;
   activeProviders: boolean = false;
+  activateLoaderUp: boolean = false;
   activateLoader: boolean = false;
   activateError: boolean = false;
   isModalActive: boolean = false; 
@@ -45,13 +46,16 @@ export class FinancingComponent implements OnInit {
   activateSecond: boolean = false; 
   activateThree: boolean = false; 
   activateFour: boolean = false; 
+  dataEnable: boolean = true; 
   modalBan: boolean = true; 
   providerSelected: boolean = false; 
   activateCoin: boolean = false; 
   showError: boolean = false; 
+  check: boolean = false; 
   errorMessage: string;
   messageModal: string;
   messageModal2: string;
+  messageSuccess: string;
   propietary: string;
   mountsSubTotal: 0;
   mountsFlat: 0;
@@ -528,27 +532,43 @@ export class FinancingComponent implements OnInit {
     }
   }
 
-  onSubmit(form){
-    console.log(this.proveedores_seleccionados.value)
-    console.log(this.financingList)
-    console.log(form)
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
+  onSubmit(){
+    this.activateLoaderUp = true;
+    this.providerSelected = false;
+    this.activeProviders = false;
+    this.dataEnable = false;
     let params = {
-      cpropietario: form.cpropietario,
-      xvehiculo: form.xvehiculo,
-      cvehiculopropietario: form.cvehiculopropietario,
+      cpropietario: this.financing_form.get('cpropietario').value,
+      xvehiculo: this.financing_form.get('xvehiculo').value,
+      cvehiculopropietario: this.financing_form.get('cvehiculopropietario').value,
       cestado: this.financing_form.get('cestado').value,
-      cservicio: form.cservicio,
-      mmonto_cartera: this.Mountfinancing,
-      proveedores: this.proveedores_seleccionados,
+      cservicio: this.financing_form.get('cservicio').value,
+      mmonto_cartera: this.MountfinancingDisable,
+      cusuario: this.currentUser.data.cusuario,
+      proveedores: this.proveedores_seleccionados.value,
       financiamiento: this.financingList
     };
-    this.http.post(`${environment.apiUrl}/api/financing/create`, params, options).subscribe((response: any) => {
+    this.http.post(`${environment.apiUrl}/api/financing/create-financing`, params).subscribe((response: any) => {
       if(response.data.status){
-        console.log('listo')
+        this.activateLoaderUp = false;
+        this.check = true;
+        this.messageSuccess = response.data.message;
       }
+    },
+    (err) => {
+      let code = err.error.data.code;
+      let message;
+      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
+      else if(code == 404){ message = "HTTP.ERROR.VALREP.NOTIFICATIONTYPENOTFOUND"; }
+      else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
+      this.alert.message = message;
+      this.alert.type = 'danger';
+      this.alert.show = true;
     })
+  }
+
+  close(){
+    location.reload();
   }
 
   logOut(){
