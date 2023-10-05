@@ -724,8 +724,14 @@ export class NotificationServiceOrderComponent implements OnInit {
             this.popup_form.get('xdanos').disable();
             this.popup_form.get('mmontototal').setValue(response.data.list[0].mmontototal);
             this.popup_form.get('mmontototal').disable();
-            this.popup_form.get('mmontototaliva').setValue(response.data.list[0].mmontototaliva);
-            this.popup_form.get('mmontototaliva').disable();
+            if(response.data.list[0].mmontototaliva){
+              this.popup_form.get('mmontototaliva').setValue(response.data.list[0].mmontototaliva);
+              this.popup_form.get('mmontototaliva').disable();
+            }else{
+              this.popup_form.get('mmontototaliva').setValue(0);
+              this.popup_form.get('mmontototaliva').disable();
+            }
+
             this.popup_form.get('cmoneda').setValue(response.data.list[0].cmoneda);
             this.popup_form.get('cmoneda').disable();
             this.popup_form.get('xmoneda').setValue(response.data.list[0].xmoneda);
@@ -743,10 +749,22 @@ export class NotificationServiceOrderComponent implements OnInit {
               this.popup_form.get('fajuste').setValue(dateFormat);
               this.popup_form.get('fajuste').disable();
             }
-            this.popup_form.get('cservicio').setValue(response.data.list[0].cservicio);
-            this.popup_form.get('cservicio').disable();
-            this.popup_form.get('xservicio').setValue(response.data.list[0].xservicio);
-            this.popup_form.get('xservicio').disable();
+            if(response.data.list[0].cservicio){
+              this.popup_form.get('cservicio').setValue(response.data.list[0].cservicio);
+              this.popup_form.get('cservicio').disable();
+            }else{
+              this.popup_form.get('cservicio').setValue(this.notificacion.cservicio);
+              this.popup_form.get('cservicio').disable();
+            }
+
+            if(response.data.list[0].xservicio){
+              this.popup_form.get('xservicio').setValue(response.data.list[0].xservicio);
+              this.popup_form.get('xservicio').disable();
+            }else{
+              this.popup_form.get('xservicio').setValue(this.notificacion.xservicio);
+              this.popup_form.get('xservicio').disable();
+            }
+
             this.serviceList.push({ servicio: response.data.list[0].cservicio, value: response.data.list[0].xservicio});
             this.popup_form.get('cservicioadicional').setValue(response.data.list[0].cservicioadicional);
             this.popup_form.get('cservicioadicional').disable();
@@ -1046,19 +1064,11 @@ export class NotificationServiceOrderComponent implements OnInit {
 
   changeAditionalService(){
 
-    if(this.popup_form.get('cservicioadicional').value != 228){
-      this.popup_form.get('xdesde').disable();
-      this.popup_form.get('xhacia').disable();
-      this.popup_form.get('mmonto').disable();
-      this.popup_form.get('cmoneda').disable();
-      this.popup_form.get('xmoneda').disable();
-    }else{
-      this.popup_form.get('xdesde').enable();
-      this.popup_form.get('xhacia').enable();
-      this.popup_form.get('mmonto').enable();
-      this.popup_form.get('cmoneda').enable();
-      this.popup_form.get('xmoneda').disable();
-    }
+    this.popup_form.get('xdesde').enable();
+    this.popup_form.get('xhacia').enable();
+    this.popup_form.get('mmonto').enable();
+    this.popup_form.get('cmoneda').enable();
+    
     if(this.popup_form.get('cservicioadicional').value){
       this.popup_form.get('xservicio').value == this.popup_form.get('xservicioadicional').value;
     }
@@ -1097,19 +1107,11 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   changeService(){
-    if(this.popup_form.get('cservicio').value != 228){
-      this.popup_form.get('xdesde').disable();
-      this.popup_form.get('xhacia').disable();
-      this.popup_form.get('mmonto').disable();
-      this.popup_form.get('cmoneda').disable();
-      this.popup_form.get('xmoneda').disable();
-    }else{
-      this.popup_form.get('xdesde').enable();
-      this.popup_form.get('xhacia').enable();
-      this.popup_form.get('mmonto').enable();
-      this.popup_form.get('cmoneda').enable();
-      this.popup_form.get('xmoneda').disable();
-    }
+    this.popup_form.get('xdesde').enable();
+    this.popup_form.get('xhacia').enable();
+    this.popup_form.get('mmonto').enable();
+    this.popup_form.get('cmoneda').enable();
+
     if(this.popup_form.get('cservicioadicional').value){
       this.popup_form.get('xservicio').value == this.popup_form.get('xservicioadicional').value;
     }
@@ -1476,7 +1478,7 @@ export class NotificationServiceOrderComponent implements OnInit {
   }
 
   createPDF(){
-    if(this.popup_form.get('cservicioadicional').value == 228 || this.popup_form.get('cservicio').value == 228){
+    if(this.popup_form.get('cservicio').value >= 228 && this.popup_form.get('cservicio').value <= 231){
       const pdfDefinition: any = {
         content: [
           {
@@ -1855,7 +1857,7 @@ export class NotificationServiceOrderComponent implements OnInit {
                 width: 350,
                 style: 'data',
                 text: [
-                  {text: 'Servicio de '}, {text: this.getServiceOrderService()}
+                  {text: this.getServiceOrderService()}
                 ]
               },
               {

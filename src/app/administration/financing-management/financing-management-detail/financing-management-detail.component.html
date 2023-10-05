@@ -1,0 +1,159 @@
+<app-toolbar ></app-toolbar>
+<div class="container">
+    <div class="row mt-2" *ngIf="alert.show">
+      <div class="col-sm-12 col-md-6 mx-auto">  
+        <div class="alert alert-success alert-fixed-top" [ngClass]="{'show': showSuccess}" *ngIf="showSuccess">
+          {{ alertMessage }}
+        </div>
+      </div>
+    </div>
+</div>
+<div class="card-propietary ml-4">
+    <div class="title">
+      <div class="row">
+        <div class="col-6">
+          <p class="title-text">
+            Información del Beneficiario
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="data">
+      <div class="range">
+          <div class="fill" style="margin-top: -15px;">
+          </div>
+      </div>
+
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                <strong class="form-label required" for="form3Examplea8">Beneficiario</strong>
+                <p class="mt-1">{{beneficiario}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                <strong class="form-label required" for="form3Examplea8">Identificación</strong>
+                <p class="mt-1">{{cedula}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                <strong class="form-label required" for="form3Examplea8">Teléfono</strong>
+                <p class="mt-1">{{telefono}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                    <strong class="form-label required" for="form3Examplea8">Correo</strong>
+                    <p class="mt-1 text-lowercase">{{correo}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                    <strong class="form-label required" for="form3Examplea8">Tipo</strong>
+                    <p class="mt-1">{{tipo}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                <strong class="form-label required" for="form3Examplea8">Vehículo</strong>
+                    <p class="mt-1">{{vehiculo}}</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-outline form-white">
+                    <strong class="form-label required" for="form3Examplea8">Placa</strong>
+                    <p class="mt-1">{{placa}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ml-4">
+    <div class="row">
+        <div class="col-md-8" style="width: 66%;">
+            <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;">
+                <div class="col-lg-12">
+                  <p class="title-text">Lista de Proveedores</p>
+                  <table class="table-responsive" style="--bs-gutter-x: 2.8rem; margin-top: 15px;" *ngIf="providerList && providerList.length > 0">
+                    <thead class="thead-light"> 
+                      <tr>
+                        <th scope="col" class="col-3">Proveedor</th>
+                        <th scope="col" class="col-2 text-center">Precio</th>
+                        <th scope="col" class="col-2">Estado</th>
+                        <th scope="col" class="col-2">Servicio</th>
+                        <th scope="col" class="col-2">Repuestos</th>
+                        <th scope="col" class="col-1">Cantidad</th>
+                      </tr>
+                    </thead>
+                    <tbody *ngFor="let provider of providerList">
+                      <tr>
+                        <td>{{ provider.xproveedor }}</td>
+        
+                        <td class="text-center">{{ provider.mprecio }}$</td>
+                        
+                        <td>{{ provider.xestado }}</td>
+
+                        <td>{{ provider.xservicio }}</td>
+
+                        <td>{{ provider.xrepuesto }}</td>
+
+                        <td class="text-center">{{ provider.ncantidad }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="--bs-gutter-x: 2.8rem; margin-top: 15px;">
+                <div style="margin-top: -31px;">
+                  <div class="pricingTable ">
+                    <div class="pricing_heading">
+                        <h3 class="title"></h3>
+                        <span class="value">
+                          <div class="row">
+                            <div class="col-12 ">
+                              <p style="font-size: x-large;">Financiamiento Pendiente</p>
+                              <!-- <img src="../../assets/imagenes/coin.png" style="width: 6%;margin-left: 7px;">{{Mountfinancing}}$ -->
+                              
+                            </div>
+                          </div>
+                        </span>
+                    </div>
+                    <div class="content">
+                      <ul>
+                        <li *ngFor="let item of cuoteList">
+                            {{ item.cuotas }} - {{item.fvencimiento}} - {{ item.mmonto_cuota }}$
+                            <button class="follow" (click)="cobrarCuota(item)" style="margin-left: 46px">Cobrar</button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #paymentModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Confirmación del Pago</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que desea cobrar esta cuota?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-danger" style="background: #0b549b;border: #0b549b;" (click)="modal.close('Si')">Aceptar</button>
+      </div>
+  </ng-template>
+
+<app-footer></app-footer>
