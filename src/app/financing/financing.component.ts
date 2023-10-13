@@ -241,6 +241,12 @@ export class FinancingComponent implements OnInit {
       this.alert.show = true;
     });
 
+    this.http.post(`${environment.apiUrl}/api/financing/wallet`, params, options).subscribe((response: any) => {
+      if(response.data.status){
+        this.Mountfinancing = response.data.mmonto_cartera;
+      }
+    });
+
     this.messageModal = `¿${this.propietary} Posee cuenta en Bangente?`;
     this.messageModal2 = `Le agradecemos por su interés en nuestros servicios financieros. Para continuar con el proceso de solicitud de crédito, le solicitamos que verifique si ya dispone de una cuenta en Bangente.`;
     this.openBankModal();
@@ -524,15 +530,20 @@ export class FinancingComponent implements OnInit {
 
   mountQuotes(){
     if(this.financing_form.get('xvehiculo').value == 'Vehiculo'){
-      this.Mountfinancing = 300
+      if(!this.Mountfinancing){
+        this.Mountfinancing = 300
+      }
       this.activateCoin = true;
     }else{
-      this.Mountfinancing = 150
+      if(!this.Mountfinancing){
+        this.Mountfinancing = 150
+      }
       this.activateCoin = true;
     }
   }
 
   onSubmit(){
+    console.log(this.Mountfinancing)
     this.activateLoaderUp = true;
     this.providerSelected = false;
     this.activeProviders = false;
@@ -545,6 +556,7 @@ export class FinancingComponent implements OnInit {
       cservicio: this.financing_form.get('cservicio').value,
       mmonto_cartera: this.MountfinancingDisable,
       cusuario: this.currentUser.data.cusuario,
+      minicial: this.Mountfinancing,
       proveedores: this.proveedores_seleccionados.value,
       financiamiento: this.financingList
     };
