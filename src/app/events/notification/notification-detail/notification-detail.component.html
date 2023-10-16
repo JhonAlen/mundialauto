@@ -807,12 +807,6 @@
                                 {{ "EVENTS.NOTIFICATIONS.QUOTESLIST" | translate }}
                             </div>
                             <div class="col-6">
-<<<<<<< HEAD
-                                <button [disabled]="loading || loading_cancel || !editBlock || providerList.lenght == 0" class="btn company-detail-button float-right mr-1" type="button" (click)="addQuoteRequest()" *ngIf="canEdit">
-                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                    Agregar Cotización
-                                </button>
-=======
                                 <div class="form-check form-switch">
                                   <label style="margin-left: 270px;">Desea registrar la cotización?</label>
                                   <div class="row">
@@ -824,7 +818,6 @@
                                     <div *ngIf="detail_form.get('bcotizacion').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDINJURED" | translate }}</div>
                                   </div>
                                 </div>
->>>>>>> jhon
                             </div>
                         </div>
                     </div>

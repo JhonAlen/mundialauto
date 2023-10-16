@@ -632,17 +632,11 @@ export class NotificationDetailComponent implements OnInit {
         }
         this.serviceOrderList = [];
         let xservicio;
-<<<<<<< HEAD
-        if (response.data.serviceOrder) {
-          for (let i = 0; i < response.data.serviceOrder.length; i++) {
-            if (response.data.serviceOrder[i].xservicio) {
-=======
         let fajuste; 
         let cservicio;
         if(response.data.serviceOrder){
           for(let i = 0; i < response.data.serviceOrder.length; i++){
             if(response.data.serviceOrder[i].xservicio){
->>>>>>> jhon
               xservicio = response.data.serviceOrder[i].xservicio
             } else {
               xservicio = response.data.serviceOrder[i].xservicioadicional
@@ -670,11 +664,7 @@ export class NotificationDetailComponent implements OnInit {
               xobservacion: response.data.serviceOrder[i].xobservacion,
               xfecha: response.data.serviceOrder[i].xfecha,
               xdanos: response.data.serviceOrder[i].xdanos,
-<<<<<<< HEAD
-              fajuste: response.data.serviceOrder[i].fajuste.substring(0, 10),
-=======
               fajuste: fajuste,
->>>>>>> jhon
               xdesde: response.data.serviceOrder[i].xdesde,
               xhacia: response.data.serviceOrder[i].xhacia,
               mmonto: response.data.serviceOrder[i].mmonto,
@@ -1511,13 +1501,8 @@ export class NotificationDetailComponent implements OnInit {
     let quote = {};
     let notificacion = this.code;
     console.log(event.data)
-<<<<<<< HEAD
-    if (this.editStatus) {
-      quote = {
-=======
     if(this.editStatus){ 
       quote = { 
->>>>>>> jhon
         type: 1,
         create: event.data.create,
         cgrid: event.data.cgrid,
@@ -1549,20 +1534,12 @@ export class NotificationDetailComponent implements OnInit {
         delete: false
       };
     }
-<<<<<<< HEAD
-
-    const modalRef = this.modalService.open(NotificationQuoteComponent, { size: 'xl' });
-    modalRef.componentInstance.quote = quote;
-    modalRef.result.then((result: any) => {
-      if (result) {
-=======
     console.log(quote)
     const modalRef = this.modalService.open(NotificationQuoteComponent, {size: 'xl'});
     modalRef.componentInstance.quote = quote;
     modalRef.result.then((result: any) => {
       if(result){
         console.log(result)
->>>>>>> jhon
         this.serviceOrderList.push(result);
         this.serviceOrderGridApi.setRowData(this.serviceOrderList);
         for (let i = 0; i < this.quoteList.length; i++) {
@@ -1647,33 +1624,6 @@ export class NotificationDetailComponent implements OnInit {
       modalRef.result.then((result: any) => {
 
         this.serviceOrderList.push({
-<<<<<<< HEAD
-          cgrid: this.serviceOrderList.length,
-          createServiceOrder: true,
-          edit: false,
-          cnotificacion: result.cnotificacion,
-          corden: result.corden,
-          cservicio: result.cservicio,
-          xservicio: result.xservicio,
-          cservicioadicional: result.cservicioadicional,
-          xobservacion: result.xobservacion,
-          xfecha: result.xfecha,
-          xdanos: result.xdanos,
-          fajuste: result.fajuste.substring(0, 10),
-          xdesde: result.xdesde,
-          xhacia: result.xhacia,
-          mmonto: result.mmonto,
-          cimpuesto: 13,
-          cmoneda: result.cmoneda,
-          xmoneda: result.xmoneda,
-          cproveedor: result.cproveedor,
-          bactivo: result.bactivo,
-          ccotizacion: result.ccotizacion,
-          cestatusgeneral: result.cestatusgeneral,
-          ccausaanulacion: result.ccausaanulacion
-        });
-        this.serviceOrderGridApi.setRowData(this.serviceOrderList);
-=======
         cgrid: this.serviceOrderList.length,
         createServiceOrder: true,
         edit: false,
@@ -1700,7 +1650,6 @@ export class NotificationDetailComponent implements OnInit {
         migtf: result.migtf,
        });
        this.serviceOrderGridApi.setRowData(this.serviceOrderList);
->>>>>>> jhon
       });
     }
   }
@@ -1978,10 +1927,6 @@ export class NotificationDetailComponent implements OnInit {
 
   serviceOrderRowClicked(event: any) {
     let notificacion = {};
-<<<<<<< HEAD
-    if (this.editStatus) {
-      notificacion = {
-=======
     let fajuste;
     let cservicio; 
 
@@ -2001,7 +1946,6 @@ export class NotificationDetailComponent implements OnInit {
 
     if(this.editStatus){ 
       notificacion = { 
->>>>>>> jhon
         edit: true,
         createServiceOrder: false,
         type: 1,
@@ -2067,35 +2011,6 @@ export class NotificationDetailComponent implements OnInit {
       modalRef.componentInstance.notificacion = notificacion;
       modalRef.result.then((result: any) => {
 
-<<<<<<< HEAD
-        let index = this.serviceOrderList.findIndex(el => el.corden == result.corden);
-        this.serviceOrderList[index].cnotificacion = result.cnotificacion;
-        this.serviceOrderList[index].corden = result.corden;
-        this.serviceOrderList[index].cservicio = result.cservicio;
-        this.serviceOrderList[index].cservicioadicional = result.cservicioadicional;
-        this.serviceOrderList[index].xservicioadicional = result.xservicioadicional;
-        this.serviceOrderList[index].cproveedor = result.cproveedor;
-        this.serviceOrderList[index].xobservacion = result.xobservacion;
-        this.serviceOrderList[index].xdanos = result.xdanos;
-        this.serviceOrderList[index].xfecha = result.xfecha;
-        this.serviceOrderList[index].fajuste = result.fajuste.substring(0, 10);
-        this.serviceOrderList[index].xdesde = result.xdesde;
-        this.serviceOrderList[index].xhacia = result.xhacia;
-        this.serviceOrderList[index].mmonto = result.mmonto;
-        this.serviceOrderList[index].cimpuesto = 13;
-        this.serviceOrderList[index].cmoneda = result.cmoneda;
-        this.serviceOrderList[index].cestatusgeneral = result.cestatusgeneral;
-        this.serviceOrderList[index].ccausaanulacion = result.ccausaanulacion;
-        this.serviceOrderList[index].bactivo = result.bactivo;
-        this.serviceOrderList[index].edit = this.editStatus;
-        this.serviceOrderGridApi.refreshCells();
-        return;
-      });
-    } else {
-      const modalRef = this.modalService.open(NotificationServiceOrderComponent, { size: 'xl' });
-      modalRef.componentInstance.notificacion = notificacion;
-    }
-=======
       let index = this.serviceOrderList.findIndex(el=> el.corden == result.corden);
       this.serviceOrderList[index].cnotificacion = result.cnotificacion;
       this.serviceOrderList[index].corden = result.corden;
@@ -2124,7 +2039,6 @@ export class NotificationDetailComponent implements OnInit {
     const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
     modalRef.componentInstance.notificacion = notificacion;
   }
->>>>>>> jhon
   }
 
   searchOwner() {

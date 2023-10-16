@@ -48,16 +48,10 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
   ngOnInit(): void {
     this.popup_form = this.formBuilder.group({
       xobservacion: [''],
-<<<<<<< HEAD
-      bcerrada: [true],
-      mtotalcotizacion: [''],
-      cmoneda: ['']
-=======
       bcerrada: [false],
       mtotalcotizacion: [''],
       cmoneda: [''],
       migtf: ['']
->>>>>>> jhon
     });
     this.currentUser = this.authenticationService.currentUserValue;
     if(this.currentUser){
@@ -202,10 +196,7 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
               this.replacementList[i].cmoneda = result.cmoneda;
               this.replacementList[i].xmoneda = result.xmoneda;
               this.popup_form.get('cmoneda').setValue(result.cmoneda)
-<<<<<<< HEAD
-=======
               this.popup_form.get('migtf').setValue(result.migtf)
->>>>>>> jhon
               this.replacementsGridApi.refreshCells();
             }
           }
@@ -232,13 +223,8 @@ export class NotificationQuoteRequestDetailComponent implements OnInit {
     this.quote2.xobservacion = form.xobservacion;
     this.quote2.repuestos = this.replacementList;
     this.quote2.mtotalcotizacion = this.popup_form.get('mtotalcotizacion').value;
-<<<<<<< HEAD
-    // this.quote2.bcerrada = this.popup_form.get('bcerrada').value;
-    this.quote2.bcerrada = true;
-=======
     this.quote2.bcerrada = this.popup_form.get('bcerrada').value;
     this.quote2.migtf = this.popup_form.get('migtf').value;
->>>>>>> jhon
 
     this.activeModal.close(this.quote2);
   }

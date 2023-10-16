@@ -74,11 +74,7 @@ export class NotificationQuoteRequestIndexComponent implements OnInit {
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { headers: headers };
     let params = {
-<<<<<<< HEAD
-      cnotificacion: this.quote.cnotificacion,
-=======
       cproveedor: this.quote.cproveedor,
->>>>>>> jhon
       fcreacion: form.fcreacion ? new Date(form.fcreacion).toUTCString() : undefined
     }
     this.http.post(`${environment.apiUrl}/api/notification/search-quote-request`, params, options).subscribe((response : any) => {
@@ -95,12 +91,7 @@ export class NotificationQuoteRequestIndexComponent implements OnInit {
             cproveedor: response.data.list[i].cproveedor,
             fcreacion: date,
             xobservacion: response.data.list[i].xobservacion,
-<<<<<<< HEAD
-            // xcerrada: response.data.list[i].bcerrada
-            xcerrada: true
-=======
             xcerrada: response.data.list[i].bcerrada
->>>>>>> jhon
           });
         }
       }
