@@ -720,7 +720,6 @@ async getmetodologia(){
     let marca = this.marcaList.find(element => element.control === parseInt(this.search_form.get('cmarca').value));
     let modelo = this.modeloList.find(element => element.control === parseInt(this.search_form.get('cmodelo').value));
     let clase = this.ListClase.find(element => element.control === parseInt(this.search_form.get('cclase').value));
-    console.log(clase)
     let params =  {
       xclase: clase.value,  
       xmarca: marca.value,
@@ -729,7 +728,6 @@ async getmetodologia(){
       xcobertura: this.search_form.get('xcobertura').value,
       
     };
-    console.log(params)
     this.http.post(`${environment.apiUrl}/api/fleet-contract-management/tarifa-casco`, params).subscribe((response: any) => {
       if(response.data.status){
         this.search_form.get('pcasco').setValue(response.data.ptasa_casco);
@@ -1339,7 +1337,6 @@ OperatioValidationPlate(){
     };
     await this.http.post(`${environment.apiUrl}/api/fleet-contract-management/detail`, params, options).subscribe( async (response: any) => {
       if(response.data.status){
-        console.log(response.data)
         this.ccarga = response.data.ccarga;
         this.xpoliza = response.data.xpoliza;
         this.xtituloreporte = response.data.xtituloreporte;

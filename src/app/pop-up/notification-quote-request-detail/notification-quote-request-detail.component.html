@@ -23,7 +23,11 @@
                                 <span *ngIf="loading_cancel" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "PROVIDERS.QUOTEREQUESTS.CANCEL" | translate }}
                             </button>
+<<<<<<< HEAD
                             <button [disabled]="loading || loading_cancel" class="btn company-detail-button float-right mr-1" type="button" (click)="editQuoteRequest()" *ngIf="canEdit && showEditButton">
+=======
+                            <button [disabled]="loading || loading_cancel || this.popup_form.get('bcerrada').value" class="btn company-detail-button float-right mr-1" type="button" (click)="editQuoteRequest()" *ngIf="canEdit && showEditButton">
+>>>>>>> jhon
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                 {{ "PROVIDERS.QUOTEREQUESTS.EDIT" | translate }}
                             </button>
@@ -57,11 +61,19 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group form-check">
+<<<<<<< HEAD
                                     <!-- <input type="hidden" formControlName="bcerrada" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('bcerrada').errors }" value="true"> -->
                                     <!-- <label>{{ "PROVIDERS.QUOTEREQUESTS.CLOSED" | translate }}</label> -->
                                     <!-- <div *ngIf="submitted && popup_form.get('bcerrada').errors"  class="invalid-feedback">
                                         <div *ngIf="popup_form.get('bcerrada').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
                                     </div> -->
+=======
+                                    <input type="checkbox" formControlName="bcerrada" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && popup_form.get('bcerrada').errors }">
+                                    <label>{{ "PROVIDERS.QUOTEREQUESTS.CLOSED" | translate }}</label>
+                                    <div *ngIf="submitted && popup_form.get('bcerrada').errors"  class="invalid-feedback">
+                                        <div *ngIf="popup_form.get('bcerrada').errors.required">{{ "EVENTS.NOTIFICATIONS.REQUIREDVEHICLEDAMAGE" | translate }}</div>
+                                    </div>
+>>>>>>> jhon
                                 </div>
                             </div>
                         </div>

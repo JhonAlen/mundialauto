@@ -95,7 +95,7 @@ export class NotificationDetailComponent implements OnInit {
   bactiva_cotizacion: boolean = false;
   bactiva_etiqueta: boolean = false;
   bocultar_tercero: boolean = false;
-
+  quoteListProviders: any[] = [];
 
 
 
@@ -595,7 +595,8 @@ export class NotificationDetailComponent implements OnInit {
               pimpuesto: response.data.quotes[i].pimpuesto,
               baceptacion: response.data.quotes[i].baceptacion,
               cmoneda: response.data.quotes[i].cmoneda,
-              xmoneda: response.data.quotes[i].xmoneda
+              xmoneda: response.data.quotes[i].xmoneda,
+              migtf: response.data.quotes[i].migtf,
             });
           }
         }
@@ -631,25 +632,49 @@ export class NotificationDetailComponent implements OnInit {
         }
         this.serviceOrderList = [];
         let xservicio;
+<<<<<<< HEAD
         if (response.data.serviceOrder) {
           for (let i = 0; i < response.data.serviceOrder.length; i++) {
             if (response.data.serviceOrder[i].xservicio) {
+=======
+        let fajuste; 
+        let cservicio;
+        if(response.data.serviceOrder){
+          for(let i = 0; i < response.data.serviceOrder.length; i++){
+            if(response.data.serviceOrder[i].xservicio){
+>>>>>>> jhon
               xservicio = response.data.serviceOrder[i].xservicio
             } else {
               xservicio = response.data.serviceOrder[i].xservicioadicional
+            }
+            
+            if(response.data.serviceOrder[i].fajuste){
+              fajuste = response.data.serviceOrder[i].fajuste.substring(0,10)
+            }else{
+              fajuste = fajuste
+            }
+
+            if(response.data.serviceOrder[i].cservicio){
+              cservicio = response.data.serviceOrder[i].cservicio
+            }else{
+              cservicio = response.data.serviceOrder[i].cservicioadicional
             }
             this.serviceOrderList.push({
               cgrid: i,
               createServiceOrder: false,
               cnotificacion: response.data.serviceOrder[i].cnotificacion,
               corden: response.data.serviceOrder[i].corden,
-              cservicio: response.data.serviceOrder[i].cservicio,
+              cservicio: cservicio,
               cservicioadicional: response.data.serviceOrder[i].cservicioadicional,
               xservicio: xservicio,
               xobservacion: response.data.serviceOrder[i].xobservacion,
               xfecha: response.data.serviceOrder[i].xfecha,
               xdanos: response.data.serviceOrder[i].xdanos,
+<<<<<<< HEAD
               fajuste: response.data.serviceOrder[i].fajuste.substring(0, 10),
+=======
+              fajuste: fajuste,
+>>>>>>> jhon
               xdesde: response.data.serviceOrder[i].xdesde,
               xhacia: response.data.serviceOrder[i].xhacia,
               mmonto: response.data.serviceOrder[i].mmonto,
@@ -660,6 +685,7 @@ export class NotificationDetailComponent implements OnInit {
             });
           }
         }
+        console.log(this.serviceOrderList)
       }
       this.loading_cancel = false;
     },
@@ -919,6 +945,7 @@ export class NotificationDetailComponent implements OnInit {
             xobservacionpropietario: result.xobservacionpropietario,
             replacements: result.replacements
           });
+          console.log(this.thirdpartyVehicleList)
           this.thirdpartyVehicleGridApi.setRowData(this.thirdpartyVehicleList);
         }
       }
@@ -1484,8 +1511,13 @@ export class NotificationDetailComponent implements OnInit {
     let quote = {};
     let notificacion = this.code;
     console.log(event.data)
+<<<<<<< HEAD
     if (this.editStatus) {
       quote = {
+=======
+    if(this.editStatus){ 
+      quote = { 
+>>>>>>> jhon
         type: 1,
         create: event.data.create,
         cgrid: event.data.cgrid,
@@ -1496,6 +1528,7 @@ export class NotificationDetailComponent implements OnInit {
         cnotificacion: notificacion,
         baceptacion: event.data.baceptacion,
         mtotalcotizacion: event.data.mtotalcotizacion,
+        migtf: event.data.migtf,
         cimpuesto: 13,
         delete: false
       };
@@ -1511,15 +1544,25 @@ export class NotificationDetailComponent implements OnInit {
         cnotificacion: notificacion,
         baceptacion: event.data.baceptacion,
         mtotalcotizacion: event.data.mtotalcotizacion,
+        migtf: event.data.migtf,
         cimpuesto: 13,
         delete: false
       };
     }
+<<<<<<< HEAD
 
     const modalRef = this.modalService.open(NotificationQuoteComponent, { size: 'xl' });
     modalRef.componentInstance.quote = quote;
     modalRef.result.then((result: any) => {
       if (result) {
+=======
+    console.log(quote)
+    const modalRef = this.modalService.open(NotificationQuoteComponent, {size: 'xl'});
+    modalRef.componentInstance.quote = quote;
+    modalRef.result.then((result: any) => {
+      if(result){
+        console.log(result)
+>>>>>>> jhon
         this.serviceOrderList.push(result);
         this.serviceOrderGridApi.setRowData(this.serviceOrderList);
         for (let i = 0; i < this.quoteList.length; i++) {
@@ -1604,6 +1647,7 @@ export class NotificationDetailComponent implements OnInit {
       modalRef.result.then((result: any) => {
 
         this.serviceOrderList.push({
+<<<<<<< HEAD
           cgrid: this.serviceOrderList.length,
           createServiceOrder: true,
           edit: false,
@@ -1629,6 +1673,34 @@ export class NotificationDetailComponent implements OnInit {
           ccausaanulacion: result.ccausaanulacion
         });
         this.serviceOrderGridApi.setRowData(this.serviceOrderList);
+=======
+        cgrid: this.serviceOrderList.length,
+        createServiceOrder: true,
+        edit: false,
+        cnotificacion: result.cnotificacion,
+        corden: result.corden,
+        cservicio: result.cservicio,
+        xservicio: result.xservicio,
+        cservicioadicional: result.cservicioadicional,
+        xobservacion: result.xobservacion,
+        xfecha: result.xfecha,
+        xdanos: result.xdanos,
+        fajuste: result.fajuste.substring(0,10),
+        xdesde: result.xdesde,
+        xhacia: result.xhacia,
+        mmonto: result.mmonto,
+        cimpuesto: 13,
+        cmoneda: result.cmoneda,
+        xmoneda: result.xmoneda,
+        cproveedor: result.cproveedor,
+        bactivo: result.bactivo,
+        ccotizacion: result.ccotizacion,
+        cestatusgeneral: result.cestatusgeneral,
+        ccausaanulacion: result.ccausaanulacion,
+        migtf: result.migtf,
+       });
+       this.serviceOrderGridApi.setRowData(this.serviceOrderList);
+>>>>>>> jhon
       });
     }
   }
@@ -1653,7 +1725,36 @@ export class NotificationDetailComponent implements OnInit {
           cmoneda: result.cmoneda
         }
       });
-      console.log(this.settlement)
+    }
+  }
+
+  changeQuoteRequest(){
+    if(this.detail_form.get('bcotizacion').value == true){
+      let quote = { cproveedor: this.providerList}
+      const modalRef = this.modalService.open(NotificationQuoteRequestIndexComponent, { size: 'xl' });
+      modalRef.componentInstance.quote = quote;
+      modalRef.result.then((result: any) => {
+
+        this.quoteListProviders = [];
+        if(result){
+          for(let j = 0; j < result.repuestos.repuestos.length; j++){
+            this.quoteListProviders.push({
+              cproveedor: result.repuestos.cproveedor,
+              ccotizacion: result.repuestos.ccotizacion,
+              crepuesto: result.repuestos.repuestos[j].crepuesto,
+              mtotalrepuesto: result.repuestos.repuestos[j].mtotalrepuesto,
+              crepuestocotizacion: result.repuestos.repuestos[j].crepuestocotizacion,
+              bdisponible: result.repuestos.repuestos[j].bdisponible,
+              bdescuento: result.repuestos.repuestos[j].bdescuento,
+              munitariorepuesto: result.repuestos.repuestos[j].munitariorepuesto,
+              bcerrada: result.repuestos.bcerrada,
+              cmoneda: result.repuestos.repuestos[j].cmoneda,
+              mtotalcotizacion: result.repuestos.mtotalcotizacion,
+              migtf: result.repuestos.migtf,
+            })
+          }
+        }
+      });
     }
   }
 
@@ -1714,6 +1815,7 @@ export class NotificationDetailComponent implements OnInit {
       let updateReplacementList = this.replacementList.filter((row) => { return !row.create; });
       let createReplacementList = this.replacementList.filter((row) => { return row.create; });
       let updateThirdpartyList = this.thirdpartyList.filter((row) => { return !row.create; });
+      let createThirdpartyList = this.thirdpartyList.filter((row) => { return row.create; });
       let updateMaterialDamageList = this.materialDamageList.filter((row) => { return !row.create; });
       let createMaterialDamageList = this.materialDamageList.filter((row) => { return row.create; });
       let updateThirdPartyVehiclesList = this.thirdpartyVehicleList.filter((row) => { return !row.create; });
@@ -1751,7 +1853,8 @@ export class NotificationDetailComponent implements OnInit {
           delete: this.replacementDeletedRowList
         },
         thirdparties: {
-          update: updateThirdpartyList
+          update: updateThirdpartyList,
+          create: createThirdpartyList
         },
         materialDamages: {
           create: createMaterialDamageList,
@@ -1875,8 +1978,30 @@ export class NotificationDetailComponent implements OnInit {
 
   serviceOrderRowClicked(event: any) {
     let notificacion = {};
+<<<<<<< HEAD
     if (this.editStatus) {
       notificacion = {
+=======
+    let fajuste;
+    let cservicio; 
+
+    if(event.data.fajuste){
+      fajuste = event.data.fajuste.substring(0, 10)
+    }else{
+      fajuste = fajuste
+    }
+
+    // if(event.data.cservicio){
+    //   cservicio = response.data.serviceOrder[i].cservicio
+    // }else{
+    //   cservicio = response.data.serviceOrder[i].cservicioadicional
+    // }
+
+    console.log(event.data.xservicio)
+
+    if(this.editStatus){ 
+      notificacion = { 
+>>>>>>> jhon
         edit: true,
         createServiceOrder: false,
         type: 1,
@@ -1892,7 +2017,7 @@ export class NotificationDetailComponent implements OnInit {
         xdanos: event.data.xdanos,
         xobservacion: event.data.xobservacion,
         xfecha: event.data.xfecha,
-        fajuste: event.data.fajuste.substring(0, 10),
+        fajuste: fajuste,
         xdesde: event.data.xdesde,
         xhacia: event.data.xhacia,
         mmonto: event.data.mmonto,
@@ -1915,6 +2040,7 @@ export class NotificationDetailComponent implements OnInit {
         cnotificacion: event.data.cnotificacion,
         corden: event.data.corden,
         cservicioadicional: event.data.cservicioadicional,
+        cservicio: event.data.cservicio,
         xservicio: event.data.xservicio,
         xservicioadicional: event.data.xservicioadicional,
         xnombre: event.data.xnombre,
@@ -1922,7 +2048,7 @@ export class NotificationDetailComponent implements OnInit {
         xdanos: event.data.xdanos,
         xobservacion: event.data.xobservacion,
         xfecha: event.data.xfecha,
-        fajuste: event.data.fajuste.substring(0, 10),
+        fajuste: fajuste,
         xdesde: event.data.xdesde,
         xhacia: event.data.xhacia,
         mmonto: event.data.mmonto,
@@ -1941,6 +2067,7 @@ export class NotificationDetailComponent implements OnInit {
       modalRef.componentInstance.notificacion = notificacion;
       modalRef.result.then((result: any) => {
 
+<<<<<<< HEAD
         let index = this.serviceOrderList.findIndex(el => el.corden == result.corden);
         this.serviceOrderList[index].cnotificacion = result.cnotificacion;
         this.serviceOrderList[index].corden = result.corden;
@@ -1968,6 +2095,36 @@ export class NotificationDetailComponent implements OnInit {
       const modalRef = this.modalService.open(NotificationServiceOrderComponent, { size: 'xl' });
       modalRef.componentInstance.notificacion = notificacion;
     }
+=======
+      let index = this.serviceOrderList.findIndex(el=> el.corden == result.corden);
+      this.serviceOrderList[index].cnotificacion = result.cnotificacion;
+      this.serviceOrderList[index].corden = result.corden;
+      this.serviceOrderList[index].cservicio = result.cservicio;
+      this.serviceOrderList[index].cservicioadicional = result.cservicioadicional;
+      this.serviceOrderList[index].xservicioadicional = result.xservicioadicional;
+      this.serviceOrderList[index].cproveedor = result.cproveedor;
+      this.serviceOrderList[index].xobservacion = result.xobservacion;
+      this.serviceOrderList[index].xdanos = result.xdanos;
+      this.serviceOrderList[index].xfecha = result.xfecha;
+      this.serviceOrderList[index].fajuste = result.fajuste;
+      this.serviceOrderList[index].xdesde = result.xdesde;
+      this.serviceOrderList[index].xhacia = result.xhacia;
+      this.serviceOrderList[index].mmonto = result.mmonto;
+      this.serviceOrderList[index].cimpuesto = 13;
+      this.serviceOrderList[index].cmoneda = result.cmoneda;
+      this.serviceOrderList[index].cestatusgeneral = result.cestatusgeneral;
+      this.serviceOrderList[index].ccausaanulacion = result.ccausaanulacion;
+      this.serviceOrderList[index].bactivo = result.bactivo;
+      this.serviceOrderList[index].migtf = result.migtf;
+      this.serviceOrderList[index].edit = this.editStatus;
+      this.serviceOrderGridApi.refreshCells();
+      return;
+    });
+  }else{
+    const modalRef = this.modalService.open(NotificationServiceOrderComponent, {size: 'xl'});
+    modalRef.componentInstance.notificacion = notificacion;
+  }
+>>>>>>> jhon
   }
 
   searchOwner() {

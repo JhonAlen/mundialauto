@@ -169,7 +169,8 @@ export class NotificationQuoteComponent implements OnInit {
           xnombre: result.xnombre,
           bactivo: result.bactivo,
           baceptacion: result.baceptacion,
-          ccotizacion: this.quote.ccotizacion
+          ccotizacion: this.quote.ccotizacion,
+          migtf: this.quote.migtf
         }
         console.log(serviceOrder)
         this.activeModal.close(serviceOrder);
@@ -194,99 +195,4 @@ export class NotificationQuoteComponent implements OnInit {
     }
     this.activeModal.close(this.quote);
   }
-  
-  /*quotedAccepted(){
-        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params = {
-      cnotificacion: this.quote.cnotificacion
-    };
-    this.http.post(`${environment.apiUrl}/api/service-order/notification-order`, params, options).subscribe((response : any) => {
-      this.aditionalServiceList = [];
-      if(this.quote.cnotificacion){
-          if (this.quote.cnotificacion == response.data.list[0].cnotificacion){
-            this.popup_form.get('cnotificacion').setValue(response.data.list[0].cnotificacion);
-            this.popup_form.get('cnotificacion').disable();
-            this.popup_form.get('ccontratoflota').setValue(response.data.list[0].ccontratoflota);
-            this.popup_form.get('ccontratoflota').disable();
-            this.popup_form.get('xnombre').setValue(response.data.list[0].xnombre);
-            this.popup_form.get('xnombre').disable();
-            this.popup_form.get('xapellido').setValue(response.data.list[0].xapellido);
-            this.popup_form.get('xapellido').disable();
-            this.popup_form.get('xnombrealternativo').setValue(response.data.list[0].xnombrealternativo);
-            this.popup_form.get('xnombrealternativo').disable();
-            this.popup_form.get('xapellidoalternativo').setValue(response.data.list[0].xapellidoalternativo);
-            this.popup_form.get('xapellidoalternativo').disable();
-            this.popup_form.get('xcliente').setValue(response.data.list[0].xcliente);
-            this.popup_form.get('xcliente').disable();
-            this.popup_form.get('xdocumentocliente').setValue(response.data.list[0].xdocumentocliente);
-            this.popup_form.get('xdocumentocliente').disable();
-            this.popup_form.get('xdireccionfiscal').setValue(response.data.list[0].xdireccionfiscal);
-            this.popup_form.get('xdireccionfiscal').disable();
-            this.popup_form.get('xtelefono').setValue(response.data.list[0].xtelefono);
-            this.popup_form.get('xtelefono').disable();
-            this.popup_form.get('xdesde').disable();
-            this.popup_form.get('xhacia').disable();
-            this.popup_form.get('mmonto').disable();
-            this.popup_form.get('xdescripcion').setValue(response.data.list[0].xdescripcion);
-            this.popup_form.get('xdescripcion').disable();
-            this.popup_form.get('xnombrepropietario').setValue(response.data.list[0].xnombrepropietario);
-            this.popup_form.get('xnombrepropietario').disable();
-            this.popup_form.get('mmontototal').disable();
-            this.popup_form.get('pimpuesto').disable();
-            this.popup_form.get('xapellidopropietario').setValue(response.data.list[0].xapellidopropietario);
-            this.popup_form.get('xapellidopropietario').disable();
-            this.popup_form.get('xdocidentidad').setValue(response.data.list[0].xdocidentidad);
-            this.popup_form.get('xdocidentidad').disable();
-            this.popup_form.get('xtelefonocelular').setValue(response.data.list[0].xtelefonocelular);
-            this.popup_form.get('xtelefonocelular').disable();
-            this.popup_form.get('cservicio').setValue(response.data.list[0].cservicio);
-            this.popup_form.get('cservicio').enable();
-            this.popup_form.get('xplaca').setValue(response.data.list[0].xplaca);
-            this.popup_form.get('xplaca').disable();
-            this.popup_form.get('xcolor').setValue(response.data.list[0].xcolor);
-            this.popup_form.get('xcolor').disable();
-            this.popup_form.get('xmoneda').disable();
-            this.popup_form.get('xmodelo').setValue(response.data.list[0].xmodelo);
-            this.popup_form.get('xmodelo').disable();
-            this.popup_form.get('xmarca').setValue(response.data.list[0].xmarca);
-            this.popup_form.get('xmarca').disable();
-            this.popup_form.get('fano').setValue(response.data.list[0].fano);
-            this.popup_form.get('fano').disable();
-            this.popup_form.get('fcreacion').setValue(response.data.list[0].fcreacion);
-            this.popup_form.get('fcreacion').disable();
-            this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
-            this.popup_form.get('bactivo').disable();
-            this.popup_form.get('xactivo').disable();
-            this.popup_form.get('xproveedor').setValue(this.quote.xnombre);
-            this.popup_form.get('xproveedor').disable();
-          }
-          this.notificationList.push({ id: response.data.list[0].cnotificacion, ccontratoflota: response.data.list[0].ccontratoflota, nombre: response.data.list[0].xnombre, apellido: response.data.list[0].xapellido, nombrealternativo: response.data.list[0].xnombrealternativo, apellidoalternativo: response.data.list[0].xapellidoalternativo, xmarca: response.data.list[0].xmarca, xdescripcion: response.data.list[0].xdescripcion, xnombrepropietario: response.data.list[0].xnombrepropietario, xapellidopropietario: response.data.list[0].xapellidopropietario, xdocidentidad: response.data.list[0].xdocidentidad, xtelefonocelular: response.data.list[0].xtelefonocelular, xplaca: response.data.list[0].xplaca, xcolor: response.data.list[0].xcolor, xmodelo: response.data.list[0].xmodelo, xcliente: response.data.list[0].xcliente, fano: response.data.list[0].fano, fecha: response.data.list[0].fcreacion });
-      }
-
-    let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    let options = { headers: headers };
-    let params = {
-      cnotificacion: this.popup_form.get('cnotificacion').value
-    }
-    this.http.post(`${environment.apiUrl}/api/valrep/aditional-service-quote`, params, options).subscribe((response: any) => {
-      if(response.data.status){
-        for(let i = 0; i < response.data.list.length; i++){
-          this.aditionalServiceList.push({ servicio: response.data.list[i].cservicio, value: response.data.list[i].xservicio});
-        }
-        this.aditionalServiceList.sort((a,b) => a.value > b.value ? 1 : -1);
-      }
-    },
-    (err) => {
-      let code = err.error.data.code;
-      let message;
-      if(code == 400){ message = "HTTP.ERROR.PARAMSERROR"; }
-      else if(code == 404){ message = "HTTP.ERROR.VALREP.SERVICENOTFOUND"; }
-      //else if(code == 500){  message = "HTTP.ERROR.INTERNALSERVERERROR"; }
-      this.alert.message = message;
-      this.alert.type = 'danger';
-      this.alert.show = true;
-    });
-  }*/
-
 }

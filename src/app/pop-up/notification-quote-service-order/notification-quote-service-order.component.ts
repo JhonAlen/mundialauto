@@ -210,6 +210,7 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
             this.popup_form.get('fcreacion').disable();
             this.popup_form.get('bactivo').setValue(response.data.list[0].bactivo);
             this.popup_form.get('bactivo').disable();
+            this.changeStatus();
             this.popup_form.get('xactivo').disable();
             this.popup_form.get('xproveedor').setValue(this.quote.xnombre);
             this.popup_form.get('xproveedor').disable();
@@ -299,7 +300,6 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
       this.loading = false;
       return;
     }
-
     this.popup_form.get('xproveedor').setValue(this.quote.xnombre);
 
     let notificacionFilter = this.notificationList.filter((option) => { return option.id == this.popup_form.get('cnotificacion').value; });
@@ -317,6 +317,7 @@ export class NotificationQuoteServiceOrderComponent implements OnInit {
     this.quote.xnombre = this.popup_form.get('xproveedor').value;
     this.quote.baceptacion = 1;
     this.quote.ccotizacion = this.quote.ccotizacion;
+    this.quote.migtf = this.quote.migtf;
 
     this.activeModal.close(this.quote);
   }

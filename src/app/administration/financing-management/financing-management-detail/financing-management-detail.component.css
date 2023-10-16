@@ -1,0 +1,208 @@
+.card-propietary {
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    max-width: 1315px;
+    border-radius: 20px;
+    width: 1344;
+  }
+  
+  .title span {
+    position: relative;
+    padding: 0.5rem;
+    background-color: #B9101E;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+  }
+  
+  .title span svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    height: 1rem;
+  }
+  
+  .title-text {
+    margin-left: 0.5rem;
+    color: #374151;
+    font-size: 18px;
+    font-size: xx-large;
+  }
+  
+  .percent {
+    margin-left: 0.5rem;
+    color: #B9101E;
+    font-weight: 600;
+    display: flex;
+  }
+  
+  .data {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .data p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+    font-size: 0.9rem;
+    line-height: 2.5rem;
+    font-weight: 700;
+    text-align: left;
+  }
+  
+  .data .range {
+    position: relative;
+    /* background-color: #E5E7EB; */
+    width: 100%;
+    height: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .data .range .fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #2e49c8;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.25rem;
+    transition: .5s all;
+  }
+
+  .pricingTable{
+    margin-top:30px;
+    text-align: center;
+    position: relative;
+  }
+  .pricingTable .pricing_heading:after{
+    content: "";
+    width: 36px;
+    height: 29.5%;
+    background:#1a970e;
+    position: absolute;
+    top: -1px;
+    right: 0;
+    z-index: 2;
+    transform: skewY(45deg) translateY(18px);
+    transition: all 0.4s ease 0s;
+  }
+  .pricingTable .title{
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    color: #FFF;
+    text-transform: uppercase;
+    background: #1a970e;
+    padding: 15px 0 0;
+    margin: 0 35px 0 0;
+    transition: all 0.4s ease 0s;
+  }
+  .pricingTable .value{
+    display: block;
+    font-size: 35px;
+    font-weight: 700;
+    color: #fff;
+    background: #1a970e;
+    padding: 5px 0 10px;
+    margin: 0 35px 0 0;
+    transition: all 0.4s ease 0s;
+  }
+  .pricingTable:hover .title,
+  .pricingTable:hover .value{
+    color: #fff;
+  }
+  .pricingTable .month{
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+  }
+  .pricingTable .content{
+    border-left: 1px solid #f2f2f2;
+    position: relative;
+  }
+  .pricingTable .content:after{
+    content: "";
+    width: 35px;
+    height: 100%;
+    background: #f8f8f8;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    transform: skewY(-45deg) translateY(-18px);
+    transition: all 0.4s ease 0s;
+  }
+  .pricingTable .content ul{
+    padding: 0;
+    margin: 0 35px 0 0;
+    list-style: none;
+    background: #fff;
+  }
+  .pricingTable .content ul li{
+    display: block;
+    font-size: 15px;
+    color: #333;
+    line-height: 23px;
+    padding: 11px 0;
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .pricingTable .link{
+    background: #fff;
+    padding: 20px 0;
+    margin-right: 35px;
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .pricingTable .link a{
+    display: inline-block;
+    padding: 9px 20px;
+    font-weight: 700;
+    color: #1a970e;
+    text-transform: uppercase;
+    border: 1px solid #1a970e;
+    background: #fff;
+    transition: all 0.4s ease 0s;
+  }
+  .pricingTable:hover .link a{
+    color: #fff;
+    background: #06D6A0;
+    border: 1px solid #06D6A0;
+  }
+  .pricingTable:hover .pricing_heading:after,
+  .pricingTable:hover .title,
+  .pricingTable:hover .value{
+    background:#06D6A0;
+  }
+  @media only screen and (max-width: 990px){
+    .pricingTable{
+        margin-bottom: 35px;
+    }
+  }
+
+  .follow {
+    border: none;
+    border-radius: 25px;
+    background-color: #1a970e;
+    color: white;
+    padding: 8px 15px;
+    font-weight: 700;
+  }
+
+  .alert-fixed-top {
+    position: fixed;
+    top: 30px;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    font-size: 20px;
+    padding: 8px 16px;
+  }
+  .alert-fixed-top.show {
+    transform: translateY(0);
+  }

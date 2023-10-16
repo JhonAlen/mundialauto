@@ -198,6 +198,10 @@ import { PendingPaymentsComponent } from './business/pending-payments/pending-pa
 import { SubscriptionReportComponent } from './business/subscription-report/subscription-report.component';
 import { FleetContractQuotesIndexComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-index/fleet-contract-quotes-index.component';
 import { FleetContractQuotesDetailComponent } from './subscription/fleet-contract-quotes/fleet-contract-quotes-detail/fleet-contract-quotes-detail.component';
+import { RatesComponent } from './tables/rates/rates.component';
+import { FinancingComponent } from './financing/financing.component';
+import { FinancingManagementIndexComponent } from './administration/financing-management/financing-management-index/financing-management-index.component';
+import { FinancingManagementDetailComponent } from './administration/financing-management/financing-management-detail/financing-management-detail.component';
 
 const routes: Routes = [
  
@@ -227,6 +231,7 @@ const routes: Routes = [
   { path: 'security/department-detail/:id', component: DepartmentDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/accesory-index', component: AccesoryIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/accesory-detail', component: AccesoryDetailComponent, canActivate: [AuthGuard] },
+  { path: 'tables/rates', component: RatesComponent, canActivate: [AuthGuard] },
   { path: 'tables/accesory-detail/:id', component: AccesoryDetailComponent, canActivate: [AuthGuard] },
   { path: 'tables/business-activity-index', component: BusinessActivityIndexComponent, canActivate: [AuthGuard] },
   { path: 'tables/business-activity-detail', component: BusinessActivityDetailComponent, canActivate: [AuthGuard] },
@@ -484,7 +489,11 @@ const routes: Routes = [
   { path: 'subscription/fleet-contract-quotes-index', component: FleetContractQuotesIndexComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-quotes-detail', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
   { path: 'subscription/fleet-contract-quotes-detail/:id', component: FleetContractQuotesDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/financing-management-index', component: FinancingManagementIndexComponent, canActivate: [AuthGuard] },
+  { path: 'administration/financing-management-detail', component: FinancingManagementDetailComponent, canActivate: [AuthGuard] },
+  { path: 'administration/financing-management-detail/:id', component: FinancingManagementDetailComponent, canActivate: [AuthGuard] },
   { path: 'sign-in', component: SignInComponent },
+  { path: 'financing', component: FinancingComponent, canActivate: [AuthGuard] },
   {path: '',component: AdminLayoutComponent, children: [{ path: '', loadChildren: () => import('./club/layouts/admin-layout/admin-layout.module').then(m => m.AdminLayoutModule) }] },
 
 ];

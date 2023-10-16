@@ -14,10 +14,10 @@
                              Marca - Modelo - Versión
                         </div>
                         <div class="col-6">
-                            <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate($event)">
+                            <button [disabled]="loading"  *ngIf="!canCreate" class="btn company-detail-button float-right" type="button" (click)="goToCreate(search_form.value)">
                                 {{ "EVENTS.NOTIFICATIONS.CREATE" | translate }}
                             </button> 
-                            <button  *ngIf="canEdit" class="btn company-detail-button float-right" type="button" (click)="goToDetail($event)">
+                            <button  *ngIf="canEdit" class="btn company-detail-button float-right" type="button" (click)="goToDetail(search_form.value)">
                                 {{ "EVENTS.NOTIFICATIONS.EDIT" | translate }}
                             </button>
                             <button *ngIf="submitted" class="btn company-detail-button float-right mr-1" type="button" (click)="onSubmit(search_form.value)">
@@ -33,9 +33,12 @@
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Marca</label>
                                     <div >
-                                    <ng-autocomplete  [data]="marcaList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Marca" (selected)='getModeloData($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    <ng-autocomplete  
+                                    [data]="marcaList" 
+                                    [searchKeyword]="keyword" 
+                                    formControlName="cmarca" 
+                                    placeholder="Seleccionar Marca" (selected)='getModeloData($event)'
+                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
                                     <ng-template #itemTemplate let-item >
@@ -53,9 +56,12 @@
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Modelo</label>
                                     
-                                    <ng-autocomplete  [data]="modelList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Modelo" (selected)='getVersionData($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    <ng-autocomplete  
+                                    [data]="modelList" 
+                                    [searchKeyword]="keyword" 
+                                    formControlName="cmodelo" 
+                                    placeholder="Seleccionar Modelo" (selected)='getVersionData($event,search_form.value )'
+                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
                                     <ng-template #itemTemplate let-item >
@@ -73,9 +79,12 @@
                                 <div class="form-outline">
                                     <label class="form-label" for="form3Examplev5">Version</label>
                                     
-                                    <ng-autocomplete  [data]="versionList" [searchKeyword]="keyword" 
-                                                    placeholder="Seleccionar Version" (selected)='searchVersion($event)'
-                                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
+                                    <ng-autocomplete  
+                                    [data]="versionList" 
+                                    [searchKeyword]="keyword" 
+                                    formControlName="cversion" 
+                                    placeholder="Seleccionar Version"
+                                    [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">                                 
                                     </ng-autocomplete>
                                 
                                     <ng-template #itemTemplate let-item >
@@ -156,7 +165,7 @@
                                     
                               <div class="col-md-3 mb-4 pb-2">
                                 <div class="form-group form-check">
-                                    <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && search_form.get('bactivo').errors }">
+                                    <!-- <input type="checkbox" formControlName="bactivo" class="form-check-input" [ngClass]="{ 'is-invalid' : submitted && search_form.get('bactivo').errors }"> -->
                                     <label>{{ "TABLES.BRANDS.ACTIVE" | translate }}</label>
                                     <div *ngIf="submitted && search_form.get('bactivo').errors"  class="invalid-feedback">
                                         <div *ngIf="detail_form.get('bactivo').errors.required">{{ "TABLES.BRANDS.REQUIREDACTIVE" | translate }}</div>

@@ -60,6 +60,7 @@ export class ToolbarComponent implements OnInit {
             });
             this.groupList.push({ xgrupo: nameArray[i], modules: testObjectFilter });
           }
+          console.log(this.groupList)
         }
       },
       (err) => {

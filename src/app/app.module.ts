@@ -311,6 +311,7 @@ import {AutocompleteLibModule} from 'angular-ng-autocomplete';
 import { PolicyQuotationIndexComponent } from './subscription/policy-quotation/policy-quotation-index/policy-quotation-index.component';
 import { PolicyQuotationDetailComponent } from './subscription/policy-quotation/policy-quotation-detail/policy-quotation-detail.component';
 import { FooterComponent } from './footer/footer.component';
+import { RatesComponent } from './tables/rates/rates.component';
 import { PolicyCancellationsComponent } from './subscription/policy-cancellations/policy-cancellations.component';
 import { CauseForCancellationComponent } from './pop-up/cause-for-cancellation/cause-for-cancellation.component';
 import { TakersIndexComponent } from './configuration/takers/takers-index/takers-index.component';
@@ -323,6 +324,12 @@ import { ProvidersDocumentsComponent } from './pop-up/providers-documents/provid
 import { PlanRcvRatesComponent } from './pop-up/plan-rcv-rates/plan-rcv-rates.component';
 import { NotificationQuoteRequestIndexComponent } from './pop-up/notification-quote-request-index/notification-quote-request-index.component';
 import { NotificationQuoteRequestDetailComponent } from './pop-up/notification-quote-request-detail/notification-quote-request-detail.component';
+<<<<<<< HEAD
+=======
+import { FinancingComponent } from './financing/financing.component';
+import { FinancingManagementIndexComponent } from './administration/financing-management/financing-management-index/financing-management-index.component';
+import { FinancingManagementDetailComponent } from './administration/financing-management/financing-management-detail/financing-management-detail.component';
+>>>>>>> jhon
 
 export function HttpLoaderFactory(http: HttpClient){
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -624,11 +631,19 @@ export function HttpLoaderFactory(http: HttpClient){
     PendingPaymentsComponent,
     FleetContractQuotesIndexComponent,
     FleetContractQuotesDetailComponent,
+    RatesComponent,
     SubscriptionReportComponent,
     ProvidersDocumentsComponent,
     PlanRcvRatesComponent,
     NotificationQuoteRequestIndexComponent,
+<<<<<<< HEAD
     NotificationQuoteRequestDetailComponent
+=======
+    NotificationQuoteRequestDetailComponent,
+    FinancingComponent,
+    FinancingManagementIndexComponent,
+    FinancingManagementDetailComponent
+>>>>>>> jhon
   ],
   imports: [
     BrowserModule,
