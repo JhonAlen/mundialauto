@@ -76,7 +76,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mundialauto:build"
+            "browserTarget": "mundialauto:build",
+            "ssl": true
           },
           "configurations": {
             "production": {
