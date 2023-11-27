@@ -95,7 +95,7 @@ export class NotificationDetailComponent implements OnInit {
   bactiva_cotizacion: boolean = false;
   bactiva_etiqueta: boolean = false;
   bocultar_tercero: boolean = false;
-  quoteListProviders: any[] = [];
+  // quoteListProviders: any[] = [];
 
 
 
